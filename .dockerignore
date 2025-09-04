@@ -1,0 +1,61 @@
+# Node modules and logs
+node_modules/
+logs/
+*.log
+npm-debug.log*
+yarn-error.log
+pnpm-debug.log*
+debug.log
+
+# Environment files
+.env
+.env.*
+.env.local
+.env.development
+.env.production
+.env.test
+.envrc
+.direnv/
+
+# VCS
+.git/
+.gitignore
+.gitattributes
+.github/
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+Desktop.ini
+ehthumbs.db
+.history
+*.swp
+*.swo
+*~
+*.orig
+
+# Caches
+.cache/
+.npm/
+.eslintcache
+.stylelintcache
+.parcel-cache/
+.pnpm-store/
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Temp files and dirs
+tmp/
+temp/
+
+# Build output (if any)
+dist/
+build/
+
+# Docker/compose files (not needed in image)
+docker-compose*.yml
+docker-compose*.yaml

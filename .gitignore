@@ -1,0 +1,65 @@
+# Dependencies
+/node_modules
+
+# Logs
+npm-debug.log*
+yarn-error.log
+
+# Environment variables
+.env
+
+# Optional editor directories
+.vscode/
+.idea/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs (additional)
+logs/
+*.log
+pnpm-debug.log*
+debug.log
+
+# Environment variables (variants)
+.env.*
+.env.local
+.env.development
+.env.production
+.env.test
+.envrc
+.direnv/
+
+# Caches
+.cache/
+.npm/
+.eslintcache
+.stylelintcache
+.parcel-cache/
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Temp files and dirs
+tmp/
+temp/
+
+# OS/editor files (additional)
+Desktop.ini
+ehthumbs.db
+.history
+*.swp
+*.swo
+*~
+*.orig
+
+# Node REPL history
+.node_repl_history
+
+# TypeScript build info
+*.tsbuildinfo
+
+# pnpm store
+.pnpm-store/

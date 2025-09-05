@@ -1,26 +1,32 @@
-# Use an official Node.js runtime as a parent image
 FROM node:18
 
-# Install OpenJDK, which is required for Java
-RUN apt-get update && apt-get install -y openjdk-17-jdk
-
-# Install Python
-RUN apt-get install -y python3
+# Install required runtimes (JDK + Python3), then clean up apt cache to reduce surface
+RUN set -eux; \
+    apt-get update; \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        openjdk-17-jdk \
+        python3 \
+        ca-certificates; \
+    rm -rf /var/lib/apt/lists/*
 
 # Set the working directory in the container
 WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json
+# Copy dependency manifests first for better caching
 COPY package*.json ./
 
-# Install any needed packages
-RUN npm install
+# Install production dependencies
+ENV NODE_ENV=production
+RUN npm ci --omit=dev || npm install --only=production
 
-# Copy the rest of the application's code
+# Copy the application code
 COPY . .
 
-# Make port 3000 available to the world outside this container
+# Drop root privileges for runtime
+USER node
+
+# Expose port
 EXPOSE 3000
 
-# Run the app when the container launches
-CMD [ "node", "server.js" ]
+# Run the app
+CMD ["node", "server.js"]

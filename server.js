@@ -8,8 +8,13 @@ const app = express();
 const port = 3000;
 const OLLAMA_URL = process.env.OLLAMA_URL || 'http://localhost:11434';
 
+// Safety limits
+const MAX_CODE_SIZE_BYTES = 100 * 1024; // 100KB per request body
+const MAX_EXECUTION_MS = 10_000; // 10 seconds per run
+
 // Middleware to parse JSON and serve static files
-app.use(express.json());
+// Limit request body to reduce risk of memory abuse
+app.use(express.json({ limit: '100kb' }));
 app.use(express.static('public'));
 
 // ----------------------
@@ -71,9 +76,13 @@ app.post('/run/java', (req, res) => {
     console.log('Received Java execution request');
     const { code, input } = req.body;
     
-    if (!code) {
+    if (typeof code !== 'string' || code.length === 0) {
         console.error('No code provided in request');
         return res.status(400).json({ error: 'No code provided.' });
+    }
+    if (Buffer.byteLength(code, 'utf8') > MAX_CODE_SIZE_BYTES) {
+        console.error('Code size exceeds limit');
+        return res.status(413).json({ error: 'Code too large (max 100KB).' });
     }
 
     console.log('Creating temporary directory...');
@@ -107,8 +116,8 @@ app.post('/run/java', (req, res) => {
             }
             console.log('Compilation successful, running code...');
 
-            // Step 2: Run the compiled Java code
-            const run = spawn('java', ['-cp', tempDir, 'Main']);
+            // Step 2: Run the compiled Java code with a small heap to limit memory
+            const run = spawn('java', ['-Xmx64m', '-cp', tempDir, 'Main']);
             let output = '';
             let runError = '';
             
@@ -127,7 +136,7 @@ app.post('/run/java', (req, res) => {
                 run.kill();
                 cleanup();
                 return res.json({ output: 'Execution timed out after 10 seconds', error: true, type: 'timeout' });
-            }, 10000);
+            }, MAX_EXECUTION_MS);
 
             run.stdout.on('data', (data) => {
                 const dataStr = data.toString();
@@ -164,15 +173,9 @@ app.post('/run/java', (req, res) => {
         function cleanup() {
             console.log('Cleaning up temporary files...');
             try {
-                if (fs.existsSync(filePath)) {
-                    fs.unlinkSync(filePath);
-                }
-                const classFile = filePath.replace('.java', '.class');
-                if (fs.existsSync(classFile)) {
-                    fs.unlinkSync(classFile);
-                }
+                // Remove temp dir recursively; ignore errors
                 if (fs.existsSync(tempDir)) {
-                    fs.rmdirSync(tempDir);
+                    fs.rmSync(tempDir, { recursive: true, force: true });
                 }
                 console.log('Cleanup complete');
             } catch (cleanupErr) {
@@ -186,8 +189,11 @@ app.post('/run/java', (req, res) => {
 // Endpoint to execute Python code
 app.post('/run/python', (req, res) => {
     const { code } = req.body;
-    if (!code) {
+    if (typeof code !== 'string' || code.length === 0) {
         return res.status(400).json({ error: 'No code provided.' });
+    }
+    if (Buffer.byteLength(code, 'utf8') > MAX_CODE_SIZE_BYTES) {
+        return res.status(413).json({ error: 'Code too large (max 100KB).' });
     }
 
     const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'python-run-'));
@@ -198,9 +204,16 @@ app.post('/run/python', (req, res) => {
             return res.status(500).json({ error: 'Failed to write code to file.' });
         }
 
-        const run = spawn('python', [filePath]);
+        // Use python3 explicitly
+        const run = spawn('python3', [filePath]);
         let output = '';
         let runError = '';
+
+        // Timeout to prevent hanging processes
+        const timeout = setTimeout(() => {
+            try { run.kill(); } catch (_) {}
+            // Ensure cleanup happens after process ends
+        }, MAX_EXECUTION_MS);
 
         run.stdout.on('data', (data) => {
             output += data.toString();
@@ -211,8 +224,9 @@ app.post('/run/python', (req, res) => {
         });
 
         run.on('close', (code) => {
-            fs.unlink(filePath, () => {});
-            fs.rmdir(tempDir, () => {});
+            clearTimeout(timeout);
+            fs.rm(filePath, { force: true }, () => {});
+            fs.rm(tempDir, { recursive: true, force: true }, () => {});
             if (runError) {
                 return res.json({ output: runError, error: true, type: 'runtime' });
             }

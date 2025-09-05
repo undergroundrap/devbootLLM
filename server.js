@@ -5,8 +5,23 @@ const path = require('path');
 const os = require('os');
 
 const app = express();
-const port = 3000;
+const port = Number(process.env.PORT || 3000);
 const OLLAMA_URL = process.env.OLLAMA_URL || 'http://localhost:11434';
+
+// Utility: best-effort Python executable resolution across OSes
+function resolvePythonCmd() {
+    // Allow override
+    if (process.env.PYTHON_BIN) {
+        const bin = process.env.PYTHON_BIN.trim();
+        if (bin.length > 0) return { cmd: bin, args: [] };
+    }
+    if (process.platform === 'win32') {
+        // Prefer Python launcher for Windows
+        return { cmd: 'py', args: ['-3'] };
+    }
+    // Linux/macOS commonly have python3; fallback to python
+    return { cmd: 'python3', args: [] };
+}
 
 // Safety limits
 const MAX_CODE_SIZE_BYTES = 100 * 1024; // 100KB per request body
@@ -39,6 +54,47 @@ app.get('/ollama/models', async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: 'Failed to contact Ollama', details: err.message });
     }
+});
+
+// Simple health endpoint to check runtime availability
+app.get('/health', async (req, res) => {
+    const checks = {
+        node: process.version,
+        platform: process.platform,
+        ollama_url: OLLAMA_URL,
+    };
+    const runVersion = (cmd, args) => new Promise((resolve) => {
+        try {
+            const p = spawn(cmd, args, { stdio: ['ignore', 'pipe', 'pipe'] });
+            let out = '';
+            p.stdout.on('data', d => out += d.toString());
+            p.on('close', (code) => resolve(code === 0 ? out.trim() : null));
+            p.on('error', () => resolve(null));
+        } catch {
+            resolve(null);
+        }
+    });
+    const py = resolvePythonCmd();
+    const [javacV, javaV, pythonV] = await Promise.all([
+        runVersion('javac', ['-version']).then(v => v || null),
+        runVersion('java', ['-version']).then(v => v || null),
+        runVersion(py.cmd, [...py.args, '--version']).then(v => v || null),
+    ]);
+    checks.javac = javacV;
+    checks.java = javaV;
+    checks.python = pythonV;
+
+    // Try contacting Ollama tags quickly (ignore failures)
+    try {
+        const controller = new AbortController();
+        const t = setTimeout(() => controller.abort(), 1000);
+        const r = await fetch(`${OLLAMA_URL}/api/tags`, { signal: controller.signal });
+        clearTimeout(t);
+        checks.ollamaReachable = r.ok;
+    } catch {
+        checks.ollamaReachable = false;
+    }
+    res.json(checks);
 });
 
 // Chat with a selected Ollama model
@@ -98,6 +154,20 @@ app.post('/run/java', (req, res) => {
         }
         console.log('Code written to file, compiling...');
 
+        // Response guard to prevent double-send (timeouts vs close event)
+        let responded = false;
+        const safeRespond = (statusCode, payload) => {
+            if (responded) return;
+            responded = true;
+            try {
+                if (statusCode) {
+                    res.status(statusCode).json(payload);
+                } else {
+                    res.json(payload);
+                }
+            } catch (_) { /* ignore */ }
+        };
+
         // Step 1: Compile the Java code
         const compile = spawn('javac', [filePath]);
         let compileError = '';
@@ -108,11 +178,17 @@ app.post('/run/java', (req, res) => {
             compileError += error;
         });
 
+        compile.on('error', (err) => {
+            console.error('Failed to start javac:', err);
+            cleanup();
+            return safeRespond(500, { output: `Failed to start javac: ${err.message}` , error: true, type: 'startup' });
+        });
+
         compile.on('close', (code) => {
             if (code !== 0) {
                 console.error(`Compilation failed with code ${code}`);
                 cleanup();
-                return res.json({ output: compileError, error: true, type: 'compilation' });
+                return safeRespond(200, { output: compileError, error: true, type: 'compilation' });
             }
             console.log('Compilation successful, running code...');
 
@@ -133,9 +209,9 @@ app.post('/run/java', (req, res) => {
             // Set a timeout to prevent hanging
             const timeout = setTimeout(() => {
                 console.error('Execution timed out');
-                run.kill();
+                try { run.kill(); } catch (_) {}
                 cleanup();
-                return res.json({ output: 'Execution timed out after 10 seconds', error: true, type: 'timeout' });
+                safeRespond(200, { output: 'Execution timed out after 10 seconds', error: true, type: 'timeout' });
             }, MAX_EXECUTION_MS);
 
             run.stdout.on('data', (data) => {
@@ -154,19 +230,20 @@ app.post('/run/java', (req, res) => {
                 clearTimeout(timeout);
                 console.log(`Java process exited with code ${code}`);
                 cleanup();
+                if (responded) return;
                 if (runError) {
                     console.error('Runtime error occurred:', runError);
-                    return res.json({ output: runError, error: true, type: 'runtime' });
+                    return safeRespond(200, { output: runError, error: true, type: 'runtime' });
                 }
                 console.log('Execution successful, output length:', output.length);
-                res.json({ output: output, error: false });
+                safeRespond(200, { output: output, error: false });
             });
 
             run.on('error', (err) => {
                 console.error('Failed to start Java process:', err);
                 clearTimeout(timeout);
                 cleanup();
-                res.status(500).json({ output: `Failed to start Java process: ${err.message}`, error: true, type: 'startup' });
+                safeRespond(500, { output: `Failed to start Java process: ${err.message}`, error: true, type: 'startup' });
             });
         });
 
@@ -204,15 +281,31 @@ app.post('/run/python', (req, res) => {
             return res.status(500).json({ error: 'Failed to write code to file.' });
         }
 
-        // Use python3 explicitly
-        const run = spawn('python3', [filePath]);
+        // Response guard
+        let responded = false;
+        const safeRespond = (statusCode, payload) => {
+            if (responded) return;
+            responded = true;
+            try {
+                if (statusCode) {
+                    res.status(statusCode).json(payload);
+                } else {
+                    res.json(payload);
+                }
+            } catch (_) { /* ignore */ }
+        };
+
+        // Use resolved python executable
+        const py = resolvePythonCmd();
+        const run = spawn(py.cmd, [...py.args, filePath]);
         let output = '';
         let runError = '';
+        let timedOut = false;
 
         // Timeout to prevent hanging processes
         const timeout = setTimeout(() => {
+            timedOut = true;
             try { run.kill(); } catch (_) {}
-            // Ensure cleanup happens after process ends
         }, MAX_EXECUTION_MS);
 
         run.stdout.on('data', (data) => {
@@ -225,12 +318,16 @@ app.post('/run/python', (req, res) => {
 
         run.on('close', (code) => {
             clearTimeout(timeout);
-            fs.rm(filePath, { force: true }, () => {});
-            fs.rm(tempDir, { recursive: true, force: true }, () => {});
-            if (runError) {
-                return res.json({ output: runError, error: true, type: 'runtime' });
+            try { fs.rmSync(filePath, { force: true }); } catch (_) {}
+            try { fs.rmSync(tempDir, { recursive: true, force: true }); } catch (_) {}
+            if (responded) return;
+            if (timedOut) {
+                return safeRespond(200, { output: 'Execution timed out after 10 seconds', error: true, type: 'timeout' });
             }
-            res.json({ output: output, error: false });
+            if (runError) {
+                return safeRespond(200, { output: runError, error: true, type: 'runtime' });
+            }
+            safeRespond(200, { output: output, error: false });
         });
     });
 });

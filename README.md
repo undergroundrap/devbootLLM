@@ -60,6 +60,40 @@ docker run --rm \
   devbootllm-app
 ```
 
+Windows PowerShell (copy/paste):
+
+```
+docker run --rm `
+  -p 3000:3000 `
+  -e OLLAMA_URL=http://host.docker.internal:11434 `
+  -v "$($PWD.Path):/usr/src/app:ro" `
+  --read-only `
+  --tmpfs "/tmp:rw,noexec,nodev,nosuid,size=64m" `
+  --cap-drop ALL `
+  --security-opt "no-new-privileges" `
+  --pids-limit 128 `
+  --memory 512m `
+  --cpus 1 `
+  devbootllm-app
+```
+
+Windows CMD (Command Prompt):
+
+```
+docker run --rm ^
+  -p 3000:3000 ^
+  -e OLLAMA_URL=http://host.docker.internal:11434 ^
+  -v "%cd%:/usr/src/app:ro" ^
+  --read-only ^
+  --tmpfs "/tmp:rw,noexec,nodev,nosuid,size=64m" ^
+  --cap-drop ALL ^
+  --security-opt "no-new-privileges" ^
+  --pids-limit 128 ^
+  --memory 512m ^
+  --cpus 1 ^
+  devbootllm-app
+```
+
 Notes:
 - No host directories are mounted. This prevents untrusted code from modifying files on your PC.
 - Filesystem is read-only; the app only writes to an in-memory `/tmp` with `noexec`, `nodev`, and `nosuid`.
@@ -97,9 +131,31 @@ docker run --rm \
   devbootllm-app
 ```
 
+PowerShell variant for the hot‑reload (read‑only bind) run:
+
+```
+docker run --rm `
+  -p 3000:3000 `
+  -e OLLAMA_URL=http://host.docker.internal:11434 `
+  -v "$($PWD.Path):/usr/src/app:ro" `
+  --read-only `
+  --tmpfs "/tmp:rw,noexec,nodev,nosuid,size=64m" `
+  --cap-drop ALL `
+  --security-opt "no-new-privileges" `
+  --pids-limit 128 `
+  --memory 512m `
+  --cpus 1 `
+  devbootllm-app
+```
+
 - `-p 3000:3000`: Maps port 3000 from the container to port 3000 on your local machine.
 - `--rm`: Automatically removes the container when you stop it.
 - `-v "${PWD}:/usr/src/app:ro"`: Optional, read-only bind mount for hot-reload workflows.
+
+Windows tips:
+- Use ``-v "$($PWD.Path):/usr/src/app:ro"`` in PowerShell so Docker sees your Windows path.
+- Keep the `--tmpfs` value quoted as a single argument: `"/tmp:rw,noexec,nodev,nosuid,size=64m"`.
+- If port 3000 is busy, use `-p 3100:3000` and open `http://localhost:3100`.
 
 ### Security Hardening Summary
 

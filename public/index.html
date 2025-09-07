@@ -8,6 +8,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.48.0/min/vs/editor/editor.main.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <!-- Markdown + Syntax Highlighting -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.7/dist/purify.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github-dark.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/common.min.js"></script>
     <style>
         /* Base styles and custom scrollbar */
         body {
@@ -137,6 +142,62 @@
         .code-block-copy-btn:hover {
             background-color: #7c3aed;
         }
+
+        /* Markdown styling within chat bubbles */
+        .markdown-body {
+            color: #e5e7eb; /* gray-200 */
+            line-height: 1.6;
+        }
+        .markdown-body h1,
+        .markdown-body h2,
+        .markdown-body h3,
+        .markdown-body h4,
+        .markdown-body h5,
+        .markdown-body h6 {
+            color: #ffffff;
+            margin-top: 0.75rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        .markdown-body h1 { font-size: 1.5rem; }
+        .markdown-body h2 { font-size: 1.25rem; }
+        .markdown-body h3 { font-size: 1.125rem; }
+        .markdown-body p { margin: 0.5rem 0; }
+        .markdown-body ul,
+        .markdown-body ol { margin-left: 1.25rem; margin-top: 0.5rem; margin-bottom: 0.5rem; }
+        .markdown-body li { margin: 0.25rem 0; }
+        .markdown-body a { color: #93c5fd; text-decoration: underline; }
+        .markdown-body blockquote {
+            border-left: 4px solid #7c3aed;
+            padding-left: 0.75rem;
+            color: #c7c7c7;
+            margin: 0.5rem 0;
+        }
+        .markdown-body pre {
+            background: rgba(0,0,0,0.5);
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+        }
+        .markdown-body code {
+            background: #374151; /* gray-700 */
+            color: #c4b5fd; /* violet-300 */
+            border-radius: 0.375rem;
+            padding: 0 0.25rem;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 0.85em;
+        }
+        .markdown-body table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0.5rem 0;
+        }
+        .markdown-body th,
+        .markdown-body td {
+            border: 1px solid #3c4043;
+            padding: 0.5rem;
+        }
+        .markdown-body th { background: #1e1f20; }
 
         /* AI Typing Indicator */
         @keyframes bounce {
@@ -1210,8 +1271,16 @@
 
                 resetUI() {
                     this.clearConsole(true);
-                    const welcomeMessage = "I'm your AI assistant. Stuck? Try the tutorial first, then ask me for a hint!";
-                    this.elements.aiChat.innerHTML = `<div class="chat-bubble p-3 rounded-lg bg-gemini-bg-tertiary self-start mr-auto"><p class="text-sm">${welcomeMessage}</p></div>`;
+                    const welcomeMessage = [
+                        "I'm your AI assistant. Stuck? Try the tutorial first, then ask me for a hint!",
+                        "\n\n",
+                        "Tip: For blazing-fast local responses, try ",
+                        "**NVIDIA-Nemotron-Nano-12B-v2-GGUF**.",
+                        " If Ollama doesn’t have it, you can load it via ",
+                        "[LM Studio](https://lmstudio.ai)."
+                    ].join("");
+                    const html = this.renderMarkdown(welcomeMessage);
+                    this.elements.aiChat.innerHTML = `<div class="chat-bubble markdown-body p-3 rounded-lg bg-gemini-bg-tertiary self-start mr-auto">${html}</div>`;
                     this.populateLessonSidebar();
                 }
 
@@ -1593,22 +1662,45 @@
 
                     try {
                         const lessonContext = this.lessons[this.currentLessonIndex];
-                        const fullPrompt = `You are an expert and encouraging Java programming tutor for a platform called 'devbootLLM'. A student is working on a coding problem.
-                        Current Lesson: "${lessonContext.title}"
-                        Lesson Description: "${lessonContext.description}"
-                        Their current code is: \`\`\`java\n${this.editor.getValue()}\n\`\`\`
-                        The student's question is: "${userPrompt}"
-                        
-                        Your task is to analyze their code and question. Provide a helpful, encouraging, and concise response. 
-                        **IMPORTANT**: Do NOT give the direct answer or solution. Instead, guide the student by asking leading questions, pointing out the relevant concept, or explaining a potential misunderstanding.
-                        If their code has an error, help them find it without just correcting it for them.
-                        Keep your response focused and easy to understand for a beginner.
-                        Format your response in simple markdown. Use \`\`\`java ... \`\`\` for code blocks.`;
-                        
-                        if(this.chatHistory.length > 8) {
+
+                        // Build a focused system prompt with richer lesson context
+                        const expected = (lessonContext && lessonContext.expectedOutput) ? `\nExpected Output (exact match):\n\n\`\`\`\n${lessonContext.expectedOutput}\n\`\`\`\n` : '';
+                        const systemPrompt = [
+                            "You are an expert and encouraging Java tutor for the 'devbootLLM' learning app.",
+                            "Guide the student with hints and reasoning, not final solutions.",
+                            "Always answer in concise Markdown with helpful headings and bullet points.",
+                            "Use fenced code blocks with language tags, e.g., ```java ...```.",
+                            "",
+                            `Lesson: ${lessonContext.id}. ${lessonContext.title}`,
+                            `Description: ${lessonContext.description}`,
+                            expected,
+                            "Constraints: Java runs with -Xmx64m and a 10s timeout; prefer simple, efficient examples.",
+                            "Policy: Do NOT paste the full final solution. Point the student to the next step instead."
+                        ].filter(Boolean).join('\n');
+
+                        // User message: their question + current code
+                        const userMsg = [
+                            `Question: ${userPrompt}`,
+                            "",
+                            "Student's current code:",
+                            "",
+                            "```java",
+                            this.editor.getValue(),
+                            "```"
+                        ].join('\n');
+
+                        // Keep short conversational memory
+                        if (this.chatHistory.length > 8) {
                             this.chatHistory = this.chatHistory.slice(-8);
                         }
-                        this.chatHistory.push({ role: "user", parts: [{ text: fullPrompt }] });
+                        // Persist only the user message + later the model reply
+                        this.chatHistory.push({ role: "user", parts: [{ text: userMsg }] });
+
+                        // For the provider call, prepend a system message to give richer context
+                        const requestHistory = [
+                            { role: 'system', parts: [{ text: systemPrompt }] },
+                            ...this.chatHistory
+                        ];
 
                         const provider = (this.elements.aiProvider && this.elements.aiProvider.value) || localStorage.getItem('aiProvider') || 'ollama';
                         const model = (this.elements.aiModel && this.elements.aiModel.value) ? this.elements.aiModel.value : '';
@@ -1618,7 +1710,7 @@
                             const resp = await fetch('/lmstudio/chat/stream', {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ model, history: this.chatHistory })
+                                body: JSON.stringify({ model, history: requestHistory })
                             });
                             if (!resp.ok || !resp.body) throw new Error(`lmstudio API Error: ${resp.status} ${resp.statusText}`);
                             // Prepare streaming bubble
@@ -1628,14 +1720,7 @@
                             const reader = resp.body.getReader();
                             const decoder = new TextDecoder();
                             let acc = '';
-                            const formatMsg = (txt) => {
-                                return txt
-                                    .replace(/</g, "&lt;").replace(/>/g, "&gt;")
-                                    .replace(/```java([\s\S]*?)```/g, (match, p1) => `<div class=\"code-block-wrapper\"><pre class=\"bg-black/50 p-3 my-2 rounded text-white font-mono text-sm\">${p1.trim()}</pre></div>`)
-                                    .replace(/`([^`]+)`/g, '<code class="bg-gray-700 rounded px-1.5 py-0.5 text-violet-300 font-mono text-xs">$1</code>')
-                                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                                    .replace(/\n/g, '<br>');
-                            };
+                            const formatMsg = (txt) => this.renderMarkdown(txt);
                             const pump = async () => {
                                 while (true) {
                                     const { value, done } = await reader.read();
@@ -1643,14 +1728,7 @@
                                     const chunk = decoder.decode(value, { stream: true });
                                     acc += chunk;
                                     bubble.innerHTML = formatMsg(acc);
-                                    // Add copy buttons to any code blocks as they appear
-                                    bubble.querySelectorAll('.code-block-wrapper').forEach(block => {
-                                        const pre = block.querySelector('pre');
-                                        if (pre && !block.dataset.copyInit) {
-                                            block.dataset.copyInit = '1';
-                                            this.addCopyToCodeBlock(block, pre.textContent);
-                                        }
-                                    });
+                                    this.postProcessMarkdownBubble(bubble);
                                     this.elements.aiChat.scrollTop = this.elements.aiChat.scrollHeight;
                                 }
                             };
@@ -1662,7 +1740,7 @@
                             const resp = await fetch('/ollama/chat/stream', {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ model, history: this.chatHistory })
+                                body: JSON.stringify({ model, history: requestHistory })
                             });
                             if (!resp.ok || !resp.body) throw new Error(`ollama API Error: ${resp.status} ${resp.statusText}`);
                             this.hideAITypingIndicator();
@@ -1671,14 +1749,7 @@
                             const reader = resp.body.getReader();
                             const decoder = new TextDecoder();
                             let acc = '';
-                            const formatMsg = (txt) => {
-                                return txt
-                                    .replace(/</g, "&lt;").replace(/>/g, "&gt;")
-                                    .replace(/```java([\s\S]*?)```/g, (match, p1) => `<div class=\"code-block-wrapper\"><pre class=\"bg-black/50 p-3 my-2 rounded text-white font-mono text-sm\">${p1.trim()}</pre></div>`)
-                                    .replace(/`([^`]+)`/g, '<code class="bg-gray-700 rounded px-1.5 py-0.5 text-violet-300 font-mono text-xs">$1</code>')
-                                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                                    .replace(/\n/g, '<br>');
-                            };
+                            const formatMsg = (txt) => this.renderMarkdown(txt);
                             const pump = async () => {
                                 while (true) {
                                     const { value, done } = await reader.read();
@@ -1686,13 +1757,7 @@
                                     const chunk = decoder.decode(value, { stream: true });
                                     acc += chunk;
                                     bubble.innerHTML = formatMsg(acc);
-                                    bubble.querySelectorAll('.code-block-wrapper').forEach(block => {
-                                        const pre = block.querySelector('pre');
-                                        if (pre && !block.dataset.copyInit) {
-                                            block.dataset.copyInit = '1';
-                                            this.addCopyToCodeBlock(block, pre.textContent);
-                                        }
-                                    });
+                                    this.postProcessMarkdownBubble(bubble);
                                     this.elements.aiChat.scrollTop = this.elements.aiChat.scrollHeight;
                                 }
                             };
@@ -1746,29 +1811,52 @@
 
                 addMessageToChat(sender, message) {
                     const wrapper = document.createElement('div');
-                    wrapper.className = 'chat-bubble p-3 rounded-lg text-sm flex flex-col max-w-[90%] w-fit';
+                    wrapper.className = 'chat-bubble markdown-body p-3 rounded-lg text-sm flex flex-col max-w-[90%] w-fit';
                     
-                    let formattedMessage = message
-                        .replace(/</g, "&lt;").replace(/>/g, "&gt;")
-                        .replace(/```java([\s\S]*?)```/g, (match, p1) => `<div class="code-block-wrapper"><pre class="bg-black/50 p-3 my-2 rounded text-white font-mono text-sm">${p1.trim()}</pre></div>`)
-                        .replace(/`([^`]+)`/g, '<code class="bg-gray-700 rounded px-1.5 py-0.5 text-violet-300 font-mono text-xs">$1</code>')
-                        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                        .replace(/\n/g, '<br>');
+                    const html = this.renderMarkdown(message || '');
 
                     if (sender === 'user') {
                         wrapper.classList.add('bg-[#3c4043]', 'self-end', 'items-end');
                     } else {
                         wrapper.classList.add('bg-gemini-bg-tertiary', 'self-start', 'items-start');
                     }
-                    wrapper.innerHTML = formattedMessage;
+                    wrapper.innerHTML = html;
+                    this.postProcessMarkdownBubble(wrapper);
                     
-                    wrapper.querySelectorAll('.code-block-wrapper').forEach(block => {
-                        const pre = block.querySelector('pre');
-                        if (pre) this.addCopyToCodeBlock(block, pre.textContent);
-                    });
 
                     this.elements.aiChat.appendChild(wrapper);
                     this.elements.aiChat.scrollTop = this.elements.aiChat.scrollHeight;
+                }
+
+                renderMarkdown(text) {
+                    try {
+                        if (!this._markedConfigured) {
+                            marked.setOptions({ gfm: true, breaks: true, headerIds: false });
+                            this._markedConfigured = true;
+                        }
+                        const rawHtml = marked.parse(text || '');
+                        const clean = DOMPurify.sanitize(rawHtml, { USE_PROFILES: { html: true } });
+                        return clean;
+                    } catch (_) {
+                        const escape = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                        return `<p>${escape(text || '')}</p>`;
+                    }
+                }
+
+                postProcessMarkdownBubble(bubbleEl) {
+                    bubbleEl.querySelectorAll('pre').forEach(pre => {
+                        const code = pre.querySelector('code');
+                        if (code) {
+                            try { hljs.highlightElement(code); } catch (_) {}
+                        }
+                        if (!pre.parentElement.classList.contains('code-block-wrapper')) {
+                            const wrap = document.createElement('div');
+                            wrap.className = 'code-block-wrapper';
+                            pre.parentElement.insertBefore(wrap, pre);
+                            wrap.appendChild(pre);
+                            this.addCopyToCodeBlock(wrap, pre.textContent || '');
+                        }
+                    });
                 }
 
                 addCopyToCodeBlock(wrapper, code) {

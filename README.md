@@ -204,3 +204,70 @@ http://localhost:3000
 ```
 
 You should now see the devbootLLM application running and ready to execute code.
+
+## Clear the AI Chat
+
+- Click the Clear icon (trash) next to the Ask button to clear the chat thread and reset the welcome message.
+
+## Add Lessons via JSON (no hardcoding)
+
+You can extend or replace lessons without editing `public/index.html` by creating a JSON file the frontend loads at startup.
+
+- File path: `public/lessons.json`
+- Structure: either an array of lesson objects, or an object with `{ "mode": "append" | "replace", "lessons": [ ... ] }`.
+- Default behavior is append; use `"mode": "replace"` to replace the built-in lessons entirely.
+
+Lesson fields:
+
+- `id`: unique number (used for progress tracking)
+- `title`: short title
+- `description`: short lesson description
+- `language`: `"java"` (default) or `"python"`
+- `initialCode`: starter code shown in the editor
+- `fullSolution`: optional reference solution
+- `expectedOutput`: exact output the checker compares against
+- `userInput`: optional array of strings to feed as stdin (Java only at the moment)
+- `tutorial`: optional HTML string shown in the Tutorial modal
+
+Example `public/lessons.json`:
+
+```
+{
+  "mode": "append",
+  "lessons": [
+    {
+      "id": 51,
+      "title": "51. Hello, Universe!",
+      "language": "java",
+      "description": "Practice printing another message.",
+      "initialCode": "public class Main {\\n    public static void main(String[] args) {\\n        // Print Hello, Universe!\\n    }\\n}",
+      "fullSolution": "public class Main {\\n    public static void main(String[] args) {\\n        System.out.println(\\"Hello, Universe!\\");\\n    }\\n}",
+      "expectedOutput": "Hello, Universe!"
+    },
+    {
+      "id": 101,
+      "title": "Python 1. Hello, World",
+      "language": "python",
+      "description": "Print Hello, World! in Python.",
+      "initialCode": "print(\\"Hello, World!\\")",
+      "fullSolution": "print(\\"Hello, World!\\")",
+      "expectedOutput": "Hello, World!"
+    }
+  ]
+}
+```
+
+Notes:
+
+- Python lessons run via the `/run/python` endpoint and are checked against `expectedOutput` like Java lessons. The editor language switches automatically per lesson.
+- The lesson list and progress bar adapt to however many lessons you provide. Use `"mode": "replace"` if you want to supply a fully custom set (e.g., all Python).
+- The left sidebar header currently says “Java Fundamentals” by default; this is cosmetic only and does not affect lesson loading or execution.
+
+## Separate Java and Python Courses
+
+- Use the Course selector in the header to switch between Java and Python tracks. Your selection persists.
+- Java uses built‑in lessons by default. To override or extend, add `public/lessons-java.json` with the same shape as above.
+- Python uses `public/lessons-python.json` (provided with a starter set). You can expand it freely.
+
+Persistence per track:
+- Progress and code are saved separately per course in localStorage using keys like `devbootllm-java-progress` and `devbootllm-python-progress`.

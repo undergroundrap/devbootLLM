@@ -50,6 +50,7 @@ Recommended (Windows/macOS/Linux):
 docker run --rm \
   -p 3000:3000 \
   -e OLLAMA_URL=http://host.docker.internal:11434 \
+  -e LMSTUDIO_URL=http://host.docker.internal:1234 \
   --read-only \
   --tmpfs /tmp:rw,noexec,nodev,nosuid,size=64m \
   --cap-drop ALL \
@@ -66,6 +67,7 @@ Windows PowerShell (copy/paste):
 docker run --rm `
   -p 3000:3000 `
   -e OLLAMA_URL=http://host.docker.internal:11434 `
+  -e LMSTUDIO_URL=http://host.docker.internal:1234 `
   -v "$($PWD.Path):/usr/src/app:ro" `
   --read-only `
   --tmpfs "/tmp:rw,noexec,nodev,nosuid,size=64m" `
@@ -83,6 +85,7 @@ Windows CMD (Command Prompt):
 docker run --rm ^
   -p 3000:3000 ^
   -e OLLAMA_URL=http://host.docker.internal:11434 ^
+  -e LMSTUDIO_URL=http://host.docker.internal:1234 ^
   -v "%cd%:/usr/src/app:ro" ^
   --read-only ^
   --tmpfs "/tmp:rw,noexec,nodev,nosuid,size=64m" ^
@@ -120,6 +123,7 @@ If you need live-editing during development and accept higher risk, you may moun
 docker run --rm \
   -p 3000:3000 \
   -e OLLAMA_URL=http://host.docker.internal:11434 \
+  -e LMSTUDIO_URL=http://host.docker.internal:1234 \
   -v "${PWD}:/usr/src/app:ro" \
   --read-only \
   --tmpfs /tmp:rw,noexec,nodev,nosuid,size=64m \
@@ -137,6 +141,7 @@ PowerShell variant for the hot‑reload (read‑only bind) run:
 docker run --rm `
   -p 3000:3000 `
   -e OLLAMA_URL=http://host.docker.internal:11434 `
+  -e LMSTUDIO_URL=http://host.docker.internal:1234 `
   -v "$($PWD.Path):/usr/src/app:ro" `
   --read-only `
   --tmpfs "/tmp:rw,noexec,nodev,nosuid,size=64m" `
@@ -156,6 +161,32 @@ Windows tips:
 - Use ``-v "$($PWD.Path):/usr/src/app:ro"`` in PowerShell so Docker sees your Windows path.
 - Keep the `--tmpfs` value quoted as a single argument: `"/tmp:rw,noexec,nodev,nosuid,size=64m"`.
 - If port 3000 is busy, use `-p 3100:3000` and open `http://localhost:3100`.
+
+## Using LM Studio (Local)
+
+The AI assistant can also connect to an LM Studio local server (OpenAI-compatible API).
+
+- Install LM Studio and start the local server (default: `http://127.0.0.1:1234`).
+- In the AI panel, choose `Provider: LM Studio`, then pick a model from the dropdown. Click refresh if needed.
+- Optionally, configure the backend to a different URL via the `LMSTUDIO_URL` environment variable.
+
+Docker examples (add alongside `OLLAMA_URL` if you use both):
+
+```bash
+docker run --rm \
+  -p 3000:3000 \
+  -e LMSTUDIO_URL=http://host.docker.internal:1234 \
+  devbootllm-app
+```
+
+PowerShell example:
+
+```
+docker run --rm `
+  -p 3000:3000 `
+  -e LMSTUDIO_URL=http://host.docker.internal:1234 `
+  devbootllm-app
+```
 
 ### Security Hardening Summary
 

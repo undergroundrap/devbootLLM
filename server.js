@@ -7,6 +7,8 @@ const os = require('os');
 const app = express();
 const port = Number(process.env.PORT || 3000);
 const OLLAMA_URL = process.env.OLLAMA_URL || 'http://localhost:11434';
+const LMSTUDIO_URL = process.env.LMSTUDIO_URL || 'http://127.0.0.1:1234';
+const LMSTUDIO_API_KEY = process.env.LMSTUDIO_API_KEY || '';
 
 // Utility: best-effort Python executable resolution across OSes
 function resolvePythonCmd() {
@@ -56,12 +58,252 @@ app.get('/ollama/models', async (req, res) => {
     }
 });
 
+// ----------------------
+// LM Studio integration (OpenAI-compatible)
+// ----------------------
+// List available LM Studio models (maps to OpenAI /v1/models)
+app.get('/lmstudio/models', async (req, res) => {
+    try {
+        const resp = await fetch(`${LMSTUDIO_URL}/v1/models`, {
+            headers: LMSTUDIO_API_KEY ? { Authorization: `Bearer ${LMSTUDIO_API_KEY}` } : undefined,
+        });
+        if (!resp.ok) {
+            return res.status(resp.status).json({ error: `LM Studio responded with ${resp.status}` });
+        }
+        const data = await resp.json();
+        const models = (data.data || []).map(m => ({ name: m.id }));
+        res.json({ models });
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to contact LM Studio', details: err.message });
+    }
+});
+
+// Chat with a selected LM Studio model (OpenAI chat.completions)
+app.post('/lmstudio/chat', async (req, res) => {
+    const { model, history } = req.body || {};
+    if (!model) return res.status(400).json({ error: 'Missing model' });
+
+    const toText = (parts) => Array.isArray(parts) ? parts.map(p => p.text || '').join('\n') : '';
+    const messages = (history || []).map(m => ({
+        role: m.role === 'model' ? 'assistant' : (m.role || 'user'),
+        content: toText(m.parts)
+    })).filter(m => m.content && m.content.trim().length > 0);
+
+    try {
+        const headers = { 'Content-Type': 'application/json' };
+        if (LMSTUDIO_API_KEY) headers['Authorization'] = `Bearer ${LMSTUDIO_API_KEY}`;
+        const resp = await fetch(`${LMSTUDIO_URL}/v1/chat/completions`, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({
+                model,
+                messages,
+                stream: false
+            })
+        });
+        if (!resp.ok) {
+            const text = await resp.text().catch(() => '');
+            return res.status(resp.status).json({ error: `LM Studio chat error ${resp.status}`, details: text });
+        }
+        const data = await resp.json();
+        const choice = data && data.choices && data.choices[0];
+        const text = (choice && choice.message && choice.message.content) || '';
+        res.json({ text });
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to reach LM Studio chat', details: err.message });
+    }
+});
+
+// Streaming chat proxy for LM Studio (sends raw text chunks)
+app.post('/lmstudio/chat/stream', async (req, res) => {
+    const { model, history } = req.body || {};
+    if (!model) return res.status(400).json({ error: 'Missing model' });
+
+    const toText = (parts) => Array.isArray(parts) ? parts.map(p => p.text || '').join('\n') : '';
+    const messages = (history || []).map(m => ({
+        role: m.role === 'model' ? 'assistant' : (m.role || 'user'),
+        content: toText(m.parts)
+    })).filter(m => m.content && m.content.trim().length > 0);
+
+    const headers = { 'Content-Type': 'application/json' };
+    if (LMSTUDIO_API_KEY) headers['Authorization'] = `Bearer ${LMSTUDIO_API_KEY}`;
+
+    let controller;
+    try {
+        controller = new AbortController();
+        const upstream = await fetch(`${LMSTUDIO_URL}/v1/chat/completions`, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({ model, messages, stream: true }),
+            signal: controller.signal,
+        });
+        if (!upstream.ok || !upstream.body) {
+            const text = await upstream.text().catch(() => '');
+            return res.status(upstream.status || 500).json({ error: `LM Studio chat error ${upstream.status}`, details: text });
+        }
+
+        res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+        res.setHeader('Cache-Control', 'no-cache');
+        res.setHeader('Connection', 'keep-alive');
+
+        const decoder = new TextDecoder();
+        let buffer = '';
+        let clientAborted = false;
+
+        req.on('close', () => {
+            clientAborted = true;
+            try { controller.abort(); } catch (_) {}
+        });
+
+        const reader = upstream.body.getReader();
+        while (true) {
+            const { value, done } = await reader.read();
+            if (done) break;
+            if (clientAborted) break;
+            buffer += decoder.decode(value, { stream: true });
+            // Parse SSE lines like: "data: {json}\n\n" or partial lines
+            let idx;
+            while ((idx = buffer.indexOf('\n')) !== -1) {
+                const lineRaw = buffer.slice(0, idx);
+                buffer = buffer.slice(idx + 1);
+                const line = lineRaw.trimEnd();
+                if (!line) continue;
+                if (line.startsWith('data: ')) {
+                    const dataStr = line.slice(6).trim();
+                    if (dataStr === '[DONE]') {
+                        res.end();
+                        return;
+                    }
+                    try {
+                        const obj = JSON.parse(dataStr);
+                        const choice = obj && obj.choices && obj.choices[0];
+                        const delta = choice && choice.delta && choice.delta.content;
+                        const text = delta || (choice && choice.text) || '';
+                        if (text) {
+                            res.write(text);
+                        }
+                    } catch (_) {
+                        // ignore JSON parse errors on partial lines
+                    }
+                }
+            }
+        }
+        // Flush any remaining content if present
+        if (buffer.trim().length > 0) {
+            // Try to parse last line
+            const line = buffer.trim();
+            if (line.startsWith('data: ')) {
+                const dataStr = line.slice(6).trim();
+                if (dataStr !== '[DONE]') {
+                    try {
+                        const obj = JSON.parse(dataStr);
+                        const choice = obj && obj.choices && obj.choices[0];
+                        const delta = choice && choice.delta && choice.delta.content;
+                        const text = delta || (choice && choice.text) || '';
+                        if (text) res.write(text);
+                    } catch (_) { /* ignore */ }
+                }
+            }
+        }
+        res.end();
+    } catch (err) {
+        if (!res.headersSent) {
+            res.status(500).json({ error: 'Failed to stream from LM Studio', details: err.message });
+        } else {
+            try { res.end(); } catch (_) {}
+        }
+    }
+});
+
+// Streaming chat proxy for Ollama (NDJSON lines)
+app.post('/ollama/chat/stream', async (req, res) => {
+    const { model, history } = req.body || {};
+    if (!model) return res.status(400).json({ error: 'Missing model' });
+
+    const toText = (parts) => Array.isArray(parts) ? parts.map(p => p.text || '').join('\n') : '';
+    const messages = (history || []).map(m => ({
+        role: m.role === 'model' ? 'assistant' : (m.role || 'user'),
+        content: toText(m.parts)
+    })).filter(m => m.content && m.content.trim().length > 0);
+
+    let controller;
+    try {
+        controller = new AbortController();
+        const upstream = await fetch(`${OLLAMA_URL}/api/chat`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ model, messages, stream: true }),
+            signal: controller.signal,
+        });
+        if (!upstream.ok || !upstream.body) {
+            const text = await upstream.text().catch(() => '');
+            return res.status(upstream.status || 500).json({ error: `Ollama chat error ${upstream.status}`, details: text });
+        }
+
+        res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+        res.setHeader('Cache-Control', 'no-cache');
+        res.setHeader('Connection', 'keep-alive');
+
+        const decoder = new TextDecoder();
+        let buffer = '';
+        let clientAborted = false;
+        req.on('close', () => {
+            clientAborted = true;
+            try { controller.abort(); } catch (_) {}
+        });
+
+        const reader = upstream.body.getReader();
+        while (true) {
+            const { value, done } = await reader.read();
+            if (done) break;
+            if (clientAborted) break;
+            buffer += decoder.decode(value, { stream: true });
+            let idx;
+            while ((idx = buffer.indexOf('\n')) !== -1) {
+                const line = buffer.slice(0, idx).trim();
+                buffer = buffer.slice(idx + 1);
+                if (!line) continue;
+                try {
+                    const obj = JSON.parse(line);
+                    if (obj && obj.done) {
+                        res.end();
+                        return;
+                    }
+                    const text = (obj && obj.message && obj.message.content) || obj.response || '';
+                    if (text) {
+                        res.write(text);
+                    }
+                } catch (_) {
+                    // ignore partial JSON
+                }
+            }
+        }
+        // Try to parse any leftover content
+        const rem = buffer.trim();
+        if (rem) {
+            try {
+                const obj = JSON.parse(rem);
+                const text = (obj && obj.message && obj.message.content) || obj.response || '';
+                if (text) res.write(text);
+            } catch (_) { /* ignore */ }
+        }
+        res.end();
+    } catch (err) {
+        if (!res.headersSent) {
+            res.status(500).json({ error: 'Failed to stream from Ollama', details: err.message });
+        } else {
+            try { res.end(); } catch (_) {}
+        }
+    }
+});
+
 // Simple health endpoint to check runtime availability
 app.get('/health', async (req, res) => {
     const checks = {
         node: process.version,
         platform: process.platform,
         ollama_url: OLLAMA_URL,
+        lmstudio_url: LMSTUDIO_URL,
     };
     const runVersion = (cmd, args) => new Promise((resolve) => {
         try {
@@ -84,7 +326,7 @@ app.get('/health', async (req, res) => {
     checks.java = javaV;
     checks.python = pythonV;
 
-    // Try contacting Ollama tags quickly (ignore failures)
+    // Try contacting Ollama and LM Studio quickly (ignore failures)
     try {
         const controller = new AbortController();
         const t = setTimeout(() => controller.abort(), 1000);
@@ -93,6 +335,15 @@ app.get('/health', async (req, res) => {
         checks.ollamaReachable = r.ok;
     } catch {
         checks.ollamaReachable = false;
+    }
+    try {
+        const controller2 = new AbortController();
+        const t2 = setTimeout(() => controller2.abort(), 1000);
+        const r2 = await fetch(`${LMSTUDIO_URL}/v1/models`, { signal: controller2.signal });
+        clearTimeout(t2);
+        checks.lmstudioReachable = r2.ok;
+    } catch {
+        checks.lmstudioReachable = false;
     }
     res.json(checks);
 });

@@ -195,7 +195,7 @@
         }
 
         /* Force dark styling for native select */
-        #ai-model {
+        #ai-model, #ai-provider {
             background-color: #282a2c !important; /* gemini-bg-tertiary */
             color: #e5e7eb !important; /* gray-200 */
             border-color: #3c4043 !important; /* gemini-border */
@@ -203,12 +203,12 @@
             -moz-appearance: none;
             appearance: none;
         }
-        #ai-model option {
+        #ai-model option, #ai-provider option {
             background-color: #1e1f20; /* gemini-bg-secondary */
             color: #e5e7eb;
         }
         /* Hide default arrow in old IE */
-        #ai-model::-ms-expand { display: none; }
+        #ai-model::-ms-expand, #ai-provider::-ms-expand { display: none; }
     </style>
 </head>
 <body class="antialiased">
@@ -391,15 +391,24 @@
                                 <div id="ai-chat" class="flex-grow p-4 overflow-y-auto space-y-4"></div>
                                 <div class="p-4 border-t gemini-border gemini-bg-main flex-shrink-0">
                                     <div class="flex items-center justify-between mb-2 text-xs text-gray-400">
-                                        <div class="flex items-center space-x-2">
-                                            <label for="ai-model" class="mr-1">Model:</label>
-                                            <div class="relative inline-block">
-                                                <select id="ai-model" class="appearance-none gemini-bg-tertiary border gemini-border text-gray-200 rounded-md px-3 py-2 pr-8 text-xs focus:outline-none focus:ring-1 focus:ring-violet-500 focus:border-violet-500 transition-colors"></select>
-                                                <i class="fa-solid fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+                                        <div class="flex items-center space-x-3">
+                                            <div class="flex items-center space-x-2">
+                                                <label for="ai-provider" class="mr-1">Provider:</label>
+                                                <div class="relative inline-block">
+                                                    <select id="ai-provider" class="appearance-none gemini-bg-tertiary border gemini-border text-gray-200 rounded-md px-3 py-2 pr-8 text-xs focus:outline-none focus:ring-1 focus:ring-violet-500 focus:border-violet-500 transition-colors"></select>
+                                                    <i class="fa-solid fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+                                                </div>
                                             </div>
-                                            <button id="ai-model-refresh-btn" class="text-gray-400 hover:text-gray-200" title="Refresh models" aria-label="Refresh models">
-                                                <i class="fa-solid fa-rotate"></i>
-                                            </button>
+                                            <div class="flex items-center space-x-2">
+                                                <label for="ai-model" class="mr-1">Model:</label>
+                                                <div class="relative inline-block">
+                                                    <select id="ai-model" class="appearance-none gemini-bg-tertiary border gemini-border text-gray-200 rounded-md px-3 py-2 pr-8 text-xs focus:outline-none focus:ring-1 focus:ring-violet-500 focus:border-violet-500 transition-colors"></select>
+                                                    <i class="fa-solid fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+                                                </div>
+                                                <button id="ai-model-refresh-btn" class="text-gray-400 hover:text-gray-200" title="Refresh models" aria-label="Refresh models">
+                                                    <i class="fa-solid fa-rotate"></i>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="flex items-start bg-gemini-bg-tertiary rounded-lg border gemini-border focus-within:border-violet-500 transition-colors">
@@ -993,6 +1002,7 @@
                     this.addEventListeners();
                     this.addResizerLogic();
                     this.resetUI();
+                    this.initProviderSelect();
                     this.initOllamaModels();
                 }
 
@@ -1000,7 +1010,7 @@
                     const ids = [
                         'lesson-title', 'lesson-description', 'prev-lesson-btn', 'next-lesson-btn',
                         'run-btn', 'reset-btn', 'console-output', 'ai-ask-btn', 'ai-ask-icon',
-                        'ai-input', 'ai-chat', 'ai-model', 'ai-model-refresh-btn', 'progress-label', 'progress-bar', 'lesson-status',
+                        'ai-input', 'ai-chat', 'ai-provider', 'ai-model', 'ai-model-refresh-btn', 'progress-label', 'progress-bar', 'lesson-status',
                         'view-tutorial-btn', 'tutorial-modal', 'tutorial-modal-bg', 'tutorial-modal-content',
                         'tutorial-title', 'tutorial-body', 'close-tutorial-btn', 'editor-placeholder',
                         'editor', 'search-btn', 'format-btn', 'confirm-modal', 'confirm-modal-bg',
@@ -1145,6 +1155,28 @@
                     }
                 }
 
+                initProviderSelect() {
+                    const select = this.elements.aiProvider;
+                    if (!select) return;
+                    const providers = [
+                        { value: 'ollama', label: 'Ollama' },
+                        { value: 'lmstudio', label: 'LM Studio' },
+                    ];
+                    select.innerHTML = '';
+                    providers.forEach(p => {
+                        const opt = document.createElement('option');
+                        opt.value = p.value;
+                        opt.textContent = p.label;
+                        select.appendChild(opt);
+                    });
+                    const savedProvider = localStorage.getItem('aiProvider') || 'ollama';
+                    select.value = providers.some(p => p.value === savedProvider) ? savedProvider : 'ollama';
+                    select.addEventListener('change', () => {
+                        localStorage.setItem('aiProvider', select.value);
+                        this.initOllamaModels(true);
+                    });
+                }
+
                 addResizerLogic() {
                     const resizer = this.elements.resizer;
                     const leftPanel = this.elements.leftPanel;
@@ -1184,11 +1216,14 @@
                 }
 
                 async initOllamaModels(showToastOnError = false) {
-                    const select = this.elements.aiModel;
-                    if (!select) return;
+                    const modelSelect = this.elements.aiModel;
+                    if (!modelSelect) return;
+                    const provider = (this.elements.aiProvider && this.elements.aiProvider.value) || localStorage.getItem('aiProvider') || 'ollama';
+                    const endpoint = provider === 'lmstudio' ? '/lmstudio/models' : '/ollama/models';
+                    const storageKey = provider === 'lmstudio' ? 'lmstudioModel' : 'ollamaModel';
                     try {
-                        select.innerHTML = '';
-                        const resp = await fetch('/ollama/models');
+                        modelSelect.innerHTML = '';
+                        const resp = await fetch(endpoint);
                         if (!resp.ok) throw new Error(`Failed to fetch models: ${resp.status}`);
                         const data = await resp.json();
                         const models = data.models || [];
@@ -1196,32 +1231,44 @@
                             const opt = document.createElement('option');
                             opt.value = '';
                             opt.textContent = 'No models found';
-                            select.appendChild(opt);
-                            if (showToastOnError) this.showToast('No Ollama models found. Start Ollama and pull a model (e.g., "ollama pull llama3.1").', 'error');
+                            modelSelect.appendChild(opt);
+                            if (showToastOnError) {
+                                if (provider === 'lmstudio') {
+                                    this.showToast('No LM Studio models found. Start LM Studio server (http://127.0.0.1:1234) and load a model.', 'error');
+                                } else {
+                                    this.showToast('No Ollama models found. Start Ollama and pull a model (e.g., "ollama pull llama3.1").', 'error');
+                                }
+                            }
                             return;
                         }
-                        const saved = localStorage.getItem('ollamaModel');
+                        const saved = localStorage.getItem(storageKey);
                         models.forEach(m => {
                             const opt = document.createElement('option');
                             opt.value = m.name;
                             opt.textContent = m.name;
-                            select.appendChild(opt);
+                            modelSelect.appendChild(opt);
                         });
                         if (saved && models.some(m => m.name === saved)) {
-                            select.value = saved;
+                            modelSelect.value = saved;
                         } else {
-                            select.value = models[0].name;
-                            localStorage.setItem('ollamaModel', select.value);
+                            modelSelect.value = models[0].name;
+                            localStorage.setItem(storageKey, modelSelect.value);
                         }
-                        select.addEventListener('change', () => {
-                            localStorage.setItem('ollamaModel', select.value);
+                        modelSelect.addEventListener('change', () => {
+                            localStorage.setItem(storageKey, modelSelect.value);
                         }, { once: true });
                     } catch (err) {
                         const opt = document.createElement('option');
                         opt.value = '';
                         opt.textContent = 'Models unavailable';
-                        select.appendChild(opt);
-                        if (showToastOnError) this.showToast('Unable to reach Ollama. Is it running on port 11434?', 'error');
+                        modelSelect.appendChild(opt);
+                        if (showToastOnError) {
+                            if (provider === 'lmstudio') {
+                                this.showToast('Unable to reach LM Studio. Is it running on http://127.0.0.1:1234?', 'error');
+                            } else {
+                                this.showToast('Unable to reach Ollama. Is it running on port 11434?', 'error');
+                            }
+                        }
                     }
                 }
 
@@ -1563,22 +1610,105 @@
                         }
                         this.chatHistory.push({ role: "user", parts: [{ text: fullPrompt }] });
 
+                        const provider = (this.elements.aiProvider && this.elements.aiProvider.value) || localStorage.getItem('aiProvider') || 'ollama';
                         const model = (this.elements.aiModel && this.elements.aiModel.value) ? this.elements.aiModel.value : '';
-                        const response = await fetch('/ollama/chat', { 
-                            method: 'POST', 
-                            headers: { 'Content-Type': 'application/json' }, 
-                            body: JSON.stringify({ model, history: this.chatHistory }) 
-                        });
-                        if (!response.ok) throw new Error(`Ollama API Error: ${response.status} ${response.statusText}`);
-                        const result = await response.json();
-                        const aiResponseText = result.text || "Sorry, I couldn't generate a response.";
-                        this.chatHistory.push({ role: "model", parts: [{ text: aiResponseText }] });
-                        this.hideAITypingIndicator();
-                        this.addMessageToChat('ai', aiResponseText);
+
+                        if (provider === 'lmstudio') {
+                            // Streaming path for LM Studio
+                            const resp = await fetch('/lmstudio/chat/stream', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ model, history: this.chatHistory })
+                            });
+                            if (!resp.ok || !resp.body) throw new Error(`lmstudio API Error: ${resp.status} ${resp.statusText}`);
+                            // Prepare streaming bubble
+                            this.hideAITypingIndicator();
+                            this.addMessageToChat('ai', '');
+                            const bubble = this.elements.aiChat.lastElementChild;
+                            const reader = resp.body.getReader();
+                            const decoder = new TextDecoder();
+                            let acc = '';
+                            const formatMsg = (txt) => {
+                                return txt
+                                    .replace(/</g, "&lt;").replace(/>/g, "&gt;")
+                                    .replace(/```java([\s\S]*?)```/g, (match, p1) => `<div class=\"code-block-wrapper\"><pre class=\"bg-black/50 p-3 my-2 rounded text-white font-mono text-sm\">${p1.trim()}</pre></div>`)
+                                    .replace(/`([^`]+)`/g, '<code class="bg-gray-700 rounded px-1.5 py-0.5 text-violet-300 font-mono text-xs">$1</code>')
+                                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                                    .replace(/\n/g, '<br>');
+                            };
+                            const pump = async () => {
+                                while (true) {
+                                    const { value, done } = await reader.read();
+                                    if (done) break;
+                                    const chunk = decoder.decode(value, { stream: true });
+                                    acc += chunk;
+                                    bubble.innerHTML = formatMsg(acc);
+                                    // Add copy buttons to any code blocks as they appear
+                                    bubble.querySelectorAll('.code-block-wrapper').forEach(block => {
+                                        const pre = block.querySelector('pre');
+                                        if (pre && !block.dataset.copyInit) {
+                                            block.dataset.copyInit = '1';
+                                            this.addCopyToCodeBlock(block, pre.textContent);
+                                        }
+                                    });
+                                    this.elements.aiChat.scrollTop = this.elements.aiChat.scrollHeight;
+                                }
+                            };
+                            await pump();
+                            const aiResponseText = acc || "";
+                            this.chatHistory.push({ role: "model", parts: [{ text: aiResponseText }] });
+                        } else {
+                            // Streaming path for Ollama
+                            const resp = await fetch('/ollama/chat/stream', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ model, history: this.chatHistory })
+                            });
+                            if (!resp.ok || !resp.body) throw new Error(`ollama API Error: ${resp.status} ${resp.statusText}`);
+                            this.hideAITypingIndicator();
+                            this.addMessageToChat('ai', '');
+                            const bubble = this.elements.aiChat.lastElementChild;
+                            const reader = resp.body.getReader();
+                            const decoder = new TextDecoder();
+                            let acc = '';
+                            const formatMsg = (txt) => {
+                                return txt
+                                    .replace(/</g, "&lt;").replace(/>/g, "&gt;")
+                                    .replace(/```java([\s\S]*?)```/g, (match, p1) => `<div class=\"code-block-wrapper\"><pre class=\"bg-black/50 p-3 my-2 rounded text-white font-mono text-sm\">${p1.trim()}</pre></div>`)
+                                    .replace(/`([^`]+)`/g, '<code class="bg-gray-700 rounded px-1.5 py-0.5 text-violet-300 font-mono text-xs">$1</code>')
+                                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                                    .replace(/\n/g, '<br>');
+                            };
+                            const pump = async () => {
+                                while (true) {
+                                    const { value, done } = await reader.read();
+                                    if (done) break;
+                                    const chunk = decoder.decode(value, { stream: true });
+                                    acc += chunk;
+                                    bubble.innerHTML = formatMsg(acc);
+                                    bubble.querySelectorAll('.code-block-wrapper').forEach(block => {
+                                        const pre = block.querySelector('pre');
+                                        if (pre && !block.dataset.copyInit) {
+                                            block.dataset.copyInit = '1';
+                                            this.addCopyToCodeBlock(block, pre.textContent);
+                                        }
+                                    });
+                                    this.elements.aiChat.scrollTop = this.elements.aiChat.scrollHeight;
+                                }
+                            };
+                            await pump();
+                            const aiResponseText = acc || "";
+                            this.chatHistory.push({ role: "model", parts: [{ text: aiResponseText }] });
+                        }
                     } catch (error) {
-                        console.error("Error calling Ollama API:", error);
+                        console.error("Error calling AI provider:", error);
                         this.hideAITypingIndicator();
-                        this.addMessageToChat('ai', 'There was an error connecting to the local AI (Ollama). Ensure Ollama is running and a model is available.');
+                        const provider = (this.elements.aiProvider && this.elements.aiProvider.value) || localStorage.getItem('aiProvider') || 'ollama';
+                        if (provider === 'lmstudio') {
+                            this.addMessageToChat('ai', 'There was an error connecting to LM Studio. Ensure LM Studio server is running at http://127.0.0.1:1234 and a model is loaded.');
+                        } else {
+                            this.addMessageToChat('ai', 'There was an error connecting to the local AI (Ollama). Ensure Ollama is running and a model is available.');
+                        }
                     } finally {
                         this.setAIStatus('idle');
                     }

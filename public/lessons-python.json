@@ -1,0 +1,45 @@
+{
+  "mode": "replace",
+  "lessons": [
+    {
+      "id": 1,
+      "title": "1. Hello, World!",
+      "language": "python",
+      "description": "The classic first step. Print exactly Hello, World!",
+      "initialCode": "# Your code here. Print \"Hello, World!\"\n\n",
+      "fullSolution": "print(\"Hello, World!\")\n",
+      "expectedOutput": "Hello, World!",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">In Python, use <code>print()</code> to write text to the console.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\"># This line will print \"Welcome to Python!\"\nprint(\"Welcome to Python!\")\n\n# This will print a number. Numbers don't need quotes.\nprint(123)</pre></div><p class=\"mt-4 text-gray-300\">For this lesson, print the exact phrase \"Hello, World!\".</p>"
+    },
+    {
+      "id": 2,
+      "title": "2. Variables & Data Types",
+      "language": "python",
+      "description": "Create a variable named my_number with value 42 and print it.",
+      "initialCode": "# Declare a variable named my_number with value 42\n# Then print it\n\n",
+      "fullSolution": "my_number = 42\nprint(my_number)\n",
+      "expectedOutput": "42",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">In Python, you create a variable by assigning a value using <code>=</code>.</p><ul class=\"list-disc list-inside mb-4 text-gray-300 space-y-1\"><li><code>int</code>: whole numbers (e.g., 5, -10, 42)</li><li><code>str</code>: text like \"Hello\"</li><li><code>float</code>: decimal numbers (e.g., 3.14)</li><li><code>bool</code>: <code>True</code> or <code>False</code></li></ul><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">age = 25\nscore = 100\nprint(score)  # Prints 100</pre></div>"
+    },
+    {
+      "id": 3,
+      "title": "3. While Loops",
+      "language": "python",
+      "description": "Use a while loop to print numbers 1 through 5, each on a new line.",
+      "initialCode": "i = 1\n# Create a while loop that runs while i <= 5.\n# Inside the loop, print i and then increment it.\n\n",
+      "fullSolution": "i = 1\nwhile i <= 5:\n    print(i)\n    i += 1\n",
+      "expectedOutput": "1\n2\n3\n4\n5",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">A <code>while</code> loop repeats a block as long as a condition is true.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">countdown = 3\nwhile countdown > 0:\n    print(countdown)\n    countdown -= 1\nprint(\"Blast off!\")</pre></div>"
+    },
+    {
+      "id": 4,
+      "title": "4. For Loops",
+      "language": "python",
+      "description": "Use a for loop to print numbers 0 to 4, each on a new line.",
+      "initialCode": "# Create a for loop that iterates 5 times and prints the index\n\n",
+      "fullSolution": "for i in range(5):\n    print(i)\n",
+      "expectedOutput": "0\n1\n2\n3\n4",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>range(n)</code> to loop from 0 to n-1.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">for i in range(3):\n    print(\"Iteration\", i)</pre></div>"
+    }
+  ]
+}

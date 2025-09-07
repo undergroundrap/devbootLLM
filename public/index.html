@@ -12,7 +12,9 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.7/dist/purify.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github-dark.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/common.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/languages/java.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/languages/python.min.js"></script>
     <style>
         /* Base styles and custom scrollbar */
         body {
@@ -337,7 +339,12 @@
                                         <h3 class="text-2xl font-bold text-white mb-2">Python Essentials</h3>
                                         <p class="text-gray-400 mb-6">Discover the simplicity and power of Python. Ideal for data science, web development, and automation.</p>
                                     </div>
-                                    <div class="mt-auto"><button class="btn btn-secondary w-full" disabled><span>Coming Soon</span><i class="fa-solid fa-clock"></i></button></div>
+                                    <div class="mt-auto">
+                                        <button id="start-python-course-btn" class="btn btn-primary w-full">
+                                            <span>Start Learning</span>
+                                            <i class="fa-solid fa-arrow-right"></i>
+                                        </button>
+                                    </div>
                                 </div>
                                 <!-- More Courses Card -->
                                 <div class="border-2 border-dashed gemini-border rounded-xl p-8 flex flex-col items-center justify-center text-center text-gray-500 card-hover">
@@ -380,6 +387,13 @@
                                 </div>
                             </div>
                             <div class="flex items-center space-x-4">
+                                <div class="hidden sm:flex items-center space-x-2">
+                                    <label class="text-sm text-gray-300">Course:</label>
+                                    <select id="course-select" class="appearance-none gemini-bg-tertiary border gemini-border text-gray-200 rounded-md px-3 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-violet-500 focus:border-violet-500 transition-colors">
+                                        <option value="java">Java</option>
+                                        <option value="python">Python</option>
+                                    </select>
+                                </div>
                                 <div class="flex items-center space-x-3">
                                     <div id="db-status-light" class="w-3 h-3 bg-yellow-500 rounded-full animate-pulse"></div>
                                     <span id="db-status-text" class="text-sm font-medium text-gray-300">Connecting...</span>
@@ -395,7 +409,7 @@
                     <!-- Lesson Sidebar -->
                     <aside id="lesson-sidebar" class="gemini-bg-secondary border-r gemini-border flex flex-col overflow-y-auto">
                         <div class="p-4 border-b gemini-border">
-                            <h3 class="text-lg font-bold text-white">Java Fundamentals</h3>
+                            <h3 id="course-title" class="text-lg font-bold text-white">Java Fundamentals</h3>
                         </div>
                         <nav id="lesson-list" class="flex-grow p-2 space-y-1"></nav>
                     </aside>
@@ -474,6 +488,7 @@
                                     </div>
                                     <div class="flex items-start bg-gemini-bg-tertiary rounded-lg border gemini-border focus-within:border-violet-500 transition-colors">
                                         <textarea id="ai-input" class="flex-grow bg-transparent border-none p-3 focus:outline-none focus:ring-0 text-sm text-gray-200 resize-none" placeholder="Ask for a hint or explanation..." rows="1"></textarea>
+                                        <button id="ai-clear-btn" class="btn btn-secondary m-1.5 py-1.5 px-3 self-end" title="Clear chat" aria-label="Clear chat"><i class="fa-solid fa-trash"></i></button>
                                         <button id="ai-ask-btn" class="btn btn-primary m-1.5 py-1.5 px-3 self-end" title="Ask the AI Assistant" aria-label="Ask AI Assistant"><i id="ai-ask-icon" class="fa-solid fa-paper-plane"></i></button>
                                     </div>
                                 </div>
@@ -519,7 +534,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.48.0/min/vs/loader.js"></script>
     
     <!-- Firebase SDK -->
-    <script type="module">
+    <script>
         // Import Firebase modules - REMOVED
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -528,7 +543,9 @@
             class LocalStorageService {
                 constructor(appController) {
                     this.appController = appController;
-                    this.storageKey = 'devbootllm-java-progress';
+                    this.storageKey = appController && typeof appController.getStorageKey === 'function'
+                        ? appController.getStorageKey()
+                        : 'devbootllm-java-progress';
                 }
 
                 init() {
@@ -598,6 +615,7 @@
                     this.saveTimeout = null;
                     this.isDbReady = false;
                     this.confettiParticles = [];
+                    this.currentTrack = localStorage.getItem('courseTrack') || 'java';
                     this.lessons = [
                         // --- LESSONS 1-50 (Content Unchanged) --- //
                         {
@@ -1053,11 +1071,17 @@
                             tutorial: `<p class="mb-4 text-gray-300">Congratulations on reaching the final review lesson! This challenge combines many of the core concepts you've learned:</p><ul class="list-disc list-inside mb-4 text-gray-300 space-y-2"><li><strong>Classes and Objects</strong>: The <code>Student</code> class with a constructor and private fields.</li><li><strong>Encapsulation</strong>: Using a getter method (<code>getScore</code>) to access private data.</li><li><strong>ArrayList</strong>: To hold a dynamic list of <code>Student</code> objects.</li><li><strong>Loops</strong>: A for-each loop to iterate through the list.</li><li><strong>Variables and Calculations</strong>: Summing the scores and calculating the average.</li></ul><p class="mb-4 text-gray-300">Solving this demonstrates a solid grasp of Java fundamentals. Well done!</p>`
                         }
                     ];
+                    // Keep a pristine copy of built-in Java lessons for resets when switching back to Java
+                    this.javaDefaultLessons = JSON.parse(JSON.stringify(this.lessons));
                 }
 
-                init() {
+                async init() {
                     this.cacheDOMElements();
+                    this.initCourseSelect();
                     this.storageService = new LocalStorageService(this);
+                    // Load lessons for selected course before state init
+                    await this.loadLessonsForTrack(this.currentTrack);
+                    this.updateCourseTitle();
                     this.storageService.init();
                     this.initEditor();
                     this.addEventListeners();
@@ -1079,7 +1103,7 @@
                         'confirm-modal-cancel-btn', 'confirm-modal-confirm-btn', 'toast-container',
                         'clear-console-btn', 'db-status-light', 'db-status-text', 'reset-progress-btn',
                         'left-panel', 'right-panel', 'resizer', 'lesson-sidebar', 'sidebar-toggle-btn',
-                        'lesson-list', 'confetti-canvas', 'solve-btn'
+                        'lesson-list', 'confetti-canvas', 'solve-btn', 'ai-clear-btn', 'course-select', 'course-title'
                     ];
                     ids.forEach(id => {
                         const camelCaseId = id.replace(/-(\w)/g, (_, c) => c.toUpperCase());
@@ -1088,8 +1112,13 @@
                 }
 
                 initEditor() {
-                    require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.48.0/min/vs' }});
-                    require(['vs/editor/editor.main'], () => {
+                    const amdRequire = (window && window.require) ? window.require : (globalThis && globalThis.require ? globalThis.require : null);
+                    if (!amdRequire) {
+                        this.showToast('Editor failed to load (require missing)', 'error');
+                        return;
+                    }
+                    amdRequire.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.48.0/min/vs' }});
+                    amdRequire(['vs/editor/editor.main'], () => {
                         monaco.editor.defineTheme('gemini-dark-pro', {
                             base: 'vs-dark',
                             inherit: true,
@@ -1211,6 +1240,9 @@
                     this.elements.formatBtn.addEventListener('click', () => this.editor.getAction('editor.action.formatDocument').run());
                     this.elements.clearConsoleBtn.addEventListener('click', () => this.clearConsole(true));
                     this.elements.sidebarToggleBtn.addEventListener('click', () => this.toggleSidebar());
+                    if (this.elements.aiClearBtn) {
+                        this.elements.aiClearBtn.addEventListener('click', () => this.clearChat());
+                    }
                     if (this.elements.aiModelRefreshBtn) {
                         this.elements.aiModelRefreshBtn.addEventListener('click', () => this.initOllamaModels(true));
                     }
@@ -1364,6 +1396,11 @@
                         this.populateLessonSidebar();
 
                         if (this.editor) {
+                            try {
+                                const lang = (lesson.language || 'java').toLowerCase();
+                                const monacoLang = (lang === 'python') ? 'python' : 'java';
+                                monaco.editor.setModelLanguage(this.editor.getModel(), monacoLang);
+                            } catch (_) {}
                             const savedCode = this.userCode[lesson.id];
                             this.editor.setValue(savedCode || lesson.initialCode);
                             this.editor.focus();
@@ -1419,8 +1456,11 @@
                             payload.input = currentLesson.userInput.join('\n');
                         }
                         
+                        // Pick backend endpoint by language
+                        const lang = (currentLesson && currentLesson.language) ? String(currentLesson.language).toLowerCase() : 'java';
+                        const runEndpoint = (lang === 'python') ? '/run/python' : '/run/java';
                         // Send code to the backend server
-                        const response = await fetch('/run/java', {
+                        const response = await fetch(runEndpoint, {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify(payload)
@@ -1450,7 +1490,7 @@
                         let isCorrect = false;
 
                         // Special check for Lesson 9 (dynamic output)
-                        if (currentLesson.id === 9) { 
+                        if ((currentLesson.id === 9) && (lang !== 'python')) { 
                             const methodCallMatch = userCode.match(/greetUser\s*\(\s*"([^"]+)"\s*\)/);
                             if (methodCallMatch && methodCallMatch[1]) {
                                 expectedOutput = `Hello, ${methodCallMatch[1]}!`;
@@ -1462,7 +1502,7 @@
                                 return;
                             }
                         // Special check for Lesson 44 (HashMap order is not guaranteed)
-                        } else if (currentLesson.id === 44) { 
+                        } else if ((currentLesson.id === 44) && (lang !== 'python')) { 
                             const expectedLines = normalize(expectedOutput).split('\n').sort();
                             const actualLines = normalize(actualOutput).split('\n').sort();
                             if (JSON.stringify(expectedLines) === JSON.stringify(actualLines)) {
@@ -1603,7 +1643,7 @@
                         wrapper.appendChild(editorDiv);
                         
                         monaco.editor.create(editorDiv, {
-                            value: code, language: 'java', theme: 'gemini-dark-pro',
+                            value: code, language: (lesson.language === 'python' ? 'python' : 'java'), theme: 'gemini-dark-pro',
                             readOnly: true, domReadOnly: true, automaticLayout: true,
                             minimap: { enabled: false }, lineNumbers: 'off', folding: false,
                             scrollBeyondLastLine: false, contextmenu: false, wordWrap: 'on',
@@ -1615,9 +1655,78 @@
 
                     this.openModal('tutorial');
                 }
-                
+
+                async loadLessonsForTrack(track) {
+                    try {
+                        // Reset lessons first to avoid cross-course mixing
+                        this.lessons = [];
+
+                        if (track === 'python') {
+                            // Python lessons are expected in a separate JSON
+                            const resp = await fetch('/lessons-python.json', { cache: 'no-cache' });
+                            if (!resp.ok) {
+                                this.showToast('Python lessons not found (lessons-python.json)', 'error');
+                                this.lessons = [];
+                            } else {
+                                const data = await resp.json();
+                                const list = Array.isArray(data) ? data : (Array.isArray(data.lessons) ? data.lessons : []);
+                                this.lessons = (list || []).filter(l => !l.language || String(l.language).toLowerCase() === 'python');
+                            }
+                        } else if (track === 'java') {
+                            // Start from built-in Java defaults
+                            this.lessons = JSON.parse(JSON.stringify(this.javaDefaultLessons || []));
+                            // lessons-java.json may optionally augment or replace
+                            try {
+                                const r = await fetch('/lessons-java.json', { cache: 'no-cache' });
+                                if (r.ok) {
+                                    const d = await r.json();
+                                    const m = Array.isArray(d) ? 'replace' : (d.mode === 'replace' ? 'replace' : 'append');
+                                    const incomingAll = Array.isArray(d) ? d : (Array.isArray(d.lessons) ? d.lessons : []);
+                                    const incoming = (incomingAll || []).filter(l => !l.language || String(l.language).toLowerCase() === 'java');
+                                    if (incoming.length > 0) {
+                                        if (m === 'replace') {
+                                            this.lessons = incoming;
+                                        } else {
+                                            this.lessons = [...this.lessons, ...incoming];
+                                        }
+                                    }
+                                }
+                            } catch (_) { /* optional file; ignore */ }
+                        }
+
+                        // Optional global lessons.json: filter by current track to avoid mixing
+                        try {
+                            const extra = await fetch('/lessons.json', { cache: 'no-cache' });
+                            if (extra.ok) {
+                                const d = await extra.json();
+                                const m = Array.isArray(d) ? 'append' : (d.mode === 'replace' ? 'replace' : 'append');
+                                const incomingAll = Array.isArray(d) ? d : (Array.isArray(d.lessons) ? d.lessons : []);
+                                const desiredLang = track === 'python' ? 'python' : 'java';
+                                const incoming = (incomingAll || []).filter(l => !l.language || String(l.language).toLowerCase() === desiredLang);
+                                if (incoming.length > 0) {
+                                    if (m === 'replace') {
+                                        this.lessons = incoming;
+                                    } else {
+                                        this.lessons = [...this.lessons, ...incoming];
+                                    }
+                                }
+                            }
+                        } catch (_) { /* ignore */ }
+                    } catch (e) {
+                        this.showToast('Failed loading lessons for course', 'error');
+                    } finally {
+                        if (this.currentLessonIndex >= this.lessons.length) {
+                            this.currentLessonIndex = 0;
+                        }
+                        if (this.elements && this.elements.lessonList) {
+                            this.populateLessonSidebar();
+                            this.loadLesson(this.currentLessonIndex, { isReload: true });
+                        }
+                    }
+                }
+
                 saveState(silent = false) {
-                    if (!this.isDbReady || !this.firebaseService) return;
+                    if (!this.isDbReady) return;
                     const state = {
                         currentLessonIndex: this.currentLessonIndex,
                         userCode: this.userCode,
@@ -1663,18 +1772,23 @@
                     try {
                         const lessonContext = this.lessons[this.currentLessonIndex];
 
+                        // Decide language context from current lesson (fallback to selected track)
+                        const lessonLang = (lessonContext && lessonContext.language) ? String(lessonContext.language).toLowerCase() : (this.currentTrack || 'java');
+                        const fenceLang = lessonLang === 'python' ? 'python' : 'java';
+
                         // Build a focused system prompt with richer lesson context
                         const expected = (lessonContext && lessonContext.expectedOutput) ? `\nExpected Output (exact match):\n\n\`\`\`\n${lessonContext.expectedOutput}\n\`\`\`\n` : '';
+                        const isPy = fenceLang === 'python';
                         const systemPrompt = [
-                            "You are an expert and encouraging Java tutor for the 'devbootLLM' learning app.",
+                            isPy ? "You are an expert and encouraging Python tutor for the 'devbootLLM' learning app." : "You are an expert and encouraging Java tutor for the 'devbootLLM' learning app.",
                             "Guide the student with hints and reasoning, not final solutions.",
                             "Always answer in concise Markdown with helpful headings and bullet points.",
-                            "Use fenced code blocks with language tags, e.g., ```java ...```.",
+                            `Use fenced code blocks with language tags, e.g., \`\`\`${fenceLang} ...\`\`\`.`,
                             "",
                             `Lesson: ${lessonContext.id}. ${lessonContext.title}`,
                             `Description: ${lessonContext.description}`,
                             expected,
-                            "Constraints: Java runs with -Xmx64m and a 10s timeout; prefer simple, efficient examples.",
+                            isPy ? "Constraints: Python runner has a ~10s timeout; prefer simple, efficient examples." : "Constraints: Java runs with -Xmx64m and a ~10s timeout; prefer simple, efficient examples.",
                             "Policy: Do NOT paste the full final solution. Point the student to the next step instead."
                         ].filter(Boolean).join('\n');
 
@@ -1684,7 +1798,7 @@
                             "",
                             "Student's current code:",
                             "",
-                            "```java",
+                            `\`\`\`${fenceLang}`,
                             this.editor.getValue(),
                             "```"
                         ].join('\n');
@@ -1809,6 +1923,31 @@
                     }
                 }
 
+                renderWelcomeChat() {
+                    const welcomeMessage = [
+                        "I'm your AI assistant. Stuck? Try the tutorial first, then ask me for a hint!",
+                        "\n\n",
+                        "Tip: For blazing-fast local responses, try ",
+                        "**NVIDIA-Nemotron-Nano-12B-v2-GGUF**.",
+                        " If Ollama doesn't have it, you can load it via ",
+                        "[LM Studio](https://lmstudio.ai)."
+                    ].join("");
+                    const html = this.renderMarkdown(welcomeMessage);
+                    this.elements.aiChat.innerHTML = `<div class=\"chat-bubble markdown-body p-3 rounded-lg bg-gemini-bg-tertiary self-start mr-auto\">${html}</div>`;
+                }
+
+                clearChat() {
+                    this.chatHistory = [];
+                    this.hideAITypingIndicator();
+                    this.renderWelcomeChat();
+                    if (this.elements.aiInput) {
+                        this.elements.aiInput.value = '';
+                        this.elements.aiInput.style.height = 'auto';
+                        this.elements.aiInput.focus();
+                    }
+                    this.showToast('Chat cleared', 'info');
+                }
+
                 addMessageToChat(sender, message) {
                     const wrapper = document.createElement('div');
                     wrapper.className = 'chat-bubble markdown-body p-3 rounded-lg text-sm flex flex-col max-w-[90%] w-fit';
@@ -1826,6 +1965,60 @@
 
                     this.elements.aiChat.appendChild(wrapper);
                     this.elements.aiChat.scrollTop = this.elements.aiChat.scrollHeight;
+                }
+
+                getStorageKey() {
+                    return `devbootllm-${this.currentTrack}-progress`;
+                }
+
+                initCourseSelect() {
+                    const sel = this.elements.courseSelect;
+                    if (!sel) return;
+                    const options = [
+                        { value: 'java', label: 'Java' },
+                        { value: 'python', label: 'Python' }
+                    ];
+                    sel.innerHTML = '';
+                    options.forEach(o => {
+                        const opt = document.createElement('option');
+                        opt.value = o.value; opt.textContent = o.label;
+                        sel.appendChild(opt);
+                    });
+                    sel.value = (this.currentTrack === 'python') ? 'python' : 'java';
+                    sel.addEventListener('change', async () => {
+                        await this.switchCourse(sel.value);
+                    });
+                }
+
+                updateCourseTitle() {
+                    const el = this.elements.courseTitle;
+                    if (!el) return;
+                    el.textContent = this.currentTrack === 'python' ? 'Python Fundamentals' : 'Java Fundamentals';
+                }
+
+                async switchCourse(track) {
+                    if (track !== 'python' && track !== 'java') return;
+                    if (this.currentTrack === track) return;
+                    // Persist selection
+                    this.currentTrack = track;
+                    localStorage.setItem('courseTrack', track);
+                    this.updateCourseTitle();
+                    // Point storage to the new track key and load saved state for it
+                    if (this.storageService) {
+                        this.storageService.storageKey = this.getStorageKey();
+                    }
+                    // Load lessons for the track
+                    await this.loadLessonsForTrack(track);
+                    // Load saved state for this track (if any)
+                    if (this.storageService && typeof this.storageService.loadData === 'function') {
+                        this.storageService.loadData();
+                    } else {
+                        // Fallback: reset
+                        this.loadStateFromDb(null);
+                    }
+                    // Reset chat header
+                    this.renderWelcomeChat();
+                    this.showToast(`Switched to ${track === 'python' ? 'Python' : 'Java'} course`, 'info');
                 }
 
                 renderMarkdown(text) {
@@ -2051,20 +2244,26 @@
             const landingPageView = document.getElementById('landing-page-view');
             const learningPageView = document.getElementById('learning-page-view');
             const startJavaCourseBtn = document.getElementById('start-java-course-btn');
+            const startPythonCourseBtn = document.getElementById('start-python-course-btn');
             const startJourneyBtn = document.getElementById('start-journey-btn');
             const homeLink = document.getElementById('home-link');
             let learningApp = null;
 
-            function showLearningPage() {
+            function showLearningPage(track) {
                 landingPageView.classList.add('fade-out');
                 setTimeout(() => {
                     landingPageView.classList.add('hidden');
                     landingPageView.classList.remove('fade-out');
                     learningPageView.classList.remove('hidden');
                     learningPageView.classList.add('fade-in');
+                    if (track === 'java' || track === 'python') {
+                        try { localStorage.setItem('courseTrack', track); } catch (_) {}
+                    }
                     if (!learningApp) {
                         learningApp = new LearningAppController();
                         learningApp.init();
+                    } else if (track && (learningApp.currentTrack !== track)) {
+                        learningApp.switchCourse(track);
                     }
                 }, 300);
             }
@@ -2079,7 +2278,10 @@
                 }, 300);
             }
 
-            startJavaCourseBtn.addEventListener('click', showLearningPage);
+            startJavaCourseBtn.addEventListener('click', () => showLearningPage('java'));
+            if (startPythonCourseBtn) {
+                startPythonCourseBtn.addEventListener('click', () => showLearningPage('python'));
+            }
             homeLink.addEventListener('click', showLandingPage);
             startJourneyBtn.addEventListener('click', (e) => {
                 e.preventDefault();

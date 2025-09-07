@@ -1,0 +1,25 @@
+{
+  "mode": "append",
+  "lessons": [
+    {
+      "id": 51,
+      "title": "51. Hello, Universe!",
+      "language": "java",
+      "description": "Practice printing another message. Print Hello, Universe! exactly.",
+      "initialCode": "public class Main {\n    public static void main(String[] args) {\n        // Print Hello, Universe!\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, Universe!\");\n    }\n}",
+      "expectedOutput": "Hello, Universe!",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Using <code>System.out.println</code> again reinforces how console output works.</p>"
+    },
+    {
+      "id": 101,
+      "title": "Python 1. Hello, World",
+      "language": "python",
+      "description": "Print Hello, World! in Python using print().",
+      "initialCode": "# Write a Python program to print Hello, World!\nprint(\"Hello, World!\")  # replace me if needed",
+      "fullSolution": "print(\"Hello, World!\")",
+      "expectedOutput": "Hello, World!",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">In Python, use <code>print()</code> to output text.</p>"
+    }
+  ]
+}

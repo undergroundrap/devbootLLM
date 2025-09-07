@@ -225,6 +225,7 @@ Lesson fields:
 - `language`: `"java"` (default) or `"python"`
 - `initialCode`: starter code shown in the editor
 - `fullSolution`: optional reference solution
+- `fullSolutionCommented`: optional solution with explanatory comments (preferred when pressing Solve)
 - `expectedOutput`: exact output the checker compares against
 - `userInput`: optional array of strings to feed as stdin (Java only at the moment)
 - `tutorial`: optional HTML string shown in the Tutorial modal
@@ -266,7 +267,7 @@ Notes:
 ## Separate Java and Python Courses
 
 - Use the Course selector in the header to switch between Java and Python tracks. Your selection persists.
-- Java uses built‑in lessons by default. To override or extend, add `public/lessons-java.json` with the same shape as above.
+- Java uses `public/lessons-java.json` (provided). You can edit or expand it freely; the app loads it at startup.
 - Python uses `public/lessons-python.json` (provided with a starter set). You can expand it freely.
 
 Persistence per track:

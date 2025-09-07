@@ -8,6 +8,7 @@
       "description": "The classic first step. Print exactly Hello, World!",
       "initialCode": "# Your code here. Print \"Hello, World!\"\n\n",
       "fullSolution": "print(\"Hello, World!\")\n",
+      "fullSolutionCommented": "# Print \"Hello, World!\" to the console\nprint(\"Hello, World!\")\n",
       "expectedOutput": "Hello, World!",
       "tutorial": "<p class=\"mb-4 text-gray-300\">In Python, use <code>print()</code> to write text to the console.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\"># This line will print \"Welcome to Python!\"\nprint(\"Welcome to Python!\")\n\n# This will print a number. Numbers don't need quotes.\nprint(123)</pre></div><p class=\"mt-4 text-gray-300\">For this lesson, print the exact phrase \"Hello, World!\".</p>"
     },
@@ -18,8 +19,8 @@
       "description": "Create a variable named my_number with value 42 and print it.",
       "initialCode": "# Declare a variable named my_number with value 42\n# Then print it\n\n",
       "fullSolution": "my_number = 42\nprint(my_number)\n",
-      "expectedOutput": "42",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">In Python, you create a variable by assigning a value using <code>=</code>.</p><ul class=\"list-disc list-inside mb-4 text-gray-300 space-y-1\"><li><code>int</code>: whole numbers (e.g., 5, -10, 42)</li><li><code>str</code>: text like \"Hello\"</li><li><code>float</code>: decimal numbers (e.g., 3.14)</li><li><code>bool</code>: <code>True</code> or <code>False</code></li></ul><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">age = 25\nscore = 100\nprint(score)  # Prints 100</pre></div>"
+      "fullSolutionCommented": "# Assign 42 to variable my_number\nmy_number = 42\n# Print the variable\nprint(my_number)\n",
+      "expectedOutput": "42"
     },
     {
       "id": 3,
@@ -28,8 +29,8 @@
       "description": "Use a while loop to print numbers 1 through 5, each on a new line.",
       "initialCode": "i = 1\n# Create a while loop that runs while i <= 5.\n# Inside the loop, print i and then increment it.\n\n",
       "fullSolution": "i = 1\nwhile i <= 5:\n    print(i)\n    i += 1\n",
-      "expectedOutput": "1\n2\n3\n4\n5",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">A <code>while</code> loop repeats a block as long as a condition is true.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">countdown = 3\nwhile countdown > 0:\n    print(countdown)\n    countdown -= 1\nprint(\"Blast off!\")</pre></div>"
+      "fullSolutionCommented": "i = 1\n# Loop while i is less than or equal to 5\nwhile i <= 5:\n    # Print current value of i\n    print(i)\n    # Increment i to avoid an infinite loop\n    i += 1\n",
+      "expectedOutput": "1\n2\n3\n4\n5"
     },
     {
       "id": 4,
@@ -38,8 +39,198 @@
       "description": "Use a for loop to print numbers 0 to 4, each on a new line.",
       "initialCode": "# Create a for loop that iterates 5 times and prints the index\n\n",
       "fullSolution": "for i in range(5):\n    print(i)\n",
-      "expectedOutput": "0\n1\n2\n3\n4",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>range(n)</code> to loop from 0 to n-1.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">for i in range(3):\n    print(\"Iteration\", i)</pre></div>"
+      "fullSolutionCommented": "# Loop from 0 up to 4 (inclusive)\nfor i in range(5):\n    # Print current index\n    print(i)\n",
+      "expectedOutput": "0\n1\n2\n3\n4"
+    },
+    {
+      "id": 5,
+      "title": "5. Lists Basics",
+      "language": "python",
+      "description": "Create a list of integers and print the second element.",
+      "initialCode": "# Create a list named numbers with values [10, 20, 30, 40, 50]\n# Then print the element at index 1\n\n",
+      "fullSolution": "numbers = [10, 20, 30, 40, 50]\nprint(numbers[1])\n",
+      "fullSolutionCommented": "# Define a list of integers\nnumbers = [10, 20, 30, 40, 50]\n# Print the second element (index starts at 0)\nprint(numbers[1])\n",
+      "expectedOutput": "20"
+    },
+    {
+      "id": 6,
+      "title": "6. Functions",
+      "language": "python",
+      "description": "Define a function greet(name) that prints Hello, <name>! and call it with 'Alice'.",
+      "initialCode": "# Define a function named greet that accepts a name\n# It should print: Hello, <name>!\n# Then call it with 'Alice'\n\n",
+      "fullSolution": "def greet(name):\n    print(f\"Hello, {name}!\")\n\ngreet('Alice')\n",
+      "expectedOutput": "Hello, Alice!"
+    },
+    {
+      "id": 7,
+      "title": "7. If / Else",
+      "language": "python",
+      "description": "Given x = 7, print Odd if x is odd, otherwise Even.",
+      "initialCode": "x = 7\n# If x is even print 'Even', else print 'Odd'\n\n",
+      "fullSolution": "x = 7\nif x % 2 == 0:\n    print('Even')\nelse:\n    print('Odd')\n",
+      "expectedOutput": "Odd"
+    },
+    {
+      "id": 8,
+      "title": "8. Sum with range()",
+      "language": "python",
+      "description": "Compute and print the sum of numbers from 1 to 5.",
+      "initialCode": "# Use a loop or sum() to compute 1+2+3+4+5\n\n",
+      "fullSolution": "print(sum(range(1, 6)))\n",
+      "expectedOutput": "15"
+    },
+    {
+      "id": 9,
+      "title": "9. Strings & f-Strings",
+      "language": "python",
+      "description": "Use an f-string to print 'Hello, Alice!'.",
+      "initialCode": "name = 'Alice'\n# Print Hello, Alice! using an f-string\n\n",
+      "fullSolution": "name = 'Alice'\nprint(f'Hello, {name}!')\n",
+      "expectedOutput": "Hello, Alice!"
+    },
+    {
+      "id": 10,
+      "title": "10. Dictionaries",
+      "language": "python",
+      "description": "Create a dictionary of capital cities and print the capital of Germany.",
+      "initialCode": "# Create a dict named capital_cities with keys: England, Germany, Japan\n# Then print the value for key 'Germany'\n\n",
+      "fullSolution": "capital_cities = {\n    'England': 'London',\n    'Germany': 'Berlin',\n    'Japan': 'Tokyo'\n}\nprint(capital_cities['Germany'])\n",
+      "expectedOutput": "Berlin"
+    },
+    {
+      "id": 11,
+      "title": "11. Iterate a List",
+      "language": "python",
+      "description": "Print each element of the list on a new line.",
+      "initialCode": "numbers = [0, 1, 2, 3, 4]\n# Loop through numbers and print each\n\n",
+      "fullSolution": "numbers = [0, 1, 2, 3, 4]\nfor n in numbers:\n    print(n)\n",
+      "expectedOutput": "0\n1\n2\n3\n4"
+    },
+    {
+      "id": 12,
+      "title": "12. List Comprehensions",
+      "language": "python",
+      "description": "Create squares of 1..5 and print each on a new line.",
+      "initialCode": "# Build a list of squares for numbers 1..5\n# Then print each square on a new line\n\n",
+      "fullSolution": "squares = [n*n for n in range(1, 6)]\nfor s in squares:\n    print(s)\n",
+      "expectedOutput": "1\n4\n9\n16\n25"
+    },
+    {
+      "id": 13,
+      "title": "13. Tuples & Unpacking",
+      "language": "python",
+      "description": "Unpack a tuple (name, age) and print 'Alice is 30'.",
+      "initialCode": "# Create a tuple ('Alice', 30) and unpack it\n# Then print: Alice is 30\n\n",
+      "fullSolution": "person = ('Alice', 30)\nname, age = person\nprint(f'{name} is {age}')\n",
+      "expectedOutput": "Alice is 30"
+    },
+    {
+      "id": 14,
+      "title": "14. Sets (Unique Values)",
+      "language": "python",
+      "description": "Create a set from [1,1,2,2,3] and print each unique number in ascending order.",
+      "initialCode": "# Build a set from the list [1,1,2,2,3]\n# Print each unique value in ascending order\n\n",
+      "fullSolution": "unique_vals = sorted(set([1,1,2,2,3]))\nfor v in unique_vals:\n    print(v)\n",
+      "expectedOutput": "1\n2\n3"
+    },
+    {
+      "id": 15,
+      "title": "15. Continue in Loops",
+      "language": "python",
+      "description": "Print only odd numbers from 0..9 using continue.",
+      "initialCode": "# Use a loop from 0..9 and continue to skip even numbers\n\n",
+      "fullSolution": "for i in range(10):\n    if i % 2 == 0:\n        continue\n    print(i)\n",
+      "expectedOutput": "1\n3\n5\n7\n9"
+    },
+    {
+      "id": 16,
+      "title": "16. Break in Loops",
+      "language": "python",
+      "description": "Loop from 0 and stop when i reaches 3. Print each number before breaking.",
+      "initialCode": "# Loop from 0..9 and break once i == 3\n\n",
+      "fullSolution": "for i in range(10):\n    if i == 3:\n        break\n    print(i)\n",
+      "expectedOutput": "0\n1\n2"
+    },
+    {
+      "id": 17,
+      "title": "17. Max in a List",
+      "language": "python",
+      "description": "Find and print the maximum value in a list.",
+      "initialCode": "numbers = [1, 44, 7, 99, 23, 42]\n# Print the maximum value\n\n",
+      "fullSolution": "numbers = [1, 44, 7, 99, 23, 42]\nprint(max(numbers))\n",
+      "expectedOutput": "99"
+    },
+    {
+      "id": 18,
+      "title": "18. Functions with Parameters",
+      "language": "python",
+      "description": "Define add(a, b) and print the result of add(3, 4).",
+      "initialCode": "# Define a function add(a, b) that returns their sum\n# Then print add(3, 4)\n\n",
+      "fullSolution": "def add(a, b):\n    return a + b\n\nprint(add(3, 4))\n",
+      "expectedOutput": "7"
+    },
+    {
+      "id": 19,
+      "title": "19. Classes & Methods",
+      "language": "python",
+      "description": "Create a Dog class with a bark() method that prints 'Woof!' and call it.",
+      "initialCode": "# Define class Dog with a method bark() that prints 'Woof!'\n# Create an instance and call bark()\n\n",
+      "fullSolution": "class Dog:\n    def bark(self):\n        print('Woof!')\n\nd = Dog()\nd.bark()\n",
+      "expectedOutput": "Woof!"
+    },
+    {
+      "id": 20,
+      "title": "20. Inheritance",
+      "language": "python",
+      "description": "Create Animal -> Dog. Override speak() in Dog to print 'Woof!' and call it.",
+      "initialCode": "# Create a base class Animal with method speak()\n# Create subclass Dog that overrides speak() and prints 'Woof!'\n# Instantiate Dog and call speak()\n\n",
+      "fullSolution": "class Animal:\n    def speak(self):\n        pass\n\nclass Dog(Animal):\n    def speak(self):\n        print('Woof!')\n\nDog().speak()\n",
+      "expectedOutput": "Woof!"
+    },
+    {
+      "id": 21,
+      "title": "21. Enums",
+      "language": "python",
+      "description": "Create an enum Color with RED, GREEN, BLUE and print 'RED'.",
+      "initialCode": "# Use enum.Enum to define Color with RED, GREEN, BLUE\n# Then print the name of Color.RED\n\n",
+      "fullSolution": "from enum import Enum\n\nclass Color(Enum):\n    RED = 1\n    GREEN = 2\n    BLUE = 3\n\nprint(Color.RED.name)\n",
+      "expectedOutput": "RED"
+    },
+    {
+      "id": 22,
+      "title": "22. Slicing",
+      "language": "python",
+      "description": "Print the last three elements of the list each on a new line.",
+      "initialCode": "nums = [1, 2, 3, 4, 5]\n# Print the last three elements using slicing\n\n",
+      "fullSolution": "nums = [1, 2, 3, 4, 5]\nfor n in nums[-3:]:\n    print(n)\n",
+      "expectedOutput": "3\n4\n5"
+    },
+    {
+      "id": 23,
+      "title": "23. Iterate a Dict (keys)",
+      "language": "python",
+      "description": "Use a for-loop to print all keys of the dictionary (one per line).",
+      "initialCode": "capital_cities = {\n    'England': 'London',\n    'Germany': 'Berlin',\n    'Japan': 'Tokyo'\n}\n# Print each key on a new line\n\n",
+      "fullSolution": "capital_cities = {\n    'England': 'London',\n    'Germany': 'Berlin',\n    'Japan': 'Tokyo'\n}\nfor country in capital_cities.keys():\n    print(country)\n",
+      "expectedOutput": "England\nGermany\nJapan"
+    },
+    {
+      "id": 24,
+      "title": "24. Average of a List",
+      "language": "python",
+      "description": "Compute the average of [2, 4, 6, 8] and print it as a float.",
+      "initialCode": "# Compute the average of [2, 4, 6, 8] and print it\n\n",
+      "fullSolution": "nums = [2, 4, 6, 8]\navg = sum(nums) / len(nums)\nprint(avg)\n",
+      "expectedOutput": "5.0"
+    },
+    {
+      "id": 25,
+      "title": "25. FizzBuzz (1..15)",
+      "language": "python",
+      "description": "Print numbers from 1 to 15. For multiples of 3, print Fizz; of 5, print Buzz; of both, print FizzBuzz.",
+      "initialCode": "# Implement FizzBuzz from 1 to 15\n# Rules: Fizz for multiples of 3, Buzz for multiples of 5, FizzBuzz for both\n\n",
+      "fullSolution": "for i in range(1, 16):\n    if i % 15 == 0:\n        print('FizzBuzz')\n    elif i % 3 == 0:\n        print('Fizz')\n    elif i % 5 == 0:\n        print('Buzz')\n    else:\n        print(i)\n",
+      "expectedOutput": "1\n2\nFizz\n4\nBuzz\nFizz\n7\n8\nFizz\nBuzz\n11\nFizz\n13\n14\nFizzBuzz"
     }
   ]
 }

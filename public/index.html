@@ -616,6 +616,7 @@
                     this.isDbReady = false;
                     this.confettiParticles = [];
                     this.currentTrack = localStorage.getItem('courseTrack') || 'java';
+                    /* Inlined Java lessons removed; rely on JSON files only.
                     this.lessons = [
                         // --- LESSONS 1-50 (Content Unchanged) --- //
                         {
@@ -1072,7 +1073,10 @@
                         }
                     ];
                     // Keep a pristine copy of built-in Java lessons for resets when switching back to Java
-                    this.javaDefaultLessons = JSON.parse(JSON.stringify(this.lessons));
+                    this.javaDefaultLessons = [];
+                    */
+                    // Rely entirely on external JSON files
+                    this.lessons = [];
                 }
 
                 async init() {
@@ -1730,7 +1734,7 @@
                                 if (!r.ok) {
                                     this.showToast('Java lessons not found (lessons-java.json)', 'error');
                                     // Fallback to any built-in copy if present
-                                    this.lessons = JSON.parse(JSON.stringify(this.javaDefaultLessons || []));
+                                    this.lessons = [];
                                 } else {
                                     const d = await r.json();
                                     const m = Array.isArray(d) ? 'replace' : (d.mode === 'replace' ? 'replace' : 'append');
@@ -1740,13 +1744,12 @@
                                         this.lessons = incoming;
                                     } else {
                                         // Append to any built-in copy if non-empty
-                                        const base = JSON.parse(JSON.stringify(this.javaDefaultLessons || []));
-                                        this.lessons = [...base, ...incoming];
+                                        this.lessons = [...(this.lessons || []), ...incoming];
                                     }
                                 }
                             } catch (_) {
                                 // Network or parse error — fall back to built-in if available
-                                this.lessons = JSON.parse(JSON.stringify(this.javaDefaultLessons || []));
+                                this.lessons = [];
                             }
                         }
 

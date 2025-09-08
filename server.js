@@ -206,7 +206,10 @@ app.post('/lmstudio/chat', async (req, res) => {
         }
         const data = await resp.json();
         const choice = data && data.choices && data.choices[0];
-        const text = (choice && choice.message && choice.message.content) || '';
+        const msg = choice && choice.message;
+        const reasoning = (msg && (msg.reasoning || msg.thinking)) || (choice && (choice.reasoning || choice.thinking)) || '';
+        const content = (msg && msg.content) || '';
+        const text = (reasoning ? `<think>${reasoning}</think>` : '') + content;
         res.json({ text });
     } catch (err) {
         res.status(500).json({ error: 'Failed to reach LM Studio chat', details: err.message });
@@ -247,6 +250,7 @@ app.post('/lmstudio/chat/stream', async (req, res) => {
 
         const decoder = new TextDecoder();
         let buffer = '';
+        let thinkOpen = false;
         let clientAborted = false;
 
         req.on('close', () => {
@@ -270,16 +274,23 @@ app.post('/lmstudio/chat/stream', async (req, res) => {
                 if (line.startsWith('data: ')) {
                     const dataStr = line.slice(6).trim();
                     if (dataStr === '[DONE]') {
+                        if (thinkOpen) { try { controller.abort(); } catch (_) {} try { res.write('</think>'); } catch (_) {} }
                         res.end();
                         return;
                     }
                     try {
                         const obj = JSON.parse(dataStr);
                         const choice = obj && obj.choices && obj.choices[0];
-                        const delta = choice && choice.delta && choice.delta.content;
-                        const text = delta || (choice && choice.text) || '';
-                        if (text) {
-                            res.write(text);
+                        const delta = choice && choice.delta;
+                        const reasonChunk = delta && (delta.reasoning || delta.reasoning_content || delta.thinking);
+                        const textChunk = (delta && delta.content) || (choice && choice.text) || '';
+                        if (reasonChunk && String(reasonChunk).length > 0) {
+                            if (!thinkOpen) { try { res.write('<think>'); } catch (_) {} thinkOpen = true; }
+                            try { res.write(String(reasonChunk)); } catch (_) {}
+                        }
+                        if (textChunk && String(textChunk).length > 0) {
+                            if (thinkOpen) { try { res.write('</think>'); } catch (_) {} thinkOpen = false; }
+                            try { res.write(String(textChunk)); } catch (_) {}
                         }
                     } catch (_) {
                         // ignore JSON parse errors on partial lines
@@ -297,13 +308,22 @@ app.post('/lmstudio/chat/stream', async (req, res) => {
                     try {
                         const obj = JSON.parse(dataStr);
                         const choice = obj && obj.choices && obj.choices[0];
-                        const delta = choice && choice.delta && choice.delta.content;
-                        const text = delta || (choice && choice.text) || '';
-                        if (text) res.write(text);
+                        const delta = choice && choice.delta;
+                        const reasonChunk = delta && (delta.reasoning || delta.reasoning_content || delta.thinking);
+                        const textChunk = (delta && delta.content) || (choice && choice.text) || '';
+                        if (reasonChunk && String(reasonChunk).length > 0) {
+                            if (!thinkOpen) { try { res.write('<think>'); } catch (_) {} thinkOpen = true; }
+                            try { res.write(String(reasonChunk)); } catch (_) {}
+                        }
+                        if (textChunk && String(textChunk).length > 0) {
+                            if (thinkOpen) { try { res.write('</think>'); } catch (_) {} thinkOpen = false; }
+                            try { res.write(String(textChunk)); } catch (_) {}
+                        }
                     } catch (_) { /* ignore */ }
                 }
             }
         }
+        if (thinkOpen) { try { res.write('</think>'); } catch (_) {} }
         res.end();
     } catch (err) {
         if (!res.headersSent) {
@@ -345,6 +365,7 @@ app.post('/ollama/chat/stream', async (req, res) => {
 
         const decoder = new TextDecoder();
         let buffer = '';
+        let thinkOpen = false;
         let clientAborted = false;
         req.on('close', () => {
             clientAborted = true;
@@ -365,12 +386,20 @@ app.post('/ollama/chat/stream', async (req, res) => {
                 try {
                     const obj = JSON.parse(line);
                     if (obj && obj.done) {
+                        if (thinkOpen) { try { res.write('</think>'); } catch (_) {} }
                         res.end();
                         return;
                     }
-                    const text = (obj && obj.message && obj.message.content) || obj.response || '';
-                    if (text) {
-                        res.write(text);
+                    const msg = obj && obj.message;
+                    const reasonChunk = (msg && (msg.reasoning || msg.thinking)) || obj.reasoning || obj.thinking || '';
+                    const textChunk = (msg && msg.content) || obj.response || '';
+                    if (reasonChunk && String(reasonChunk).length > 0) {
+                        if (!thinkOpen) { try { res.write('<think>'); } catch (_) {} thinkOpen = true; }
+                        try { res.write(String(reasonChunk)); } catch (_) {}
+                    }
+                    if (textChunk && String(textChunk).length > 0) {
+                        if (thinkOpen) { try { res.write('</think>'); } catch (_) {} thinkOpen = false; }
+                        try { res.write(String(textChunk)); } catch (_) {}
                     }
                 } catch (_) {
                     // ignore partial JSON
@@ -382,10 +411,20 @@ app.post('/ollama/chat/stream', async (req, res) => {
         if (rem) {
             try {
                 const obj = JSON.parse(rem);
-                const text = (obj && obj.message && obj.message.content) || obj.response || '';
-                if (text) res.write(text);
+                const msg = obj && obj.message;
+                const reasonChunk = (msg && (msg.reasoning || msg.thinking)) || obj.reasoning || obj.thinking || '';
+                const textChunk = (msg && msg.content) || obj.response || '';
+                if (reasonChunk && String(reasonChunk).length > 0) {
+                    if (!thinkOpen) { try { res.write('<think>'); } catch (_) {} thinkOpen = true; }
+                    try { res.write(String(reasonChunk)); } catch (_) {}
+                }
+                if (textChunk && String(textChunk).length > 0) {
+                    if (thinkOpen) { try { res.write('</think>'); } catch (_) {} thinkOpen = false; }
+                    try { res.write(String(textChunk)); } catch (_) {}
+                }
             } catch (_) { /* ignore */ }
         }
+        if (thinkOpen) { try { res.write('</think>'); } catch (_) {} }
         res.end();
     } catch (err) {
         if (!res.headersSent) {
@@ -473,7 +512,9 @@ app.post('/ollama/chat', async (req, res) => {
             return res.status(resp.status).json({ error: `Ollama chat error ${resp.status}`, details: text });
         }
         const data = await resp.json();
-        const text = (data && data.message && data.message.content) || data.response || '';
+        const reasoning = (data && data.message && (data.message.reasoning || data.message.thinking)) || data.reasoning || data.thinking || '';
+        const content = (data && data.message && data.message.content) || data.response || '';
+        const text = (reasoning ? `<think>${reasoning}</think>` : '') + content;
         res.json({ text });
     } catch (err) {
         res.status(500).json({ error: 'Failed to reach Ollama chat', details: err.message });

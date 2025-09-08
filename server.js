@@ -63,6 +63,26 @@ try {
     lessonsDb = null;
 }
 
+function lessonsStorageInfo() {
+    return {
+        storage: lessonsDb ? 'sqlite' : 'json',
+        dbFile: lessonsDb ? DB_FILE : null,
+        dataDir: DATA_DIR,
+        mode: LESSONS_MODE,
+        upsertOnStart: LESSONS_UPSERT_ON_START,
+    };
+}
+
+// Startup visibility so users can tell which storage is active
+try {
+    const info = lessonsStorageInfo();
+    if (info.storage === 'sqlite') {
+        console.log(`[lessons] storage=sqlite db=${info.dbFile} mode=${info.mode} upsertOnStart=${info.upsertOnStart}`);
+    } else {
+        console.log(`[lessons] storage=json (fallback to public/*.json) mode=${info.mode} upsertOnStart=${info.upsertOnStart}`);
+    }
+} catch (_) { /* ignore logging errors */ }
+
 function readJsonSafe(absPath) {
     try {
         return JSON.parse(fs.readFileSync(absPath, 'utf8'));
@@ -391,6 +411,8 @@ app.get('/health', async (req, res) => {
         ollama_url: OLLAMA_URL,
         lmstudio_url: LMSTUDIO_URL,
     };
+    // Report lessons storage status
+    try { checks.lessons = lessonsStorageInfo(); } catch { checks.lessons = { storage: lessonsDb ? 'sqlite' : 'json' }; }
     const runVersion = (cmd, args) => new Promise((resolve) => {
         try {
             const p = spawn(cmd, args, { stdio: ['ignore', 'pipe', 'pipe'] });

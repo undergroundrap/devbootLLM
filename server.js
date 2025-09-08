@@ -31,10 +31,93 @@ function resolvePythonCmd() {
 const MAX_CODE_SIZE_BYTES = 100 * 1024; // 100KB per request body
 const MAX_EXECUTION_MS = 10_000; // 10 seconds per run
 
-// Middleware to parse JSON and serve static files
+// Middleware to parse JSON
 // Limit request body to reduce risk of memory abuse
 app.use(express.json({ limit: '100kb' }));
-app.use(express.static('public'));
+
+// ----------------------
+// Lessons storage (SQLite with JSON fallback)
+// ----------------------
+const { openDb, ensureSchema, seedFromJsonIfEmpty, seedFromJsonFiles, getLessons } = require('./db');
+const DATA_DIR = process.env.DATA_DIR || process.env.DB_DIR || (process.platform === 'win32' ? path.join(process.cwd(), 'data') : '/data');
+const DB_FILE = process.env.DB_FILE || path.join(DATA_DIR, 'app.db');
+const LESSONS_MODE = (process.env.LESSONS_MODE || 'replace');
+const LESSONS_UPSERT_ON_START = (() => {
+    const v = String(process.env.LESSONS_UPSERT_ON_START || '').trim().toLowerCase();
+    return v === '1' || v === 'true' || v === 'yes';
+})();
+
+let lessonsDb = null;
+try {
+    lessonsDb = openDb(DB_FILE);
+    if (lessonsDb) {
+        ensureSchema(lessonsDb);
+        // Safe, idempotent seed from JSON if empty
+        seedFromJsonIfEmpty(lessonsDb, { publicDir: path.join(process.cwd(), 'public') });
+        // Optional: always upsert from JSON on boot to reflect changes
+        if (LESSONS_UPSERT_ON_START) {
+            try { seedFromJsonFiles(lessonsDb, { publicDir: path.join(process.cwd(), 'public') }); } catch (_) {}
+        }
+    }
+} catch (_) {
+    lessonsDb = null;
+}
+
+function readJsonSafe(absPath) {
+    try {
+        return JSON.parse(fs.readFileSync(absPath, 'utf8'));
+    } catch (_) {
+        return null;
+    }
+}
+
+// Serve lessons from DB if available; otherwise fall back to public JSON files
+app.get('/lessons-java.json', (req, res) => {
+    try {
+        if (lessonsDb) {
+            const items = getLessons(lessonsDb, 'java');
+            if (items && items.length > 0) {
+                return res.json({ mode: LESSONS_MODE, lessons: items });
+            }
+        }
+        const fallback = readJsonSafe(path.join(__dirname, 'public', 'lessons-java.json'));
+        if (fallback) return res.json(fallback);
+        res.status(404).json({ error: 'No Java lessons found' });
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to load Java lessons', details: err.message });
+    }
+});
+
+app.get('/lessons-python.json', (req, res) => {
+    try {
+        if (lessonsDb) {
+            const items = getLessons(lessonsDb, 'python');
+            if (items && items.length > 0) {
+                return res.json({ mode: LESSONS_MODE, lessons: items });
+            }
+        }
+        const fallback = readJsonSafe(path.join(__dirname, 'public', 'lessons-python.json'));
+        if (fallback) return res.json(fallback);
+        res.status(404).json({ error: 'No Python lessons found' });
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to load Python lessons', details: err.message });
+    }
+});
+
+// Optional combined lessons; front-end filters by current track
+app.get('/lessons.json', (req, res) => {
+    try {
+        if (lessonsDb) {
+            const all = getLessons(lessonsDb);
+            return res.json({ mode: 'append', lessons: all });
+        }
+        const fallback = readJsonSafe(path.join(__dirname, 'public', 'lessons.json'));
+        if (fallback) return res.json(fallback);
+        res.status(404).json({ error: 'No lessons found' });
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to load lessons', details: err.message });
+    }
+});
 
 // ----------------------
 // Ollama integration
@@ -587,6 +670,9 @@ app.post('/run/python', (req, res) => {
     });
 });
 
+
+// Serve static assets after dynamic JSON endpoints so DB can override JSON files
+app.use(express.static('public'));
 
 app.listen(port, () => {
     console.log(`devbootLLM server listening at http://localhost:${port}`);

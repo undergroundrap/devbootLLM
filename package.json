@@ -1,15 +1,16 @@
 {
-    "name": "devbootllm-server",
-    "version": "1.0.0",
-    "description": "Server to execute code for the devbootLLM app.",
-    "main": "server.js",
-  "scripts": {
-      "start": "node server.js",
-      "smoke": "node scripts/smoke-test.mjs",
-      "test": "npm run smoke"
-  },
-    "dependencies": {
-      "express": "^4.18.2"
-    }
-  }
-  
+    "name":  "devbootllm-server",
+    "version":  "1.0.0",
+    "description":  "Server to execute code for the devbootLLM app.",
+    "main":  "server.js",
+    "scripts":  {
+                    "start":  "node server.js",
+                    "smoke":  "node scripts/smoke-test.mjs",
+                    "test":  "npm run smoke",
+                    "seed":  "node scripts/seed-db.js"
+                },
+    "dependencies":  {
+                         "express":  "^4.18.2",
+                         "better-sqlite3":  "^9.4.0"
+                     }
+}

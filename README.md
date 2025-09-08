@@ -52,6 +52,7 @@ docker run --rm \
   -e OLLAMA_URL=http://host.docker.internal:11434 \
   -e LMSTUDIO_URL=http://host.docker.internal:1234 \
   -e RUN_TMP_DIR=/tmp \
+  -v devbootllm-data:/data \
   --read-only \
   --tmpfs /tmp:rw,noexec,nodev,nosuid,size=64m \
   --cap-drop ALL \
@@ -70,7 +71,9 @@ docker run --rm `
   -e OLLAMA_URL=http://host.docker.internal:11434 `
   -e LMSTUDIO_URL=http://host.docker.internal:1234 `
   -e RUN_TMP_DIR=/tmp `
+  -e LESSONS_UPSERT_ON_START=1 `
   -v "$($PWD.Path):/usr/src/app:ro" `
+  -v devbootllm-data:/data `
   --read-only `
   --tmpfs "/tmp:rw,noexec,nodev,nosuid,size=64m" `
   --cap-drop ALL `
@@ -90,6 +93,7 @@ docker run --rm ^
   -e LMSTUDIO_URL=http://host.docker.internal:1234 ^
   -e RUN_TMP_DIR=/tmp ^
   -v "%cd%:/usr/src/app:ro" ^
+  -v devbootllm-data:/data ^
   --read-only ^
   --tmpfs "/tmp:rw,noexec,nodev,nosuid,size=64m" ^
   --cap-drop ALL ^
@@ -101,8 +105,8 @@ docker run --rm ^
 ```
 
 Notes:
-- No host directories are mounted. This prevents untrusted code from modifying files on your PC.
-- Filesystem is read-only; the app only writes to an in-memory `/tmp` with `noexec`, `nodev`, and `nosuid`.
+- No host directories are writable. The app uses a named Docker volume (`devbootllm-data`) for `/data` to persist the SQLite DB safely.
+- Filesystem is read-only; the app only writes to `/data` (volume) and an in-memory `/tmp` with `noexec`, `nodev`, and `nosuid`.
 - The backend writes temp files under `RUN_TMP_DIR` (defaults to OS tmp). In Docker, ensure it points to a writable mount (e.g., `/tmp`).
 - Container runs as a non-root user (from the image) with zero Linux capabilities and no privilege escalation.
 - Basic resource limits (CPU, memory, PIDs) are enforced to mitigate abuse.
@@ -130,6 +134,7 @@ docker run --rm \
   -e LMSTUDIO_URL=http://host.docker.internal:1234 \
   -e RUN_TMP_DIR=/tmp \
   -v "${PWD}:/usr/src/app:ro" \
+  -v devbootllm-data:/data \
   --read-only \
   --tmpfs /tmp:rw,noexec,nodev,nosuid,size=64m \
   --cap-drop ALL \
@@ -148,7 +153,9 @@ docker run --rm `
   -e OLLAMA_URL=http://host.docker.internal:11434 `
   -e LMSTUDIO_URL=http://host.docker.internal:1234 `
   -e RUN_TMP_DIR=/tmp `
+  -e LESSONS_UPSERT_ON_START=1 `
   -v "$($PWD.Path):/usr/src/app:ro" `
+  -v devbootllm-data:/data `
   --read-only `
   --tmpfs "/tmp:rw,noexec,nodev,nosuid,size=64m" `
   --cap-drop ALL `
@@ -162,6 +169,7 @@ docker run --rm `
 - `-p 3000:3000`: Maps port 3000 from the container to port 3000 on your local machine.
 - `--rm`: Automatically removes the container when you stop it.
 - `-v "${PWD}:/usr/src/app:ro"`: Optional, read-only bind mount for hot-reload workflows.
+- `-v devbootllm-data:/data`: Named volume to persist the SQLite database.
 
 Windows tips:
 - Use ``-v "$($PWD.Path):/usr/src/app:ro"`` in PowerShell so Docker sees your Windows path.
@@ -278,3 +286,87 @@ Notes:
 
 Persistence per track:
 - Progress and code are saved separately per course in localStorage using keys like `devbootllm-java-progress` and `devbootllm-python-progress`.
+
+## SQLite Lessons (optional)
+
+You can store lessons in a SQLite DB instead of JSON files. The backend will serve the same JSON endpoints (`/lessons-java.json`, `/lessons-python.json`, `/lessons.json`) from the DB so the frontend keeps working unchanged. If the DB is missing or empty, it falls back to the JSON files in `public/`.
+
+- Env vars:
+  - `DATA_DIR`: directory for the DB (default `/data` in Docker, `./data` on Windows).
+  - `DB_FILE`: full path to the DB file (default `${DATA_DIR}/app.db`).
+  - `LESSONS_MODE`: `replace` or `append` for the JSON wrapper the server responds with (default `replace`).
+- Seed from existing JSON:
+  - `npm run seed` (reads `public/lessons-java.json`, `public/lessons-python.json`, and optional `public/lessons.json`).
+- Docker persistent volume (recommended):
+  - Add a data volume to your `docker run` so the DB persists:
+
+```
+docker run --rm ^
+  -p 3000:3000 ^
+  -e OLLAMA_URL=http://host.docker.internal:11434 ^
+  -e LMSTUDIO_URL=http://host.docker.internal:1234 ^
+  -e RUN_TMP_DIR=/tmp ^
+  -v "%cd%:/usr/src/app:ro" ^
+  -v devbootllm-data:/data ^
+  --read-only ^
+  --tmpfs "/tmp:rw,noexec,nodev,nosuid,size=64m" ^
+  --cap-drop ALL ^
+  --security-opt "no-new-privileges" ^
+  --pids-limit 128 ^
+  --memory 512m ^
+  --cpus 1 ^
+  devbootllm-app
+```
+
+Notes:
+- If `better-sqlite3` native prebuild is unavailable in your environment, install build tools inside your container/base image (e.g., `build-essential`) or switch to a Node version with prebuilt binaries.
+- The server auto-seeds from JSON only when the DB is empty; subsequent updates are upserts via `npm run seed`.
+  - To auto-upsert from JSON on every container start, set `-e LESSONS_UPSERT_ON_START=1`.
+
+### Seed the DB in Docker
+
+After building the image, you can populate the DB from the JSON files without starting the web server.
+
+- Create the volume (once):
+
+```bash
+docker volume create devbootllm-data
+```
+
+- Seed (bash / macOS / Linux):
+
+```bash
+docker run --rm \
+  -e RUN_TMP_DIR=/tmp \
+  -v "${PWD}:/usr/src/app:ro" \
+  -v devbootllm-data:/data \
+  --read-only \
+  --tmpfs /tmp:rw,noexec,nodev,nosuid,size=64m \
+  devbootllm-app node scripts/seed-db.js
+```
+
+- Seed (Windows PowerShell):
+
+```
+docker run --rm `
+  -e RUN_TMP_DIR=/tmp `
+  -v "$($PWD.Path):/usr/src/app:ro" `
+  -v devbootllm-data:/data `
+  --read-only `
+  --tmpfs "/tmp:rw,noexec,nodev,nosuid,size=64m" `
+  devbootllm-app node scripts/seed-db.js
+```
+
+- Seed (Windows CMD):
+
+```
+docker run --rm ^
+  -e RUN_TMP_DIR=/tmp ^
+  -v "%cd%:/usr/src/app:ro" ^
+  -v devbootllm-data:/data ^
+  --read-only ^
+  --tmpfs "/tmp:rw,noexec,nodev,nosuid,size=64m" ^
+  devbootllm-app node scripts/seed-db.js
+```
+
+Tip: To keep the DB synchronized with JSON on each start, add `-e LESSONS_UPSERT_ON_START=1` to your regular `docker run` command. This will upsert any JSON changes into the DB on container boot.

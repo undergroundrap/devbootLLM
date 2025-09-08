@@ -63,3 +63,6 @@ ehthumbs.db
 
 # pnpm store
 .pnpm-store/
+
+# SQLite data
+/data/

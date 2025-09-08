@@ -1268,6 +1268,10 @@
                                 const data = await resp.json();
                                 const list = Array.isArray(data) ? data : (Array.isArray(data.lessons) ? data.lessons : []);
                                 this.lessons = (list || []).filter(l => !l.language || String(l.language).toLowerCase() === 'python');
+                                const issues = this.validateLessonsList(this.lessons, 'python');
+                                if (issues.length > 0) {
+                                    console.warn('[lessons] validation issues (python):', issues);
+                                }
                             }
                         } else if (track === 'java') {
                             // Java lessons are sourced from public/lessons-java.json
@@ -1287,6 +1291,10 @@
                                     } else {
                                         // Append to any built-in copy if non-empty
                                         this.lessons = [...(this.lessons || []), ...incoming];
+                                    }
+                                    const issues = this.validateLessonsList(this.lessons, 'java');
+                                    if (issues.length > 0) {
+                                        console.warn('[lessons] validation issues (java):', issues);
                                     }
                                 }
                             } catch (_) {
@@ -1314,6 +1322,29 @@
                             this.populateLessonSidebar();
                             this.loadLesson(this.currentLessonIndex, { isReload: true });
                         }
+                    }
+                }
+
+                validateLessonsList(list, trackLabel = '') {
+                    try {
+                        const issues = [];
+                        const seen = new Set();
+                        (list || []).forEach((l, idx) => {
+                            const lang = (l && l.language) ? String(l.language).toLowerCase() : (trackLabel || '').toLowerCase();
+                            const idPart = (l && typeof l.id !== 'undefined') ? String(l.id) : `idx${idx}`;
+                            const key = `${lang || 'course'}:${idPart}`;
+                            if (seen.has(key)) issues.push(`Duplicate lesson id ${key}`); else seen.add(key);
+                            if (!l || typeof l !== 'object') { issues.push(`Invalid lesson at index ${idx}`); return; }
+                            if (typeof l.id === 'undefined') issues.push(`Lesson at index ${idx} missing id`);
+                            if (!l.title) issues.push(`Lesson ${key} missing title`);
+                            if (!l.description) issues.push(`Lesson ${key} missing description`);
+                            if (!l.initialCode) issues.push(`Lesson ${key} missing initialCode`);
+                            if (!('expectedOutput' in l) || !l.expectedOutput) issues.push(`Lesson ${key} missing expectedOutput`);
+                            if (!('tutorial' in l) || !l.tutorial) issues.push(`Lesson ${key} missing tutorial`);
+                        });
+                        return issues;
+                    } catch (_) {
+                        return [];
                     }
                 }
 
@@ -1419,22 +1450,19 @@
                                 body: JSON.stringify({ model, history: requestHistory })
                             });
                             if (!resp.ok || !resp.body) throw new Error(`lmstudio API Error: ${resp.status} ${resp.statusText}`);
-                            // Prepare streaming bubble
+                            // Prepare streaming bubble with separate Thinking/Answer
                             this.hideAITypingIndicator();
-                            this.addMessageToChat('ai', '');
-                            const bubble = this.elements.aiChat.lastElementChild;
+                            const bubble = this.createAIResponseBubble();
                             const reader = resp.body.getReader();
                             const decoder = new TextDecoder();
                             let acc = '';
-                            const formatMsg = (txt) => this.renderMarkdown(txt);
                             const pump = async () => {
                                 while (true) {
                                     const { value, done } = await reader.read();
                                     if (done) break;
                                     const chunk = decoder.decode(value, { stream: true });
                                     acc += chunk;
-                                    bubble.innerHTML = formatMsg(acc);
-                                    this.postProcessMarkdownBubble(bubble);
+                                    this.updateAIResponseBubble(bubble, acc);
                                     this.elements.aiChat.scrollTop = this.elements.aiChat.scrollHeight;
                                 }
                             };
@@ -1449,21 +1477,19 @@
                                 body: JSON.stringify({ model, history: requestHistory })
                             });
                             if (!resp.ok || !resp.body) throw new Error(`ollama API Error: ${resp.status} ${resp.statusText}`);
+                            // Prepare streaming bubble with separate Thinking/Answer
                             this.hideAITypingIndicator();
-                            this.addMessageToChat('ai', '');
-                            const bubble = this.elements.aiChat.lastElementChild;
+                            const bubble = this.createAIResponseBubble();
                             const reader = resp.body.getReader();
                             const decoder = new TextDecoder();
                             let acc = '';
-                            const formatMsg = (txt) => this.renderMarkdown(txt);
                             const pump = async () => {
                                 while (true) {
                                     const { value, done } = await reader.read();
                                     if (done) break;
                                     const chunk = decoder.decode(value, { stream: true });
                                     acc += chunk;
-                                    bubble.innerHTML = formatMsg(acc);
-                                    this.postProcessMarkdownBubble(bubble);
+                                    this.updateAIResponseBubble(bubble, acc);
                                     this.elements.aiChat.scrollTop = this.elements.aiChat.scrollHeight;
                                 }
                             };
@@ -1513,6 +1539,195 @@
                     if (indicator) {
                         indicator.remove();
                     }
+                }
+
+                // --- AI Thinking/Answer helpers ---
+                isAggressiveThinkingMode() {
+                    try {
+                        const force = localStorage.getItem('aggressiveThinking');
+                        if (force === '1' || force === 'true') return true;
+                    } catch (_) {}
+                    const provider = (this.elements.aiProvider && this.elements.aiProvider.value) || localStorage.getItem(`aiProvider-${this.currentTrack}`) || '';
+                    const model = (this.elements.aiModel && this.elements.aiModel.value) || '';
+                    const m = String(model).toLowerCase();
+                    const p = String(provider).toLowerCase();
+                    // Be extra-helpful for Nemotron-like models which often emit verbose preambles
+                    if (m.includes('nemotron') || m.includes('r1') || m.includes('deepseek') || m.includes('reason') || m.includes('think')) return true;
+                    // Some providers might not carry role metadata; allow opting in per provider if desired
+                    if (p.includes('ollama') && (m === '' )) return true;
+                    return false;
+                }
+
+                splitThinkingAndAnswer(text) {
+                    try {
+                        const t = String(text || '');
+                        const aggressive = !!this.isAggressiveThinkingMode();
+                        const open = t.indexOf('<think>');
+                        const close = t.indexOf('</think>');
+                        if (open !== -1 && close !== -1 && close > open) {
+                            const thinking = t.slice(open + 7, close).trim();
+                            const answer = (t.slice(0, open) + t.slice(close + 8)).trim();
+                            return { thinking, answer, hasThinking: thinking.length > 0 };
+                        }
+                        if (open !== -1 && close === -1) {
+                            // Streaming and we haven't seen the closing tag yet
+                            const thinking = t.slice(open + 7).trim();
+                            const answer = t.slice(0, open).trim();
+                            return { thinking, answer, hasThinking: true };
+                        }
+                        // Label-prefixed reasoning (e.g., "Thinking:", "Reasoning:", "Effects:") with optional markdown decoration
+                        const labelHead = t.match(/^\s*(?:[*_`>\-]{0,3})?(?:Thinking|Thoughts?|Chain\s*of\s*Thought|CoT|Thought\s*Process|Reason|Reason(?:ing)?|Analysis|Analyses|Note|Notes|Meta|System|Effect(?:s)?|Side\s*Effect(?:s)?|Observation(?:s)?|Rationale)\s*[:\-–—]\s*/i);
+                        if (labelHead) {
+                            const body = t.slice(labelHead[0].length);
+                            const anchors = [];
+                            const pushIdx = (i) => { if (i !== -1) anchors.push(i); };
+                            // Double newline (support both \n\n and \r\n\r\n)
+                            const dblNl = body.search(/(?:\r?\n){2}/);
+                            pushIdx(dblNl);
+                            pushIdx(body.indexOf('```'));
+                            pushIdx(body.search(/\r?\n\s*#{1,6}\s/));
+                            pushIdx(body.search(/\r?\n\s*(Final\s*Answer|Answer|Solution|Steps?|Summary|In\s+Summary|In\s+Short|TL;DR)\s*[:\-–—]/i));
+                            const anchor = anchors.filter(i => i >= 0).sort((a,b)=>a-b)[0] ?? -1;
+                            if (anchor > 0) {
+                                const thinking = body.slice(0, anchor).trim();
+                                const answer = body.slice(anchor).trim();
+                                if (thinking.length > 0) return { thinking, answer, hasThinking: true };
+                            } else {
+                                // Fallback: split after first 1–2 sentences
+                                const sentenceEnd = (() => {
+                                    const re = /([.!?])\s+/g; let m2, ends = []; let count = 0;
+                                    while ((m2 = re.exec(body)) && count < 2) { ends.push(re.lastIndex); count++; }
+                                    return ends.length ? ends[ends.length - 1] : -1;
+                                })();
+                                let cut = sentenceEnd > 0 ? sentenceEnd : Math.min(aggressive ? 240 : 400, body.length);
+                                const fencePos = body.indexOf('```');
+                                if (fencePos !== -1 && fencePos < cut) cut = fencePos;
+                                const thinking = body.slice(0, cut).trim();
+                                const answer = body.slice(cut).trim();
+                                if (thinking.length > (aggressive ? 4 : 0)) return { thinking, answer, hasThinking: true };
+                            }
+                        }
+
+                        // Non-leading label (e.g., some models prepend a short preface before "Effects:" etc.)
+                        const nearLabelRe = /(?:^|[>\-*`\s]{0,5})(Thinking|Thoughts?|Chain\s*of\s*Thought|CoT|Reason(?:ing)?|Effects?|Side\s*Effects?|Analysis|Notes?|Rationale)\s*[:\-–—]\s*/i;
+                        const nearLabelIdx = t.search(nearLabelRe);
+                        if (nearLabelIdx >= 0 && nearLabelIdx <= 200) {
+                            const body = t.slice(nearLabelIdx).replace(nearLabelRe, '');
+                            const anchors = [];
+                            const pushIdx2 = (i) => { if (i !== -1) anchors.push(i); };
+                            pushIdx2(body.search(/(?:\r?\n){2}/));
+                            pushIdx2(body.indexOf('```'));
+                            pushIdx2(body.search(/\r?\n\s*#{1,6}\s/));
+                            pushIdx2(body.search(/\r?\n\s*(Final\s*Answer|Answer|Solution|Steps?|Summary|In\s+Summary|In\s+Short|TL;DR)\s*[:\-–—]/i));
+                            const anchor2 = anchors.filter(i => i >= 0).sort((a,b)=>a-b)[0] ?? -1;
+                            if (anchor2 > 0) {
+                                return { thinking: t.slice(0, nearLabelIdx).trim() + (body.slice(0, anchor2).trim() ? ('\n' + body.slice(0, anchor2).trim()) : ''),
+                                         answer: body.slice(anchor2).trim(), hasThinking: true };
+                            } else {
+                                // Fallback: treat everything from nearLabel as thinking until we see answer cues
+                                return { thinking: t, answer: '', hasThinking: true };
+                            }
+                        }
+                        // Additional heuristic set for narrative introspection at the start.
+                        // Goal: treat the initial narrative as thinking even without explicit blank lines.
+                        const isIntro = /^(\s*)(ok(?:ay)?\b|alright\b|hmm\b|let(?:'s| us)\s+(?:see|think)\b|let me (?:think|check)\b|i (?:think|will|am going to|should)\b|we (?:need|should)\b|maybe\b)/i.test(t);
+                        if (isIntro) {
+                            // Identify anchors that often start the actual answer
+                            const anchors = [];
+                            const pushIdx = (i) => { if (i !== -1) anchors.push(i); };
+                            // Double newline tolerant of CRLF
+                            pushIdx(t.search(/(?:\r?\n){2}/));
+                            pushIdx(t.indexOf('```')); // code fence
+                            pushIdx(t.search(/\r?\n\s*#{1,6}\s/)); // markdown heading
+                            pushIdx(t.search(/\r?\n\s*(Final\s*Answer|Answer|Solution|Steps?|Summary|In\s+Summary|In\s+Short|TL;DR)\s*[:\-–—]/i));
+                            const anchorIdx = anchors.filter(i => i >= 0).sort((a,b)=>a-b)[0] ?? -1;
+
+                            if (anchorIdx > 0) {
+                                const thinking = t.slice(0, anchorIdx).trim();
+                                const answer = t.slice(anchorIdx).trim();
+                                if (thinking.length >= (aggressive ? 4 : 8)) {
+                                    return { thinking, answer, hasThinking: true };
+                                }
+                            } else {
+                                // No clear anchor; split after first 1–2 sentences or up to 400 chars
+                                const sentenceEnd = (() => {
+                                    const re = /([.!?])\s+/g; let m, ends = []; let count = 0;
+                                    while ((m = re.exec(t)) && count < 2) { ends.push(re.lastIndex); count++; }
+                                    return ends.length ? ends[ends.length - 1] : -1;
+                                })();
+                                let cut = sentenceEnd > 0 ? sentenceEnd : Math.min(aggressive ? 240 : 400, t.length);
+                                // Avoid cutting into code fence
+                                const fencePos = t.indexOf('```');
+                                if (fencePos !== -1 && fencePos < cut) cut = fencePos;
+                                const thinking = t.slice(0, cut).trim();
+                                const answer = t.slice(cut).trim();
+                                if (thinking.length >= (aggressive ? 4 : 8)) {
+                                    return { thinking, answer, hasThinking: true };
+                                }
+                            }
+                        }
+
+                        // Final aggressive fallback: if model-specific mode enabled, take first sentence as thinking
+                        if (aggressive) {
+                            const re = /([.!?])\s+/g; const m = re.exec(t);
+                            if (m && m.index > 0) {
+                                const cut = re.lastIndex;
+                                const thinking = t.slice(0, cut).trim();
+                                const answer = t.slice(cut).trim();
+                                if (thinking.length > 0) return { thinking, answer, hasThinking: true };
+                            }
+                        }
+                        return { thinking: '', answer: t.trim(), hasThinking: false };
+                    } catch (_) {
+                        const safe = String(text || '').trim();
+                        return { thinking: '', answer: safe, hasThinking: false };
+                    }
+                }
+
+                createAIResponseBubble() {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'chat-bubble markdown-body p-3 rounded-lg text-sm flex flex-col max-w-[90%] w-fit bg-gemini-bg-tertiary self-start items-start';
+
+                    const details = document.createElement('details');
+                    details.className = 'ai-thinking-details rounded-md border gemini-border gemini-bg-secondary mb-2';
+                    // collapsed by default; omit details.open
+                    details.innerHTML = `
+                        <summary class="cursor-pointer select-none text-xs uppercase tracking-wide text-gray-400 flex items-center gap-2 py-1 px-2 hover:text-gray-200">
+                            <i class="fa-regular fa-lightbulb"></i>
+                            Thinking
+                        </summary>
+                        <div class="ai-thinking markdown-body text-gray-300 text-sm px-2 pb-2 pt-1"></div>
+                    `;
+
+                    const answer = document.createElement('div');
+                    answer.className = 'ai-answer markdown-body text-base';
+
+                    wrapper.appendChild(details);
+                    wrapper.appendChild(answer);
+                    this.elements.aiChat.appendChild(wrapper);
+                    this.elements.aiChat.scrollTop = this.elements.aiChat.scrollHeight;
+                    return wrapper;
+                }
+
+                updateAIResponseBubble(bubbleEl, fullText) {
+                    if (!bubbleEl) return;
+                    const { thinking, answer, hasThinking } = this.splitThinkingAndAnswer(fullText || '');
+                    const details = bubbleEl.querySelector('.ai-thinking-details');
+                    const thinkEl = bubbleEl.querySelector('.ai-thinking');
+                    const ansEl = bubbleEl.querySelector('.ai-answer');
+                    if (details && thinkEl) {
+                        if (hasThinking) {
+                            details.classList.remove('hidden');
+                            thinkEl.innerHTML = this.renderMarkdown(thinking);
+                        } else {
+                            details.classList.add('hidden');
+                            thinkEl.innerHTML = '';
+                        }
+                    }
+                    if (ansEl) {
+                        ansEl.innerHTML = this.renderMarkdown(answer);
+                    }
+                    this.postProcessMarkdownBubble(bubbleEl);
                 }
 
                 renderWelcomeChat() {

@@ -51,6 +51,11 @@ Optional verification (PowerShell):
 
 You should see `storage` equal to `sqlite`.
 
+## What's New
+
+- AI chat now separates the model's Thinking from the final Answer. The Thinking section is styled differently and is collapsible. If a model emits <think>…</think> (e.g., DeepSeek R1) or prefixes like "Thinking:"/"Reasoning:", the UI captures it into the collapsible panel while the Answer remains front and center.
+- Lessons receive a quick validation on load (duplicates/missing required fields). Any issues are logged to the browser console to help keep tutorials consistent.
+
 This project transitions the devbootLLM application from a front-end only simulation to a full-stack application with a local server for executing code. This allows users to run actual Java and Python code securely in an isolated environment.
 
 ## Project Structure

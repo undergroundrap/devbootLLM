@@ -38,12 +38,16 @@ app.use(express.json({ limit: '100kb' }));
 // ----------------------
 // Lessons storage (SQLite with JSON fallback)
 // ----------------------
-const { openDb, ensureSchema, seedFromJsonIfEmpty, seedFromJsonFiles, getLessons } = require('./db');
+const { openDb, ensureSchema, seedFromJsonIfEmpty, seedFromJsonFiles, replaceFromJsonFiles, getLessons } = require('./db');
 const DATA_DIR = process.env.DATA_DIR || process.env.DB_DIR || (process.platform === 'win32' ? path.join(process.cwd(), 'data') : '/data');
 const DB_FILE = process.env.DB_FILE || path.join(DATA_DIR, 'app.db');
 const LESSONS_MODE = (process.env.LESSONS_MODE || 'replace');
 const LESSONS_UPSERT_ON_START = (() => {
     const v = String(process.env.LESSONS_UPSERT_ON_START || '').trim().toLowerCase();
+    return v === '1' || v === 'true' || v === 'yes';
+})();
+const LESSONS_REPLACE_ON_START = (() => {
+    const v = String(process.env.LESSONS_REPLACE_ON_START || '').trim().toLowerCase();
     return v === '1' || v === 'true' || v === 'yes';
 })();
 
@@ -54,8 +58,10 @@ try {
         ensureSchema(lessonsDb);
         // Safe, idempotent seed from JSON if empty
         seedFromJsonIfEmpty(lessonsDb, { publicDir: path.join(process.cwd(), 'public') });
-        // Optional: always upsert from JSON on boot to reflect changes
-        if (LESSONS_UPSERT_ON_START) {
+        // Optional: reflect JSON on boot either by replace (wipe+seed) or upsert
+        if (LESSONS_REPLACE_ON_START) {
+            try { replaceFromJsonFiles(lessonsDb, { publicDir: path.join(process.cwd(), 'public') }); } catch (_) {}
+        } else if (LESSONS_UPSERT_ON_START) {
             try { seedFromJsonFiles(lessonsDb, { publicDir: path.join(process.cwd(), 'public') }); } catch (_) {}
         }
     }
@@ -70,6 +76,7 @@ function lessonsStorageInfo() {
         dataDir: DATA_DIR,
         mode: LESSONS_MODE,
         upsertOnStart: LESSONS_UPSERT_ON_START,
+        replaceOnStart: LESSONS_REPLACE_ON_START,
     };
 }
 
@@ -77,9 +84,9 @@ function lessonsStorageInfo() {
 try {
     const info = lessonsStorageInfo();
     if (info.storage === 'sqlite') {
-        console.log(`[lessons] storage=sqlite db=${info.dbFile} mode=${info.mode} upsertOnStart=${info.upsertOnStart}`);
+        console.log(`[lessons] storage=sqlite db=${info.dbFile} mode=${info.mode} replaceOnStart=${info.replaceOnStart} upsertOnStart=${info.upsertOnStart}`);
     } else {
-        console.log(`[lessons] storage=json (fallback to public/*.json) mode=${info.mode} upsertOnStart=${info.upsertOnStart}`);
+        console.log(`[lessons] storage=json (fallback to public/*.json) mode=${info.mode} replaceOnStart=${info.replaceOnStart} upsertOnStart=${info.upsertOnStart}`);
     }
 } catch (_) { /* ignore logging errors */ }
 
@@ -124,20 +131,7 @@ app.get('/lessons-python.json', (req, res) => {
     }
 });
 
-// Optional combined lessons; front-end filters by current track
-app.get('/lessons.json', (req, res) => {
-    try {
-        if (lessonsDb) {
-            const all = getLessons(lessonsDb);
-            return res.json({ mode: 'append', lessons: all });
-        }
-        const fallback = readJsonSafe(path.join(__dirname, 'public', 'lessons.json'));
-        if (fallback) return res.json(fallback);
-        res.status(404).json({ error: 'No lessons found' });
-    } catch (err) {
-        res.status(500).json({ error: 'Failed to load lessons', details: err.message });
-    }
-});
+// Combined lessons endpoint removed to avoid accidental duplication on the client.
 
 // ----------------------
 // Ollama integration

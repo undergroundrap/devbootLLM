@@ -23,7 +23,7 @@ docker run --rm `
   -e OLLAMA_URL=http://host.docker.internal:11434 `
   -e LMSTUDIO_URL=http://host.docker.internal:1234 `
   -e RUN_TMP_DIR=/tmp `
-  -e LESSONS_UPSERT_ON_START=1 `
+  -e LESSONS_REPLACE_ON_START=1 `
   -v devbootllm-data:/data `
   --user 0:0 `
   --read-only `
@@ -39,7 +39,7 @@ docker run --rm `
 Expected logs confirming SQLite (not JSON fallback):
 
 ```
-[lessons] storage=sqlite db=/data/app.db mode=replace upsertOnStart=true
+[lessons] storage=sqlite db=/data/app.db mode=replace replaceOnStart=true upsertOnStart=false
 devbootLLM server listening at http://localhost:3000
 ```
 
@@ -124,7 +124,7 @@ Switch to SQLite (two easy options)
     -e OLLAMA_URL=http://host.docker.internal:11434 `
     -e LMSTUDIO_URL=http://host.docker.internal:1234 `
     -e RUN_TMP_DIR=/tmp `
-    -e LESSONS_UPSERT_ON_START=1 `
+    -e LESSONS_REPLACE_ON_START=1 `
     -v devbootllm-data:/data `
     --read-only `
     --tmpfs "/tmp:rw,noexec,nodev,nosuid,size=64m" `
@@ -142,7 +142,7 @@ Switch to SQLite (two easy options)
     -e OLLAMA_URL=http://host.docker.internal:11434 `
     -e LMSTUDIO_URL=http://host.docker.internal:1234 `
     -e RUN_TMP_DIR=/tmp `
-    -e LESSONS_UPSERT_ON_START=1 `
+    -e LESSONS_REPLACE_ON_START=1 `
     -v "$($PWD.Path)\public:/usr/src/app/public:ro" `
     -v devbootllm-data:/data `
     --read-only `
@@ -165,7 +165,7 @@ docker run --rm `
   -e OLLAMA_URL=http://host.docker.internal:11434 `
   -e LMSTUDIO_URL=http://host.docker.internal:1234 `
   -e RUN_TMP_DIR=/tmp `
-  -e LESSONS_UPSERT_ON_START=1 `
+  -e LESSONS_REPLACE_ON_START=1 `
   -v "$($PWD.Path):/usr/src/app:ro" `
   -v devbootllm-data:/data `
   --read-only `
@@ -192,7 +192,7 @@ Verify storage backend (PowerShell):
 - Endpoint behavior:
   - `curl.exe -s http://localhost:3000/lessons-java.json` → with DB active you’ll still get lessons but sourced from SQLite. If you set `LESSONS_MODE=append` in the container, the response will show `"mode":"append"` indicating DB path.
   - Editing `public/lessons-*.json` and refreshing without restarting:
-    - If using SQLite: no immediate change (DB seeded at start or when `LESSONS_UPSERT_ON_START=1`).
+    - If using SQLite: no immediate change (DB seeded at start or when `LESSONS_REPLACE_ON_START=1` or `LESSONS_UPSERT_ON_START=1`).
     - If using JSON fallback: changes appear immediately.
 
 Notes:
@@ -235,7 +235,7 @@ docker run --rm `
   -e OLLAMA_URL=http://host.docker.internal:11434 `
   -e LMSTUDIO_URL=http://host.docker.internal:1234 `
   -e RUN_TMP_DIR=/tmp `
-  -e LESSONS_UPSERT_ON_START=1 `
+  -e LESSONS_REPLACE_ON_START=1 `
   -v "$($PWD.Path):/usr/src/app:ro" `
   -v devbootllm-data:/data `
   --read-only `
@@ -378,7 +378,7 @@ You can store lessons in a SQLite DB instead of JSON files. The backend will ser
   - `DB_FILE`: full path to the DB file (default `${DATA_DIR}/app.db`).
   - `LESSONS_MODE`: `replace` or `append` for the JSON wrapper the server responds with (default `replace`).
 - Seed from existing JSON:
-  - `npm run seed` (reads `public/lessons-java.json`, `public/lessons-python.json`, and optional `public/lessons.json`).
+  - `npm run seed` (wipes the `lessons` table, then reads `public/lessons-java.json`, `public/lessons-python.json`, and optional `public/lessons.json`).
 - Docker persistent volume (recommended):
   - Add a data volume to your `docker run` so the DB persists:
 
@@ -402,8 +402,9 @@ docker run --rm ^
 
 Notes:
 - If `better-sqlite3` native prebuild is unavailable in your environment, install build tools inside your container/base image (e.g., `build-essential`) or switch to a Node version with prebuilt binaries.
-- The server auto-seeds from JSON only when the DB is empty; subsequent updates are upserts via `npm run seed`.
-  - To auto-upsert from JSON on every container start, set `-e LESSONS_UPSERT_ON_START=1`.
+- The server auto-seeds from JSON only when the DB is empty.
+  - To wipe and reseed from JSON on every container start (exact mirror, no stale rows), set `-e LESSONS_REPLACE_ON_START=1`.
+  - To upsert changes from JSON on every container start (no deletes), set `-e LESSONS_UPSERT_ON_START=1`.
 
 ### Seed the DB in Docker
 
@@ -429,4 +430,4 @@ docker run --rm `
 
 
 
-Tip: To keep the DB synchronized with JSON on each start, add `-e LESSONS_UPSERT_ON_START=1` to your regular `docker run` command. This will upsert any JSON changes into the DB on container boot.
+Tip: For a clean, idempotent mirror of your JSON files on each start, add `-e LESSONS_REPLACE_ON_START=1` to your regular `docker run` command (wipes then seeds). If you prefer non-destructive updates, use `-e LESSONS_UPSERT_ON_START=1` instead.

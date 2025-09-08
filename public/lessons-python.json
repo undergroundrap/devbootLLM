@@ -9,7 +9,7 @@
       "initialCode": "# Your code here. Print \"Hello, World!\"\n\n",
       "fullSolution": "print(\"Hello, World!\")\n",
       "expectedOutput": "Hello, World!",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>print()</code> to write text.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use the built-in print() function to write text to the console. Strings must be quoted.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Hello there!\")\nprint(42)</pre></div>"
     },
     {
       "id": 2,
@@ -19,7 +19,7 @@
       "initialCode": "# Declare my_number = 42 then print it\n\n",
       "fullSolution": "my_number = 42\nprint(my_number)\n",
       "expectedOutput": "42",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Python infers types at runtime.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">A variable is a named reference to a value. Python infers types at runtime (dynamic typing).</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">my_number = 42\nname = \"Alice\"\npi = 3.14\nis_active = True\nprint(name, my_number)</pre></div>"
     },
     {
       "id": 3,
@@ -29,7 +29,7 @@
       "initialCode": "i = 1\n# Print 1..5 using while\n\n",
       "fullSolution": "i = 1\nwhile i <= 5:\n    print(i)\n    i += 1\n",
       "expectedOutput": "1\n2\n3\n4\n5",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Loops repeat while a condition is True.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">A while loop repeats while a condition remains True. Be sure the condition eventually becomes False to avoid infinite loops.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">i = 1\nwhile i <= 3:\n    print(i)\n    i += 1</pre></div>"
     },
     {
       "id": 4,
@@ -39,7 +39,7 @@
       "initialCode": "# Loop 0..4 with range(5) and print\n\n",
       "fullSolution": "for i in range(5):\n    print(i)\n",
       "expectedOutput": "0\n1\n2\n3\n4",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">range(n) yields 0..n-1.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">for iterates directly over items or over a range of numbers. range(n) yields 0..n-1.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">for i in range(3):\n    print(i)</pre></div>"
     },
     {
       "id": 5,
@@ -49,7 +49,7 @@
       "initialCode": "# Build [10,20,30,40,50] and print index 1\n\n",
       "fullSolution": "numbers = [10, 20, 30, 40, 50]\nprint(numbers[1])\n",
       "expectedOutput": "20",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Lists are ordered and mutable.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Lists are ordered, zero-indexed, and mutable. Access by index and modify with methods like append() and pop().</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">nums = [10, 20, 30]\nprint(nums[1])  # 20\nnums.append(40)\nprint(nums)</pre></div>"
     },
     {
       "id": 6,
@@ -59,7 +59,7 @@
       "initialCode": "# Define greet(name) then call greet('Alice')\n\n",
       "fullSolution": "def greet(name):\n    print(f\"Hello, {name}!\")\n\ngreet('Alice')\n",
       "expectedOutput": "Hello, Alice!",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Define functions with def.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Define functions with def. Parameters are local names; return sends a value back to the caller.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">def greet(name):\n    return f\"Hello, {name}!\"\n\nprint(greet(\"World\"))</pre></div>"
     },
     {
       "id": 7,
@@ -69,7 +69,7 @@
       "initialCode": "x = 7\n# print Even or Odd\n\n",
       "fullSolution": "x = 7\nif x % 2 == 0:\n    print('Even')\nelse:\n    print('Odd')\n",
       "expectedOutput": "Odd",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Branch with if/else.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use if/elif/else to branch on conditions. Use % (modulo) to check divisibility.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">x = 7\nif x % 2 == 0:\n    print(\"Even\")\nelse:\n    print(\"Odd\")</pre></div>"
     },
     {
       "id": 8,
@@ -79,7 +79,7 @@
       "initialCode": "# Print sum 1..5\n\n",
       "fullSolution": "print(sum(range(1, 6)))\n",
       "expectedOutput": "15",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">sum() works with iterables.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">sum() adds items of any iterable of numbers. Combine with range() for sequences of integers.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">total = sum(range(1, 6))\nprint(total)  # 15</pre></div>"
     },
     {
       "id": 9,
@@ -89,7 +89,7 @@
       "initialCode": "name = 'Alice'\n# print Hello, Alice!\n\n",
       "fullSolution": "name = 'Alice'\nprint(f'Hello, {name}!')\n",
       "expectedOutput": "Hello, Alice!",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Use f'{name}' to format.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">f-strings embed expressions inside string literals using {name}. They are concise and readable.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">name = 'Alice'\nprint(f'Hello, {name}!')</pre></div>"
     },
     {
       "id": 10,
@@ -99,7 +99,7 @@
       "initialCode": "# Build dict and print capital_cities['Germany']\n\n",
       "fullSolution": "capital_cities = {\n    'England': 'London',\n    'Germany': 'Berlin',\n    'Japan': 'Tokyo'\n}\nprint(capital_cities['Germany'])\n",
       "expectedOutput": "Berlin",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Key/value storage with dict.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Dictionaries store key/value pairs. Access values by key; add new keys by assignment.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">capitals = {\"England\": \"London\", \"Germany\": \"Berlin\"}\nprint(capitals[\"Germany\"])\ncapitals[\"Japan\"] = \"Tokyo\"</pre></div>"
     },
     {
       "id": 11,
@@ -109,7 +109,7 @@
       "initialCode": "is_admin = True\nis_active = True\n# print Access Granted if both True else Access Denied\n\n",
       "fullSolution": "is_admin = True\nis_active = True\nif is_admin and is_active:\n    print('Access Granted')\nelse:\n    print('Access Denied')\n",
       "expectedOutput": "Access Granted",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Use and/or/not for boolean expressions.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Combine logical conditions with and / or / not. Parentheses improve readability.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">is_admin = True\nis_active = True\nif is_admin and is_active:\n    print(\"Access Granted\")\nelse:\n    print(\"Access Denied\")</pre></div>"
     },
     {
       "id": 12,
@@ -119,7 +119,7 @@
       "initialCode": "names = ['Ana', 'Bo', 'Cy']\n# Print each on a new line\n\n",
       "fullSolution": "names = ['Ana', 'Bo', 'Cy']\nfor n in names:\n    print(n)\n",
       "expectedOutput": "Ana\nBo\nCy",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">for iterates over items directly.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">for iterates directly over items or over a range of numbers. range(n) yields 0..n-1.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">for i in range(3):\n    print(i)</pre></div>"
     },
     {
       "id": 13,
@@ -129,7 +129,7 @@
       "initialCode": "nums = [1, 2, 3]\n# Append then pop, print nums\n\n",
       "fullSolution": "nums = [1, 2, 3]\nnums.append(4)\nnums.pop()\nprint(nums)\n",
       "expectedOutput": "[1, 2, 3]",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">append/pop modify lists.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Lists are ordered, zero-indexed, and mutable. Access by index and modify with methods like append() and pop().</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">nums = [10, 20, 30]\nprint(nums[1])  # 20\nnums.append(40)\nprint(nums)</pre></div>"
     },
     {
       "id": 14,
@@ -139,7 +139,7 @@
       "initialCode": "s = 'Python'\n# Print lower then upper\n\n",
       "fullSolution": "s = 'Python'\nprint(s.lower())\nprint(s.upper())\n",
       "expectedOutput": "python\nPYTHON",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Common string transforms.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Common string methods: lower(), upper(), strip(), replace(), split(). They return new strings (immutable).</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">s = 'Python'\nprint(s.lower())\nprint(s.upper())</pre></div>"
     },
     {
       "id": 15,
@@ -149,7 +149,7 @@
       "initialCode": "# Use continue to skip evens\n\n",
       "fullSolution": "for i in range(10):\n    if i % 2 == 0:\n        continue\n    print(i)\n",
       "expectedOutput": "1\n3\n5\n7\n9",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">continue skips to next iteration.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">continue skips the rest of the current loop iteration and moves on to the next.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">for i in range(10):\n    if i % 2 == 0:\n        continue\n    print(i)  # prints odds</pre></div>"
     },
     {
       "id": 16,
@@ -159,7 +159,7 @@
       "initialCode": "# Break when i == 3\n\n",
       "fullSolution": "for i in range(10):\n    if i == 3:\n        break\n    print(i)\n",
       "expectedOutput": "0\n1\n2",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">break exits loops.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">break exits the nearest loop immediately.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">for i in range(10):\n    if i == 3:\n        break\n    print(i)  # 0,1,2</pre></div>"
     },
     {
       "id": 17,
@@ -169,7 +169,7 @@
       "initialCode": "numbers = [1, 44, 7, 99, 23, 42]\n# Print max\n\n",
       "fullSolution": "numbers = [1, 44, 7, 99, 23, 42]\nprint(max(numbers))\n",
       "expectedOutput": "99",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Built-in max/min/sum.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Built-ins like max(), min(), and sum() work with lists and other iterables of numbers.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">numbers = [1, 44, 7, 99, 23]\nprint(max(numbers))</pre></div>"
     },
     {
       "id": 18,
@@ -179,7 +179,7 @@
       "initialCode": "# Define add(a,b) -> a+b and print add(3,4)\n\n",
       "fullSolution": "def add(a, b):\n    return a + b\n\nprint(add(3, 4))\n",
       "expectedOutput": "7",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Return values with return.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Functions can accept parameters and return computed results.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">def add(a, b):\n    return a + b\n\nprint(add(3, 4))  # 7</pre></div>"
     },
     {
       "id": 19,
@@ -189,7 +189,7 @@
       "initialCode": "# Define class Dog with bark() and call it\n\n",
       "fullSolution": "class Dog:\n    def bark(self):\n        print('Woof!')\n\nDog().bark()\n",
       "expectedOutput": "Woof!",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Methods receive self.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Define classes with methods. The first parameter of instance methods is conventionally named self and refers to the instance.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class Dog:\n    def bark(self):\n        print('Woof!')\n\nDog().bark()</pre></div>"
     },
     {
       "id": 20,
@@ -199,7 +199,7 @@
       "initialCode": "# Define Animal.speak and Dog(Animal).speak printing Woof!\n\n",
       "fullSolution": "class Animal:\n    def speak(self):\n        pass\n\nclass Dog(Animal):\n    def speak(self):\n        print('Woof!')\n\nDog().speak()\n",
       "expectedOutput": "Woof!",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Subclass with class Child(Parent).</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">A subclass inherits from a parent class and can override methods. Use super() to call the parent implementation when needed.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class Animal:\n    def speak(self):\n        return \"...\"\n\nclass Dog(Animal):\n    def speak(self):\n        return \"Woof!\"\n\nprint(Dog().speak())</pre></div>"
     },
     {
       "id": 21,
@@ -209,7 +209,7 @@
       "initialCode": "# Define enum Color and print Color.RED.name\n\n",
       "fullSolution": "from enum import Enum\n\nclass Color(Enum):\n    RED = 1\n    GREEN = 2\n    BLUE = 3\n\nprint(Color.RED.name)\n",
       "expectedOutput": "RED",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Enum creates named constants.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">The enum module lets you define named constants. Access by EnumName.MEMBER.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from enum import Enum\nclass Color(Enum):\n    RED = 1\n    GREEN = 2\n    BLUE = 3\n\nprint(Color.RED.name)  # \"RED\"</pre></div>"
     },
     {
       "id": 22,
@@ -219,7 +219,7 @@
       "initialCode": "nums = [1,2,3,4,5]\n# Print the last three with slicing\n\n",
       "fullSolution": "nums = [1,2,3,4,5]\nfor n in nums[-3:]:\n    print(n)\n",
       "expectedOutput": "3\n4\n5",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Use negative indexes.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Slicing returns a sub-sequence: seq[start:end:step]. Negative indexes count from the end.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">nums = [1,2,3,4,5]\nprint(nums[-3:])  # last three</pre></div>"
     },
     {
       "id": 23,
@@ -229,7 +229,7 @@
       "initialCode": "m = {'England':'London','Germany':'Berlin','Japan':'Tokyo'}\n# Print each key on its own line\n\n",
       "fullSolution": "m = {'England':'London','Germany':'Berlin','Japan':'Tokyo'}\nfor k in m.keys():\n    print(k)\n",
       "expectedOutput": "England\nGermany\nJapan",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">keys/values/items</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Iterate dict keys, values, or items with .keys(), .values(), .items(). The default iterates keys.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">person = {\"name\":\"Ada\",\"city\":\"London\"}\nfor k in person:\n    print(k)</pre></div>"
     },
     {
       "id": 24,
@@ -239,7 +239,7 @@
       "initialCode": "# Average of [2,4,6,8]\n\n",
       "fullSolution": "nums = [2,4,6,8]\nprint(sum(nums)/len(nums))\n",
       "expectedOutput": "5.0",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">sum / len</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Compute an average by dividing the sum by the count. Convert to float if needed for decimal results.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">nums = [2,4,6,8]\nprint(sum(nums)/len(nums))  # 5.0</pre></div>"
     },
     {
       "id": 25,
@@ -249,7 +249,7 @@
       "initialCode": "# Implement FizzBuzz 1..15\n\n",
       "fullSolution": "for i in range(1, 16):\n    if i % 15 == 0:\n        print('FizzBuzz')\n    elif i % 3 == 0:\n        print('Fizz')\n    elif i % 5 == 0:\n        print('Buzz')\n    else:\n        print(i)\n",
       "expectedOutput": "1\n2\nFizz\n4\nBuzz\nFizz\n7\n8\nFizz\nBuzz\n11\nFizz\n13\n14\nFizzBuzz",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Modulo checks divisibility.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use modulo to test divisibility by 3 and 5. Check 15 first to handle both.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">for i in range(1, 16):\n    if i % 15 == 0: print(\"FizzBuzz\")\n    elif i % 3 == 0: print(\"Fizz\")\n    elif i % 5 == 0: print(\"Buzz\")\n    else: print(i)</pre></div>"
     },
     {
       "id": 26,
@@ -259,7 +259,7 @@
       "initialCode": "# squares = [i*i for i in range(5)] then print\n\n",
       "fullSolution": "squares = [i*i for i in range(5)]\nprint(squares)\n",
       "expectedOutput": "[0, 1, 4, 9, 16]",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Compact list creation.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Lists are ordered, zero-indexed, and mutable. Access by index and modify with methods like append() and pop().</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">nums = [10, 20, 30]\nprint(nums[1])  # 20\nnums.append(40)\nprint(nums)</pre></div>"
     },
     {
       "id": 27,
@@ -269,7 +269,7 @@
       "initialCode": "# map(lambda x: x*2, nums)\n\n",
       "fullSolution": "nums = [1,2,3]\nprint(list(map(lambda x: x*2, nums)))\n",
       "expectedOutput": "[2, 4, 6]",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Functional helpers.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use lambda for small anonymous functions. map() transforms; filter() keeps items where predicate is True.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">nums = [1,2,3]\ndoubled = list(map(lambda x: x*2, nums))\nevens = list(filter(lambda x: x%2==0, nums))\nprint(doubled)\nprint(evens)</pre></div>"
     },
     {
       "id": 28,
@@ -279,7 +279,7 @@
       "initialCode": "# Use max and math.sqrt\n\n",
       "fullSolution": "import math\nprint('Max:', max(25, 42))\nprint('Sqrt:', math.sqrt(64))\n",
       "expectedOutput": "Max: 42\nSqrt: 8.0",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">math utilities</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">The math module provides functions like sqrt, floor, ceil, and constants like pi.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import math\nprint(\"Sqrt:\", math.sqrt(64))\nprint(\"Pi:\", math.pi)</pre></div>"
     },
     {
       "id": 29,
@@ -289,7 +289,7 @@
       "initialCode": "# ' '.join(list)\n\n",
       "fullSolution": "print(' '.join(['Python','is','efficient!']))\n",
       "expectedOutput": "Python is efficient!",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Use join for strings.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">x = 10\ny = 20\nprint(x + y)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">\" \".join(list_of_strings) concatenates with a separator. Remember join is a string method, not on lists.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">words = ['Python','is','efficient!']\nprint(' '.join(words))</pre></div>"
     },
     {
       "id": 30,
@@ -299,7 +299,7 @@
       "initialCode": "class Animal:\n    def __init__(self, name):\n        print(f'Animal constructor called for: {name}')\n\nclass Dog(Animal):\n    def __init__(self, name):\n        # call parent with super()\n        \n        print('Dog constructor called.')\n\nDog('Fido')\n",
       "fullSolution": "class Animal:\n    def __init__(self, name):\n        print(f'Animal constructor called for: {name}')\n\nclass Dog(Animal):\n    def __init__(self, name):\n        super().__init__(name)\n        print('Dog constructor called.')\n\nDog('Fido')\n",
       "expectedOutput": "Animal constructor called for: Fido\nDog constructor called.",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">super() calls parent.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Inside a subclass constructor, call super().__init__(...) to run parent initialization.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class A:\n    def __init__(self):\n        print('A init')\nclass B(A):\n    def __init__(self):\n        super().__init__()\n        print('B init')\nB()</pre></div>"
     },
     {
       "id": 31,
@@ -309,7 +309,7 @@
       "initialCode": "class Person:\n    def __init__(self, first, last):\n        self.first = first\n        self.last = last\n    # add property full_name returning '<first> <last>'\n\n# print Person('Ada','Lovelace').full_name\n",
       "fullSolution": "class Person:\n    def __init__(self, first, last):\n        self.first = first\n        self.last = last\n    @property\n    def full_name(self):\n        return f\"{self.first} {self.last}\"\n\nprint(Person('Ada','Lovelace').full_name)\n",
       "expectedOutput": "Ada Lovelace",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Expose computed attributes.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">@property turns a method into a computed attribute accessed without parentheses.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class Person:\n    def __init__(self, first, last):\n        self.first, self.last = first, last\n    @property\n    def full_name(self):\n        return f'{self.first} {self.last}'\nprint(Person('Ada','Lovelace').full_name)</pre></div>"
     },
     {
       "id": 32,
@@ -319,7 +319,7 @@
       "initialCode": "class MathUtil:\n    # add staticmethod cube(x)\n\nprint(MathUtil.cube(3))\n",
       "fullSolution": "class MathUtil:\n    @staticmethod\n    def cube(x):\n        return x**3\n\nprint(MathUtil.cube(3))\n",
       "expectedOutput": "27",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">No self/cls needed.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">@staticmethod belongs to the class namespace and does not receive self or cls.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class Math:\n    @staticmethod\n    def cube(x): return x**3\nprint(Math.cube(3))</pre></div>"
     },
     {
       "id": 33,
@@ -329,7 +329,7 @@
       "initialCode": "class Counter:\n    total = 0\n    # implement classmethod create() that increments total and returns an instance\n\n# create two then print Counter.total\n",
       "fullSolution": "class Counter:\n    total = 0\n    def __init__(self):\n        pass\n    @classmethod\n    def create(cls):\n        cls.total += 1\n        return cls()\n\nCounter.create()\nCounter.create()\nprint(Counter.total)\n",
       "expectedOutput": "2",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">classmethod receives cls.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">@classmethod receives the class (cls) as the first argument and is useful for alternative constructors.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class C:\n    total = 0\n    @classmethod\n    def create(cls):\n        cls.total += 1\n        return cls()\nC.create(); C.create(); print(C.total)</pre></div>"
     },
     {
       "id": 34,
@@ -339,7 +339,7 @@
       "initialCode": "# Unpack then print a and c\n\n",
       "fullSolution": "a,b,c = (1,2,3)\nprint(a)\nprint(c)\n",
       "expectedOutput": "1\n3",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Multiple assignment.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Unpack iterables on the left-hand side to bind multiple names at once.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">a,b,c = (1,2,3)\nprint(a)\nprint(c)</pre></div>"
     },
     {
       "id": 35,
@@ -349,7 +349,7 @@
       "initialCode": "# union then intersection\n\n",
       "fullSolution": "A={1,2,3}\nB={3,4}\nprint(A|B)\nprint(A&B)\n",
       "expectedOutput": "{1, 2, 3, 4}\n{3}",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Use | and &.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Sets store unique elements and support union (|), intersection (&), and difference (-).</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">A={1,2,3}; B={3,4}\nprint(A|B)\nprint(A&B)</pre></div>"
     },
     {
       "id": 36,
@@ -359,7 +359,7 @@
       "initialCode": "# try dividing by zero, catch and print message\n\n",
       "fullSolution": "try:\n    1/0\nexcept ZeroDivisionError:\n    print('Oops! Division by zero')\n",
       "expectedOutput": "Oops! Division by zero",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Handle errors gracefully.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Wrap risky code in try/except. Catch specific exceptions first to handle them appropriately.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">try:\n    1/0\nexcept ZeroDivisionError:\n    print('Oops! Division by zero')</pre></div>"
     },
     {
       "id": 37,
@@ -369,7 +369,7 @@
       "initialCode": "# compute 2+2 and print result in else, always print Done in finally\n\n",
       "fullSolution": "try:\n    r=2+2\nexcept Exception:\n    print('Error')\nelse:\n    print(r)\nfinally:\n    print('Done')\n",
       "expectedOutput": "4\nDone",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">else runs if no exception; finally always runs.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">In try/except, the else block runs if no exception occurred; finally always runs, success or failure.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">try:\n    r = 2+2\nexcept Exception:\n    print(\"Error\")\nelse:\n    print(r)\nfinally:\n    print(\"Done\")</pre></div>"
     },
     {
       "id": 38,
@@ -379,7 +379,7 @@
       "initialCode": "# define check(x) that raises ValueError for x<0; call with -1\n\n",
       "fullSolution": "def check(x):\n    if x<0:\n        raise ValueError('neg')\n\ntry:\n    check(-1)\nexcept ValueError:\n    print('Invalid')\n",
       "expectedOutput": "Invalid",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Use raise to signal error.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Wrap risky code in try/except. Catch specific exceptions first to handle them appropriately.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">try:\n    1/0\nexcept ZeroDivisionError:\n    print('Oops! Division by zero')</pre></div>"
     },
     {
       "id": 39,
@@ -389,7 +389,7 @@
       "initialCode": "# write to data.txt then read and print\n\n",
       "fullSolution": "with open('data.txt','w') as f:\n    f.write('hello file')\nwith open('data.txt') as f:\n    print(f.read())\n",
       "expectedOutput": "hello file",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">open with 'w' and 'r'.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use with open(...) as f to read/write files safely. Files are closed automatically.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">with open('demo.txt','w') as f:\n    f.write('hello')\nwith open('demo.txt') as f:\n    print(f.read())</pre></div>"
     },
     {
       "id": 40,
@@ -399,7 +399,7 @@
       "initialCode": "# write A and B lines to notes.txt, then read and print\n\n",
       "fullSolution": "with open('notes.txt','w') as f:\n    f.write('A\\nB')\nwith open('notes.txt') as f:\n    print(f.read())\n",
       "expectedOutput": "A\nB",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">with cleans up resources.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">with manages resources that need setup/teardown (file handles, locks, network connections).</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from contextlib import contextmanager\n@contextmanager\ndef tag(name):\n    print(f'<{name}>'); yield; print(f'</{name}>')\nwith tag('b'):\n    print('bold')</pre></div>"
     },
     {
       "id": 41,
@@ -409,7 +409,7 @@
       "initialCode": "# sort then print\n\n",
       "fullSolution": "nums=[3,1,2]\nnums.sort()\nprint(nums)\n",
       "expectedOutput": "[1, 2, 3]",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">list.sort() or sorted(...)</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use sorted(iterable) for a new sorted list, or list.sort() to sort in place. key= controls the sort field.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(sorted([3,1,2]))  # [1,2,3]</pre></div>"
     },
     {
       "id": 42,
@@ -419,7 +419,7 @@
       "initialCode": "# squares dict 1..3\n\n",
       "fullSolution": "print({i:i*i for i in range(1,4)})\n",
       "expectedOutput": "{1: 1, 2: 4, 3: 9}",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">{k:v for ...}</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Dict comprehensions create dictionaries concisely: {k:v for k,v in ...}.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">{n: n*n for n in range(1,4)}</pre></div>"
     },
     {
       "id": 43,
@@ -429,7 +429,7 @@
       "initialCode": "# define gen() yielding 1,2,3 then iterate\n\n",
       "fullSolution": "def gen():\n    yield 1\n    yield 2\n    yield 3\nfor x in gen():\n    print(x)\n",
       "expectedOutput": "1\n2\n3",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">yield produces values lazily.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">yield produces a sequence lazily. Iterate over the generator like any iterable.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">def gen():\n    yield 1; yield 2; yield 3\nfor x in gen():\n    print(x)</pre></div>"
     },
     {
       "id": 44,
@@ -439,7 +439,7 @@
       "initialCode": "# Use json.loads on the string to parse and print the name\n\n",
       "fullSolution": "import json\ns = '{\"name\": \"Ada\"}'\nobj = json.loads(s)\nprint(obj[\"name\"])\n",
       "expectedOutput": "Ada",
-      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>json.loads</code> parses a JSON string into Python objects.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">json.loads parses a JSON string into Python objects; json.dumps serializes Python objects to JSON strings.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import json\ns = \"{\"name\": \"Ada\"}\"\nobj = json.loads(s)\nprint(obj[\"name\"])</pre></div>"
     },
     {
       "id": 45,
@@ -449,7 +449,7 @@
       "initialCode": "# re.findall to get digits then print\n\n",
       "fullSolution": "import re\nfor d in re.findall(r'\\d','a1b2c3'):\n    print(d)\n",
       "expectedOutput": "1\n2\n3",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Use re for patterns.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use the re module for regular expressions. \\d matches digits; groups capture substrings for later use.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import re\nprint(re.findall(r'\\\\d', 'a1b2c3'))\n# Groups:\nm = re.search(r'^Hello\\s+(\\\\w+)$', 'Hello World')\nprint(m.group(1))  # World</pre></div>"
     },
     {
       "id": 46,
@@ -459,7 +459,7 @@
       "initialCode": "# print 0:a 1:b 2:c on new lines\n\n",
       "fullSolution": "for i,v in enumerate(['a','b','c']):\n    print(f'{i}:{v}')\n",
       "expectedOutput": "0:a\n1:b\n2:c",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">enumerate gives index, item.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">The enum module lets you define named constants. Access by EnumName.MEMBER.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from enum import Enum\nclass Color(Enum):\n    RED = 1\n    GREEN = 2\n    BLUE = 3\n\nprint(Color.RED.name)  # \"RED\"</pre></div>"
     },
     {
       "id": 47,
@@ -469,7 +469,7 @@
       "initialCode": "# even set 0..6\n\n",
       "fullSolution": "print({n for n in range(7) if n%2==0})\n",
       "expectedOutput": "{0, 2, 4, 6}",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Use {} with condition.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Set comprehensions build sets; braces {} with an expression and optional condition.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">{n for n in range(7) if n % 2 == 0}</pre></div>"
     },
     {
       "id": 48,
@@ -479,7 +479,7 @@
       "initialCode": "# re.search group capture\n\n",
       "fullSolution": "import re\nm = re.search(r'^Hello\\s+(\\w+)$', 'Hello World')\nprint(m.group(1))\n",
       "expectedOutput": "World",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Groups capture substrings.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use the re module for regular expressions. \\d matches digits; groups capture substrings for later use.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import re\nprint(re.findall(r'\\\\d', 'a1b2c3'))\n# Groups:\nm = re.search(r'^Hello\\s+(\\\\w+)$', 'Hello World')\nprint(m.group(1))  # World</pre></div>"
     },
     {
       "id": 49,
@@ -489,7 +489,7 @@
       "initialCode": "# x=5 then print the three checks\n\n",
       "fullSolution": "x=5\nprint(isinstance(x,int))\nprint(isinstance(x,str))\nprint(isinstance(x,object))\n",
       "expectedOutput": "True\nFalse\nTrue",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Type checks including subclasses.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Welcome to Python!\")\nprint(123)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">isinstance(obj, type) checks an object's type (including subclass relationships).</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">x = 5\nprint(isinstance(x, int))\nprint(isinstance(x, str))\nprint(isinstance(x, object))</pre></div>"
     },
     {
       "id": 50,
@@ -499,7 +499,7 @@
       "initialCode": "class Student:\n    def __init__(self, name, score):\n        self.name=name\n        self.score=score\n\nstudents=[Student('Alice',90),Student('Bob',80),Student('Charlie',100)]\n# compute and print average\n\n",
       "fullSolution": "class Student:\n    def __init__(self, name, score):\n        self.name=name\n        self.score=score\n\nstudents=[Student('Alice',90),Student('Bob',80),Student('Charlie',100)]\nprint(sum(s.score for s in students)/len(students))\n",
       "expectedOutput": "90.0",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Wrap-up challenge using core skills.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">for i in range(3):\n    print(i)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Combine multiple concepts: classes, loops, and aggregations. Think in steps: represent data, iterate, and compute.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class Student:\n    def __init__(self, name, score):\n        self.name, self.score = name, score\nstudents=[Student('A',90), Student('B',80)]\nprint(sum(s.score for s in students)/len(students))</pre></div>"
     }
   ]
 }

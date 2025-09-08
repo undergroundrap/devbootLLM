@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 const path = require('path');
-const { openDb, ensureSchema, seedFromJsonFiles } = require('../db');
+const { openDb, ensureSchema, seedFromJsonFiles, clearLessons } = require('../db');
 
 function main() {
   const DATA_DIR = process.env.DATA_DIR || process.env.DB_DIR || (process.platform === 'win32' ? path.join(process.cwd(), 'data') : '/data');
@@ -14,9 +14,14 @@ function main() {
     return;
   }
   ensureSchema(db);
+  try {
+    clearLessons(db);
+    console.log('[seed-db] Cleared existing lessons');
+  } catch (e) {
+    console.warn('[seed-db] Warning: failed to clear lessons before seeding:', e && e.message ? e.message : String(e));
+  }
   const res = seedFromJsonFiles(db, { publicDir: PUBLIC_DIR });
   console.log(`[seed-db] Seeded ${res.count} lessons from JSON (${res.seeded ? 'ok' : 'no changes'})`);
 }
 
 main();
-

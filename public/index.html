@@ -1295,24 +1295,15 @@
                             }
                         }
 
-                        // Optional global lessons.json: filter by current track to avoid mixing
-                        try {
-                            const extra = await fetch('/lessons.json', { cache: 'no-cache' });
-                            if (extra.ok) {
-                                const d = await extra.json();
-                                const m = Array.isArray(d) ? 'append' : (d.mode === 'replace' ? 'replace' : 'append');
-                                const incomingAll = Array.isArray(d) ? d : (Array.isArray(d.lessons) ? d.lessons : []);
-                                const desiredLang = track === 'python' ? 'python' : 'java';
-                                const incoming = (incomingAll || []).filter(l => !l.language || String(l.language).toLowerCase() === desiredLang);
-                                if (incoming.length > 0) {
-                                    if (m === 'replace') {
-                                        this.lessons = incoming;
-                                    } else {
-                                        this.lessons = [...this.lessons, ...incoming];
-                                    }
-                                }
-                            }
-                        } catch (_) { /* ignore */ }
+                        const seen = new Set();
+                        const curTrack = (track === 'python') ? 'python' : 'java';
+                        this.lessons = (this.lessons || []).filter(l => {
+                            const lang = (l.language ? String(l.language) : curTrack).toLowerCase();
+                            const key = `${lang}:${l.id}`;
+                            if (seen.has(key)) return false;
+                            seen.add(key);
+                            return true;
+                        });
                     } catch (e) {
                         this.showToast('Failed loading lessons for course', 'error');
                     } finally {

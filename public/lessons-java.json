@@ -464,7 +464,7 @@
       "initialCode": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Integer> nums = Arrays.asList(1,2,3);\n        // Double each then print each value on its own line\n\n    }\n}",
       "fullSolution": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Integer> nums = Arrays.asList(1,2,3);\n        nums.stream().map(n -> n * 2).forEach(System.out::println);\n    }\n}",
       "expectedOutput": "2\n4\n6",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Streams support map/filter/reduce; map transforms each element.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">The `map` operation transforms each element of a stream. It applies a function to each element and returns a new stream of the results.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import java.util.List;\nList<String> names = List.of(\"alice\", \"bob\");\nnames.stream()\n     .map(String::toUpperCase)\n     .forEach(System.out::println); // ALICE, BOB printed on new lines</pre></div>"
     },
     {
       "id": 52,
@@ -473,7 +473,7 @@
       "initialCode": "import java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // Filter evens from 0..6 and print them on new lines\n\n    }\n}",
       "fullSolution": "import java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        IntStream.rangeClosed(0,6).filter(n -> n % 2 == 0).forEach(System.out::println);\n    }\n}",
       "expectedOutput": "0\n2\n4\n6",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Use filter to keep elements matching a predicate.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">The `filter` operation selects elements from a stream that match a given condition (a `Predicate`).</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import java.util.List;\nList<Integer> nums = List.of(1, 2, 3, 4);\nnums.stream()\n    .filter(n -> n % 2 == 0)\n    .forEach(System.out::println); // 2, 4 printed on new lines</pre></div>"
     },
     {
       "id": 53,
@@ -482,7 +482,7 @@
       "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> words = Arrays.asList(\"pear\", \"fig\", \"apple\");\n        // Sort by length and print each on a new line\n\n    }\n}",
       "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> words = Arrays.asList(\"pear\", \"fig\", \"apple\");\n        words.stream().sorted(Comparator.comparingInt(String::length)).forEach(System.out::println);\n    }\n}",
       "expectedOutput": "fig\npear\napple",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Comparator.comparingInt(String::length) sorts strings by length.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">You can sort collections using a `Comparator`. `Comparator.comparingInt` is a helper for sorting by an integer property, like string length.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import java.util.List;\nimport java.util.Comparator;\nList<String> words = List.of(\"fig\", \"apple\", \"pear\");\nwords.stream()\n     .sorted(Comparator.comparingInt(String::length))\n     .forEach(System.out::println); // fig, pear, apple on new lines</pre></div>"
     },
     {
       "id": 54,
@@ -491,7 +491,7 @@
       "initialCode": "import java.util.*;\n\nclass Person {\n    String name; int age;\n    Person(String n, int a){ name=n; age=a; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Person> people = Arrays.asList(new Person(\"Bob\",30), new Person(\"Alice\",25), new Person(\"Eve\",35));\n        // Sort by age ascending and print names\n\n    }\n}",
       "fullSolution": "import java.util.*;\n\nclass Person {\n    String name; int age;\n    Person(String n, int a){ name=n; age=a; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Person> people = Arrays.asList(new Person(\"Bob\",30), new Person(\"Alice\",25), new Person(\"Eve\",35));\n        people.stream().sorted(Comparator.comparingInt(p -> p.age)).forEach(p -> System.out.println(p.name));\n    }\n}",
       "expectedOutput": "Alice\nBob\nEve",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Comparator.comparing extracts a key to sort objects.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">`Comparator.comparing` extracts a sort key from an object. You provide a lambda that takes an object and returns the property to sort by.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import java.util.*;\nclass Person { String name; Person(String n) { name=n; } }\nList<Person> people = List.of(new Person(\"Bob\"), new Person(\"Alice\"));\npeople.stream().sorted(Comparator.comparing(p -> p.name))\n      .forEach(p -> System.out.println(p.name)); // Alice, Bob</pre></div>"
     },
     {
       "id": 55,
@@ -500,7 +500,7 @@
       "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Optional<String> opt = Optional.of(\"java\");\n        // Map to uppercase and print if present\n\n    }\n}",
       "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Optional<String> opt = Optional.of(\"java\");\n        opt.map(String::toUpperCase).ifPresent(System.out::println);\n    }\n}",
       "expectedOutput": "JAVA",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Optional.map transforms the contained value if present.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">`Optional.map` applies a function to the value inside an Optional, if it is present, and returns a new Optional with the result.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import java.util.Optional;\nOptional<String> opt = Optional.of(\"text\");\nopt.map(String::toUpperCase).ifPresent(System.out::println); // TEXT</pre></div>"
     },
     {
       "id": 56,
@@ -509,7 +509,7 @@
       "initialCode": "public class Main {\n    static class Box<T> {\n        T value;\n        Box(T v){ value=v; }\n        T get(){ return value; }\n    }\n    public static void main(String[] args) {\n        // Create Box<Integer> with 7 and print its value\n\n    }\n}",
       "fullSolution": "public class Main {\n    static class Box<T> {\n        T value;\n        Box(T v){ value=v; }\n        T get(){ return value; }\n    }\n    public static void main(String[] args) {\n        Box<Integer> b = new Box<>(7);\n        System.out.println(b.get());\n    }\n}",
       "expectedOutput": "7",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Generics let classes/methods work with parameterized types.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Generics allow you to define classes and methods that are parameterized over types. A `Box<T>` can hold any type `T`.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class Box<T> { private T t; public void set(T t) { this.t=t; } public T get() { return t; } }\nBox<Integer> intBox = new Box<>();\nintBox.set(10);\nSystem.out.println(intBox.get()); // 10</pre></div>"
     },
     {
       "id": 57,
@@ -518,7 +518,7 @@
       "initialCode": "import java.util.*;\n\npublic class Main {\n    static double sumList(List<? extends Number> list){\n        double s = 0;\n        // Sum numbers here\n        return s;\n    }\n    public static void main(String[] args) {\n        System.out.println(sumList(Arrays.asList(1,2,3)));\n    }\n}",
       "fullSolution": "import java.util.*;\n\npublic class Main {\n    static double sumList(List<? extends Number> list){\n        double s = 0;\n        for (Number n : list) s += n.doubleValue();\n        return s;\n    }\n    public static void main(String[] args) {\n        System.out.println(sumList(Arrays.asList(1,2,3)));\n    }\n}",
       "expectedOutput": "6.0",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <? extends Number> to accept any numeric subtype list.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Upper-bounded wildcards (`? extends Type`) are used to increase flexibility. A `List<? extends Number>` can hold a list of Integers or a list of Doubles.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import java.util.List;\npublic static double sum(List<? extends Number> list) {\n    return list.stream().mapToDouble(Number::doubleValue).sum();\n}\nSystem.out.println(sum(List.of(1, 2.5))); // 3.5</pre></div>"
     },
     {
       "id": 58,
@@ -527,7 +527,7 @@
       "initialCode": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> s = Arrays.asList(\"a\", \"b\", \"c\");\n        // Map to uppercase and print using method references\n\n    }\n}",
       "fullSolution": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> s = Arrays.asList(\"a\", \"b\", \"c\");\n        s.stream().map(String::toUpperCase).forEach(System.out::println);\n    }\n}",
       "expectedOutput": "A\nB\nC",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Use Class::method references for cleaner stream pipelines.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Method references are a shorthand syntax for a lambda expression that executes just ONE method. They make code more readable.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import java.util.List;\nList<String> list = List.of(\"a\", \"b\");\nlist.stream().map(String::toUpperCase).forEach(System.out::println); // A, B</pre></div>"
     },
     {
       "id": 59,
@@ -536,7 +536,7 @@
       "initialCode": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Integer> nums = Arrays.asList(3,1,2);\n        // Sort descending and print\n\n    }\n}",
       "fullSolution": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Integer> nums = Arrays.asList(3,1,2);\n        nums.stream().sorted(Comparator.reverseOrder()).forEach(System.out::println);\n    }\n}",
       "expectedOutput": "3\n2\n1",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Use Comparator.reverseOrder() to sort descending.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">`Comparator.reverseOrder()` returns a comparator that imposes the reverse of the natural ordering.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import java.util.*;\nList<Integer> nums = List.of(1, 3, 2);\nnums.stream().sorted(Comparator.reverseOrder()).forEach(System.out::println); // 3, 2, 1</pre></div>"
     },
     {
       "id": 60,
@@ -545,7 +545,7 @@
       "initialCode": "enum Day { MON, SAT }\n\npublic class Main {\n    public static void main(String[] args) {\n        Day d = Day.MON;\n        // Switch and print Workday for MON, Weekend for SAT\n\n    }\n}",
       "fullSolution": "enum Day { MON, SAT }\n\npublic class Main {\n    public static void main(String[] args) {\n        Day d = Day.MON;\n        switch (d) {\n            case MON -> System.out.println(\"Workday\");\n            case SAT -> System.out.println(\"Weekend\");\n        }\n    }\n}",
       "expectedOutput": "Workday",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Java 17 supports concise switch with arrows.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Enums work very well with `switch` statements, providing compile-time checking that all cases are handled.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">enum Level { EASY, HARD }\nLevel level = Level.EASY;\nswitch (level) {\n    case EASY -> System.out.println(\"Easy mode\");\n    case HARD -> System.out.println(\"Hard mode\");\n}</pre></div>"
     },
     {
       "id": 61,
@@ -554,7 +554,7 @@
       "initialCode": "record Point(int x, int y) {}\n\npublic class Main {\n    public static void main(String[] args) {\n        // Print the sum of Point(2,3) coordinates\n\n    }\n}",
       "fullSolution": "record Point(int x, int y) {}\n\npublic class Main {\n    public static void main(String[] args) {\n        Point p = new Point(2,3);\n        System.out.println(p.x() + p.y());\n    }\n}",
       "expectedOutput": "5",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Records are concise immutable data carriers (Java 16+).</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Records (Java 16+) provide a compact syntax for declaring classes which are transparent holders for immutable data.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">record Point(int x, int y) {}\nPoint p = new Point(1, 2);\nSystem.out.println(p.x()); // 1</pre></div>"
     },
     {
       "id": 62,
@@ -563,7 +563,7 @@
       "initialCode": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Integer> nums = Arrays.asList(1,2,3);\n        // Use reduce to compute the sum and print it\n\n    }\n}",
       "fullSolution": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Integer> nums = Arrays.asList(1,2,3);\n        int sum = nums.stream().reduce(0, Integer::sum);\n        System.out.println(sum);\n    }\n}",
       "expectedOutput": "6",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">reduce accumulates stream elements into a single value.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">The `reduce` operation combines all elements of a stream into a single result.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import java.util.List;\nint sum = List.of(1, 2, 3).stream().reduce(0, (a, b) -> a + b);\nSystem.out.println(sum); // 6</pre></div>"
     },
     {
       "id": 63,
@@ -572,7 +572,7 @@
       "initialCode": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> w = Arrays.asList(\"a\",\"b\",\"c\");\n        // Join with commas and print\n\n    }\n}",
       "fullSolution": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> w = Arrays.asList(\"a\",\"b\",\"c\");\n        String s = w.stream().collect(Collectors.joining(\",\"));\n        System.out.println(s);\n    }\n}",
       "expectedOutput": "a,b,c",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Collectors.joining concatenates CharSequences with a delimiter.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">`Collectors.joining` is a collector that concatenates the input elements into a String, in encounter order.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import java.util.stream.*;\nString s = Stream.of(\"a\", \"b\", \"c\").collect(Collectors.joining(\",\"));\nSystem.out.println(s); // \"a,b,c\"</pre></div>"
     },
     {
       "id": 64,
@@ -581,7 +581,7 @@
       "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        LinkedHashMap<String,Integer> m = new LinkedHashMap<>();\n        m.put(\"a\",1); m.put(\"b\",2); m.put(\"c\",3);\n        // Print a:1 then b:2 then c:3 (each on its own line)\n\n    }\n}",
       "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        LinkedHashMap<String,Integer> m = new LinkedHashMap<>();\n        m.put(\"a\",1); m.put(\"b\",2); m.put(\"c\",3);\n        m.forEach((k,v) -> System.out.println(k + \":\" + v));\n    }\n}",
       "expectedOutput": "a:1\nb:2\nc:3",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">LinkedHashMap iterates in insertion order.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">A HashMap stores key-value pairs. Use `put` to add items and `get` to retrieve them by key.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import java.util.HashMap;\nHashMap<String, String> capitals = new HashMap<>();\ncapitals.put(\"England\", \"London\");\nSystem.out.println(capitals.get(\"England\")); // London</pre></div>"
     },
     {
       "id": 65,
@@ -590,7 +590,7 @@
       "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        LinkedHashSet<Integer> set = new LinkedHashSet<>();\n        set.add(1); set.add(2); set.add(1); set.add(3);\n        // Print each value on a new line\n\n    }\n}",
       "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        LinkedHashSet<Integer> set = new LinkedHashSet<>();\n        set.add(1); set.add(2); set.add(1); set.add(3);\n        for (Integer i : set) System.out.println(i);\n    }\n}",
       "expectedOutput": "1\n2\n3",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">LinkedHashSet removes duplicates and maintains insertion order.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">A `LinkedHashSet` is an ordered version of HashSet that maintains a doubly-linked List across all elements. The elements are ordered based on their insertion order.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import java.util.LinkedHashSet;\nLinkedHashSet<Integer> set = new LinkedHashSet<>();\nset.add(3); set.add(1); set.add(3);\nSystem.out.println(set); // [3, 1]</pre></div>"
     },
     {
       "id": 66,
@@ -599,7 +599,7 @@
       "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        TreeSet<Integer> ts = new TreeSet<>(Arrays.asList(3,1,2));\n        // Print sorted elements\n\n    }\n}",
       "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        TreeSet<Integer> ts = new TreeSet<>(Arrays.asList(3,1,2));\n        for (Integer i : ts) System.out.println(i);\n    }\n}",
       "expectedOutput": "1\n2\n3",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">TreeSet keeps elements sorted.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">A `TreeSet` is a NavigableSet implementation based on a TreeMap. The elements are ordered using their natural ordering, or by a Comparator provided at set creation time.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import java.util.TreeSet;\nTreeSet<Integer> set = new TreeSet<>();\nset.add(3); set.add(1);\nSystem.out.println(set); // [1, 3]</pre></div>"
     },
     {
       "id": 67,
@@ -608,7 +608,7 @@
       "initialCode": "import java.util.*;\n\nclass User implements Comparable<User> {\n    String name;\n    User(String n){ name=n; }\n    // Implement compareTo by name\n    public int compareTo(User o){ return 0; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        List<User> users = Arrays.asList(new User(\"Bob\"), new User(\"Alice\"), new User(\"Carol\"));\n        Collections.sort(users);\n        for (User u : users) System.out.println(u.name);\n    }\n}",
       "fullSolution": "import java.util.*;\n\nclass User implements Comparable<User> {\n    String name;\n    User(String n){ name=n; }\n    public int compareTo(User o){ return this.name.compareTo(o.name); }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        List<User> users = Arrays.asList(new User(\"Bob\"), new User(\"Alice\"), new User(\"Carol\"));\n        Collections.sort(users);\n        for (User u : users) System.out.println(u.name);\n    }\n}",
       "expectedOutput": "Alice\nBob\nCarol",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Comparable defines natural ordering (used by sort/sorted collections).</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">The `Comparable` interface imposes a total ordering on the objects of each class that implements it. This ordering is referred to as the class's natural ordering.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class User implements Comparable<User> {\n    String name; User(String n){name=n;}\n    public int compareTo(User o) { return name.compareTo(o.name); }\n}\nUser u1=new User(\"Bob\"), u2=new User(\"Alice\");\nSystem.out.println(u1.compareTo(u2) > 0); // true</pre></div>"
     },
     {
       "id": 68,
@@ -617,7 +617,7 @@
       "initialCode": "interface Greeter {\n    // Provide a default method greet() printing Hello\n}\n\nclass MyGreeter implements Greeter {}\n\npublic class Main {\n    public static void main(String[] args) {\n        new MyGreeter().greet();\n    }\n}",
       "fullSolution": "interface Greeter {\n    default void greet(){ System.out.println(\"Hello\"); }\n}\n\nclass MyGreeter implements Greeter {}\n\npublic class Main {\n    public static void main(String[] args) {\n        new MyGreeter().greet();\n    }\n}",
       "expectedOutput": "Hello",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Default methods add behavior to interfaces without breaking implementors.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Define reusable logic in methods. Static methods belong to the class and can be called without an instance.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">static int add(int a, int b) { return a + b; }\nSystem.out.println(add(3, 4)); // 7</pre></div>"
     },
     {
       "id": 69,
@@ -626,7 +626,7 @@
       "initialCode": "abstract class Animal {\n    abstract void speak();\n}\nclass Dog extends Animal {\n    // Implement speak to print Bark!\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        new Dog().speak();\n    }\n}",
       "fullSolution": "abstract class Animal {\n    abstract void speak();\n}\nclass Dog extends Animal {\n    void speak(){ System.out.println(\"Bark!\"); }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        new Dog().speak();\n    }\n}",
       "expectedOutput": "Bark!",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Abstract classes can define contracts and shared state.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Abstract classes are similar to interfaces but can have fields that are not static and final, and they can contain non-abstract methods.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">abstract class Shape { abstract double area(); }\nclass Circle extends Shape { double r=2; double area() {return 3.14*r*r;} }\nSystem.out.println(new Circle().area()); // 12.56</pre></div>"
     },
     {
       "id": 70,
@@ -635,7 +635,7 @@
       "initialCode": "import java.time.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        LocalDate d = LocalDate.parse(\"2023-01-02\");\n        // Print d.plusDays(1)\n\n    }\n}",
       "fullSolution": "import java.time.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        LocalDate d = LocalDate.parse(\"2023-01-02\");\n        System.out.println(d.plusDays(1));\n    }\n}",
       "expectedOutput": "2023-01-03",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">java.time provides immutable, timezone-safe date/time APIs.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">`LocalDate` is an immutable date-time object that represents a date, often viewed as year-month-day.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import java.time.LocalDate;\nLocalDate date = LocalDate.of(2023, 1, 31);\nSystem.out.println(date.plusDays(1)); // 2023-02-01</pre></div>"
     },
     {
       "id": 71,
@@ -644,7 +644,7 @@
       "initialCode": "import java.util.regex.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Matcher m = Pattern.compile(\"\\\\d\").matcher(\"a1b2\");\n        // Print each digit match on its own line\n\n    }\n}",
       "fullSolution": "import java.util.regex.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Matcher m = Pattern.compile(\"\\\\d\").matcher(\"a1b2\");\n        while (m.find()) System.out.println(m.group());\n    }\n}",
       "expectedOutput": "1\n2",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Use Matcher.find() to iterate matches; group() returns the match.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">The `Matcher` class finds matches for a regular expression pattern in a string. The `find()` method scans the input sequence to find the next subsequence that matches the pattern.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import java.util.regex.*;\nMatcher m = Pattern.compile(\"\\\\d+\").matcher(\"a12b34c\");\nwhile (m.find()) { System.out.println(m.group()); } // 12, 34</pre></div>"
     },
     {
       "id": 72,
@@ -653,7 +653,7 @@
       "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        ArrayDeque<String> dq = new ArrayDeque<>();\n        dq.addLast(\"A\"); dq.addLast(\"B\"); dq.addFirst(\"0\");\n        // Remove from front until empty, printing each\n\n    }\n}",
       "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        ArrayDeque<String> dq = new ArrayDeque<>();\n        dq.addLast(\"A\"); dq.addLast(\"B\"); dq.addFirst(\"0\");\n        while (!dq.isEmpty()) System.out.println(dq.removeFirst());\n    }\n}",
       "expectedOutput": "0\nA\nB",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">ArrayDeque is a fast resizable double-ended queue.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">`ArrayDeque` is a resizable-array implementation of the `Deque` interface. It has no capacity restrictions and is faster than LinkedList for stack and queue operations.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import java.util.ArrayDeque;\nArrayDeque<Integer> dq = new ArrayDeque<>();\ndq.addFirst(1); dq.addLast(2);\nSystem.out.println(dq.pollFirst()); // 1</pre></div>"
     },
     {
       "id": 73,
@@ -662,7 +662,7 @@
       "initialCode": "public class Main {\n    public static void main(String[] args) {\n        // Print: Name: Alice, Age: 30\n\n    }\n}",
       "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(String.format(\"Name: %s, Age: %d\", \"Alice\", 30));\n    }\n}",
       "expectedOutput": "Name: Alice, Age: 30",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">String.format uses printf-style placeholders.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">`String.format()` returns a formatted string using the specified format string and arguments.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">String s = String.format(\"Hello, %s! You have %d messages.\", \"Alice\", 5);\nSystem.out.println(s);</pre></div>"
     },
     {
       "id": 74,
@@ -671,7 +671,7 @@
       "initialCode": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        int[] arr = {1,2,3};\n        // Print the sum\n\n    }\n}",
       "fullSolution": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        int[] arr = {1,2,3};\n        System.out.println(Arrays.stream(arr).sum());\n    }\n}",
       "expectedOutput": "6",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Arrays.stream creates a stream from an array.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">`Arrays.stream()` returns a sequential Stream with the specified array as its source.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import java.util.Arrays;\nint[] arr = {1, 2, 3};\nSystem.out.println(Arrays.stream(arr).sum()); // 6</pre></div>"
     },
     {
       "id": 75,
@@ -680,7 +680,7 @@
       "initialCode": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Integer> list = Arrays.asList(1,1,2,2,3);\n        // Print unique values in encounter order\n\n    }\n}",
       "fullSolution": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Integer> list = Arrays.asList(1,1,2,2,3);\n        list.stream().distinct().forEach(System.out::println);\n    }\n}",
       "expectedOutput": "1\n2\n3",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">distinct filters out duplicates while preserving order.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">The `distinct()` stream operation returns a stream consisting of the distinct elements (according to `Object.equals(Object)`) of this stream.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import java.util.stream.Stream;\nStream.of(1, 2, 1, 3).distinct().forEach(System.out::println); // 1, 2, 3</pre></div>"
     },
     {
       "id": 76,
@@ -689,7 +689,7 @@
       "initialCode": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> words = Arrays.asList(\"one\", \"two\", \"three\");\n        // Group by length into a TreeMap and print k=v per line\n\n    }\n}",
       "fullSolution": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> words = Arrays.asList(\"one\", \"two\", \"three\");\n        Map<Integer, Long> m = words.stream().collect(Collectors.groupingBy(String::length, TreeMap::new, Collectors.counting()));\n        m.forEach((k,v) -> System.out.println(k + \"=\" + v));\n    }\n}",
       "expectedOutput": "3=2\n5=1",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Provide TreeMap::new to keep grouping keys sorted.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">`Collectors.groupingBy` is used for grouping objects by some property and storing results in a Map instance.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import java.util.stream.*;\nimport java.util.List;\nSystem.out.println(Stream.of(\"a\", \"bb\", \"ccc\", \"dd\").collect(Collectors.groupingBy(String::length))); // {1=[a], 2=[bb, dd], 3=[ccc]}</pre></div>"
     },
     {
       "id": 77,
@@ -698,7 +698,7 @@
       "initialCode": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<List<Integer>> nested = Arrays.asList(Arrays.asList(1,2), Arrays.asList(3,4));\n        // Flatten and print each number\n\n    }\n}",
       "fullSolution": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<List<Integer>> nested = Arrays.asList(Arrays.asList(1,2), Arrays.asList(3,4));\n        nested.stream().flatMap(List::stream).forEach(System.out::println);\n    }\n}",
       "expectedOutput": "1\n2\n3\n4",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">flatMap flattens nested streams.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">`flatMap` transforms each element of a stream into another stream and then concatenates these streams into a single, \"flattened\" stream.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import java.util.stream.*;\nimport java.util.List;\nList<List<Integer>> listOfLists = List.of(List.of(1), List.of(2, 3));\nlistOfLists.stream().flatMap(List::stream).forEach(System.out::println); // 1, 2, 3</pre></div>"
     },
     {
       "id": 78,
@@ -707,7 +707,7 @@
       "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        String s = \"banana\";\n        Map<Character,Integer> m = new LinkedHashMap<>();\n        // Count chars and print b=1, a=3, n=2 (one per line)\n\n    }\n}",
       "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        String s = \"banana\";\n        Map<Character,Integer> m = new LinkedHashMap<>();\n        for (char c : s.toCharArray()) {\n            m.compute(c, (k,v) -> v==null ? 1 : v+1);\n        }\n        m.forEach((k,v) -> System.out.println(k + \"=\" + v));\n    }\n}",
       "expectedOutput": "b=1\na=3\nn=2",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">compute updates a value atomically based on the current mapping.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">`Map.compute()` attempts to compute a mapping for the specified key and its current mapped value.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import java.util.HashMap;\nHashMap<String, Integer> map = new HashMap<>();\nmap.compute(\"key\", (k, v) -> (v == null) ? 1 : v + 1);\nSystem.out.println(map.get(\"key\")); // 1</pre></div>"
     },
     {
       "id": 79,
@@ -716,7 +716,7 @@
       "initialCode": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Integer> nums = Arrays.asList(1,2,3,4,5);\n        // Partition into even/odd and print even=2 then odd=3\n\n    }\n}",
       "fullSolution": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Integer> nums = Arrays.asList(1,2,3,4,5);\n        Map<Boolean, Long> m = nums.stream().collect(Collectors.partitioningBy(n -> n % 2 == 0, Collectors.counting()));\n        System.out.println(\"even=\" + m.get(true));\n        System.out.println(\"odd=\" + m.get(false));\n    }\n}",
       "expectedOutput": "even=2\nodd=3",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">partitioningBy splits items into two groups based on a predicate.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">`Collectors.partitioningBy` is a collector which partitions the input elements into a `Map<Boolean, List<T>>` according to a `Predicate`.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import java.util.stream.*;\nSystem.out.println(Stream.of(1,2,3,4).collect(Collectors.partitioningBy(n -> n%2==0))); // {false=[1, 3], true=[2, 4]}</pre></div>"
     },
     {
       "id": 80,
@@ -725,7 +725,7 @@
       "initialCode": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        // Submit a task returning 2+3 and print the result\n\n    }\n}",
       "fullSolution": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        ExecutorService ex = Executors.newSingleThreadExecutor();\n        Future<Integer> f = ex.submit(() -> 2 + 3);\n        System.out.println(f.get());\n        ex.shutdown();\n    }\n}",
       "expectedOutput": "5",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Use a fixed/single-thread executor to run tasks safely.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">`ExecutorService` is a framework for asynchronous task execution. It manages a pool of threads and a task queue.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import java.util.concurrent.*;\nExecutorService es = Executors.newSingleThreadExecutor();\nFuture<Integer> future = es.submit(() -> 1 + 1);\ntry { System.out.println(future.get()); } catch (Exception e) {}\nes.shutdown();</pre></div>"
     },
     {
       "id": 81,
@@ -734,7 +734,7 @@
       "initialCode": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // supplyAsync -> thenApply to add ! and print\n\n    }\n}",
       "fullSolution": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        CompletableFuture<String> cf = CompletableFuture.supplyAsync(() -> \"Hi\").thenApply(s -> s + \"!\");\n        System.out.println(cf.join());\n    }\n}",
       "expectedOutput": "Hi!",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">CompletableFuture chains async computations and combines results.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">`CompletableFuture` is used for asynchronous programming. It represents a future result of an asynchronous computation.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import java.util.concurrent.CompletableFuture;\nCompletableFuture.supplyAsync(() -> \"Result\").thenAccept(System.out::println); // Result</pre></div>"
     },
     {
       "id": 82,
@@ -743,7 +743,7 @@
       "initialCode": "import java.util.concurrent.atomic.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        AtomicInteger ai = new AtomicInteger(0);\n        // Start two threads incrementing 100 times each, then print ai.get()\n\n    }\n}",
       "fullSolution": "import java.util.concurrent.atomic.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        AtomicInteger ai = new AtomicInteger(0);\n        Thread t1 = new Thread(() -> { for (int i=0;i<100;i++) ai.incrementAndGet(); });\n        Thread t2 = new Thread(() -> { for (int i=0;i<100;i++) ai.incrementAndGet(); });\n        t1.start(); t2.start(); t1.join(); t2.join();\n        System.out.println(ai.get());\n    }\n}",
       "expectedOutput": "200",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Atomic classes provide lock-free thread-safe operations.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">An `AtomicInteger` is an `int` value that may be updated atomically, making it useful in concurrent programming without locks.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import java.util.concurrent.atomic.AtomicInteger;\nAtomicInteger ai = new AtomicInteger(5);\nSystem.out.println(ai.incrementAndGet()); // 6</pre></div>"
     },
     {
       "id": 83,
@@ -752,7 +752,7 @@
       "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Optional<String> o = Optional.empty();\n        // Print default if empty\n\n    }\n}",
       "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Optional<String> o = Optional.empty();\n        System.out.println(o.orElse(\"default\"));\n    }\n}",
       "expectedOutput": "default",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">orElse returns the given fallback when no value is present.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">`Optional.orElse()` returns the value if present, otherwise returns the other value.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import java.util.Optional;\nString name = (String) Optional.ofNullable(null).orElse(\"default\");\nSystem.out.println(name); // default</pre></div>"
     },
     {
       "id": 84,
@@ -761,7 +761,7 @@
       "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // Join a, b, c with '-' and print\n\n    }\n}",
       "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        StringJoiner sj = new StringJoiner(\"-\");\n        sj.add(\"a\"); sj.add(\"b\"); sj.add(\"c\");\n        System.out.println(sj.toString());\n    }\n}",
       "expectedOutput": "a-b-c",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">StringJoiner offers clear API for delimiter/prefix/suffix joins.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">String methods like toLowerCase(), toUpperCase(), and length() return transformed information; Strings are immutable.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">String s = \"Java\";\nSystem.out.println(s.toLowerCase());\nSystem.out.println(s.toUpperCase());\nSystem.out.println(s.length());</pre></div>"
     },
     {
       "id": 85,
@@ -770,7 +770,7 @@
       "initialCode": "import java.math.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // Print 0.1 + 0.2 using BigDecimal\n\n    }\n}",
       "fullSolution": "import java.math.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        BigDecimal a = new BigDecimal(\"0.1\");\n        BigDecimal b = new BigDecimal(\"0.2\");\n        System.out.println(a.add(b));\n    }\n}",
       "expectedOutput": "0.3",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Use string constructors to avoid binary floating rounding.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">`BigDecimal` provides arbitrary-precision signed decimal numbers. Use it for financial calculations where precision is critical.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import java.math.BigDecimal;\nBigDecimal a = new BigDecimal(\"0.1\");\nBigDecimal b = new BigDecimal(\"0.2\");\nSystem.out.println(a.add(b)); // 0.3</pre></div>"
     },
     {
       "id": 86,
@@ -779,7 +779,7 @@
       "initialCode": "public class Main {\n    public static void main(String[] args) {\n        String s = \"a1b2\";\n        // Remove digits and print\n\n    }\n}",
       "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        String s = \"a1b2\";\n        System.out.println(s.replaceAll(\"\\\\d\", \"\"));\n    }\n}",
       "expectedOutput": "ab",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">String.replaceAll takes a regex and replacement.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">`String.replaceAll()` replaces each substring of this string that matches the given regular expression with the given replacement.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">String s = \"a1b2c3\";\nSystem.out.println(s.replaceAll(\"\\\\d\", \"#\")); // a#b#c#</pre></div>"
     },
     {
       "id": 87,
@@ -788,7 +788,7 @@
       "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        String[] arr = {\"Bob\", \"alice\", \"Carol\"};\n        // Sort ignoring case and print each on a new line\n\n    }\n}",
       "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        String[] arr = {\"Bob\", \"alice\", \"Carol\"};\n        Arrays.sort(arr, String.CASE_INSENSITIVE_ORDER);\n        for (String w : arr) System.out.println(w);\n    }\n}",
       "expectedOutput": "alice\nBob\nCarol",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Use String.CASE_INSENSITIVE_ORDER for case-insensitive comparisons.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">`String.CASE_INSENSITIVE_ORDER` is a `Comparator` that orders `String` objects as by `compareToIgnoreCase`.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import java.util.Arrays;\nString[] arr = {\"Bob\", \"alice\"};\nArrays.sort(arr, String.CASE_INSENSITIVE_ORDER);\nSystem.out.println(Arrays.toString(arr)); // [alice, Bob]</pre></div>"
     },
     {
       "id": 88,
@@ -797,7 +797,7 @@
       "initialCode": "public class Main {\n    public static void main(String[] args) {\n        // Print hahaha using repeat\n\n    }\n}",
       "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"ha\".repeat(3));\n    }\n}",
       "expectedOutput": "hahaha",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">String.repeat(n) duplicates the content n times (Java 11+).</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">`String.repeat(n)` returns a string whose value is the concatenation of this string repeated `n` times.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">System.out.println(\"-\".repeat(5)); // -----</pre></div>"
     },
     {
       "id": 89,
@@ -806,7 +806,7 @@
       "initialCode": "public class Main {\n    static int sum(int... nums){\n        // Sum all nums\n        return 0;\n    }\n    public static void main(String[] args) {\n        System.out.println(sum(1,2,3));\n    }\n}",
       "fullSolution": "public class Main {\n    static int sum(int... nums){\n        int s=0; for (int n: nums) s += n; return s;\n    }\n    public static void main(String[] args) {\n        System.out.println(sum(1,2,3));\n    }\n}",
       "expectedOutput": "6",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Varargs packs arguments into an array parameter.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Varargs allows a method to accept zero or more arguments. The varargs parameter is treated as an array of the specified type.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">static int sum(int... nums) {\n    return java.util.Arrays.stream(nums).sum();\n}\nSystem.out.println(sum(1, 2, 3)); // 6</pre></div>"
     },
     {
       "id": 90,
@@ -815,7 +815,7 @@
       "initialCode": "interface Util {\n    // add(a,b) returning a+b as a static method\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        // Print Util.add(2,3)\n\n    }\n}",
       "fullSolution": "interface Util {\n    static int add(int a, int b){ return a + b; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(Util.add(2,3));\n    }\n}",
       "expectedOutput": "5",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Interfaces can declare static utility methods.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Define reusable logic in methods. Static methods belong to the class and can be called without an instance.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">static int add(int a, int b) { return a + b; }\nSystem.out.println(add(3, 4)); // 7</pre></div>"
     },
     {
       "id": 91,
@@ -824,7 +824,7 @@
       "initialCode": "import java.io.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        // Use StringReader to read 'hello' then print it\n\n    }\n}",
       "fullSolution": "import java.io.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        try (StringReader r = new StringReader(\"hello\")) {\n            char[] buf = new char[5];\n            r.read(buf);\n            System.out.println(new String(buf));\n        }\n    }\n}",
       "expectedOutput": "hello",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Resources declared in try(...) are closed automatically.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">The try-with-resources statement ensures that each resource is closed at the end of the statement. Any object that implements `AutoCloseable` can be used as a resource.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import java.io.*;\ntry (StringReader r = new StringReader(\"text\")) {\n    System.out.println((char)r.read()); // t\n} catch (IOException e) {}</pre></div>"
     },
     {
       "id": 92,
@@ -833,7 +833,7 @@
       "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        PriorityQueue<Integer> pq = new PriorityQueue<>();\n        pq.add(3); pq.add(1); pq.add(2);\n        // Poll and print the smallest\n\n    }\n}",
       "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        PriorityQueue<Integer> pq = new PriorityQueue<>();\n        pq.add(3); pq.add(1); pq.add(2);\n        System.out.println(pq.poll());\n    }\n}",
       "expectedOutput": "1",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">PriorityQueue orders elements by natural/comparator order.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">A `PriorityQueue` is a heap-based queue where elements are ordered according to their natural ordering, or by a `Comparator`.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import java.util.PriorityQueue;\nPriorityQueue<Integer> pq = new PriorityQueue<>();\npq.add(3); pq.add(1);\nSystem.out.println(pq.poll()); // 1</pre></div>"
     },
     {
       "id": 93,
@@ -842,7 +842,7 @@
       "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        LinkedList<String> list = new LinkedList<>();\n        list.add(\"B\");\n        // Add \"A\" to the front then print first element\n\n    }\n}",
       "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        LinkedList<String> list = new LinkedList<>();\n        list.add(\"B\");\n        list.addFirst(\"A\");\n        System.out.println(list.getFirst());\n    }\n}",
       "expectedOutput": "A",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">LinkedList supports fast insertions/removals at ends.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">ArrayList is a resizable list. Use add() to append and get() to access by index.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">java.util.List<Integer> list = new java.util.ArrayList<>();\nlist.add(1); list.add(2); list.add(3);\nSystem.out.println(list);</pre></div>"
     },
     {
       "id": 94,
@@ -851,7 +851,7 @@
       "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Deque<Integer> st = new ArrayDeque<>();\n        st.push(1); st.push(2);\n        // Pop and print\n\n    }\n}",
       "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Deque<Integer> st = new ArrayDeque<>();\n        st.push(1); st.push(2);\n        System.out.println(st.pop());\n    }\n}",
       "expectedOutput": "2",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">ArrayDeque efficiently implements stack operations.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">The `Deque` interface provides stack operations like `push` and `pop`. `ArrayDeque` is the recommended implementation.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import java.util.ArrayDeque;\nArrayDeque<Integer> stack = new ArrayDeque<>();\nstack.push(1); stack.push(2);\nSystem.out.println(stack.pop()); // 2</pre></div>"
     },
     {
       "id": 95,
@@ -860,7 +860,7 @@
       "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        TreeMap<String,Integer> tm = new TreeMap<>();\n        tm.put(\"b\",2); tm.put(\"a\",1);\n        // Print the firstKey\n\n    }\n}",
       "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        TreeMap<String,Integer> tm = new TreeMap<>();\n        tm.put(\"b\",2); tm.put(\"a\",1);\n        System.out.println(tm.firstKey());\n    }\n}",
       "expectedOutput": "a",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">TreeMap orders keys by natural/comparator order.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">A `TreeMap` is a NavigableMap implementation that keeps its entries sorted according to the natural ordering of its keys, or by a `Comparator`.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import java.util.TreeMap;\nTreeMap<Integer, String> map = new TreeMap<>();\nmap.put(3, \"c\"); map.put(1, \"a\");\nSystem.out.println(map.firstKey()); // 1</pre></div>"
     },
     {
       "id": 96,
@@ -869,7 +869,7 @@
       "initialCode": "public class Main {\n    public static void main(String[] args) {\n        // Reverse 'abc' and print\n\n    }\n}",
       "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(new StringBuilder(\"abc\").reverse().toString());\n    }\n}",
       "expectedOutput": "cba",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">StringBuilder reverse() creates a reversed view of characters.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">String methods like toLowerCase(), toUpperCase(), and length() return transformed information; Strings are immutable.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">String s = \"Java\";\nSystem.out.println(s.toLowerCase());\nSystem.out.println(s.toUpperCase());\nSystem.out.println(s.length());</pre></div>"
     },
     {
       "id": 97,
@@ -878,7 +878,7 @@
       "initialCode": "import java.util.regex.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Pattern p = Pattern.compile(\"^Hello\\\\s+(\\\\w+)$\");\n        Matcher m = p.matcher(\"Hello World\");\n        // Print the captured word\n\n    }\n}",
       "fullSolution": "import java.util.regex.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Pattern p = Pattern.compile(\"^Hello\\\\s+(\\\\w+)$\");\n        Matcher m = p.matcher(\"Hello World\");\n        if (m.find()) System.out.println(m.group(1));\n    }\n}",
       "expectedOutput": "World",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Use parentheses to capture subgroups and group(1) to retrieve.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Parentheses `()` in a regex create capturing groups. You can access the captured text using `matcher.group(index)`.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import java.util.regex.*;\nMatcher m = Pattern.compile(\"(\\\\d+)-(\\w+)\").matcher(\"123-xyz\");\nif (m.find()) { System.out.println(m.group(2)); } // xyz</pre></div>"
     },
     {
       "id": 98,
@@ -887,7 +887,7 @@
       "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        int[] arr = {1,2,3,4};\n        // Print index of 3\n\n    }\n}",
       "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        int[] arr = {1,2,3,4};\n        System.out.println(Arrays.binarySearch(arr, 3));\n    }\n}",
       "expectedOutput": "2",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">binarySearch returns the index of an element or (-(insertion point)-1).</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">`Arrays.binarySearch` searches the specified array for the specified value using the binary search algorithm. The array must be sorted.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import java.util.Arrays;\nint[] arr = {10, 20, 30};\nSystem.out.println(Arrays.binarySearch(arr, 20)); // 1</pre></div>"
     },
     {
       "id": 99,
@@ -896,7 +896,7 @@
       "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Map<String,Integer> counts = new HashMap<>();\n        for (char ch : \"aab\".toCharArray()) {\n            // Use merge to count characters\n        }\n        // Print counts.get(\"a\") + counts.get(\"b\")\n\n    }\n}",
       "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Map<String,Integer> counts = new HashMap<>();\n        for (char ch : \"aab\".toCharArray()) {\n            counts.merge(String.valueOf(ch), 1, Integer::sum);\n        }\n        System.out.println(counts.get(\"a\") + counts.get(\"b\"));\n    }\n}",
       "expectedOutput": "3",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">merge combines a new value with an existing key using a remapping function.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">`Map.merge` lets you update a map entry by applying a function to the old and new values.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import java.util.HashMap;\nHashMap<String, Integer> counts = new HashMap<>();\ncounts.merge(\"apple\", 1, Integer::sum);\ncounts.merge(\"apple\", 1, Integer::sum);\nSystem.out.println(counts.get(\"apple\")); // 2</pre></div>"
     },
     {
       "id": 100,
@@ -905,7 +905,7 @@
       "initialCode": "import java.util.*;\nimport java.util.stream.*;\n\nclass Student { String name; int score; Student(String n,int s){ name=n; score=s; } }\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Student> students = Arrays.asList(new Student(\"Alice\",90), new Student(\"Bob\",80), new Student(\"Charlie\",100));\n        // Find max by score and print the name\n\n    }\n}",
       "fullSolution": "import java.util.*;\nimport java.util.stream.*;\n\nclass Student { String name; int score; Student(String n,int s){ name=n; score=s; } }\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Student> students = Arrays.asList(new Student(\"Alice\",90), new Student(\"Bob\",80), new Student(\"Charlie\",100));\n        String name = students.stream().max(Comparator.comparingInt(s -> s.score)).get().name;\n        System.out.println(name);\n    }\n}",
       "expectedOutput": "Charlie",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Combine Comparator.comparingInt with max() to select the top item.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">This capstone combines streams, comparators, and Optionals to find the object with the maximum value in a collection.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import java.util.*;\nclass S { String n; int s; S(String n, int s){this.n=n;this.s=s;} }\nList<S> list = List.of(new S(\"A\",90), new S(\"B\",100));\nlist.stream().max(Comparator.comparingInt(s -> s.s))\n    .ifPresent(s -> System.out.println(s.n)); // B</pre></div>"
     }
   ]
 }

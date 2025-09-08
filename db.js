@@ -54,6 +54,16 @@ function ensureSchema(db) {
   `);
 }
 
+function clearLessons(db) {
+  if (!db) return false;
+  try {
+    db.exec('DELETE FROM lessons;');
+    return true;
+  } catch (_) {
+    return false;
+  }
+}
+
 function normalizeLesson(raw, defaultLang) {
   const lang = (raw.language ? String(raw.language) : defaultLang || 'java').toLowerCase();
   return {
@@ -78,7 +88,7 @@ function seedFromJsonFiles(db, opts = {}) {
   const pushIf = (p) => { if (fs.existsSync(p)) files.push(p); };
   pushIf(path.join(publicDir, 'lessons-java.json'));
   pushIf(path.join(publicDir, 'lessons-python.json'));
-  pushIf(path.join(publicDir, 'lessons.json'));
+  // Intentionally ignore optional combined lessons.json to avoid duplication.
   let total = 0;
   const insert = db.prepare(`
     INSERT INTO lessons (
@@ -117,6 +127,12 @@ function seedFromJsonFiles(db, opts = {}) {
     }
   }
   return { seeded: any, count: total };
+}
+
+function replaceFromJsonFiles(db, opts = {}) {
+  if (!db) return { seeded: false, count: 0 };
+  try { clearLessons(db); } catch (_) {}
+  return seedFromJsonFiles(db, opts);
 }
 
 function seedFromJsonIfEmpty(db, opts = {}) {
@@ -161,8 +177,9 @@ function rowToJsonLesson(r) {
 module.exports = {
   openDb,
   ensureSchema,
+  clearLessons,
   seedFromJsonFiles,
+  replaceFromJsonFiles,
   seedFromJsonIfEmpty,
   getLessons,
 };
-

@@ -188,9 +188,9 @@
       "id": 21,
       "title": "21. Inheritance (extends)",
       "description": "Inheritance allows a new class (subclass) to inherit properties and methods from an existing class (superclass). Create a `Dog` class that inherits from `Animal`.",
-      "initialCode": "class Animal {\n    public void eat() {\n        System.out.println(\"This animal eats food.\");\n    }\n}\n\n// Create a Dog class that extends Animal\n// Add a method called bark() that prints \"Woof!\"\n\n\npublic class Main {\n    public static void main(String[] args) {\n        // Create a new Dog object\n\n        // Call the eat() method (from Animal)\n\n        // Call the bark() method (from Dog)\n\n    }\n}",
-      "fullSolution": "class Animal {\n    public void eat() {\n        System.out.println(\"This animal eats food.\");\n    }\n}\n\n// Create a Dog class that extends Animal\nclass Dog extends Animal {\n    // Add a method called bark() that prints \"Woof!\"\n    public void bark() {\n        System.out.println(\"Woof!\");\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        // Create a new Dog object\n        Dog myDog = new Dog();\n\n        // Call the eat() method (from Animal)\n        myDog.eat();\n\n        // Call the bark() method (from Dog)\n        myDog.bark();\n    }\n}",
-      "expectedOutput": "This animal eats food.\nWoof!",
+      "initialCode": "class Animal {\n    public void eat() {\n        System.out.println(\"This animal eats food.\");\n    }\n}\n\nclass Dog extends Animal {\n    // Add a method called bark() that prints \"Woof!\"\n\n}\n\nclass Cat extends Animal {\n    // Add a method called bark() that prints \"Meow!\"\n\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Animal myDog = new Dog();\n        Animal myCat = new Cat();\n        \n        myDog.eat();\n        myDog.bark();\n        myCat.eat();\n        myCat.bark();\n    }\n}",
+      "fullSolution": "class Animal {\n    public void eat() {\n        System.out.println(\"This animal eats food.\");\n    }\n}\n\nclass Dog extends Animal {\n    // Add a method called bark() that prints \"Woof!\"\n    public void bark() {\n        System.out.println(\"Woof!\");\n    }\n}\n\nclass Cat extends Animal {\n    // Add a method called bark() that prints \"Meow!\"\n    public void bark() {\n        System.out.println(\"Meow!\");\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Animal myDog = new Dog();\n        Animal myCat = new Cat();\n        \n        myDog.eat();\n        myDog.bark();\n        myCat.eat();\n        myCat.bark();\n    }\n}",
+      "expectedOutput": "This animal eats food.\nWoof!\nThis animal eats food.\nMeow!",
       "tutorial": "<p class=\"mb-4 text-gray-300\"><strong>Inheritance</strong> is a core principle of Object-Oriented Programming. It allows us to create a new class that is a modified version of an existing class. The new class (the <em>subclass</em>) inherits the fields and methods of the existing class (the <em>superclass</em>).</p><p class=\"mb-4 text-gray-300\">We use the <code>extends</code> keyword to do this. This promotes code reuse and creates a logical hierarchy.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">// Superclass\nclass Vehicle {\n    public void drive() {\n        System.out.println(\"Driving a vehicle.\");\n    }\n}\n\n// Subclass\nclass Car extends Vehicle {\n    public void honk() {\n        System.out.println(\"Beep beep!\");\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Car myCar = new Car();\n        myCar.drive(); // Inherited from Vehicle\n        myCar.honk();  // Defined in Car\n    }\n}</pre></div>"
     },
     {
@@ -452,10 +452,460 @@
       "id": 50,
       "title": "50. Course Review",
       "description": "Combine everything you have learned. Create a `Student` class, manage a list of students with an `ArrayList`, and calculate their average score.",
-      "initialCode": "import java.util.ArrayList;\n\nclass Student {\n    private String name;\n    private int score;\n\n    public Student(String name, int score) {\n        this.name = name;\n        this.score = score;\n    }\n\n    public int getScore() {\n        return this.score;\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        ArrayList<Student> students = new ArrayList<>();\n        students.add(new Student(\"Alice\", 90));\n        students.add(new Student(\"Bob\", 80));\n        students.add(new Student(\"Charlie\", 100));\n\n        double totalScore = 0;\n        // Loop through the students list and sum their scores\n\n\n        // Calculate and print the average score\n\n    }\n}",
-      "fullSolution": "import java.util.ArrayList;\n\nclass Student {\n    private String name;\n    private int score;\n\n    public Student(String name, int score) {\n        this.name = name;\n        this.score = score;\n    }\n\n    public int getScore() {\n        return this.score;\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        ArrayList<Student> students = new ArrayList<>();\n        students.add(new Student(\"Alice\", 90));\n        students.add(new Student(\"Bob\", 80));\n        students.add(new Student(\"Charlie\", 100));\n\n        double totalScore = 0;\n        // Loop through the students list and sum their scores\n        for (Student s : students) {\n            totalScore += s.getScore();\n        }\n\n        // Calculate and print the average score\n        double average = totalScore / students.size();\n        System.out.println(\"Average student score: \" + average);\n    }\n}",
+      "initialCode": "import java.util.ArrayList;\n\nclass Student {\n    String name; int score;\n    Student(String name, int score) {\n        this.name = name;\n        this.score = score;\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        ArrayList<Student> students = new ArrayList<>();\n        students.add(new Student(\"Alice\", 90));\n        students.add(new Student(\"Bob\", 80));\n        students.add(new Student(\"Charlie\", 100));\n\n        double totalScore = 0;\n        // Loop through the students list and sum their scores\n\n\n        // Calculate and print the average score\n\n    }\n}",
+      "fullSolution": "import java.util.ArrayList;\n\nclass Student {\n    String name; int score;\n    Student(String name, int score) {\n        this.name = name;\n        this.score = score;\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        ArrayList<Student> students = new ArrayList<>();\n        students.add(new Student(\"Alice\", 90));\n        students.add(new Student(\"Bob\", 80));\n        students.add(new Student(\"Charlie\", 100));\n\n        double totalScore = 0;\n        // Loop through the students list and sum their scores\n        for (Student s : students) {\n            totalScore += s.score;\n        }\n\n        // Calculate and print the average score\n        double average = totalScore / students.size();\n        System.out.println(\"Average student score: \" + average);\n    }\n}",
       "expectedOutput": "Average student score: 90.0",
       "tutorial": "<p class=\"mb-4 text-gray-300\">Congratulations on reaching the final review lesson! This challenge combines many of the core concepts you've learned:</p><ul class=\"list-disc list-inside mb-4 text-gray-300 space-y-2\"><li><strong>Classes and Objects</strong>: The <code>Student</code> class with a constructor and private fields.</li><li><strong>Encapsulation</strong>: Using a getter method (<code>getScore</code>) to access private data.</li><li><strong>ArrayList</strong>: To hold a dynamic list of <code>Student</code> objects.</li><li><strong>Loops</strong>: A for-each loop to iterate through the list.</li><li><strong>Variables and Calculations</strong>: Summing the scores and calculating the average.</li></ul><p class=\"mb-4 text-gray-300\">Solving this demonstrates a solid grasp of Java fundamentals. Well done!</p><p class=\"mb-4 text-gray-300\">Practice the concept using a short example below.</p> <h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">System.out.println(\"Hello, Java!\");</pre></div>"
+    },
+    {
+      "id": 51,
+      "title": "51. Streams: map",
+      "description": "Use a stream with a lambda to double each number and print each on a new line.",
+      "initialCode": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Integer> nums = Arrays.asList(1,2,3);\n        // Double each then print each value on its own line\n\n    }\n}",
+      "fullSolution": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Integer> nums = Arrays.asList(1,2,3);\n        nums.stream().map(n -> n * 2).forEach(System.out::println);\n    }\n}",
+      "expectedOutput": "2\n4\n6",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Streams support map/filter/reduce; map transforms each element.</p>"
+    },
+    {
+      "id": 52,
+      "title": "52. Streams: filter",
+      "description": "Filter even numbers from 0..6 and print them.",
+      "initialCode": "import java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // Filter evens from 0..6 and print them on new lines\n\n    }\n}",
+      "fullSolution": "import java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        IntStream.rangeClosed(0,6).filter(n -> n % 2 == 0).forEach(System.out::println);\n    }\n}",
+      "expectedOutput": "0\n2\n4\n6",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use filter to keep elements matching a predicate.</p>"
+    },
+    {
+      "id": 53,
+      "title": "53. Sort by Length",
+      "description": "Sort strings by length ascending and print them.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> words = Arrays.asList(\"pear\", \"fig\", \"apple\");\n        // Sort by length and print each on a new line\n\n    }\n}",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> words = Arrays.asList(\"pear\", \"fig\", \"apple\");\n        words.stream().sorted(Comparator.comparingInt(String::length)).forEach(System.out::println);\n    }\n}",
+      "expectedOutput": "fig\npear\napple",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Comparator.comparingInt(String::length) sorts strings by length.</p>"
+    },
+    {
+      "id": 54,
+      "title": "54. Comparator on Objects",
+      "description": "Sort objects by a field using Comparator.comparing.",
+      "initialCode": "import java.util.*;\n\nclass Person {\n    String name; int age;\n    Person(String n, int a){ name=n; age=a; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Person> people = Arrays.asList(new Person(\"Bob\",30), new Person(\"Alice\",25), new Person(\"Eve\",35));\n        // Sort by age ascending and print names\n\n    }\n}",
+      "fullSolution": "import java.util.*;\n\nclass Person {\n    String name; int age;\n    Person(String n, int a){ name=n; age=a; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Person> people = Arrays.asList(new Person(\"Bob\",30), new Person(\"Alice\",25), new Person(\"Eve\",35));\n        people.stream().sorted(Comparator.comparingInt(p -> p.age)).forEach(p -> System.out.println(p.name));\n    }\n}",
+      "expectedOutput": "Alice\nBob\nEve",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Comparator.comparing extracts a key to sort objects.</p>"
+    },
+    {
+      "id": 55,
+      "title": "55. Optional.map",
+      "description": "Uppercase a value inside Optional and print it if present.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Optional<String> opt = Optional.of(\"java\");\n        // Map to uppercase and print if present\n\n    }\n}",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Optional<String> opt = Optional.of(\"java\");\n        opt.map(String::toUpperCase).ifPresent(System.out::println);\n    }\n}",
+      "expectedOutput": "JAVA",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Optional.map transforms the contained value if present.</p>"
+    },
+    {
+      "id": 56,
+      "title": "56. Generic Box<T>",
+      "description": "Create a generic Box class and print its value.",
+      "initialCode": "public class Main {\n    static class Box<T> {\n        T value;\n        Box(T v){ value=v; }\n        T get(){ return value; }\n    }\n    public static void main(String[] args) {\n        // Create Box<Integer> with 7 and print its value\n\n    }\n}",
+      "fullSolution": "public class Main {\n    static class Box<T> {\n        T value;\n        Box(T v){ value=v; }\n        T get(){ return value; }\n    }\n    public static void main(String[] args) {\n        Box<Integer> b = new Box<>(7);\n        System.out.println(b.get());\n    }\n}",
+      "expectedOutput": "7",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Generics let classes/methods work with parameterized types.</p>"
+    },
+    {
+      "id": 57,
+      "title": "57. Bounded Wildcards",
+      "description": "Sum a list of Numbers using an upper-bounded wildcard.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n    static double sumList(List<? extends Number> list){\n        double s = 0;\n        // Sum numbers here\n        return s;\n    }\n    public static void main(String[] args) {\n        System.out.println(sumList(Arrays.asList(1,2,3)));\n    }\n}",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n    static double sumList(List<? extends Number> list){\n        double s = 0;\n        for (Number n : list) s += n.doubleValue();\n        return s;\n    }\n    public static void main(String[] args) {\n        System.out.println(sumList(Arrays.asList(1,2,3)));\n    }\n}",
+      "expectedOutput": "6.0",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <? extends Number> to accept any numeric subtype list.</p>"
+    },
+    {
+      "id": 58,
+      "title": "58. Method References",
+      "description": "Use method references to map and print.",
+      "initialCode": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> s = Arrays.asList(\"a\", \"b\", \"c\");\n        // Map to uppercase and print using method references\n\n    }\n}",
+      "fullSolution": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> s = Arrays.asList(\"a\", \"b\", \"c\");\n        s.stream().map(String::toUpperCase).forEach(System.out::println);\n    }\n}",
+      "expectedOutput": "A\nB\nC",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use Class::method references for cleaner stream pipelines.</p>"
+    },
+    {
+      "id": 59,
+      "title": "59. Reverse Sort",
+      "description": "Sort numbers in descending order and print them.",
+      "initialCode": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Integer> nums = Arrays.asList(3,1,2);\n        // Sort descending and print\n\n    }\n}",
+      "fullSolution": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Integer> nums = Arrays.asList(3,1,2);\n        nums.stream().sorted(Comparator.reverseOrder()).forEach(System.out::println);\n    }\n}",
+      "expectedOutput": "3\n2\n1",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use Comparator.reverseOrder() to sort descending.</p>"
+    },
+    {
+      "id": 60,
+      "title": "60. Enum + switch",
+      "description": "Switch on an enum and print a label.",
+      "initialCode": "enum Day { MON, SAT }\n\npublic class Main {\n    public static void main(String[] args) {\n        Day d = Day.MON;\n        // Switch and print Workday for MON, Weekend for SAT\n\n    }\n}",
+      "fullSolution": "enum Day { MON, SAT }\n\npublic class Main {\n    public static void main(String[] args) {\n        Day d = Day.MON;\n        switch (d) {\n            case MON -> System.out.println(\"Workday\");\n            case SAT -> System.out.println(\"Weekend\");\n        }\n    }\n}",
+      "expectedOutput": "Workday",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Java 17 supports concise switch with arrows.</p>"
+    },
+    {
+      "id": 61,
+      "title": "61. Record Basics",
+      "description": "Use a record to model a point and print x+y.",
+      "initialCode": "record Point(int x, int y) {}\n\npublic class Main {\n    public static void main(String[] args) {\n        // Print the sum of Point(2,3) coordinates\n\n    }\n}",
+      "fullSolution": "record Point(int x, int y) {}\n\npublic class Main {\n    public static void main(String[] args) {\n        Point p = new Point(2,3);\n        System.out.println(p.x() + p.y());\n    }\n}",
+      "expectedOutput": "5",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Records are concise immutable data carriers (Java 16+).</p>"
+    },
+    {
+      "id": 62,
+      "title": "62. Streams: reduce",
+      "description": "Use reduce to sum numbers.",
+      "initialCode": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Integer> nums = Arrays.asList(1,2,3);\n        // Use reduce to compute the sum and print it\n\n    }\n}",
+      "fullSolution": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Integer> nums = Arrays.asList(1,2,3);\n        int sum = nums.stream().reduce(0, Integer::sum);\n        System.out.println(sum);\n    }\n}",
+      "expectedOutput": "6",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">reduce accumulates stream elements into a single value.</p>"
+    },
+    {
+      "id": 63,
+      "title": "63. Collectors.joining",
+      "description": "Join strings with commas using Collectors.joining.",
+      "initialCode": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> w = Arrays.asList(\"a\",\"b\",\"c\");\n        // Join with commas and print\n\n    }\n}",
+      "fullSolution": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> w = Arrays.asList(\"a\",\"b\",\"c\");\n        String s = w.stream().collect(Collectors.joining(\",\"));\n        System.out.println(s);\n    }\n}",
+      "expectedOutput": "a,b,c",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Collectors.joining concatenates CharSequences with a delimiter.</p>"
+    },
+    {
+      "id": 64,
+      "title": "64. LinkedHashMap Order",
+      "description": "Preserve insertion order and print key:value pairs.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        LinkedHashMap<String,Integer> m = new LinkedHashMap<>();\n        m.put(\"a\",1); m.put(\"b\",2); m.put(\"c\",3);\n        // Print a:1 then b:2 then c:3 (each on its own line)\n\n    }\n}",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        LinkedHashMap<String,Integer> m = new LinkedHashMap<>();\n        m.put(\"a\",1); m.put(\"b\",2); m.put(\"c\",3);\n        m.forEach((k,v) -> System.out.println(k + \":\" + v));\n    }\n}",
+      "expectedOutput": "a:1\nb:2\nc:3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">LinkedHashMap iterates in insertion order.</p>"
+    },
+    {
+      "id": 65,
+      "title": "65. LinkedHashSet Basics",
+      "description": "Avoid duplicates and keep insertion order.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        LinkedHashSet<Integer> set = new LinkedHashSet<>();\n        set.add(1); set.add(2); set.add(1); set.add(3);\n        // Print each value on a new line\n\n    }\n}",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        LinkedHashSet<Integer> set = new LinkedHashSet<>();\n        set.add(1); set.add(2); set.add(1); set.add(3);\n        for (Integer i : set) System.out.println(i);\n    }\n}",
+      "expectedOutput": "1\n2\n3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">LinkedHashSet removes duplicates and maintains insertion order.</p>"
+    },
+    {
+      "id": 66,
+      "title": "66. TreeSet Sort",
+      "description": "Store numbers in a sorted set and print ascending.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        TreeSet<Integer> ts = new TreeSet<>(Arrays.asList(3,1,2));\n        // Print sorted elements\n\n    }\n}",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        TreeSet<Integer> ts = new TreeSet<>(Arrays.asList(3,1,2));\n        for (Integer i : ts) System.out.println(i);\n    }\n}",
+      "expectedOutput": "1\n2\n3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">TreeSet keeps elements sorted.</p>"
+    },
+    {
+      "id": 67,
+      "title": "67. Comparable",
+      "description": "Implement Comparable to sort custom objects.",
+      "initialCode": "import java.util.*;\n\nclass User implements Comparable<User> {\n    String name;\n    User(String n){ name=n; }\n    // Implement compareTo by name\n    public int compareTo(User o){ return 0; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        List<User> users = Arrays.asList(new User(\"Bob\"), new User(\"Alice\"), new User(\"Carol\"));\n        Collections.sort(users);\n        for (User u : users) System.out.println(u.name);\n    }\n}",
+      "fullSolution": "import java.util.*;\n\nclass User implements Comparable<User> {\n    String name;\n    User(String n){ name=n; }\n    public int compareTo(User o){ return this.name.compareTo(o.name); }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        List<User> users = Arrays.asList(new User(\"Bob\"), new User(\"Alice\"), new User(\"Carol\"));\n        Collections.sort(users);\n        for (User u : users) System.out.println(u.name);\n    }\n}",
+      "expectedOutput": "Alice\nBob\nCarol",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Comparable defines natural ordering (used by sort/sorted collections).</p>"
+    },
+    {
+      "id": 68,
+      "title": "68. Default Methods",
+      "description": "Use a default method in an interface.",
+      "initialCode": "interface Greeter {\n    // Provide a default method greet() printing Hello\n}\n\nclass MyGreeter implements Greeter {}\n\npublic class Main {\n    public static void main(String[] args) {\n        new MyGreeter().greet();\n    }\n}",
+      "fullSolution": "interface Greeter {\n    default void greet(){ System.out.println(\"Hello\"); }\n}\n\nclass MyGreeter implements Greeter {}\n\npublic class Main {\n    public static void main(String[] args) {\n        new MyGreeter().greet();\n    }\n}",
+      "expectedOutput": "Hello",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Default methods add behavior to interfaces without breaking implementors.</p>"
+    },
+    {
+      "id": 69,
+      "title": "69. Abstract Class",
+      "description": "Extend an abstract class and implement its method.",
+      "initialCode": "abstract class Animal {\n    abstract void speak();\n}\nclass Dog extends Animal {\n    // Implement speak to print Bark!\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        new Dog().speak();\n    }\n}",
+      "fullSolution": "abstract class Animal {\n    abstract void speak();\n}\nclass Dog extends Animal {\n    void speak(){ System.out.println(\"Bark!\"); }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        new Dog().speak();\n    }\n}",
+      "expectedOutput": "Bark!",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Abstract classes can define contracts and shared state.</p>"
+    },
+    {
+      "id": 70,
+      "title": "70. LocalDate",
+      "description": "Parse a date and add one day.",
+      "initialCode": "import java.time.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        LocalDate d = LocalDate.parse(\"2023-01-02\");\n        // Print d.plusDays(1)\n\n    }\n}",
+      "fullSolution": "import java.time.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        LocalDate d = LocalDate.parse(\"2023-01-02\");\n        System.out.println(d.plusDays(1));\n    }\n}",
+      "expectedOutput": "2023-01-03",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">java.time provides immutable, timezone-safe date/time APIs.</p>"
+    },
+    {
+      "id": 71,
+      "title": "71. Regex Find",
+      "description": "Use Pattern/Matcher to find digits in a string.",
+      "initialCode": "import java.util.regex.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Matcher m = Pattern.compile(\"\\\\d\").matcher(\"a1b2\");\n        // Print each digit match on its own line\n\n    }\n}",
+      "fullSolution": "import java.util.regex.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Matcher m = Pattern.compile(\"\\\\d\").matcher(\"a1b2\");\n        while (m.find()) System.out.println(m.group());\n    }\n}",
+      "expectedOutput": "1\n2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use Matcher.find() to iterate matches; group() returns the match.</p>"
+    },
+    {
+      "id": 72,
+      "title": "72. ArrayDeque",
+      "description": "Use a deque to add/remove from both ends.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        ArrayDeque<String> dq = new ArrayDeque<>();\n        dq.addLast(\"A\"); dq.addLast(\"B\"); dq.addFirst(\"0\");\n        // Remove from front until empty, printing each\n\n    }\n}",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        ArrayDeque<String> dq = new ArrayDeque<>();\n        dq.addLast(\"A\"); dq.addLast(\"B\"); dq.addFirst(\"0\");\n        while (!dq.isEmpty()) System.out.println(dq.removeFirst());\n    }\n}",
+      "expectedOutput": "0\nA\nB",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">ArrayDeque is a fast resizable double-ended queue.</p>"
+    },
+    {
+      "id": 73,
+      "title": "73. String.format",
+      "description": "Format a string with placeholders.",
+      "initialCode": "public class Main {\n    public static void main(String[] args) {\n        // Print: Name: Alice, Age: 30\n\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(String.format(\"Name: %s, Age: %d\", \"Alice\", 30));\n    }\n}",
+      "expectedOutput": "Name: Alice, Age: 30",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">String.format uses printf-style placeholders.</p>"
+    },
+    {
+      "id": 74,
+      "title": "74. Arrays.stream",
+      "description": "Stream over a primitive array and sum it.",
+      "initialCode": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        int[] arr = {1,2,3};\n        // Print the sum\n\n    }\n}",
+      "fullSolution": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        int[] arr = {1,2,3};\n        System.out.println(Arrays.stream(arr).sum());\n    }\n}",
+      "expectedOutput": "6",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Arrays.stream creates a stream from an array.</p>"
+    },
+    {
+      "id": 75,
+      "title": "75. distinct()",
+      "description": "Remove duplicates with distinct and print unique values.",
+      "initialCode": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Integer> list = Arrays.asList(1,1,2,2,3);\n        // Print unique values in encounter order\n\n    }\n}",
+      "fullSolution": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Integer> list = Arrays.asList(1,1,2,2,3);\n        list.stream().distinct().forEach(System.out::println);\n    }\n}",
+      "expectedOutput": "1\n2\n3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">distinct filters out duplicates while preserving order.</p>"
+    },
+    {
+      "id": 76,
+      "title": "76. groupingBy + TreeMap",
+      "description": "Group words by length into a sorted map and print counts.",
+      "initialCode": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> words = Arrays.asList(\"one\", \"two\", \"three\");\n        // Group by length into a TreeMap and print k=v per line\n\n    }\n}",
+      "fullSolution": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> words = Arrays.asList(\"one\", \"two\", \"three\");\n        Map<Integer, Long> m = words.stream().collect(Collectors.groupingBy(String::length, TreeMap::new, Collectors.counting()));\n        m.forEach((k,v) -> System.out.println(k + \"=\" + v));\n    }\n}",
+      "expectedOutput": "3=2\n5=1",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Provide TreeMap::new to keep grouping keys sorted.</p>"
+    },
+    {
+      "id": 77,
+      "title": "77. flatMap",
+      "description": "Flatten a list of lists and print each element.",
+      "initialCode": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<List<Integer>> nested = Arrays.asList(Arrays.asList(1,2), Arrays.asList(3,4));\n        // Flatten and print each number\n\n    }\n}",
+      "fullSolution": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<List<Integer>> nested = Arrays.asList(Arrays.asList(1,2), Arrays.asList(3,4));\n        nested.stream().flatMap(List::stream).forEach(System.out::println);\n    }\n}",
+      "expectedOutput": "1\n2\n3\n4",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">flatMap flattens nested streams.</p>"
+    },
+    {
+      "id": 78,
+      "title": "78. compute() Counts",
+      "description": "Use Map.compute to count character frequency preserving first-seen order.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        String s = \"banana\";\n        Map<Character,Integer> m = new LinkedHashMap<>();\n        // Count chars and print b=1, a=3, n=2 (one per line)\n\n    }\n}",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        String s = \"banana\";\n        Map<Character,Integer> m = new LinkedHashMap<>();\n        for (char c : s.toCharArray()) {\n            m.compute(c, (k,v) -> v==null ? 1 : v+1);\n        }\n        m.forEach((k,v) -> System.out.println(k + \"=\" + v));\n    }\n}",
+      "expectedOutput": "b=1\na=3\nn=2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">compute updates a value atomically based on the current mapping.</p>"
+    },
+    {
+      "id": 79,
+      "title": "79. partitioningBy",
+      "description": "Partition numbers into even/odd and print counts.",
+      "initialCode": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Integer> nums = Arrays.asList(1,2,3,4,5);\n        // Partition into even/odd and print even=2 then odd=3\n\n    }\n}",
+      "fullSolution": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Integer> nums = Arrays.asList(1,2,3,4,5);\n        Map<Boolean, Long> m = nums.stream().collect(Collectors.partitioningBy(n -> n % 2 == 0, Collectors.counting()));\n        System.out.println(\"even=\" + m.get(true));\n        System.out.println(\"odd=\" + m.get(false));\n    }\n}",
+      "expectedOutput": "even=2\nodd=3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">partitioningBy splits items into two groups based on a predicate.</p>"
+    },
+    {
+      "id": 80,
+      "title": "80. ExecutorService",
+      "description": "Submit a Callable and print the result.",
+      "initialCode": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        // Submit a task returning 2+3 and print the result\n\n    }\n}",
+      "fullSolution": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        ExecutorService ex = Executors.newSingleThreadExecutor();\n        Future<Integer> f = ex.submit(() -> 2 + 3);\n        System.out.println(f.get());\n        ex.shutdown();\n    }\n}",
+      "expectedOutput": "5",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use a fixed/single-thread executor to run tasks safely.</p>"
+    },
+    {
+      "id": 81,
+      "title": "81. CompletableFuture",
+      "description": "Compose async tasks and print the final result.",
+      "initialCode": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // supplyAsync -> thenApply to add ! and print\n\n    }\n}",
+      "fullSolution": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        CompletableFuture<String> cf = CompletableFuture.supplyAsync(() -> \"Hi\").thenApply(s -> s + \"!\");\n        System.out.println(cf.join());\n    }\n}",
+      "expectedOutput": "Hi!",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">CompletableFuture chains async computations and combines results.</p>"
+    },
+    {
+      "id": 82,
+      "title": "82. AtomicInteger",
+      "description": "Safely increment a counter from two threads and print the total.",
+      "initialCode": "import java.util.concurrent.atomic.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        AtomicInteger ai = new AtomicInteger(0);\n        // Start two threads incrementing 100 times each, then print ai.get()\n\n    }\n}",
+      "fullSolution": "import java.util.concurrent.atomic.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        AtomicInteger ai = new AtomicInteger(0);\n        Thread t1 = new Thread(() -> { for (int i=0;i<100;i++) ai.incrementAndGet(); });\n        Thread t2 = new Thread(() -> { for (int i=0;i<100;i++) ai.incrementAndGet(); });\n        t1.start(); t2.start(); t1.join(); t2.join();\n        System.out.println(ai.get());\n    }\n}",
+      "expectedOutput": "200",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Atomic classes provide lock-free thread-safe operations.</p>"
+    },
+    {
+      "id": 83,
+      "title": "83. Optional.orElse",
+      "description": "Provide a default value when Optional is empty.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Optional<String> o = Optional.empty();\n        // Print default if empty\n\n    }\n}",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Optional<String> o = Optional.empty();\n        System.out.println(o.orElse(\"default\"));\n    }\n}",
+      "expectedOutput": "default",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">orElse returns the given fallback when no value is present.</p>"
+    },
+    {
+      "id": 84,
+      "title": "84. StringJoiner",
+      "description": "Join strings with a custom delimiter.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // Join a, b, c with '-' and print\n\n    }\n}",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        StringJoiner sj = new StringJoiner(\"-\");\n        sj.add(\"a\"); sj.add(\"b\"); sj.add(\"c\");\n        System.out.println(sj.toString());\n    }\n}",
+      "expectedOutput": "a-b-c",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">StringJoiner offers clear API for delimiter/prefix/suffix joins.</p>"
+    },
+    {
+      "id": 85,
+      "title": "85. BigDecimal",
+      "description": "Add precise decimal numbers and print the result.",
+      "initialCode": "import java.math.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // Print 0.1 + 0.2 using BigDecimal\n\n    }\n}",
+      "fullSolution": "import java.math.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        BigDecimal a = new BigDecimal(\"0.1\");\n        BigDecimal b = new BigDecimal(\"0.2\");\n        System.out.println(a.add(b));\n    }\n}",
+      "expectedOutput": "0.3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use string constructors to avoid binary floating rounding.</p>"
+    },
+    {
+      "id": 86,
+      "title": "86. replaceAll",
+      "description": "Remove digits from a string using regex.",
+      "initialCode": "public class Main {\n    public static void main(String[] args) {\n        String s = \"a1b2\";\n        // Remove digits and print\n\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        String s = \"a1b2\";\n        System.out.println(s.replaceAll(\"\\\\d\", \"\"));\n    }\n}",
+      "expectedOutput": "ab",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">String.replaceAll takes a regex and replacement.</p>"
+    },
+    {
+      "id": 87,
+      "title": "87. Case-Insensitive Sort",
+      "description": "Sort strings ignoring case and print them.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        String[] arr = {\"Bob\", \"alice\", \"Carol\"};\n        // Sort ignoring case and print each on a new line\n\n    }\n}",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        String[] arr = {\"Bob\", \"alice\", \"Carol\"};\n        Arrays.sort(arr, String.CASE_INSENSITIVE_ORDER);\n        for (String w : arr) System.out.println(w);\n    }\n}",
+      "expectedOutput": "alice\nBob\nCarol",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use String.CASE_INSENSITIVE_ORDER for case-insensitive comparisons.</p>"
+    },
+    {
+      "id": 88,
+      "title": "88. String.repeat",
+      "description": "Repeat a string and print it.",
+      "initialCode": "public class Main {\n    public static void main(String[] args) {\n        // Print hahaha using repeat\n\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"ha\".repeat(3));\n    }\n}",
+      "expectedOutput": "hahaha",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">String.repeat(n) duplicates the content n times (Java 11+).</p>"
+    },
+    {
+      "id": 89,
+      "title": "89. Varargs",
+      "description": "Implement a varargs sum method and print the sum.",
+      "initialCode": "public class Main {\n    static int sum(int... nums){\n        // Sum all nums\n        return 0;\n    }\n    public static void main(String[] args) {\n        System.out.println(sum(1,2,3));\n    }\n}",
+      "fullSolution": "public class Main {\n    static int sum(int... nums){\n        int s=0; for (int n: nums) s += n; return s;\n    }\n    public static void main(String[] args) {\n        System.out.println(sum(1,2,3));\n    }\n}",
+      "expectedOutput": "6",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Varargs packs arguments into an array parameter.</p>"
+    },
+    {
+      "id": 90,
+      "title": "90. Interface Static Method",
+      "description": "Call a static method defined on an interface.",
+      "initialCode": "interface Util {\n    // add(a,b) returning a+b as a static method\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        // Print Util.add(2,3)\n\n    }\n}",
+      "fullSolution": "interface Util {\n    static int add(int a, int b){ return a + b; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(Util.add(2,3));\n    }\n}",
+      "expectedOutput": "5",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Interfaces can declare static utility methods.</p>"
+    },
+    {
+      "id": 91,
+      "title": "91. Try-with-Resources",
+      "description": "Use try-with-resources to auto-close a reader.",
+      "initialCode": "import java.io.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        // Use StringReader to read 'hello' then print it\n\n    }\n}",
+      "fullSolution": "import java.io.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        try (StringReader r = new StringReader(\"hello\")) {\n            char[] buf = new char[5];\n            r.read(buf);\n            System.out.println(new String(buf));\n        }\n    }\n}",
+      "expectedOutput": "hello",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Resources declared in try(...) are closed automatically.</p>"
+    },
+    {
+      "id": 92,
+      "title": "92. PriorityQueue",
+      "description": "Use a min-heap to get the smallest element.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        PriorityQueue<Integer> pq = new PriorityQueue<>();\n        pq.add(3); pq.add(1); pq.add(2);\n        // Poll and print the smallest\n\n    }\n}",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        PriorityQueue<Integer> pq = new PriorityQueue<>();\n        pq.add(3); pq.add(1); pq.add(2);\n        System.out.println(pq.poll());\n    }\n}",
+      "expectedOutput": "1",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">PriorityQueue orders elements by natural/comparator order.</p>"
+    },
+    {
+      "id": 93,
+      "title": "93. LinkedList",
+      "description": "Use LinkedList to add at the front and print first element.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        LinkedList<String> list = new LinkedList<>();\n        list.add(\"B\");\n        // Add \"A\" to the front then print first element\n\n    }\n}",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        LinkedList<String> list = new LinkedList<>();\n        list.add(\"B\");\n        list.addFirst(\"A\");\n        System.out.println(list.getFirst());\n    }\n}",
+      "expectedOutput": "A",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">LinkedList supports fast insertions/removals at ends.</p>"
+    },
+    {
+      "id": 94,
+      "title": "94. Deque push/pop",
+      "description": "Use a Deque as a stack and print the popped value.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Deque<Integer> st = new ArrayDeque<>();\n        st.push(1); st.push(2);\n        // Pop and print\n\n    }\n}",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Deque<Integer> st = new ArrayDeque<>();\n        st.push(1); st.push(2);\n        System.out.println(st.pop());\n    }\n}",
+      "expectedOutput": "2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">ArrayDeque efficiently implements stack operations.</p>"
+    },
+    {
+      "id": 95,
+      "title": "95. TreeMap",
+      "description": "Insert keys into TreeMap and print the first key.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        TreeMap<String,Integer> tm = new TreeMap<>();\n        tm.put(\"b\",2); tm.put(\"a\",1);\n        // Print the firstKey\n\n    }\n}",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        TreeMap<String,Integer> tm = new TreeMap<>();\n        tm.put(\"b\",2); tm.put(\"a\",1);\n        System.out.println(tm.firstKey());\n    }\n}",
+      "expectedOutput": "a",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">TreeMap orders keys by natural/comparator order.</p>"
+    },
+    {
+      "id": 96,
+      "title": "96. StringBuilder.reverse",
+      "description": "Reverse a string using StringBuilder and print it.",
+      "initialCode": "public class Main {\n    public static void main(String[] args) {\n        // Reverse 'abc' and print\n\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(new StringBuilder(\"abc\").reverse().toString());\n    }\n}",
+      "expectedOutput": "cba",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">StringBuilder reverse() creates a reversed view of characters.</p>"
+    },
+    {
+      "id": 97,
+      "title": "97. Regex Groups",
+      "description": "Capture a group from a string and print it.",
+      "initialCode": "import java.util.regex.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Pattern p = Pattern.compile(\"^Hello\\\\s+(\\\\w+)$\");\n        Matcher m = p.matcher(\"Hello World\");\n        // Print the captured word\n\n    }\n}",
+      "fullSolution": "import java.util.regex.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Pattern p = Pattern.compile(\"^Hello\\\\s+(\\\\w+)$\");\n        Matcher m = p.matcher(\"Hello World\");\n        if (m.find()) System.out.println(m.group(1));\n    }\n}",
+      "expectedOutput": "World",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use parentheses to capture subgroups and group(1) to retrieve.</p>"
+    },
+    {
+      "id": 98,
+      "title": "98. Arrays.binarySearch",
+      "description": "Search a sorted array and print the index.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        int[] arr = {1,2,3,4};\n        // Print index of 3\n\n    }\n}",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        int[] arr = {1,2,3,4};\n        System.out.println(Arrays.binarySearch(arr, 3));\n    }\n}",
+      "expectedOutput": "2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">binarySearch returns the index of an element or (-(insertion point)-1).</p>"
+    },
+    {
+      "id": 99,
+      "title": "99. Map.merge",
+      "description": "Merge counts in a map and print the sum of counts for 'a' and 'b'.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Map<String,Integer> counts = new HashMap<>();\n        for (char ch : \"aab\".toCharArray()) {\n            // Use merge to count characters\n        }\n        // Print counts.get(\"a\") + counts.get(\"b\")\n\n    }\n}",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Map<String,Integer> counts = new HashMap<>();\n        for (char ch : \"aab\".toCharArray()) {\n            counts.merge(String.valueOf(ch), 1, Integer::sum);\n        }\n        System.out.println(counts.get(\"a\") + counts.get(\"b\"));\n    }\n}",
+      "expectedOutput": "3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">merge combines a new value with an existing key using a remapping function.</p>"
+    },
+    {
+      "id": 100,
+      "title": "100. Capstone: Top Student",
+      "description": "Use streams to find and print the highest-scoring student's name.",
+      "initialCode": "import java.util.*;\nimport java.util.stream.*;\n\nclass Student { String name; int score; Student(String n,int s){ name=n; score=s; } }\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Student> students = Arrays.asList(new Student(\"Alice\",90), new Student(\"Bob\",80), new Student(\"Charlie\",100));\n        // Find max by score and print the name\n\n    }\n}",
+      "fullSolution": "import java.util.*;\nimport java.util.stream.*;\n\nclass Student { String name; int score; Student(String n,int s){ name=n; score=s; } }\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Student> students = Arrays.asList(new Student(\"Alice\",90), new Student(\"Bob\",80), new Student(\"Charlie\",100));\n        String name = students.stream().max(Comparator.comparingInt(s -> s.score)).get().name;\n        System.out.println(name);\n    }\n}",
+      "expectedOutput": "Charlie",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Combine Comparator.comparingInt with max() to select the top item.</p>"
     }
   ]
 }

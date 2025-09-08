@@ -447,7 +447,7 @@
       "language": "python",
       "description": "Extract all digits from 'a1b2c3' and print each on a new line.",
       "initialCode": "# re.findall to get digits then print\n\n",
-      "fullSolution": "import re\nfor d in re.findall(r'\\d','a1b2c3'):\n    print(d)\n",
+      "fullSolution": "import re\nfor d in re.findall(r'\\\\d','a1b2c3'):\n    print(d)\n",
       "expectedOutput": "1\n2\n3",
       "tutorial": "<p class=\"mb-4 text-gray-300\">Use the re module for regular expressions. \\d matches digits; groups capture substrings for later use.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import re\nprint(re.findall(r'\\\\d', 'a1b2c3'))\n# Groups:\nm = re.search(r'^Hello\\s+(\\\\w+)$', 'Hello World')\nprint(m.group(1))  # World</pre></div>"
     },
@@ -500,6 +500,506 @@
       "fullSolution": "class Student:\n    def __init__(self, name, score):\n        self.name=name\n        self.score=score\n\nstudents=[Student('Alice',90),Student('Bob',80),Student('Charlie',100)]\nprint(sum(s.score for s in students)/len(students))\n",
       "expectedOutput": "90.0",
       "tutorial": "<p class=\"mb-4 text-gray-300\">Combine multiple concepts: classes, loops, and aggregations. Think in steps: represent data, iterate, and compute.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class Student:\n    def __init__(self, name, score):\n        self.name, self.score = name, score\nstudents=[Student('A',90), Student('B',80)]\nprint(sum(s.score for s in students)/len(students))</pre></div>"
+    },
+    {
+      "id": 51,
+      "title": "51. Lambda + map",
+      "language": "python",
+      "description": "Use map with a lambda to double each number and print each on a new line.",
+      "initialCode": "nums = [1,2,3]\n# Use map + lambda to double each and print each on a new line\n\n",
+      "fullSolution": "nums = [1,2,3]\nfor x in map(lambda n: n*2, nums):\n    print(x)\n",
+      "expectedOutput": "2\n4\n6",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Lambdas are small anonymous functions; use map(func, iterable) to transform, then iterate to print.</p>"
+    },
+    {
+      "id": 52,
+      "title": "52. Filter Evens",
+      "language": "python",
+      "description": "Filter even numbers from 0..6 and print each on a new line.",
+      "initialCode": "nums = list(range(7))\n# Keep evens using filter + lambda and print each\n\n",
+      "fullSolution": "nums = list(range(7))\nfor x in filter(lambda n: n % 2 == 0, nums):\n    print(x)\n",
+      "expectedOutput": "0\n2\n4\n6",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">filter(func, iterable) keeps only items where func returns True.</p>"
+    },
+    {
+      "id": 53,
+      "title": "53. zip() Pairs",
+      "language": "python",
+      "description": "Zip two lists and print pairs as N-letter on separate lines.",
+      "initialCode": "a=[1,2,3]\nb=['a','b','c']\n# Print 1-a, 2-b, 3-c each on new lines\n\n",
+      "fullSolution": "a=[1,2,3]\nb=['a','b','c']\nfor i,ch in zip(a,b):\n    print(f'{i}-{ch}')\n",
+      "expectedOutput": "1-a\n2-b\n3-c",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">zip() pairs elements from multiple iterables in lockstep.</p>"
+    },
+    {
+      "id": 54,
+      "title": "54. Sort by Length",
+      "language": "python",
+      "description": "Sort words by length ascending and print each on a new line.",
+      "initialCode": "words=['pear','fig','apple']\n# Sort by length (ascending) and print\n\n",
+      "fullSolution": "words=['pear','fig','apple']\nfor w in sorted(words, key=len):\n    print(w)\n",
+      "expectedOutput": "fig\npear\napple",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">sorted(iterable, key=...) customizes ordering; key=len sorts by length.</p>"
+    },
+    {
+      "id": 55,
+      "title": "55. Sort Dicts",
+      "language": "python",
+      "description": "Sort a list of dicts by age and print names in order.",
+      "initialCode": "people=[{'name':'Bob','age':30},{'name':'Alice','age':25},{'name':'Eve','age':35}]\n# Sort by 'age' ascending and print names\n\n",
+      "fullSolution": "people=[{'name':'Bob','age':30},{'name':'Alice','age':25},{'name':'Eve','age':35}]\nfor p in sorted(people, key=lambda x: x['age']):\n    print(p['name'])\n",
+      "expectedOutput": "Alice\nBob\nEve",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use key=lambda d: d['field'] to sort records by a field.</p>"
+    },
+    {
+      "id": 56,
+      "title": "56. Extended Unpacking",
+      "language": "python",
+      "description": "Unpack first and last values, ignoring the middle.",
+      "initialCode": "data=[1,2,3,4]\n# Unpack to a and b (first/last) then print a and b on new lines\n\n",
+      "fullSolution": "data=[1,2,3,4]\na,*_,b = data\nprint(a)\nprint(b)\n",
+      "expectedOutput": "1\n4",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use *name to capture the 'rest' in iterable unpacking.</p>"
+    },
+    {
+      "id": 57,
+      "title": "57. Closures",
+      "language": "python",
+      "description": "Return a function that adds a captured value and use it.",
+      "initialCode": "def make_adder(n):\n    # return a function that adds n\n    pass\n\nadd5 = make_adder(5)\nprint(add5(10))\n",
+      "fullSolution": "def make_adder(n):\n    def add(x):\n        return x + n\n    return add\n\nadd5 = make_adder(5)\nprint(add5(10))\n",
+      "expectedOutput": "15",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">A closure remembers variables from the surrounding scope (like n).</p>"
+    },
+    {
+      "id": 58,
+      "title": "58. Decorators",
+      "language": "python",
+      "description": "Write a decorator that uppercases a function's return value.",
+      "initialCode": "# Implement @uppercase and decorate greet so it prints HELLO WORLD\n\n",
+      "fullSolution": "def uppercase(fn):\n    def wrapper(*args, **kwargs):\n        return fn(*args, **kwargs).upper()\n    return wrapper\n\n@uppercase\ndef greet(name):\n    return f'hello {name}'\n\nprint(greet('world'))\n",
+      "expectedOutput": "HELLO WORLD",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Decorators wrap call behavior without changing the original function code.</p>"
+    },
+    {
+      "id": 59,
+      "title": "59. Dataclasses",
+      "language": "python",
+      "description": "Define a simple dataclass and print its fields.",
+      "initialCode": "from dataclasses import dataclass\n# Define Person(name:str, age:int) and print \"Ada:42\"\n\n",
+      "fullSolution": "from dataclasses import dataclass\n\n@dataclass\nclass Person:\n    name: str\n    age: int\n\np = Person('Ada', 42)\nprint(f'{p.name}:{p.age}')\n",
+      "expectedOutput": "Ada:42",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">@dataclass auto-generates __init__, __repr__, and comparisons (optionally).</p>"
+    },
+    {
+      "id": 60,
+      "title": "60. @property",
+      "language": "python",
+      "description": "Create a computed property for rectangle area.",
+      "initialCode": "class Rect:\n    def __init__(self, w, h):\n        self.w, self.h = w, h\n    # Define property area returning w*h\n\nr = Rect(4,5)\nprint(r.area)\n",
+      "fullSolution": "class Rect:\n    def __init__(self, w, h):\n        self.w, self.h = w, h\n    @property\n    def area(self):\n        return self.w * self.h\n\nr = Rect(4,5)\nprint(r.area)\n",
+      "expectedOutput": "20",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use @property for computed attributes with attribute syntax.</p>"
+    },
+    {
+      "id": 61,
+      "title": "61. Type Hints",
+      "language": "python",
+      "description": "Add type hints to a simple function and call it.",
+      "initialCode": "# Define add(a:int,b:int)->int and print add(3,4)\n\n",
+      "fullSolution": "def add(a: int, b: int) -> int:\n    return a + b\n\nprint(add(3,4))\n",
+      "expectedOutput": "7",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Type hints improve readability and enable static checks (e.g., mypy).</p>"
+    },
+    {
+      "id": 62,
+      "title": "62. itertools.chain",
+      "language": "python",
+      "description": "Concatenate iterables lazily and print all values.",
+      "initialCode": "import itertools\n# Chain [1,2] and [3,4] and print each\n\n",
+      "fullSolution": "import itertools\nfor x in itertools.chain([1,2],[3,4]):\n    print(x)\n",
+      "expectedOutput": "1\n2\n3\n4",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">chain() lets you iterate multiple sequences as one.</p>"
+    },
+    {
+      "id": 63,
+      "title": "63. groupby Counts",
+      "language": "python",
+      "description": "Group words by first letter and count.",
+      "initialCode": "import itertools\nwords=['ant','ape','bat']\n# Print a:2 then b:1 (group by first letter)\n\n",
+      "fullSolution": "import itertools\nwords=['ant','ape','bat']\nfor key, grp in itertools.groupby(sorted(words, key=lambda w: w[0]), key=lambda w: w[0]):\n    count = sum(1 for _ in grp)\n    print(f'{key}:{count}')\n",
+      "expectedOutput": "a:2\nb:1",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">groupby groups consecutive items with the same key; sort first.</p>"
+    },
+    {
+      "id": 64,
+      "title": "64. Counter",
+      "language": "python",
+      "description": "Use Counter to count letters in a word (preserve first-seen order).",
+      "initialCode": "from collections import Counter\n# Count letters in 'banana' and print b:1, a:3, n:2 on new lines\n\n",
+      "fullSolution": "from collections import Counter\nfor k,v in Counter('banana').items():\n    print(f'{k}:{v}')\n",
+      "expectedOutput": "b:1\na:3\nn:2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Counter tallies items; .items() preserves first key insertion order in CPython 3.7+.</p>"
+    },
+    {
+      "id": 65,
+      "title": "65. defaultdict",
+      "language": "python",
+      "description": "Group values by key without pre-initializing lists.",
+      "initialCode": "from collections import defaultdict\n# Append two reds and print the red count (2)\n\n",
+      "fullSolution": "from collections import defaultdict\nd = defaultdict(list)\nd['red'].append('apple')\nd['blue'].append('sky')\nd['red'].append('cherry')\nprint(len(d['red']))\n",
+      "expectedOutput": "2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">defaultdict(list) auto-creates lists on first access.</p>"
+    },
+    {
+      "id": 66,
+      "title": "66. deque",
+      "language": "python",
+      "description": "Use deque for fast appends/pops on both ends.",
+      "initialCode": "from collections import deque\n# Start with [1,2], appendleft(0), append(3), print list(d)\n\n",
+      "fullSolution": "from collections import deque\nd = deque([1,2])\nd.appendleft(0)\nd.append(3)\nprint(list(d))\n",
+      "expectedOutput": "[0, 1, 2, 3]",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">deque is a double-ended queue with O(1) append/pop from both ends.</p>"
+    },
+    {
+      "id": 67,
+      "title": "67. namedtuple",
+      "language": "python",
+      "description": "Create a lightweight tuple-like object with named fields.",
+      "initialCode": "from collections import namedtuple\n# Define Point(x,y) and print sum of (2,3)\n\n",
+      "fullSolution": "from collections import namedtuple\nPoint = namedtuple('Point', 'x y')\np = Point(2,3)\nprint(p.x + p.y)\n",
+      "expectedOutput": "5",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">namedtuple provides dot-access with tuple immutability.</p>"
+    },
+    {
+      "id": 68,
+      "title": "68. contextmanager",
+      "language": "python",
+      "description": "Implement a simple context manager using @contextmanager.",
+      "initialCode": "from contextlib import contextmanager\n# Print enter, work, exit in order using a context manager\n\n",
+      "fullSolution": "from contextlib import contextmanager\n@contextmanager\ndef myctx():\n    print('enter')\n    try:\n        yield\n    finally:\n        print('exit')\n\nwith myctx():\n    print('work')\n",
+      "expectedOutput": "enter\nwork\nexit",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">@contextmanager yields control inside a with-block and guarantees cleanup.</p>"
+    },
+    {
+      "id": 69,
+      "title": "69. suppress",
+      "language": "python",
+      "description": "Ignore specific exceptions and continue.",
+      "initialCode": "from contextlib import suppress\n# Suppress ZeroDivisionError then print kept\n\n",
+      "fullSolution": "from contextlib import suppress\nwith suppress(ZeroDivisionError):\n    1/0\nprint('kept')\n",
+      "expectedOutput": "kept",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">suppress(ExceptionType) ignores the specified exceptions inside the block.</p>"
+    },
+    {
+      "id": 70,
+      "title": "70. pathlib",
+      "language": "python",
+      "description": "Write then read a small text file using pathlib.",
+      "initialCode": "from pathlib import Path\n# Write 'hi' to note.txt then read and print it\n\n",
+      "fullSolution": "from pathlib import Path\np = Path('note.txt')\np.write_text('hi')\nprint(p.read_text())\n",
+      "expectedOutput": "hi",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">pathlib provides OO filesystem paths (read/write text helpers included).</p>"
+    },
+    {
+      "id": 71,
+      "title": "71. JSON dumps",
+      "language": "python",
+      "description": "Serialize a dict to a compact JSON string.",
+      "initialCode": "import json\n# Dump {'a':1,'b':2} without spaces and print\n\n",
+      "fullSolution": "import json\ns = json.dumps({'a':1,'b':2}, separators=(',',':'))\nprint(s)\n",
+      "expectedOutput": "{\"a\":1,\"b\":2}",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use separators to make compact JSON (no spaces).</p>"
+    },
+    {
+      "id": 72,
+      "title": "72. CSV write/read",
+      "language": "python",
+      "description": "Write a tiny CSV then read it back and print a value.",
+      "initialCode": "import csv\n# Write rows ['x','y'] and ['1','2'] to data.csv, read and print 2\n\n",
+      "fullSolution": "import csv\nwith open('data.csv','w', newline='') as f:\n    w = csv.writer(f)\n    w.writerow(['x','y'])\n    w.writerow(['1','2'])\nwith open('data.csv') as f:\n    r = csv.reader(f)\n    header = next(r)\n    row = next(r)\n    print(row[1])\n",
+      "expectedOutput": "2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">csv.writer/reader handle CSV safely; newline='' avoids extra blank lines on Windows.</p>"
+    },
+    {
+      "id": 73,
+      "title": "73. Regex Substitution",
+      "language": "python",
+      "description": "Replace all digits with # and print the result.",
+      "initialCode": "import re\n# Replace digits in 'a1b2' with '#' and print\n\n",
+      "fullSolution": "import re\nprint(re.sub(r'\\\\d', '#', 'a1b2'))\n",
+      "expectedOutput": "a#b#",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use re.sub(pattern, repl, text) to transform strings.</p>"
+    },
+    {
+      "id": 74,
+      "title": "74. datetime Format",
+      "language": "python",
+      "description": "Parse an ISO date and print a different format.",
+      "initialCode": "from datetime import datetime\n# Parse '2023-01-02' and print '2023/01/02'\n\n",
+      "fullSolution": "from datetime import datetime\nd = datetime.fromisoformat('2023-01-02')\nprint(d.strftime('%Y/%m/%d'))\n",
+      "expectedOutput": "2023/01/02",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">fromisoformat parses ISO 8601 dates; strftime formats them.</p>"
+    },
+    {
+      "id": 75,
+      "title": "75. Logging",
+      "language": "python",
+      "description": "Configure logging to print a simple INFO message.",
+      "initialCode": "import logging\n# Configure to print 'INFO:Ready' and log it\n\n",
+      "fullSolution": "import logging\nlogging.basicConfig(level=logging.INFO, format='%(levelname)s:%(message)s')\nlogging.info('Ready')\n",
+      "expectedOutput": "INFO:Ready",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">basicConfig sets level and format; use logging.info/warning/error.</p>"
+    },
+    {
+      "id": 76,
+      "title": "76. *args",
+      "language": "python",
+      "description": "Use *args to accept a variable number of arguments.",
+      "initialCode": "# Define f(*args) printing len(args); call f(1,2,3)\n\n",
+      "fullSolution": "def f(*args):\n    print(len(args))\n\nf(1,2,3)\n",
+      "expectedOutput": "3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">*args collects positional arguments into a tuple.</p>"
+    },
+    {
+      "id": 77,
+      "title": "77. functools.partial",
+      "language": "python",
+      "description": "Create a function with one argument pre-filled.",
+      "initialCode": "from functools import partial\n# Make add5 so add5(7) == 12 and print it\n\n",
+      "fullSolution": "from functools import partial\n\ndef add(a,b):\n    return a+b\n\nadd5 = partial(add, 5)\nprint(add5(7))\n",
+      "expectedOutput": "12",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">partial fixes some arguments of a function and returns a new function.</p>"
+    },
+    {
+      "id": 78,
+      "title": "78. lru_cache",
+      "language": "python",
+      "description": "Memoize an expensive function and reuse results.",
+      "initialCode": "from functools import lru_cache\n# Memoize fib and print fib(10)\n\n",
+      "fullSolution": "from functools import lru_cache\n\n@lru_cache(maxsize=None)\ndef fib(n):\n    return n if n<2 else fib(n-1)+fib(n-2)\n\nprint(fib(10))\n",
+      "expectedOutput": "55",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">@lru_cache caches function results by arguments.</p>"
+    },
+    {
+      "id": 79,
+      "title": "79. Custom Ordering (__lt__)",
+      "language": "python",
+      "description": "Implement __lt__ to make a class sortable.",
+      "initialCode": "# Define Box with value and __lt__ then sort [3,1,2] boxes and print values\n\n",
+      "fullSolution": "class Box:\n    def __init__(self, v):\n        self.v = v\n    def __lt__(self, other):\n        return self.v < other.v\n\nboxes = [Box(3), Box(1), Box(2)]\nfor b in sorted(boxes):\n    print(b.v)\n",
+      "expectedOutput": "1\n2\n3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Define rich comparison methods to control sort order.</p>"
+    },
+    {
+      "id": 80,
+      "title": "80. __str__",
+      "language": "python",
+      "description": "Customize string representation for a class.",
+      "initialCode": "# Make Person print as Person(Alice)\n\n",
+      "fullSolution": "class Person:\n    def __init__(self, name):\n        self.name = name\n    def __str__(self):\n        return f'Person({self.name})'\n\nprint(Person('Alice'))\n",
+      "expectedOutput": "Person(Alice)",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">__str__ controls user-friendly printing.</p>"
+    },
+    {
+      "id": 81,
+      "title": "81. Ordered Dataclass",
+      "language": "python",
+      "description": "Make dataclass orderable and compare two instances.",
+      "initialCode": "from dataclasses import dataclass\n# Make Item(order=True) and print Item(5) < Item(7)\n\n",
+      "fullSolution": "from dataclasses import dataclass\n\n@dataclass(order=True)\nclass Item:\n    price: int\n\nprint(Item(5) < Item(7))\n",
+      "expectedOutput": "True",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">order=True adds comparison methods based on fields order.</p>"
+    },
+    {
+      "id": 82,
+      "title": "82. itertools.product",
+      "language": "python",
+      "description": "Cartesian product of two lists.",
+      "initialCode": "import itertools\n# Print 1a,1b,2a,2b each on new lines\n\n",
+      "fullSolution": "import itertools\nfor a,b in itertools.product([1,2], ['a','b']):\n    print(f'{a}{b}')\n",
+      "expectedOutput": "1a\n1b\n2a\n2b",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">product() yields all pairs from the input iterables.</p>"
+    },
+    {
+      "id": 83,
+      "title": "83. permutations",
+      "language": "python",
+      "description": "Generate all length-2 permutations of 'abc'.",
+      "initialCode": "import itertools\n# Print: ab, ac, ba, bc, ca, cb (each on new line)\n\n",
+      "fullSolution": "import itertools\nfor a,b in itertools.permutations('abc', 2):\n    print(a+b)\n",
+      "expectedOutput": "ab\nac\nba\nbc\nca\ncb",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">permutations(iterable, r) yields ordered r-length arrangements.</p>"
+    },
+    {
+      "id": 84,
+      "title": "84. accumulate",
+      "language": "python",
+      "description": "Produce running totals and print them.",
+      "initialCode": "import itertools\n# Accumulate sums over [1,2,3] and print each\n\n",
+      "fullSolution": "import itertools\nfor x in itertools.accumulate([1,2,3]):\n    print(x)\n",
+      "expectedOutput": "1\n3\n6",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">accumulate generates running reductions (default: sum).</p>"
+    },
+    {
+      "id": 85,
+      "title": "85. Exception Chaining",
+      "language": "python",
+      "description": "Raise from another exception and show the cause type.",
+      "initialCode": "# Print ValueError by raising RuntimeError from ValueError\n\n",
+      "fullSolution": "try:\n    try:\n        raise ValueError('x')\n    except ValueError as e:\n        raise RuntimeError('wrap') from e\nexcept Exception as e:\n    print(type(e.__cause__).__name__)\n",
+      "expectedOutput": "ValueError",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use 'raise X from Y' to preserve the original cause.</p>"
+    },
+    {
+      "id": 86,
+      "title": "86. threading + Lock",
+      "language": "python",
+      "description": "Use two threads to append values safely, then sum.",
+      "initialCode": "import threading\n# Start two threads appending 1 and 2 (with a lock) then print the sum 3\n\n",
+      "fullSolution": "import threading\nlock = threading.Lock()\nvals = []\n\ndef add(v):\n    with lock:\n        vals.append(v)\n\nt1 = threading.Thread(target=add, args=(1,))\nt2 = threading.Thread(target=add, args=(2,))\nt1.start(); t2.start(); t1.join(); t2.join()\nprint(sum(vals))\n",
+      "expectedOutput": "3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use Lock to protect shared state across threads.</p>"
+    },
+    {
+      "id": 87,
+      "title": "87. ThreadPoolExecutor",
+      "language": "python",
+      "description": "Submit tasks and collect results in order.",
+      "initialCode": "from concurrent.futures import ThreadPoolExecutor\n# Submit squares 1..3 and print results 1,4,9 on new lines\n\n",
+      "fullSolution": "from concurrent.futures import ThreadPoolExecutor\nwith ThreadPoolExecutor(max_workers=3) as ex:\n    futs = [ex.submit(lambda x: x*x, i) for i in (1,2,3)]\n    for f in futs:\n        print(f.result())\n",
+      "expectedOutput": "1\n4\n9",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Submit callables to a pool; retrieve results via Future.result().</p>"
+    },
+    {
+      "id": 88,
+      "title": "88. asyncio.gather",
+      "language": "python",
+      "description": "Run async tasks concurrently and print results.",
+      "initialCode": "import asyncio\n# Define async f(x)->2*x; gather for 1,2,3 and print results\n\n",
+      "fullSolution": "import asyncio\nasync def f(x):\n    return 2*x\nasync def main():\n    res = await asyncio.gather(f(1), f(2), f(3))\n    for v in res:\n        print(v)\nasyncio.run(main())\n",
+      "expectedOutput": "2\n4\n6",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">gather awaits multiple coroutines and returns results in order.</p>"
+    },
+    {
+      "id": 89,
+      "title": "89. glob",
+      "language": "python",
+      "description": "Create files and match them with glob pattern.",
+      "initialCode": "import glob\n# Create a.txt and b.txt then glob and print names sorted\n\n",
+      "fullSolution": "import glob\nopen('a.txt','w').close()\nopen('b.txt','w').close()\nfor name in sorted(glob.glob('*.txt')):\n    print(name)\n",
+      "expectedOutput": "a.txt\nb.txt",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">glob finds pathnames matching a pattern (e.g., *.txt).</p>"
+    },
+    {
+      "id": 90,
+      "title": "90. decimal",
+      "language": "python",
+      "description": "Exact decimal arithmetic for financial values.",
+      "initialCode": "from decimal import Decimal\n# Print Decimal('0.1')+Decimal('0.2')\n\n",
+      "fullSolution": "from decimal import Decimal\nprint(Decimal('0.1') + Decimal('0.2'))\n",
+      "expectedOutput": "0.3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Decimal avoids binary floating-point rounding issues.</p>"
+    },
+    {
+      "id": 91,
+      "title": "91. fractions",
+      "language": "python",
+      "description": "Do rational arithmetic with exact fractions.",
+      "initialCode": "from fractions import Fraction\n# Print Fraction(1,3)+Fraction(1,6)\n\n",
+      "fullSolution": "from fractions import Fraction\nprint(Fraction(1,3) + Fraction(1,6))\n",
+      "expectedOutput": "1/2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">fractions.Fraction keeps exact numerators/denominators.</p>"
+    },
+    {
+      "id": 92,
+      "title": "92. bisect_left",
+      "language": "python",
+      "description": "Binary search for insertion position.",
+      "initialCode": "import bisect\n# Find insertion index of 3 in [1,2,4,5] using bisect_left and print\n\n",
+      "fullSolution": "import bisect\nprint(bisect.bisect_left([1,2,4,5], 3))\n",
+      "expectedOutput": "2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">bisect_left returns the index to insert while keeping order.</p>"
+    },
+    {
+      "id": 93,
+      "title": "93. heapq",
+      "language": "python",
+      "description": "Use a min-heap to pop the smallest item.",
+      "initialCode": "import heapq\n# Push 3,1,2; pop and print the smallest\n\n",
+      "fullSolution": "import heapq\nh=[]\nheapq.heappush(h,3); heapq.heappush(h,1); heapq.heappush(h,2)\nprint(heapq.heappop(h))\n",
+      "expectedOutput": "1",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">heapq implements a binary heap (min-heap by default).</p>"
+    },
+    {
+      "id": 94,
+      "title": "94. statistics.mean",
+      "language": "python",
+      "description": "Compute the mean of a small list.",
+      "initialCode": "import statistics\n# Print mean of [1,2,3]\n\n",
+      "fullSolution": "import statistics\nprint(statistics.mean([1,2,3]))\n",
+      "expectedOutput": "2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">statistics provides common descriptive stats.</p>"
+    },
+    {
+      "id": 95,
+      "title": "95. Slice Assignment",
+      "language": "python",
+      "description": "Replace a slice of a list in-place.",
+      "initialCode": "letters=['a','b','c']\n# Replace letters[1:3] with ['X'] then print letters\n\n",
+      "fullSolution": "letters=['a','b','c']\nletters[1:3] = ['X']\nprint(letters)\n",
+      "expectedOutput": "['a', 'X']",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Slice assignment can grow or shrink lists.</p>"
+    },
+    {
+      "id": 96,
+      "title": "96. OrderedDict",
+      "language": "python",
+      "description": "Preserve insertion order of keys explicitly.",
+      "initialCode": "from collections import OrderedDict\n# Create OrderedDict and print keys in order b then a\n\n",
+      "fullSolution": "from collections import OrderedDict\nd = OrderedDict([('b',2),('a',1)])\nfor k in d.keys():\n    print(k)\n",
+      "expectedOutput": "b\na",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">OrderedDict preserves key insertion order (built-ins do as well in 3.7+).</p>"
+    },
+    {
+      "id": 97,
+      "title": "97. frozenset",
+      "language": "python",
+      "description": "Use an immutable set and test membership.",
+      "initialCode": "# Create frozenset({1,2,3}) and print if 2 in it\n\n",
+      "fullSolution": "s = frozenset({1,2,3})\nprint(2 in s)\n",
+      "expectedOutput": "True",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">frozenset is hashable and cannot be modified.</p>"
+    },
+    {
+      "id": 98,
+      "title": "98. Sort by Last Char",
+      "language": "python",
+      "description": "Sort words by their last character in descending order.",
+      "initialCode": "words=['ab','ba','aa']\n# Sort by last char descending and print each on new lines\n\n",
+      "fullSolution": "words=['ab','ba','aa']\nfor w in sorted(words, key=lambda s: s[-1], reverse=True):\n    print(w)\n",
+      "expectedOutput": "ab\nba\naa",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Provide a key function and set reverse=True for descending order.</p>"
+    },
+    {
+      "id": 99,
+      "title": "99. Custom Iterator",
+      "language": "python",
+      "description": "Implement a simple iterator that yields 1..3.",
+      "initialCode": "# Make a class that implements __iter__ and __next__ to yield 1,2,3 then StopIteration\n\n",
+      "fullSolution": "class OneToThree:\n    def __init__(self):\n        self.cur = 1\n    def __iter__(self):\n        return self\n    def __next__(self):\n        if self.cur <= 3:\n            v = self.cur\n            self.cur += 1\n            return v\n        raise StopIteration\n\nfor x in OneToThree():\n    print(x)\n",
+      "expectedOutput": "1\n2\n3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Iterators define __iter__ and __next__ to control iteration.</p>"
+    },
+    {
+      "id": 100,
+      "title": "100. Capstone: Top Student",
+      "language": "python",
+      "description": "Parse JSON of students and print the top-scoring student's name.",
+      "initialCode": "import json\n# Given the JSON string s below, parse it and print the top student's name\n# by score.\n\ns = '[{\"name\":\"Alice\",\"score\":90},{\"name\":\"Bob\",\"score\":80},{\"name\":\"Charlie\",\"score\":100}]'\n# Your code here\n\n",
+      "fullSolution": "import json\ns = '[{\"name\":\"Alice\",\"score\":90},{\"name\":\"Bob\",\"score\":80},{\"name\":\"Charlie\",\"score\":100}]'\nstudents = json.loads(s)\nprint(max(students, key=lambda d: d['score'])['name'])\n",
+      "expectedOutput": "Charlie",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Combine parsing, key functions, and max() to select the best item.</p>"
     }
   ]
 }

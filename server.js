@@ -9,6 +9,8 @@ const port = Number(process.env.PORT || 3000);
 const OLLAMA_URL = process.env.OLLAMA_URL || 'http://localhost:11434';
 const LMSTUDIO_URL = process.env.LMSTUDIO_URL || 'http://127.0.0.1:1234';
 const LMSTUDIO_API_KEY = process.env.LMSTUDIO_API_KEY || '';
+// Allow overriding the temporary working directory (useful when root FS is read-only)
+const BASE_TMP_DIR = (process.env.RUN_TMP_DIR && process.env.RUN_TMP_DIR.trim()) || os.tmpdir();
 
 // Utility: best-effort Python executable resolution across OSes
 function resolvePythonCmd() {
@@ -302,6 +304,7 @@ app.get('/health', async (req, res) => {
     const checks = {
         node: process.version,
         platform: process.platform,
+        baseTmpDir: BASE_TMP_DIR,
         ollama_url: OLLAMA_URL,
         lmstudio_url: LMSTUDIO_URL,
     };
@@ -393,7 +396,7 @@ app.post('/run/java', (req, res) => {
     }
 
     console.log('Creating temporary directory...');
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'java-run-'));
+    const tempDir = fs.mkdtempSync(path.join(BASE_TMP_DIR, 'java-run-'));
     const filePath = path.join(tempDir, 'Main.java');
     console.log(`Temporary directory created at: ${tempDir}`);
 
@@ -524,7 +527,7 @@ app.post('/run/python', (req, res) => {
         return res.status(413).json({ error: 'Code too large (max 100KB).' });
     }
 
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'python-run-'));
+    const tempDir = fs.mkdtempSync(path.join(BASE_TMP_DIR, 'python-run-'));
     const filePath = path.join(tempDir, 'script.py');
 
     fs.writeFile(filePath, code, (err) => {
@@ -548,7 +551,8 @@ app.post('/run/python', (req, res) => {
 
         // Use resolved python executable
         const py = resolvePythonCmd();
-        const run = spawn(py.cmd, [...py.args, filePath]);
+        // Run Python with the temp directory as CWD so relative file I/O works
+        const run = spawn(py.cmd, [...py.args, filePath], { cwd: tempDir });
         let output = '';
         let runError = '';
         let timedOut = false;

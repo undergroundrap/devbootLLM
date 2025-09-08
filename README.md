@@ -51,6 +51,7 @@ docker run --rm \
   -p 3000:3000 \
   -e OLLAMA_URL=http://host.docker.internal:11434 \
   -e LMSTUDIO_URL=http://host.docker.internal:1234 \
+  -e RUN_TMP_DIR=/tmp \
   --read-only \
   --tmpfs /tmp:rw,noexec,nodev,nosuid,size=64m \
   --cap-drop ALL \
@@ -68,6 +69,7 @@ docker run --rm `
   -p 3000:3000 `
   -e OLLAMA_URL=http://host.docker.internal:11434 `
   -e LMSTUDIO_URL=http://host.docker.internal:1234 `
+  -e RUN_TMP_DIR=/tmp `
   -v "$($PWD.Path):/usr/src/app:ro" `
   --read-only `
   --tmpfs "/tmp:rw,noexec,nodev,nosuid,size=64m" `
@@ -86,6 +88,7 @@ docker run --rm ^
   -p 3000:3000 ^
   -e OLLAMA_URL=http://host.docker.internal:11434 ^
   -e LMSTUDIO_URL=http://host.docker.internal:1234 ^
+  -e RUN_TMP_DIR=/tmp ^
   -v "%cd%:/usr/src/app:ro" ^
   --read-only ^
   --tmpfs "/tmp:rw,noexec,nodev,nosuid,size=64m" ^
@@ -100,6 +103,7 @@ docker run --rm ^
 Notes:
 - No host directories are mounted. This prevents untrusted code from modifying files on your PC.
 - Filesystem is read-only; the app only writes to an in-memory `/tmp` with `noexec`, `nodev`, and `nosuid`.
+- The backend writes temp files under `RUN_TMP_DIR` (defaults to OS tmp). In Docker, ensure it points to a writable mount (e.g., `/tmp`).
 - Container runs as a non-root user (from the image) with zero Linux capabilities and no privilege escalation.
 - Basic resource limits (CPU, memory, PIDs) are enforced to mitigate abuse.
 
@@ -124,6 +128,7 @@ docker run --rm \
   -p 3000:3000 \
   -e OLLAMA_URL=http://host.docker.internal:11434 \
   -e LMSTUDIO_URL=http://host.docker.internal:1234 \
+  -e RUN_TMP_DIR=/tmp \
   -v "${PWD}:/usr/src/app:ro" \
   --read-only \
   --tmpfs /tmp:rw,noexec,nodev,nosuid,size=64m \
@@ -142,6 +147,7 @@ docker run --rm `
   -p 3000:3000 `
   -e OLLAMA_URL=http://host.docker.internal:11434 `
   -e LMSTUDIO_URL=http://host.docker.internal:1234 `
+  -e RUN_TMP_DIR=/tmp `
   -v "$($PWD.Path):/usr/src/app:ro" `
   --read-only `
   --tmpfs "/tmp:rw,noexec,nodev,nosuid,size=64m" `

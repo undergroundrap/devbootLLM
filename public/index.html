@@ -755,6 +755,18 @@
                 }
 
                 addEventListeners() {
+                    // Add model change listener
+                    if (this.elements.aiModel) {
+                        this.elements.aiModel.addEventListener('change', () => {
+                            const provider = (this.elements.aiProvider && this.elements.aiProvider.value) || 
+                                          localStorage.getItem(`aiProvider-${this.currentTrack}`) || 'ollama';
+                            const storageKey = provider === 'lmstudio' 
+                                ? `lmstudioModel-${this.currentTrack}` 
+                                : `ollamaModel-${this.currentTrack}`;
+                            localStorage.setItem(storageKey, this.elements.aiModel.value);
+                        });
+                    }
+                    
                     this.elements.runBtn.addEventListener('click', () => this.runCodeCheck());
                     this.elements.solveBtn.addEventListener('click', () => this.solveLesson());
                     this.elements.resetBtn.addEventListener('click', () => {
@@ -907,9 +919,7 @@
                             modelSelect.value = models[0].name;
                             localStorage.setItem(storageKey, modelSelect.value);
                         }
-                        modelSelect.addEventListener('change', () => {
-                            localStorage.setItem(storageKey, modelSelect.value);
-                        }, { once: true });
+                        // Event listener moved to addEventListeners
                     } catch (err) {
                         const opt = document.createElement('option');
                         opt.value = '';

@@ -1503,5 +1503,16 @@
       "expectedOutput": "abc",
       "tutorial": "<p class=\"mb-4 text-gray-300\">Named groups (<code>(?&lt;name&gt;...)</code>) improve readability in complex patterns; access by name via <code>group(\"name\")</code>.</p>"
     }
+    ,
+    {
+      "id": 159,
+      "title": "159. Capstone: Files.walk + lines + sum",
+      "language": "java",
+      "description": "Create a directory with .txt files, stream their lines, parse ints, and print the sum.",
+      "initialCode": "import java.nio.file.*;\nimport java.io.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        // Create d/ with a.txt (1\\n2), b.txt (3), and c.log (x)\n        // Walk d/, filter *.txt, stream lines, parse ints, sum, print 6\n\n    }\n}",
+      "fullSolution": "import java.nio.file.*;\nimport java.io.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        Path dir = Paths.get(\"d\");\n        Files.createDirectories(dir);\n        Files.writeString(dir.resolve(\"a.txt\"), \"1\\n2\\n\");\n        Files.writeString(dir.resolve(\"b.txt\"), \"3\\n\");\n        Files.writeString(dir.resolve(\"c.log\"), \"x\\n\");\n        long sum = Files.walk(dir)\n            .filter(p -> p.toString().endsWith(\".txt\"))\n            .flatMap(p -> { try { return Files.lines(p); } catch (IOException e) { return Stream.empty(); } })\n            .map(String::trim)\n            .filter(s -> !s.isEmpty())\n            .mapToLong(Long::parseLong)\n            .sum();\n        System.out.println(sum);\n    }\n}",
+      "expectedOutput": "6",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Capstone combining <code>Files.walk</code> with <code>Files.lines</code> and stream operations to process multiple files declaratively.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">java.nio.file.Files.walk(java.nio.file.Paths.get(\"d\"))\n  .filter(p -> p.toString().endsWith(\".txt\"))\n  .forEach(System.out::println);</pre></div>"
+    }
   ]
 }

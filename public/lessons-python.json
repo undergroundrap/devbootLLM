@@ -1442,5 +1442,38 @@
       "expectedOutput": "2/3",
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Fraction</code> keeps exact rational values without floating-point error.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from fractions import Fraction\nprint(Fraction(1,10) * 3)</pre></div>"
     }
+    ,
+    {
+      "id": 144,
+      "title": "144. itertools.product",
+      "language": "python",
+      "description": "Compute Cartesian product size using itertools.product.",
+      "initialCode": "from itertools import product\n\n# Compute the number of pairs in product([1,2], [3,4]) and print it\n\n",
+      "fullSolution": "from itertools import product\nprint(len(list(product([1,2], [3,4]))))\n",
+      "expectedOutput": "4",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>product</code> forms all combinations from input iterables. Wrapping with <code>list</code> materializes the pairs for counting.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from itertools import product\nfor a,b in product('ab', 'xy'):\n    print(a+b)</pre></div>"
+    }
+    ,
+    {
+      "id": 145,
+      "title": "145. collections.Counter",
+      "language": "python",
+      "description": "Count occurrences with Counter and index by key.",
+      "initialCode": "from collections import Counter\n\n# Count letters in 'aab' and print the count for 'a'\n\n",
+      "fullSolution": "from collections import Counter\nprint(Counter('aab')['a'])\n",
+      "expectedOutput": "2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Counter</code> is a dict subclass for counting hashable items. Access counts by key like a normal dict.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from collections import Counter\nc = Counter([1,2,1,3])\nprint(c[1])  # 2</pre></div>"
+    }
+    ,
+    {
+      "id": 146,
+      "title": "146. f-string formatting",
+      "language": "python",
+      "description": "Format floats to two decimals using f-strings.",
+      "initialCode": "# Print 3.14159 rounded to two decimals using an f-string\n\n",
+      "fullSolution": "print(f\"{3.14159:.2f}\")\n",
+      "expectedOutput": "3.14",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">An f-string can include format specifiers after a colon. <code>.2f</code> formats as fixed-point with two decimals.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">value = 2/3\nprint(f\"{value:.3f}\")  # 0.667</pre></div>"
+    }
   ]
 }

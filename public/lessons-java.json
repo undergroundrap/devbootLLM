@@ -11,6 +11,116 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">In Java, the console is a text output window. To print text to it, we use a built-in command from the System library.</p><p class=\"mb-4 text-gray-300\">The command is <code>System.out.println()</code>. The <code>ln</code> part means \"line,\" so it prints the text and then moves to the next line.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">// This line will print \"Welcome to Java!\" to the console.\nSystem.out.println(\"Welcome to Java!\");\n\n// This will print a number. Numbers don't need quotes.\nSystem.out.println(123);</pre></div><p class=\"mt-4 text-gray-300\">For this lesson, you need to print the specific phrase \"Hello, World!\".</p>"
     },
     {
+      "id": 112,
+      "title": "112. Map.merge (counting)",
+      "language": "java",
+      "description": "Use Map.merge to count occurrences and print the count for 'a'.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        String[] xs = {\"a\", \"b\", \"a\"};\n        Map<String, Integer> m = new HashMap<>();\n        // Use merge to count occurrences in m, then print m.get(\"a\") (should be 2)\n\n    }\n}",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        String[] xs = {\"a\", \"b\", \"a\"};\n        Map<String, Integer> m = new HashMap<>();\n        for (String s : xs) {\n            m.merge(s, 1, Integer::sum);\n        }\n        System.out.println(m.get(\"a\"));\n    }\n}",
+      "expectedOutput": "2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Map.merge</code> simplifies counters: initialize when absent, otherwise combine with a function (e.g., <code>Integer::sum</code>).</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">java.util.Map<String,Integer> m = new java.util.HashMap<>();\nm.merge(\"k\", 1, Integer::sum);</pre></div>"
+    },
+    {
+      "id": 113,
+      "title": "113. LinkedHashSet (dedupe, preserve order)",
+      "language": "java",
+      "description": "Remove duplicates while preserving insertion order and print the size.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        String[] xs = {\"a\", \"b\", \"a\", \"c\"};\n        // Put in a LinkedHashSet to dedupe while preserving order, then print size (3)\n\n    }\n}",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        String[] xs = {\"a\", \"b\", \"a\", \"c\"};\n        Set<String> s = new LinkedHashSet<>(Arrays.asList(xs));\n        System.out.println(s.size());\n    }\n}",
+      "expectedOutput": "3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>LinkedHashSet</code> preserves insertion order while removing duplicates.</p>"
+    },
+    {
+      "id": 114,
+      "title": "114. groupingBy + summingInt",
+      "language": "java",
+      "description": "Group strings by first character and sum their lengths.",
+      "initialCode": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> xs = Arrays.asList(\"ax\", \"by\", \"az\");\n        // Group by first char and sum lengths; print sum for key 'a' (4)\n\n    }\n}",
+      "fullSolution": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> xs = Arrays.asList(\"ax\", \"by\", \"az\");\n        Map<Character,Integer> m = xs.stream().collect(\n            Collectors.groupingBy(s -> s.charAt(0), Collectors.summingInt(String::length))\n        );\n        System.out.println(m.get('a'));\n    }\n}",
+      "expectedOutput": "4",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>Collectors.groupingBy</code> with <code>summingInt</code> to aggregate values per key.</p>"
+    },
+    {
+      "id": 115,
+      "title": "115. Files.createDirectories + size",
+      "language": "java",
+      "description": "Create a directory and file, write text, then print file size.",
+      "initialCode": "import java.nio.file.*;\nimport java.io.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        // Create dir 'd', write \"hi\" to d/t.txt, then print file size (2)\n\n    }\n}",
+      "fullSolution": "import java.nio.file.*;\nimport java.io.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        Path dir = Paths.get(\"d\");\n        Files.createDirectories(dir);\n        Path p = dir.resolve(\"t.txt\");\n        try (BufferedWriter w = Files.newBufferedWriter(p)) {\n            w.write(\"hi\");\n        }\n        System.out.println(Files.size(p));\n    }\n}",
+      "expectedOutput": "2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">NIO.2 APIs (<code>java.nio.file</code>) support portable path operations and buffered I/O. Always close streams via try-with-resources.</p>"
+    },
+    {
+      "id": 116,
+      "title": "116. LocalDate + format",
+      "language": "java",
+      "description": "Add one day to a date and print ISO format.",
+      "initialCode": "import java.time.*;\nimport java.time.format.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // Create LocalDate.of(2020,1,1), plus one day, and print as yyyy-MM-dd\n\n    }\n}",
+      "fullSolution": "import java.time.*;\nimport java.time.format.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        LocalDate d = LocalDate.of(2020, 1, 1).plusDays(1);\n        System.out.println(d.format(DateTimeFormatter.ISO_LOCAL_DATE));\n    }\n}",
+      "expectedOutput": "2020-01-02",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">The Java Time API (JSR-310) offers immutable date/time types; use <code>DateTimeFormatter</code> for formatting.</p>"
+    },
+    {
+      "id": 117,
+      "title": "117. Optional.orElseGet",
+      "language": "java",
+      "description": "Provide a lazy fallback when Optional is empty.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Optional<String> s = Optional.ofNullable(null);\n        // Use orElseGet to print \"fallback\"\n\n    }\n}",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Optional<String> s = Optional.ofNullable(null);\n        System.out.println(s.orElseGet(() -> \"fallback\"));\n    }\n}",
+      "expectedOutput": "fallback",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>orElseGet</code> evaluates the supplier only if the Optional is empty, avoiding unnecessary work.</p>"
+    },
+    {
+      "id": 118,
+      "title": "118. IntStream.reduce (product)",
+      "language": "java",
+      "description": "Compute a product using IntStream.reduce.",
+      "initialCode": "import java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // Print the product of 1..4 using IntStream.reduce (should be 24)\n\n    }\n}",
+      "fullSolution": "import java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        int prod = IntStream.rangeClosed(1, 4).reduce(1, (a,b) -> a*b);\n        System.out.println(prod);\n    }\n}",
+      "expectedOutput": "24",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use a neutral identity (1 for multiplication) with <code>reduce</code> to fold a stream into a single value.</p>"
+    },
+    {
+      "id": 119,
+      "title": "119. String.join",
+      "language": "java",
+      "description": "Join a list of strings with a delimiter.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> xs = Arrays.asList(\"a\", \"b\", \"c\");\n        // Join with '-' and print 'a-b-c'\n\n    }\n}",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> xs = Arrays.asList(\"a\", \"b\", \"c\");\n        System.out.println(String.join(\"-\", xs));\n    }\n}",
+      "expectedOutput": "a-b-c",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>String.join</code> is a convenient way to concatenate with delimiters.</p>"
+    },
+    {
+      "id": 120,
+      "title": "120. Arrays.binarySearch",
+      "language": "java",
+      "description": "Binary search for a value in a sorted array and print the index.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        int[] a = {1, 3, 5};\n        // Use Arrays.binarySearch to find 3 and print the index (1)\n\n    }\n}",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        int[] a = {1, 3, 5};\n        System.out.println(Arrays.binarySearch(a, 3));\n    }\n}",
+      "expectedOutput": "1",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Arrays.binarySearch</code> returns the index of the key if found; the array must be sorted.</p>"
+    },
+    {
+      "id": 121,
+      "title": "121. Collections.frequency",
+      "language": "java",
+      "description": "Count how many times an element appears in a collection.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> xs = Arrays.asList(\"a\", \"a\", \"b\");\n        // Use Collections.frequency to count 'a' and print 2\n\n    }\n}",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> xs = Arrays.asList(\"a\", \"a\", \"b\");\n        System.out.println(Collections.frequency(xs, \"a\"));\n    }\n}",
+      "expectedOutput": "2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Collections.frequency</code> scans a collection to count occurrences of an element.</p>"
+    },
+    {
+      "id": 122,
+      "title": "122. StringBuilder.reverse",
+      "language": "java",
+      "description": "Reverse a string using StringBuilder and print it.",
+      "initialCode": "public class Main {\n    public static void main(String[] args) {\n        String s = \"abc\";\n        // Reverse s using StringBuilder and print \"cba\"\n\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        String s = \"abc\";\n        System.out.println(new StringBuilder(s).reverse().toString());\n    }\n}",
+      "expectedOutput": "cba",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>StringBuilder</code> offers a mutable sequence of characters; <code>reverse()</code> inverts them efficiently.</p>"
+    },
+    {
       "id": 124,
       "title": "124. Capstone: Word Count Top2",
       "description": "Count words and print the top 2 by frequency (key:count).",
@@ -124,7 +234,7 @@
       "description": "Write a reusable block of code called a method. Create a method named `greetUser` that takes a `String` name as a parameter and prints 'Hello, [name]!'. Call this method from `main` with your own name.",
       "initialCode": "public class Main {\n\n    // Define your greetUser method here. It should be public and static.\n\n\n    public static void main(String[] args) {\n        // Call your greetUser method with your name (e.g., \"Alex\")\n\n    }\n}",
       "fullSolution": "public class Main {\n\n    // Define your greetUser method here. It should be public and static.\n    public static void greetUser(String name) {\n        System.out.println(\"Hello, \" + name + \"!\");\n    }\n\n    public static void main(String[] args) {\n        // Call your greetUser method with your name (e.g., \"Alex\")\n        greetUser(\"Alex\");\n    }\n}",
-      "expectedOutput": null,
+      "expectedOutput": "Hello, Alex!",
       "tutorial": "<p class=\"mb-4 text-gray-300\">Methods (also called functions in other languages) help you organize code and avoid repetition. You define it once and can call it many times.</p><p class=\"mb-4 text-gray-300\">A method signature has a few parts: visibility (<code>public</code>), other modifiers (<code>static</code>), return type (<code>void</code> if it returns nothing), the method name, and parameters in parentheses.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">public class Main {\n\n    // A method that takes two integers and prints their sum\n    public static void add(int a, int b) {\n        System.out.println(a + b);\n    }\n\n    public static void main(String[] args) {\n        // Call the add method with different arguments\n        add(5, 3);   // Prints 8\n        add(10, 20); // Prints 30\n    }\n}</pre></div>"
     },
     {
@@ -1206,10 +1316,10 @@
       "title": "142. Files.lines + try-with-resources",
       "language": "java",
       "description": "Write a file, read it with Files.lines, and count matching lines.",
-      "initialCode": "import java.nio.file.*;\nimport java.io.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        // Write lines A, B, A to a.txt; read and count lines equal to \"A\" and print 2\n\n    }\n}",
-      "fullSolution": "import java.nio.file.*;\nimport java.io.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        Path p = Path.of(\"a.txt\");\n        Files.writeString(p, \"A\nB\nA\n\");\n        try (Stream<String> lines = Files.lines(p)) {\n            long c = lines.filter(s -> s.equals(\"A\")).count();\n            System.out.println(c);\n        }\n    }\n}",
+      "initialCode": "import java.nio.file.*;\nimport java.io.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        // Write lines A, B, A to a.txt; read and count lines equal to \"A\" and print 2\n+        // Use Files.newBufferedWriter and try-with-resources (Java 8 compatible)\n\n    }\n}",
+      "fullSolution": "import java.nio.file.*;\nimport java.io.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        Path p = Paths.get(\"a.txt\");\n        try (BufferedWriter w = Files.newBufferedWriter(p)) {\n            w.write(\"A\nB\nA\n\");\n        }\n        try (Stream<String> lines = Files.lines(p)) {\n            long c = lines.filter(s -> s.equals(\"A\")).count();\n            System.out.println(c);\n        }\n    }\n}",
       "expectedOutput": "2",
-      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Files.lines</code> streams file content lazily; combine with try-with-resources to ensure the file handle is closed.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">try (var s = java.nio.file.Files.lines(java.nio.file.Path.of(\"f.txt\"))) { /* use stream */ }</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Files.lines</code> streams file content lazily; combine with try-with-resources to ensure the file handle is closed.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">try (java.util.stream.Stream&lt;String&gt; s = java.nio.file.Files.lines(java.nio.file.Paths.get(\"f.txt\"))) { /* use stream */ }</pre></div>"
     },
     {
       "id": 143,
@@ -1220,6 +1330,36 @@
       "fullSolution": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> xs = Arrays.asList(\"a\", \"bb\");\n        Set<Integer> lens = xs.stream().collect(Collectors.mapping(String::length, Collectors.toSet()));\n        int sum = lens.stream().mapToInt(Integer::intValue).sum();\n        System.out.println(sum);\n    }\n}",
       "expectedOutput": "3",
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Collectors.mapping</code> transforms elements as they are being collected, without an explicit pre-<code>map</code> step.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Set<Integer> s = List.of(\"a\",\"bbb\").stream()\n  .collect(Collectors.mapping(String::length, Collectors.toSet()));</pre></div>"
+    },
+    {
+      "id": 144,
+      "title": "144. BigInteger factorial",
+      "language": "java",
+      "description": "Compute 10! using BigInteger and print the result.",
+      "initialCode": "import java.math.BigInteger;\n\npublic class Main {\n    public static void main(String[] args) {\n        // Compute factorial of 10 using BigInteger and print it\n\n    }\n}",
+      "fullSolution": "import java.math.BigInteger;\n\npublic class Main {\n    public static void main(String[] args) {\n        BigInteger f = BigInteger.ONE;\n        for (int i = 2; i <= 10; i++) {\n            f = f.multiply(BigInteger.valueOf(i));\n        }\n        System.out.println(f);\n    }\n}",
+      "expectedOutput": "3628800",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>BigInteger</code> handles integers larger than <code>long</code> without overflow. Multiply iteratively to build factorial values.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">java.math.BigInteger x = java.math.BigInteger.TEN;\nSystem.out.println(x.pow(3));</pre></div>"
+    },
+    {
+      "id": 145,
+      "title": "145. Stream join + map",
+      "language": "java",
+      "description": "Uppercase and join a list using Collectors.joining.",
+      "initialCode": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> xs = Arrays.asList(\"a\", \"b\", \"c\");\n        // Use stream + map + Collectors.joining to print A-B-C\n\n    }\n}",
+      "fullSolution": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> xs = Arrays.asList(\"a\", \"b\", \"c\");\n        String out = xs.stream().map(String::toUpperCase).collect(Collectors.joining(\"-\"));\n        System.out.println(out);\n    }\n}",
+      "expectedOutput": "A-B-C",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Streams can transform and aggregate collections succinctly. <code>map</code> applies a transformation per element; <code>Collectors.joining</code> concatenates with a delimiter.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">// Uppercase then join with hyphens\njava.util.List<String> xs = java.util.Arrays.asList(\"x\", \"y\", \"z\");\nString s = xs.stream().map(String::toUpperCase).collect(java.util.stream.Collectors.joining(\"-\"));\nSystem.out.println(s);</pre></div>"
+    },
+    {
+      "id": 146,
+      "title": "146. Arrays.sort with Comparator",
+      "language": "java",
+      "description": "Sort integers in descending order using Comparator.reverseOrder.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Integer[] xs = {3, 1, 2};\n        // Sort xs in descending order and print each on its own line (3, then 2, then 1)\n\n    }\n}",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Integer[] xs = {3, 1, 2};\n        Arrays.sort(xs, Comparator.reverseOrder());\n        for (int v : xs) System.out.println(v);\n    }\n}",
+      "expectedOutput": "3\n2\n1",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Arrays.sort</code> accepts a <code>Comparator</code> for custom ordering. With boxed <code>Integer</code>, use <code>Comparator.reverseOrder()</code> for descending.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Integer[] a = {5,1,4};\njava.util.Arrays.sort(a, java.util.Comparator.reverseOrder());</pre></div>"
     }
   ]
 }

@@ -1360,6 +1360,148 @@
       "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Integer[] xs = {3, 1, 2};\n        Arrays.sort(xs, Comparator.reverseOrder());\n        for (int v : xs) System.out.println(v);\n    }\n}",
       "expectedOutput": "3\n2\n1",
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Arrays.sort</code> accepts a <code>Comparator</code> for custom ordering. With boxed <code>Integer</code>, use <code>Comparator.reverseOrder()</code> for descending.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Integer[] a = {5,1,4};\njava.util.Arrays.sort(a, java.util.Comparator.reverseOrder());</pre></div>"
+    },
+    {
+      "id": 147,
+      "title": "147. ThreadLocal + Executor",
+      "language": "java",
+      "description": "Use ThreadLocal in two tasks and print the sum of their values (3).",
+      "initialCode": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        // Create a ThreadLocal<Integer>, submit two tasks that set it to 1 and 2\n        // Return their values and print the sum (3)\n\n    }\n}",
+      "fullSolution": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        ThreadLocal<Integer> tl = new ThreadLocal<>();\n        Callable<Integer> c1 = () -> { tl.set(1); return tl.get(); };\n        Callable<Integer> c2 = () -> { tl.set(2); return tl.get(); };\n        ExecutorService ex = Executors.newFixedThreadPool(2);\n        try {\n            Future<Integer> f1 = ex.submit(c1);\n            Future<Integer> f2 = ex.submit(c2);\n            System.out.println(f1.get() + f2.get());\n        } finally {\n            ex.shutdown();\n        }\n    }\n}",
+      "expectedOutput": "3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>ThreadLocal</code> provides per-thread storage; each thread sees its own value even when sharing the same variable reference.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">ThreadLocal<Integer> tl = new ThreadLocal<>(); tl.set(123);</pre></div>"
+    }
+    ,
+    {
+      "id": 159,
+      "title": "159. Capstone: Files.walk + lines + sum",
+      "language": "java",
+      "description": "Create a directory with .txt files, stream their lines, parse ints, and print the sum.",
+      "initialCode": "import java.nio.file.*;\nimport java.io.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        // Create d/ with a.txt (1\\n2), b.txt (3), and c.log (x)\n        // Walk d/, filter *.txt, stream lines, parse ints, sum, print 6\n\n    }\n}",
+      "fullSolution": "import java.nio.file.*;\nimport java.io.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        Path dir = Paths.get(\"d\");\n        Files.createDirectories(dir);\n        Files.writeString(dir.resolve(\"a.txt\"), \"1\n2\n\");\n        Files.writeString(dir.resolve(\"b.txt\"), \"3\n\");\n        Files.writeString(dir.resolve(\"c.log\"), \"x\n\");\n        long sum = Files.walk(dir)\n            .filter(p -> p.toString().endsWith(\".txt\"))\n            .flatMap(p -> { try { return Files.lines(p); } catch (IOException e) { return Stream.empty(); } })\n            .map(String::trim)\n            .filter(s -> !s.isEmpty())\n            .mapToLong(Long::parseLong)\n            .sum();\n        System.out.println(sum);\n    }\n}",
+      "expectedOutput": "6",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Capstone combining <code>Files.walk</code> with <code>Files.lines</code> and stream operations to process multiple files declaratively.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">java.nio.file.Files.walk(java.nio.file.Paths.get(\"d\"))\n  .filter(p -> p.toString().endsWith(\".txt\"))\n  .forEach(System.out::println);</pre></div>"
+    }
+    ,
+    {
+      "id": 148,
+      "title": "148. ReentrantLock",
+      "language": "java",
+      "description": "Protect a shared counter with ReentrantLock across two threads and print 2000.",
+      "initialCode": "import java.util.concurrent.locks.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        // Start two threads that each increment a shared counter 1000 times\n        // Guard increments with a ReentrantLock and print the final count (2000)\n\n    }\n}",
+      "fullSolution": "import java.util.concurrent.locks.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        Lock lock = new ReentrantLock();\n        final int[] counter = {0};\n        Runnable inc = () -> {\n            for (int i = 0; i < 1000; i++) {\n                lock.lock();\n                try { counter[0]++; } finally { lock.unlock(); }\n            }\n        };\n        Thread t1 = new Thread(inc), t2 = new Thread(inc);\n        t1.start(); t2.start();\n        t1.join(); t2.join();\n        System.out.println(counter[0]);\n    }\n}",
+      "expectedOutput": "2000",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>ReentrantLock</code> offers explicit locking with try/finally for predictable release; it supports advanced features beyond <code>synchronized</code>.</p>"
+    }
+    ,
+    {
+      "id": 149,
+      "title": "149. EnumSet",
+      "language": "java",
+      "description": "Use EnumSet to hold permissions and test membership.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n    enum Perm { READ, WRITE, EXEC }\n    public static void main(String[] args) {\n        // Create EnumSet.of(READ, WRITE) and print whether it contains READ (true)\n\n    }\n}",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n    enum Perm { READ, WRITE, EXEC }\n    public static void main(String[] args) {\n        EnumSet<Perm> s = EnumSet.of(Perm.READ, Perm.WRITE);\n        System.out.println(s.contains(Perm.READ));\n    }\n}",
+      "expectedOutput": "true",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>EnumSet</code> is a high-performance set for enum keys, implemented as bit flags under the hood.</p>"
+    }
+    ,
+    {
+      "id": 150,
+      "title": "150. Sealed interface + instanceof pattern",
+      "language": "java",
+      "description": "Define a sealed Shape, implement Rect and compute its area with pattern matching.",
+      "initialCode": "public class Main {\n    sealed interface Shape permits Rect, Circle {}\n    static final class Rect implements Shape { int w,h; Rect(int w,int h){ this.w=w; this.h=h; } }\n    static final class Circle implements Shape { int r; Circle(int r){ this.r=r; } }\n    public static void main(String[] args) {\n        // Create a Rect(3,4) as Shape and print its area (12) using instanceof pattern binding\n\n    }\n}",
+      "fullSolution": "public class Main {\n    sealed interface Shape permits Rect, Circle {}\n    static final class Rect implements Shape { int w,h; Rect(int w,int h){ this.w=w; this.h=h; } }\n    static final class Circle implements Shape { int r; Circle(int r){ this.r=r; } }\n    public static void main(String[] args) {\n        Shape s = new Rect(3,4);\n        if (s instanceof Rect r) {\n            System.out.println(r.w * r.h);\n        }\n    }\n}",
+      "expectedOutput": "12",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Java 17 sealed types constrain inheritance; pattern matching for <code>instanceof</code> introduces a bound variable with the target type.</p>"
+    }
+    ,
+    {
+      "id": 151,
+      "title": "151. Files.walk (count)",
+      "language": "java",
+      "description": "Create a dir with .txt files, walk it, and print the count of .txt files.",
+      "initialCode": "import java.nio.file.*;\nimport java.io.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        // Create d/, write a.txt, b.txt, c.log; use Files.walk to count *.txt and print 2\n\n    }\n}",
+      "fullSolution": "import java.nio.file.*;\nimport java.io.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        Path dir = Paths.get(\"d\");\n        Files.createDirectories(dir);\n        Files.write(dir.resolve(\"a.txt\"), \"x\".getBytes());\n        Files.write(dir.resolve(\"b.txt\"), \"y\".getBytes());\n        Files.write(dir.resolve(\"c.log\"), \"z\".getBytes());\n        long c = Files.walk(dir).filter(p -> p.toString().endsWith(\".txt\")).count();\n        System.out.println(c);\n    }\n}",
+      "expectedOutput": "2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Files.walk</code> traverses a file tree lazily; filter by extension or attributes to compute aggregates.</p>"
+    }
+    ,
+    {
+      "id": 152,
+      "title": "152. Annotation + reflection",
+      "language": "java",
+      "description": "Declare an annotation, annotate a class, and read its value via reflection.",
+      "initialCode": "import java.lang.annotation.*;\n\n// Define @Info(String value) with RUNTIME retention\n// Annotate class S with @Info(\"hello\")\n// In main, reflect Info.value() and print it\n\n",
+      "fullSolution": "import java.lang.annotation.*;\n\n@Retention(RetentionPolicy.RUNTIME)\n@interface Info { String value(); }\n\n@Info(\"hello\")\nclass S {}\n\npublic class Main {\n    public static void main(String[] args) {\n        Info a = S.class.getAnnotation(Info.class);\n        System.out.println(a.value());\n    }\n}\n",
+      "expectedOutput": "hello",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Runtime-retained annotations can be discovered via reflection on classes, methods, and fields.</p>"
+    }
+    ,
+    {
+      "id": 153,
+      "title": "153. Collectors.flatMapping",
+      "language": "java",
+      "description": "Flatten during collection and sum integers parsed from strings.",
+      "initialCode": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // rows = [\"1,2\", \"3\"]\n        // Use Collectors.flatMapping to split, parse, and sum -> print 6\n\n    }\n}",
+      "fullSolution": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> rows = Arrays.asList(\"1,2\", \"3\");\n        int sum = rows.stream().collect(\n            Collectors.flatMapping(\n                s -> Arrays.stream(s.split(\",\")).map(Integer::parseInt),\n                Collectors.summingInt(Integer::intValue)\n            )\n        );\n        System.out.println(sum);\n    }\n}",
+      "expectedOutput": "6",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>flatMapping</code> allows flattening as part of a downstream collector without an explicit pre-<code>flatMap</code>.</p>"
+    }
+    ,
+    {
+      "id": 154,
+      "title": "154. CompletableFuture.allOf",
+      "language": "java",
+      "description": "Combine two async computations and print their summed result.",
+      "initialCode": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // supplyAsync 1 and 2; allOf thenApply to sum and print 3\n\n    }\n}",
+      "fullSolution": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        CompletableFuture<Integer> a = CompletableFuture.supplyAsync(() -> 1);\n        CompletableFuture<Integer> b = CompletableFuture.supplyAsync(() -> 2);\n        int sum = CompletableFuture.allOf(a, b).thenApply(v -> a.join() + b.join()).join();\n        System.out.println(sum);\n    }\n}",
+      "expectedOutput": "3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>allOf</code> waits for multiple futures; use a continuation to compose their results.</p>"
+    }
+    ,
+    {
+      "id": 155,
+      "title": "155. AutoCloseable (custom resource)",
+      "language": "java",
+      "description": "Implement AutoCloseable and demonstrate try-with-resources ordering.",
+      "initialCode": "public class Main {\n    static class R implements AutoCloseable {\n        R() { /* print open */ }\n        void work() { /* print work */ }\n        public void close() { /* print close */ }\n    }\n    public static void main(String[] args) {\n        // Use try-with-resources to print lines: open, work, close\n\n    }\n}",
+      "fullSolution": "public class Main {\n    static class R implements AutoCloseable {\n        R() { System.out.println(\"open\"); }\n        void work() { System.out.println(\"work\"); }\n        public void close() { System.out.println(\"close\"); }\n    }\n    public static void main(String[] args) {\n        try (R r = new R()) {\n            r.work();\n        }\n    }\n}",
+      "expectedOutput": "open\nwork\nclose",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Types implementing <code>AutoCloseable</code> can be managed by try-with-resources, ensuring deterministic cleanup even on exceptions.</p>"
+    }
+    ,
+    {
+      "id": 156,
+      "title": "156. PriorityQueue (min-heap)",
+      "language": "java",
+      "description": "Use PriorityQueue to poll integers in ascending order.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // Add 3,1,2 to a PriorityQueue and poll, printing each on its own line (1,2,3)\n\n    }\n}",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        PriorityQueue<Integer> pq = new PriorityQueue<>();\n        pq.add(3); pq.add(1); pq.add(2);\n        while (!pq.isEmpty()) System.out.println(pq.poll());\n    }\n}",
+      "expectedOutput": "1\n2\n3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>PriorityQueue</code> is a min-heap by default; the smallest element is returned first when polling.</p>"
+    }
+    ,
+    {
+      "id": 157,
+      "title": "157. BitSet",
+      "language": "java",
+      "description": "Set a couple of bits and print the cardinality (number of set bits).",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // Set bits 1 and 3 in a BitSet and print its cardinality (2)\n\n    }\n}",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        BitSet bs = new BitSet();\n        bs.set(1); bs.set(3);\n        System.out.println(bs.cardinality());\n    }\n}",
+      "expectedOutput": "2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>BitSet</code> stores compact bit flags and supports fast set operations and counting via <code>cardinality()</code>.</p>"
+    }
+    ,
+    {
+      "id": 158,
+      "title": "158. Regex named group",
+      "language": "java",
+      "description": "Use a named capturing group to extract a word and print it.",
+      "initialCode": "import java.util.regex.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // Match (?<w>\\\\w+)-(\\\\d+) against \"abc-123\" and print group 'w' (abc)\n\n    }\n}",
+      "fullSolution": "import java.util.regex.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Matcher m = Pattern.compile(\"(?<w>\\\\w+)-(\\\\d+)\").matcher(\"abc-123\");\n        if (m.find()) System.out.println(m.group(\"w\"));\n    }\n}",
+      "expectedOutput": "abc",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Named groups (<code>(?&lt;name&gt;...)</code>) improve readability in complex patterns; access by name via <code>group(\"name\")</code>.</p>"
     }
   ]
 }

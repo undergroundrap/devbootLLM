@@ -1444,6 +1444,17 @@
     }
     ,
     {
+      "id": 159,
+      "title": "159. Capstone: CSV + File IO + Sum",
+      "language": "python",
+      "description": "Write a CSV file, read it with csv.DictReader, sum a column, and print the total.",
+      "initialCode": "import csv\n\n# Create a.csv with rows: name,score then Ada,10 then Bob,20 then Cia,15\n# Read it back using csv.DictReader, sum the 'score' as ints, and print the total (45)\n\n",
+      "fullSolution": "import csv\n\nwith open('a.csv', 'w', newline='') as f:\n    w = csv.writer(f)\n    w.writerow(['name','score'])\n    w.writerow(['Ada','10'])\n    w.writerow(['Bob','20'])\n    w.writerow(['Cia','15'])\n\nwith open('a.csv') as f:\n    r = csv.DictReader(f)\n    total = sum(int(row['score']) for row in r)\nprint(total)\n",
+      "expectedOutput": "45",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Capstone combining file I/O and the <code>csv</code> module: write a small CSV, read it via <code>DictReader</code>, transform fields, and aggregate.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import csv\nwith open('t.csv','w',newline='') as f:\n  csv.writer(f).writerow(['x','1'])\nwith open('t.csv') as f:\n  print(next(csv.DictReader(f))['x'])</pre></div>"
+    }
+    ,
+    {
       "id": 144,
       "title": "144. itertools.product",
       "language": "python",
@@ -1474,6 +1485,138 @@
       "fullSolution": "print(f\"{3.14159:.2f}\")\n",
       "expectedOutput": "3.14",
       "tutorial": "<p class=\"mb-4 text-gray-300\">An f-string can include format specifiers after a colon. <code>.2f</code> formats as fixed-point with two decimals.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">value = 2/3\nprint(f\"{value:.3f}\")  # 0.667</pre></div>"
+    }
+    ,
+    {
+      "id": 147,
+      "title": "147. abc.ABC + abstractmethod",
+      "language": "python",
+      "description": "Create an abstract Shape with area(), implement Rect, and print Rect(3,4).area().",
+      "initialCode": "from abc import ABC, abstractmethod\n\n# Define abstract class Shape with abstract method area(self)\n# Implement Rect(width,height) that returns width*height in area()\n# Print the area for a 3x4 rectangle (12)\n\n",
+      "fullSolution": "from abc import ABC, abstractmethod\n\nclass Shape(ABC):\n    @abstractmethod\n    def area(self):\n        pass\n\nclass Rect(Shape):\n    def __init__(self, w, h):\n        self.w, self.h = w, h\n    def area(self):\n        return self.w * self.h\n\nprint(Rect(3,4).area())\n",
+      "expectedOutput": "12",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">abc.ABC defines abstract base classes; use <code>@abstractmethod</code> to force subclasses to implement required methods.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from abc import ABC, abstractmethod\nclass Base(ABC):\n    @abstractmethod\n    def f(self): ...\nclass Impl(Base):\n    def f(self): return 42\nprint(Impl().f())</pre></div>"
+    }
+    ,
+    {
+      "id": 148,
+      "title": "148. functools.singledispatch",
+      "language": "python",
+      "description": "Use singledispatch to sum a list and print the result.",
+      "initialCode": "from functools import singledispatch\n\n# Create total(x) with @singledispatch defaulting to 0\n# Register a list handler that returns sum(xs)\n# Print total([1,2,3]) (6)\n\n",
+      "fullSolution": "from functools import singledispatch\n\n@singledispatch\ndef total(x):\n    return 0\n\n@total.register(list)\ndef _(xs):\n    return sum(xs)\n\nprint(total([1,2,3]))\n",
+      "expectedOutput": "6",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>@singledispatch</code> enables function overloading by argument type at runtime.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from functools import singledispatch\n@singledispatch\ndef show(x): return \"?\"\n@show.register(int)\ndef _(x): return x+1\nprint(show(3))</pre></div>"
+    }
+    ,
+    {
+      "id": 149,
+      "title": "149. decimal.Decimal",
+      "language": "python",
+      "description": "Add precise decimals 0.1 + 0.2 and print the exact result.",
+      "initialCode": "from decimal import Decimal\n\n# Print Decimal('0.1') + Decimal('0.2')\n\n",
+      "fullSolution": "from decimal import Decimal\nprint(Decimal('0.1') + Decimal('0.2'))\n",
+      "expectedOutput": "0.3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Decimal</code> avoids binary floating-point rounding issues; construct from strings for exact values.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from decimal import Decimal\nprint(Decimal('1.00')/Decimal('3'))</pre></div>"
+    }
+    ,
+    {
+      "id": 150,
+      "title": "150. heapq.nsmallest",
+      "language": "python",
+      "description": "Print the two smallest numbers using heapq.nsmallest.",
+      "initialCode": "import heapq\n\n# Given xs = [5,1,4,2,3], print the two smallest (each on its own line)\n\n",
+      "fullSolution": "import heapq\nxs = [5,1,4,2,3]\nfor n in heapq.nsmallest(2, xs):\n    print(n)\n",
+      "expectedOutput": "1\n2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>heapq.nsmallest</code> efficiently returns the k smallest items without fully sorting the input.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import heapq\nprint(heapq.nsmallest(3, [9,1,5,2,8]))</pre></div>"
+    }
+    ,
+    {
+      "id": 151,
+      "title": "151. bisect_left",
+      "language": "python",
+      "description": "Find the insertion index for 3 in [1,2,4,5] using bisect_left.",
+      "initialCode": "import bisect\n\n# Print bisect_left([1,2,4,5], 3)\n\n",
+      "fullSolution": "import bisect\nprint(bisect.bisect_left([1,2,4,5], 3))\n",
+      "expectedOutput": "2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">The <code>bisect</code> module finds insertion points in sorted lists for binary search style operations.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import bisect\nxs=[1,2,4,5]\nprint(bisect.bisect_right(xs,2))</pre></div>"
+    }
+    ,
+    {
+      "id": 152,
+      "title": "152. Class-based context manager",
+      "language": "python",
+      "description": "Implement __enter__/__exit__ to print enter/work/exit in order.",
+      "initialCode": "# Define MyCtx with __enter__ printing 'enter' and __exit__ printing 'exit'\n# Use with MyCtx(): print('work') in the body\n\n",
+      "fullSolution": "class MyCtx:\n    def __enter__(self):\n        print('enter')\n        return self\n    def __exit__(self, exc_type, exc, tb):\n        print('exit')\n\nwith MyCtx():\n    print('work')\n",
+      "expectedOutput": "enter\nwork\nexit",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Context managers can be classes implementing <code>__enter__</code> and <code>__exit__</code>; they manage setup/teardown deterministically.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class R:\n  def __enter__(self): print('open'); return self\n  def __exit__(self, *exc): print('close')\nwith R(): print('work')</pre></div>"
+    }
+    ,
+    {
+      "id": 153,
+      "title": "153. enum.IntFlag",
+      "language": "python",
+      "description": "Use IntFlag for bitwise permissions and check membership.",
+      "initialCode": "from enum import IntFlag, auto\n\n# Define Perm with READ, WRITE, EXEC using auto()\n# Create a flag with READ|WRITE and print whether READ is set\n\n",
+      "fullSolution": "from enum import IntFlag, auto\n\nclass Perm(IntFlag):\n    READ = auto()\n    WRITE = auto()\n    EXEC = auto()\n\np = Perm.READ | Perm.WRITE\nprint(bool(p & Perm.READ))\n",
+      "expectedOutput": "True",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>IntFlag</code> supports bitwise operations while remaining an enum; combine flags with <code>|</code> and test with <code>&</code>.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from enum import IntFlag, auto\nclass F(IntFlag): A=auto(); B=auto()\nprint(F.A|F.B)</pre></div>"
+    }
+    ,
+    {
+      "id": 154,
+      "title": "154. dataclasses.asdict",
+      "language": "python",
+      "description": "Convert a dataclass to dict and access a value.",
+      "initialCode": "from dataclasses import dataclass, asdict\n\n# Define User(name:str, id:int); create User('Ada',1) and print asdict(user)['name']\n\n",
+      "fullSolution": "from dataclasses import dataclass, asdict\n\n@dataclass\nclass User:\n    name: str\n    id: int\n\nprint(asdict(User('Ada', 1))['name'])\n",
+      "expectedOutput": "Ada",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>asdict</code> recursively converts a dataclass instance into a plain dict, suitable for serialization.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from dataclasses import dataclass, asdict\n@dataclass\nclass P: x:int; y:int\nprint(asdict(P(1,2)))</pre></div>"
+    }
+    ,
+    {
+      "id": 155,
+      "title": "155. inspect.signature",
+      "language": "python",
+      "description": "Inspect a function's parameters via inspect.signature and print the count.",
+      "initialCode": "import inspect\n\n# Define f(a,b,c=0); get its signature and print number of parameters (3)\n\n",
+      "fullSolution": "import inspect\n\ndef f(a,b,c=0):\n    pass\n\nsig = inspect.signature(f)\nprint(len(sig.parameters))\n",
+      "expectedOutput": "3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">The <code>inspect</code> module offers runtime introspection, including function signatures and parameter kinds.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import inspect\nprint(inspect.signature(lambda x, y=0: None))</pre></div>"
+    }
+    ,
+    {
+      "id": 156,
+      "title": "156. functools.total_ordering",
+      "language": "python",
+      "description": "Use total_ordering to implement comparisons and sort custom objects.",
+      "initialCode": "from functools import total_ordering\n\n# Define @total_ordering class Box(v) with __eq__ and __lt__\n# Sort [Box(3),Box(1),Box(2)] and print their v each on its own line\n\n",
+      "fullSolution": "from functools import total_ordering\n\n@total_ordering\nclass Box:\n    def __init__(self, v):\n        self.v = v\n    def __eq__(self, other):\n        return self.v == other.v\n    def __lt__(self, other):\n        return self.v < other.v\n\nfor b in sorted([Box(3), Box(1), Box(2)]):\n    print(b.v)\n",
+      "expectedOutput": "1\n2\n3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>@total_ordering</code> fills in the rest of the rich comparison methods when you define <code>__eq__</code> and one ordering method.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from functools import total_ordering\n@total_ordering\nclass V:\n  def __init__(self,x): self.x=x\n  def __eq__(self,o): return self.x==o.x\n  def __lt__(self,o): return self.x<o.x\nprint([v.x for v in sorted([V(2),V(1)])])</pre></div>"
+    }
+    ,
+    {
+      "id": 157,
+      "title": "157. dataclasses.default_factory",
+      "language": "python",
+      "description": "Use field(default_factory=list) to avoid shared mutable defaults.",
+      "initialCode": "from dataclasses import dataclass, field\n\n# Define Bag with items: list[str] = field(default_factory=list)\n# Append 'x' to items and print its length (1)\n\n",
+      "fullSolution": "from dataclasses import dataclass, field\n\n@dataclass\nclass Bag:\n    items: list[str] = field(default_factory=list)\n\nb = Bag()\nb.items.append('x')\nprint(len(b.items))\n",
+      "expectedOutput": "1",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>default_factory</code> to create a new default object per-instance and avoid shared mutable defaults.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from dataclasses import dataclass, field\n@dataclass\nclass C: xs: list[int] = field(default_factory=list)\nprint(C().xs)</pre></div>"
+    }
+    ,
+    {
+      "id": 158,
+      "title": "158. dataclasses.replace",
+      "language": "python",
+      "description": "Use dataclasses.replace to copy with a modified field.",
+      "initialCode": "from dataclasses import dataclass, replace\n\n# Define frozen Point(x:int, y:int), create p=Point(1,2)\n# Create q = replace(p, y=5) and print q.y\n\n",
+      "fullSolution": "from dataclasses import dataclass, replace\n\n@dataclass(frozen=True)\nclass Point:\n    x: int\n    y: int\n\nq = replace(Point(1,2), y=5)\nprint(q.y)\n",
+      "expectedOutput": "5",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>replace</code> makes an updated copy of a dataclass instance; handy with immutable (<code>frozen=True</code>) types.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from dataclasses import dataclass, replace\n@dataclass(frozen=True)\nclass User: name:str; age:int\nprint(replace(User('a',1), age=2))</pre></div>"
     }
   ]
 }

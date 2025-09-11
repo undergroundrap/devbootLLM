@@ -444,11 +444,14 @@ Tip: For a clean, idempotent mirror of your JSON files on each start, add `-e LE
 (Invoke-RestMethod http://localhost:3000/lessons-python.json).lessons.Length
 ```
 
-Expected: both return 111 after reseeding or JSON load.
+Expected (as of latest content update): Python 143, Java 132. Counts may change as lessons evolve.
 
 ## Advanced Lessons Added
 
-- Java and Python each received 10 advanced lessons (IDs 101–110) plus a capstone (111). Topics include streams/grouping, Optionals, concurrency (ExecutorService/CompletableFuture and asyncio/thread pools), data modeling (dataclasses), parsing (regex/CSV), containers (LinkedHashMap size‑bounded eviction), and numerics (BigDecimal). These extend fundamentals with production‑oriented patterns.
+- Additional senior-level lessons have been added beyond the original set (101-111). Highlights:
+  - Java: ConcurrentHashMap.merge counters, computeIfAbsent/Present, CompletableFuture allOf/thenCompose, Semaphore, LongAdder, collectingAndThen, IntSummaryStatistics, Optional.flatMap, ReadWriteLock, ScheduledExecutor (fixed rate), Files.lines + try-with-resources, Collectors.mapping.
+  - Python: asyncio.Semaphore, queue+threads fan-out, logging to stdout, dataclass default_factory, typing.TypedDict, operator.itemgetter, as_completed (futures), contextvars, re.sub with function, pathlib read/write, dataclass frozen, __slots__, functools.reduce, json loads, fractions.Fraction.
+  - These extend fundamentals with production-oriented patterns for concurrency, collections, typing, and I/O.
 
 ## Lesson Filter (UI)
 

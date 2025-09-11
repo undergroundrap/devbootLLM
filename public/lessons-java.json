@@ -906,6 +906,116 @@
       "fullSolution": "import java.util.*;\nimport java.util.stream.*;\n\nclass Student { String name; int score; Student(String n,int s){ name=n; score=s; } }\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Student> students = Arrays.asList(new Student(\"Alice\",90), new Student(\"Bob\",80), new Student(\"Charlie\",100));\n        String name = students.stream().max(Comparator.comparingInt(s -> s.score)).get().name;\n        System.out.println(name);\n    }\n}",
       "expectedOutput": "Charlie",
       "tutorial": "<p class=\"mb-4 text-gray-300\">This capstone combines streams, comparators, and Optionals to find the object with the maximum value in a collection.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import java.util.*;\nclass S { String n; int s; S(String n, int s){this.n=n;this.s=s;} }\nList<S> list = List.of(new S(\"A\",90), new S(\"B\",100));\nlist.stream().max(Comparator.comparingInt(s -> s.s))\n    .ifPresent(s -> System.out.println(s.n)); // B</pre></div>"
+    },
+    {
+      "id": 101,
+      "title": "101. groupingBy counting",
+      "description": "Count occurrences of letters using streams and print counts for 'a' then 'b'.",
+      "initialCode": "import java.util.*;\nimport java.util.function.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> xs = Arrays.asList(\"a\", \"a\", \"b\", \"b\", \"b\");\n        // Build a Map<String, Long> of counts using groupingBy + counting\n        // Then print counts.get(\"a\") and counts.get(\"b\") on separate lines\n\n    }\n}",
+    "fullSolution": "import java.util.*;\nimport java.util.function.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> xs = Arrays.asList(\"a\", \"a\", \"b\", \"b\", \"b\");\n        Map<String, Long> counts = xs.stream()\n            .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));\n        System.out.println(counts.get(\"a\"));\n        System.out.println(counts.get(\"b\"));\n    }\n}",
+      "fullSolutionCommented": "import java.util.*;\nimport java.util.function.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // groupingBy(Function.identity()) groups equal elements, counting() tallies per group.\n        List<String> xs = Arrays.asList(\"a\", \"a\", \"b\", \"b\", \"b\");\n        Map<String, Long> counts = xs.stream()\n            .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));\n        System.out.println(counts.get(\"a\")); // 2\n        System.out.println(counts.get(\"b\")); // 3\n    }\n}",
+      "expectedOutput": "2\n3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>groupingBy</code> with <code>counting</code> to aggregate items by key in one pass.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import java.util.*;\nimport java.util.function.Function;\nimport java.util.stream.Collectors;\nList<String> items = Arrays.asList(\"a\", \"b\", \"a\");\nMap<String, Long> m = items.stream()\n  .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));\nSystem.out.println(m.get(\"a\")); // 2</pre></div>"
+    },
+    {
+      "id": 102,
+      "title": "102. Optional.orElse",
+      "description": "Find the first even number or return -1.",
+      "initialCode": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Integer> xs = Arrays.asList(1, 3, 4, 7);\n        // Use streams + filter + findFirst + orElse to print the first even or -1\n\n    }\n}",
+    "fullSolution": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Integer> xs = Arrays.asList(1, 3, 4, 7);\n        int v = xs.stream().filter(n -> n % 2 == 0).findFirst().orElse(-1);\n        System.out.println(v);\n    }\n}",
+      "fullSolutionCommented": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // Filter to evens, take the first if present, otherwise return default -1.\n        List<Integer> xs = Arrays.asList(1, 3, 4, 7);\n        int v = xs.stream()\n                  .filter(n -> n % 2 == 0)\n                  .findFirst()\n                  .orElse(-1);\n        System.out.println(v); // 4\n    }\n}",
+      "expectedOutput": "4",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">`Optional.orElse` provides a fallback when a value is absent.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import java.util.Optional;\nSystem.out.println(Optional.&lt;Integer&gt;empty().orElse(42)); // 42</pre></div>"
+    },
+    {
+      "id": 103,
+      "title": "103. Comparator.thenComparing",
+      "description": "Sort by age then name and print the first person's name.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n    static class Person { String name; int age; Person(String n,int a){ name=n; age=a; } }\n    public static void main(String[] args) {\n        List<Person> ps = Arrays.asList(new Person(\"Bob\",20), new Person(\"Ann\",20), new Person(\"Zoe\",30));\n        // Sort by age ascending, then by name ascending, and print ps.get(0).name\n\n    }\n}",
+    "fullSolution": "import java.util.*;\n\npublic class Main {\n    static class Person { String name; int age; Person(String n,int a){ name=n; age=a; } }\n    public static void main(String[] args) {\n        List<Person> ps = Arrays.asList(new Person(\"Bob\",20), new Person(\"Ann\",20), new Person(\"Zoe\",30));\n        ps.sort(Comparator.comparingInt((Person p) -> p.age).thenComparing(p -> p.name));\n        System.out.println(ps.get(0).name);\n    }\n}",
+      "fullSolutionCommented": "import java.util.*;\n\npublic class Main {\n    static class Person { String name; int age; Person(String n,int a){ name=n; age=a; } }\n    public static void main(String[] args) {\n        // First sort key: age ascending; tie-break by name ascending.\n        List<Person> ps = Arrays.asList(new Person(\"Bob\",20), new Person(\"Ann\",20), new Person(\"Zoe\",30));\n        ps.sort(Comparator.comparingInt((Person p) -> p.age)\n                          .thenComparing(p -> p.name));\n        System.out.println(ps.get(0).name); // Ann\n    }\n}",
+      "expectedOutput": "Ann",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Chain comparators with <code>thenComparing</code> to apply tie-breakers for sorting.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">list.sort(Comparator.comparingInt(Person::age)\n    .thenComparing(Person::name));</pre></div>"
+    },
+    {
+      "id": 104,
+      "title": "104. CompletableFuture.thenCombine",
+      "description": "Combine two async computations and print their sum.",
+      "initialCode": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        // Create two CompletableFutures of 10 and 20, thenCombine to sum, then print\n\n    }\n}",
+    "fullSolution": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        CompletableFuture<Integer> a = CompletableFuture.supplyAsync(() -> 10);\n        CompletableFuture<Integer> b = CompletableFuture.supplyAsync(() -> 20);\n        System.out.println(a.thenCombine(b, Integer::sum).get());\n    }\n}",
+      "fullSolutionCommented": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        // Run two async suppliers, then combine their results with a sum.\n        CompletableFuture<Integer> a = CompletableFuture.supplyAsync(() -> 10);\n        CompletableFuture<Integer> b = CompletableFuture.supplyAsync(() -> 20);\n        CompletableFuture<Integer> sum = a.thenCombine(b, Integer::sum);\n        System.out.println(sum.get()); // 30\n    }\n}",
+      "expectedOutput": "30",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">`CompletableFuture` supports composition. Use <code>thenCombine</code> to merge results of two futures.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">CompletableFuture&lt;Integer&gt; a = CompletableFuture.completedFuture(1);\nCompletableFuture&lt;Integer&gt; b = CompletableFuture.completedFuture(2);\nSystem.out.println(a.thenCombine(b, Integer::sum).join());</pre></div>"
+    },
+    {
+      "id": 105,
+      "title": "105. ExecutorService invokeAll",
+      "description": "Run callables on a thread pool and sum their results.",
+      "initialCode": "import java.util.*;\nimport java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        // Use a fixed thread pool to compute 1,2,3 and print their sum\n\n    }\n}",
+    "fullSolution": "import java.util.*;\nimport java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        ExecutorService es = Executors.newFixedThreadPool(2);\n        List<Callable<Integer>> tasks = Arrays.asList(() -> 1, () -> 2, () -> 3);\n        int sum = 0;\n        for (Future<Integer> f : es.invokeAll(tasks)) sum += f.get();\n        es.shutdown();\n        System.out.println(sum);\n    }\n}",
+      "fullSolutionCommented": "import java.util.*;\nimport java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        // Submit a batch of callables and collect their results.\n        ExecutorService es = Executors.newFixedThreadPool(2);\n        try {\n            List<Callable<Integer>> tasks = Arrays.asList(() -> 1, () -> 2, () -> 3);\n            int sum = 0;\n            for (Future<Integer> f : es.invokeAll(tasks)) {\n                sum += f.get();\n            }\n            System.out.println(sum); // 6\n        } finally {\n            es.shutdown();\n        }\n    }\n}",
+      "expectedOutput": "6",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">`invokeAll` submits a batch of tasks and returns Futures you can collect results from.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">ExecutorService es = Executors.newFixedThreadPool(4);\ntry { /* submit work */ } finally { es.shutdown(); }</pre></div>"
+    },
+    {
+      "id": 106,
+      "title": "106. ArrayDeque as Stack",
+      "description": "Push 1,2,3 then pop and print each on a new line.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        ArrayDeque<Integer> st = new ArrayDeque<>();\n        // Push 1,2,3 then pop and print each\n\n    }\n}",
+    "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        ArrayDeque<Integer> st = new ArrayDeque<>();\n        st.push(1); st.push(2); st.push(3);\n        System.out.println(st.pop());\n        System.out.println(st.pop());\n        System.out.println(st.pop());\n    }\n}",
+      "fullSolutionCommented": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // Use ArrayDeque as a stack (LIFO): push, then pop.\n        ArrayDeque<Integer> st = new ArrayDeque<>();\n        st.push(1); st.push(2); st.push(3);\n        System.out.println(st.pop()); // 3\n        System.out.println(st.pop()); // 2\n        System.out.println(st.pop()); // 1\n    }\n}",
+      "expectedOutput": "3\n2\n1",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">`ArrayDeque` implements the `Deque` interface and supports efficient stack operations.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">ArrayDeque&lt;String&gt; s = new ArrayDeque<>();\ns.push(\"x\"); s.push(\"y\");\nSystem.out.println(s.pop()); // y</pre></div>"
+    },
+    {
+      "id": 107,
+      "title": "107. TreeSet Comparator",
+      "description": "Use a custom Comparator to sort by length then lexicographically and print the first element.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Comparator<String> cmp = Comparator.comparingInt(String::length).thenComparing(Comparator.naturalOrder());\n        // Create a TreeSet with this comparator, add 'pear','fig','apple' then print first element\n\n    }\n}",
+    "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Comparator<String> cmp = Comparator.comparingInt(String::length).thenComparing(Comparator.naturalOrder());\n        TreeSet<String> ts = new TreeSet<>(cmp);\n        ts.add(\"pear\"); ts.add(\"fig\"); ts.add(\"apple\");\n        System.out.println(ts.first());\n    }\n}",
+      "fullSolutionCommented": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // Sort by string length, then lexicographically to break ties.\n        Comparator<String> cmp = Comparator.comparingInt(String::length)\n                                           .thenComparing(Comparator.naturalOrder());\n        TreeSet<String> ts = new TreeSet<>(cmp);\n        ts.add(\"pear\"); ts.add(\"fig\"); ts.add(\"apple\");\n        System.out.println(ts.first()); // fig\n    }\n}",
+      "expectedOutput": "fig",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">`TreeSet` orders its elements according to a Comparator you supply.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Comparator&lt;String&gt; byLen = Comparator.comparingInt(String::length);\nTreeSet&lt;String&gt; set = new TreeSet<>(byLen.thenComparing(Comparator.naturalOrder()));</pre></div>"
+    },
+    {
+      "id": 108,
+      "title": "108. LRU via LinkedHashMap",
+      "description": "Limit size to 2 and print remaining keys after inserts.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // Create a LinkedHashMap with accessOrder=false and override removeEldestEntry to keep size<=2\n        // Put a=1, b=2, c=3 then iterate keys and print each on its own line\n\n    }\n}",
+    "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        LinkedHashMap<String,Integer> lru = new LinkedHashMap<String,Integer>(16, 0.75f, false) {\n            protected boolean removeEldestEntry(Map.Entry<String,Integer> e) {\n                return size() > 2;\n            }\n        };\n        lru.put(\"a\",1); lru.put(\"b\",2); lru.put(\"c\",3);\n        for (String k : lru.keySet()) System.out.println(k);\n    }\n}",
+      "fullSolutionCommented": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // Implement a tiny size-bounded cache by overriding removeEldestEntry.\n        LinkedHashMap<String,Integer> lru = new LinkedHashMap<String,Integer>(16, 0.75f, false) {\n            protected boolean removeEldestEntry(Map.Entry<String,Integer> e) {\n                return size() > 2; // evict oldest when size exceeds 2\n            }\n        };\n        lru.put(\"a\",1); lru.put(\"b\",2); lru.put(\"c\",3); // 'a' evicted\n        for (String k : lru.keySet()) System.out.println(k); // b, c\n    }\n}",
+      "expectedOutput": "b\nc",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Subclass `LinkedHashMap` and override `removeEldestEntry` to implement a simple LRU-style eviction by size.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">LinkedHashMap&lt;K,V&gt; cache = new LinkedHashMap&lt;&gt;() {\n  protected boolean removeEldestEntry(Map.Entry&lt;K,V&gt; e) { return size() &gt; 100; }\n};</pre></div>"
+    },
+    {
+      "id": 109,
+      "title": "109. StringJoiner",
+      "description": "Join strings with delimiter, prefix, and suffix.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // Join [a,b,c] into [a,b,c] using StringJoiner and print\n\n    }\n}",
+    "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        StringJoiner sj = new StringJoiner(\",\", \"[\", \"]\");\n        sj.add(\"a\").add(\"b\").add(\"c\");\n        System.out.println(sj.toString());\n    }\n}",
+      "fullSolutionCommented": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // Join elements with custom delimiter and enclosing brackets.\n        StringJoiner sj = new StringJoiner(\",\", \"[\", \"]\");\n        sj.add(\"a\").add(\"b\").add(\"c\");\n        System.out.println(sj.toString()); // [a,b,c]\n    }\n}",
+      "expectedOutput": "[a,b,c]",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">`StringJoiner` helps build delimited strings with optional prefix/suffix.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">StringJoiner sj = new StringJoiner(\", \", \"(\", \")\");\nsj.add(\"x\").add(\"y\");\nSystem.out.println(sj); // (x, y)</pre></div>"
+    },
+    {
+      "id": 110,
+      "title": "110. BigDecimal Rounding",
+      "description": "Round 2.456 to 2 decimal places using HALF_UP and print it.",
+      "initialCode": "import java.math.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // Create BigDecimal 2.456, round to 2 places HALF_UP, print\n\n    }\n}",
+    "fullSolution": "import java.math.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        BigDecimal bd = new BigDecimal(\"2.456\").setScale(2, RoundingMode.HALF_UP);\n        System.out.println(bd.toString());\n    }\n}",
+      "fullSolutionCommented": "import java.math.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // Use BigDecimal for precise decimal arithmetic; set scale and rounding mode.\n        BigDecimal bd = new BigDecimal(\"2.456\").setScale(2, RoundingMode.HALF_UP);\n        System.out.println(bd.toString()); // 2.46\n    }\n}",
+      "expectedOutput": "2.46",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use `BigDecimal` for precise decimal arithmetic and control rounding.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">new BigDecimal(\"1.005\").setScale(2, RoundingMode.HALF_UP); // 1.01</pre></div>"
+    },
+    {
+      "id": 111,
+      "title": "111. Capstone: Event Duration",
+      "description": "Sum durations for CLICK events using streams and print the total.",
+      "initialCode": "import java.util.*;\nimport java.util.stream.*;\n\nclass Event { String type; int ms; Event(String t,int m){ type=t; ms=m; } }\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Event> es = Arrays.asList(new Event(\"CLICK\",10), new Event(\"VIEW\",5), new Event(\"CLICK\",20));\n        // Sum ms for CLICK events and print the total\n\n    }\n}",
+    "fullSolution": "import java.util.*;\nimport java.util.stream.*;\n\nclass Event { String type; int ms; Event(String t,int m){ type=t; ms=m; } }\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Event> es = Arrays.asList(new Event(\"CLICK\",10), new Event(\"VIEW\",5), new Event(\"CLICK\",20));\n        int total = es.stream().filter(e -> e.type.equals(\"CLICK\"))\n            .mapToInt(e -> e.ms).sum();\n        System.out.println(total);\n    }\n}",
+      "fullSolutionCommented": "import java.util.*;\nimport java.util.stream.*;\n\nclass Event { String type; int ms; Event(String t,int m){ type=t; ms=m; } }\n\npublic class Main {\n    public static void main(String[] args) {\n        // Filter by event type, project to durations, then sum.\n        List<Event> es = Arrays.asList(new Event(\"CLICK\",10), new Event(\"VIEW\",5), new Event(\"CLICK\",20));\n        int total = es.stream()\n                      .filter(e -> e.type.equals(\"CLICK\"))\n                      .mapToInt(e -> e.ms)\n                      .sum();\n        System.out.println(total); // 30\n    }\n}",
+      "expectedOutput": "30",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Combine filtering and aggregation in a stream pipeline to compute metrics from domain objects.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">int sum = list.stream().filter(x -&gt; x &gt; 0).mapToInt(Integer::intValue).sum();</pre></div>"
     }
   ]
 }

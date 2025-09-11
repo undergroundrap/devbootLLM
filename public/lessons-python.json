@@ -1000,6 +1000,127 @@
       "fullSolution": "import json\ns = '[{\"name\":\"Alice\",\"score\":90},{\"name\":\"Bob\",\"score\":80},{\"name\":\"Charlie\",\"score\":100}]'\nstudents = json.loads(s)\nprint(max(students, key=lambda d: d['score'])['name'])\n",
       "expectedOutput": "Charlie",
       "tutorial": "<p class=\"mb-4 text-gray-300\">This capstone combines several concepts: JSON parsing, finding the maximum item in a list of dictionaries using a lambda function as the key.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import json\ns = '[{\"name\":\"Alice\",\"score\":90},{\"name\":\"Charlie\",\"score\":100}]'\nstudents = json.loads(s)\nrichest = max(students, key=lambda s: s[\"score\"])\nprint(richest[\"name\"]) # Charlie</pre></div>"
+    },
+    {
+      "id": 101,
+      "title": "101. Dataclasses Basics",
+      "language": "python",
+      "description": "Define a dataclass and compute an average score.",
+      "initialCode": "from dataclasses import dataclass\nfrom typing import List\n\n# Define a @dataclass Student with fields name: str and scores: List[int].\n# Create Student('Alice', [100, 80]) and print the average score as a float.\n\n",
+    "fullSolution": "from dataclasses import dataclass\nfrom typing import List\n\n@dataclass\nclass Student:\n    name: str\n    scores: List[int]\n\ns = Student('Alice', [100, 80])\nprint(sum(s.scores) / len(s.scores))\n",
+      "fullSolutionCommented": "from dataclasses import dataclass\nfrom typing import List\n\n# Define a simple data container. @dataclass generates __init__, __repr__, etc.\n@dataclass\nclass Student:\n    name: str\n    scores: List[int]\n\n# Create a Student and compute the mean score. Use float division (len > 0 here).\ns = Student('Alice', [100, 80])\navg = sum(s.scores) / len(s.scores)\nprint(avg)\n",
+      "expectedOutput": "90.0",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>@dataclass</code> to auto-generate boilerplate like __init__ and __repr__. It works well for simple data containers.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from dataclasses import dataclass\n\n@dataclass\nclass Point:\n    x: int\n    y: int\n\nprint(Point(1, 2))</pre></div>"
+    },
+    {
+      "id": 102,
+      "title": "102. functools.lru_cache",
+      "language": "python",
+      "description": "Memoize a recursive Fibonacci function and print fib(10).",
+      "initialCode": "from functools import lru_cache\n\n# Define fib(n) using @lru_cache(None) and print fib(10)\n\n",
+    "fullSolution": "from functools import lru_cache\n\n@lru_cache(None)\ndef fib(n: int) -> int:\n    return n if n < 2 else fib(n-1) + fib(n-2)\n\nprint(fib(10))\n",
+      "fullSolutionCommented": "from functools import lru_cache\n\n# Cache results for each n to avoid exponential recursion.\n@lru_cache(None)\ndef fib(n: int) -> int:\n    # Base cases: 0 -> 0, 1 -> 1\n    if n < 2:\n        return n\n    # Recurrence: F(n) = F(n-1) + F(n-2)\n    return fib(n-1) + fib(n-2)\n\nprint(fib(10))  # 55\n",
+      "expectedOutput": "55",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>functools.lru_cache</code> to cache function results and avoid recomputation in recursive algorithms.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from functools import lru_cache\n\n@lru_cache(None)\ndef f(x):\n    return x*x\n\nprint(f(5))</pre></div>"
+    },
+    {
+      "id": 103,
+      "title": "103. itertools.groupby",
+      "language": "python",
+      "description": "Count consecutive character groups using groupby and print counts.",
+      "initialCode": "from itertools import groupby\n\ns = 'aabbbc'\n# Use groupby to print: a:2, b:3, c:1 each on new lines\n\n",
+    "fullSolution": "from itertools import groupby\n\ns = 'aabbbc'\nfor ch, grp in groupby(s):\n    print(f\"{ch}:{len(list(grp))}\")\n",
+      "fullSolutionCommented": "from itertools import groupby\n\n# groupby groups consecutive equal items. Convert each group iterator to a list to count.\ns = 'aabbbc'\nfor ch, grp in groupby(s):\n    count = len(list(grp))\n    print(f\\\"{ch}:{count}\\\")\n",
+      "expectedOutput": "a:2\nb:3\nc:1",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">`itertools.groupby` groups consecutive items with the same key. Convert the group iterator to a list to count items.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from itertools import groupby\nprint([(k, len(list(g))) for k,g in groupby('aaabb')]) # [('a', 3), ('b', 2)]</pre></div>"
+    },
+    {
+      "id": 104,
+      "title": "104. Generator Flatten",
+      "language": "python",
+      "description": "Use a generator with yield from to flatten nested lists.",
+      "initialCode": "# Define flatten(nested) that yields each int from nested lists\n# Then print each number on its own line for [[1,2],[3],[4,5]]\n\n",
+    "fullSolution": "def flatten(nested):\n    for sub in nested:\n        yield from sub\n\nfor x in flatten([[1,2],[3],[4,5]]):\n    print(x)\n",
+      "fullSolutionCommented": "# Use 'yield from' to delegate to the sub-iterables.\ndef flatten(nested):\n    for sub in nested:\n        # sub is a list of ints; yield its items one-by-one\n        yield from sub\n\nfor x in flatten([[1,2],[3],[4,5]]):\n    print(x)\n",
+      "expectedOutput": "1\n2\n3\n4\n5",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">`yield from` delegates to a sub-iterator, making generator composition simple and readable.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">def chain(*iters):\n    for it in iters:\n        yield from it\n\nprint(list(chain([1,2], [3]))) # [1, 2, 3]</pre></div>"
+    },
+    {
+      "id": 105,
+      "title": "105. asyncio.gather",
+      "language": "python",
+      "description": "Run coroutines concurrently and sum results.",
+      "initialCode": "import asyncio\n\n# Define async def square(x): return x*x\n# Use asyncio.gather over [1,2,3] and print the sum of results\n\n",
+    "fullSolution": "import asyncio\n\nasync def square(x):\n    return x*x\n\nasync def main():\n    results = await asyncio.gather(*(square(x) for x in [1,2,3]))\n    print(sum(results))\n\nasyncio.run(main())\n",
+      "fullSolutionCommented": "import asyncio\n\n# Define an async function. It returns immediately with a coroutine when called.\nasync def square(x):\n    return x * x\n\nasync def main():\n    # Schedule the coroutines concurrently and wait for all to finish.\n    coros = [square(x) for x in [1, 2, 3]]\n    results = await asyncio.gather(*coros)\n    print(sum(results))  # 14\n\n# Drive the event loop.\nasyncio.run(main())\n",
+      "expectedOutput": "14",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">`asyncio.gather` concurrently awaits multiple coroutines and returns their results as a list.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import asyncio\n\nasync def add(a,b):\n    return a+b\n\nprint(asyncio.run(add(2,3)))</pre></div>"
+    },
+    {
+      "id": 106,
+      "title": "106. Context Manager",
+      "language": "python",
+      "description": "Use contextlib.contextmanager to manage setup and teardown.",
+      "initialCode": "import contextlib\n\n# Create a context manager that prints 'enter' on enter and 'exit' on exit\n# Within it, print 'inside'\n\n",
+    "fullSolution": "import contextlib\n\n@contextlib.contextmanager\ndef tag():\n    print('enter')\n    try:\n        yield\n    finally:\n        print('exit')\n\nwith tag():\n    print('inside')\n",
+      "fullSolutionCommented": "import contextlib\n\n# Build a context manager with setup/teardown around the 'with' block.\n@contextlib.contextmanager\ndef tag():\n    print('enter')  # setup\n    try:\n        yield       # body runs here\n    finally:\n        print('exit')  # teardown always runs\n\nwith tag():\n    print('inside')\n",
+      "expectedOutput": "enter\ninside\nexit",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Context managers wrap a block with setup and teardown steps. Use them for resources like files, locks, or timing.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import contextlib\n\n@contextlib.contextmanager\ndef banner():\n    print('---')\n    try:\n        yield\n    finally:\n        print('---')\n\nwith banner():\n    print('Hello')</pre></div>"
+    },
+    {
+      "id": 107,
+      "title": "107. @property",
+      "language": "python",
+      "description": "Expose a computed attribute via @property.",
+      "initialCode": "# Define Temperature(celsius) with a @property fahrenheit that converts C->F\n# Print the fahrenheit for 100C as an integer\n\n",
+    "fullSolution": "class Temperature:\n    def __init__(self, c):\n        self._c = c\n    @property\n    def fahrenheit(self):\n        return self._c * 9/5 + 32\n\nprint(int(Temperature(100).fahrenheit))\n",
+      "fullSolutionCommented": "# Expose a computed attribute via @property.\nclass Temperature:\n    def __init__(self, celsius):\n        self._c = celsius\n    @property\n    def fahrenheit(self):\n        # F = C * 9/5 + 32\n        return self._c * 9/5 + 32\n\nprint(int(Temperature(100).fahrenheit))  # 212\n",
+      "expectedOutput": "212",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>@property</code> for computed attributes that look like fields but run logic on access.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class Circle:\n    def __init__(self, r): self.r = r\n    @property\n    def area(self): return 3.14159 * self.r * self.r\n\nprint(int(Circle(10).area))</pre></div>"
+    },
+    {
+      "id": 108,
+      "title": "108. heapq.nlargest",
+      "language": "python",
+      "description": "Print the two largest numbers in descending order.",
+      "initialCode": "import heapq\n\narr = [5,1,9,7,2]\n# Print the two largest values on separate lines (largest first)\n\n",
+    "fullSolution": "import heapq\n\narr = [5,1,9,7,2]\nfor x in heapq.nlargest(2, arr):\n    print(x)\n",
+      "fullSolutionCommented": "import heapq\n\n# nlargest finds the top-k efficiently without fully sorting.\narr = [5, 1, 9, 7, 2]\nfor x in heapq.nlargest(2, arr):\n    print(x)  # 9 then 7\n",
+      "expectedOutput": "9\n7",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">`heapq.nlargest(k, iterable)` efficiently returns the k largest items without fully sorting the list.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import heapq\nprint(heapq.nlargest(3, [5,1,9,7,2])) # [9, 7, 5]</pre></div>"
+    },
+    {
+      "id": 109,
+      "title": "109. Regex Named Groups",
+      "language": "python",
+      "description": "Extract fields using named capture groups.",
+      "initialCode": "import re\n\ns = 'User alice, id=42'\n# Print 'alice:42' using named groups 'name' and 'id'\n\n",
+    "fullSolution": "import re\n\ns = 'User alice, id=42'\nm = re.search(r\"User (?P<name>\\w+), id=(?P<id>\\d+)\", s)\nprint(f\"{m.group('name')}:{m.group('id')}\")\n",
+      "fullSolutionCommented": "import re\n\n# Use named groups (?P<name>...) for clarity; access via group('name').\ns = 'User alice, id=42'\npat = r\"User (?P<name>\\w+), id=(?P<id>\\d+)\"\nm = re.search(pat, s)\nprint(f\\\"{m.group('name')}:{m.group('id')}\\\")\n",
+      "expectedOutput": "alice:42",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Named groups make regex matches easier to read and maintain. Access them by name via <code>match.group('name')</code>.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import re\nm = re.search(r\"(?P&lt;word&gt;\\w+)-(\\d+)\", 'abc-123')\nprint(m.group('word')) # abc</pre></div>"
+    },
+    {
+      "id": 110,
+      "title": "110. ThreadPoolExecutor",
+      "language": "python",
+      "description": "Use a thread pool to map a function and sum results.",
+      "initialCode": "from concurrent.futures import ThreadPoolExecutor\n\n# Square the numbers [1,2,3,4] using a ThreadPoolExecutor and print the sum\n\n",
+    "fullSolution": "from concurrent.futures import ThreadPoolExecutor\n\ndef sq(x):\n    return x*x\n\nwith ThreadPoolExecutor(max_workers=2) as ex:\n    print(sum(ex.map(sq, [1,2,3,4])))\n",
+      "fullSolutionCommented": "from concurrent.futures import ThreadPoolExecutor\n\n# Map a function across inputs in a thread pool and aggregate results.\ndef sq(x):\n    return x * x\n\nwith ThreadPoolExecutor(max_workers=2) as ex:\n    # ex.map returns a generator of results in input order\n    total = sum(ex.map(sq, [1, 2, 3, 4]))\n    print(total)  # 30\n",
+      "expectedOutput": "30",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">`ThreadPoolExecutor` runs callables on a pool of threads. Use <code>map</code> to apply a function to many inputs.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from concurrent.futures import ThreadPoolExecutor\nwith ThreadPoolExecutor() as ex:\n    print(list(ex.map(lambda x: x+1, [1,2,3]))) # [2,3,4]</pre></div>"
+    },
+    {
+      "id": 111,
+      "title": "111. Capstone: CSV ETL",
+      "language": "python",
+      "description": "Parse a CSV string and compute total revenue for rows with price >= 10.",
+      "initialCode": "import csv\nimport io\n\ndata = '''id,price,qty\n1,10,2\n2,15,1\n3,8,5\n'''\n# Compute total revenue (price*qty) for rows with price >= 10 and print it\n\n",
+    "fullSolution": "import csv\nimport io\n\ndata = '''id,price,qty\n1,10,2\n2,15,1\n3,8,5\n'''\nreader = csv.DictReader(io.StringIO(data))\nprint(sum(int(r['price'])*int(r['qty']) for r in reader if int(r['price']) >= 10))\n",
+      "fullSolutionCommented": "import csv\nimport io\n\n# Parse CSV into dicts, filter rows, and aggregate revenue.\ndata = '''id,price,qty\n1,10,2\n2,15,1\n3,8,5\n'''\nreader = csv.DictReader(io.StringIO(data))\nrevenue = 0\nfor row in reader:\n    price = int(row['price'])\n    qty = int(row['qty'])\n    if price >= 10:\n        revenue += price * qty\nprint(revenue)  # 35\n",
+      "expectedOutput": "35",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">CSV is a common interchange format. Use <code>csv.DictReader</code> to parse rows into dicts and combine filtering and aggregation.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import csv, io\ns = 'a,b\\n1,2\\n'\nprint(list(csv.DictReader(io.StringIO(s))))</pre></div>"
     }
   ]
 }

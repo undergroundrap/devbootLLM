@@ -1121,6 +1121,176 @@
       "fullSolutionCommented": "import csv\nimport io\n\n# Parse CSV into dicts, filter rows, and aggregate revenue.\ndata = '''id,price,qty\n1,10,2\n2,15,1\n3,8,5\n'''\nreader = csv.DictReader(io.StringIO(data))\nrevenue = 0\nfor row in reader:\n    price = int(row['price'])\n    qty = int(row['qty'])\n    if price >= 10:\n        revenue += price * qty\nprint(revenue)  # 35\n",
       "expectedOutput": "35",
       "tutorial": "<p class=\"mb-4 text-gray-300\">CSV is a common interchange format. Use <code>csv.DictReader</code> to parse rows into dicts and combine filtering and aggregation.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import csv, io\ns = 'a,b\\n1,2\\n'\nprint(list(csv.DictReader(io.StringIO(s))))</pre></div>"
+    },
+    {
+      "id": 112,
+      "title": "112. ProcessPoolExecutor",
+      "language": "python",
+      "description": "Use a process pool to cube [1,2,3,4] and print the sum.",
+      "initialCode": "from concurrent.futures import ProcessPoolExecutor\n\n# Define a top-level function cube(x) returning x*x*x (no lambdas)\n# On Windows, guard process pool code with if __name__ == '__main__'\n# Use ProcessPoolExecutor to compute cubes for [1,2,3,4] and print the sum\n\n",
+      "fullSolution": "from concurrent.futures import ProcessPoolExecutor\n\ndef cube(x):\n    return x*x*x\n\nif __name__ == '__main__':\n    with ProcessPoolExecutor(max_workers=2) as ex:\n        print(sum(ex.map(cube, [1,2,3,4])))\n",
+      "expectedOutput": "100",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>ProcessPoolExecutor</code> for CPU-bound work to sidestep the GIL. Map a pure function across inputs and aggregate.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from concurrent.futures import ProcessPoolExecutor\nwith ProcessPoolExecutor() as ex:\n    print(sum(ex.map(lambda x: x*x, [1,2,3]))) # 14</pre></div>"
+    },
+    {
+      "id": 113,
+      "title": "113. functools.singledispatch",
+      "language": "python",
+      "description": "Register type-specific implementations and dispatch at runtime.",
+      "initialCode": "from functools import singledispatch\n\n# Create a singledispatch function describe(x)\n# - default returns 'unknown'\n# - int specialization returns 'int:<value>'\n# - list specialization returns 'list:<len>'\n# Print describe(5) then describe([1,2,3])\n\n",
+      "fullSolution": "from functools import singledispatch\n\n@singledispatch\ndef describe(x):\n    return 'unknown'\n\n@describe.register(int)\ndef _(x):\n    return f'int:{x}'\n\n@describe.register(list)\ndef _(x):\n    return f'list:{len(x)}'\n\nprint(describe(5))\nprint(describe([1,2,3]))\n",
+      "expectedOutput": "int:5\nlist:3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>singledispatch</code> lets you write generic functions with type-based specializations for better extensibility.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from functools import singledispatch\n@singledispatch\ndef stringify(x): return str(x)\n@stringify.register(list)\ndef _(x): return ','.join(map(str,x))\nprint(stringify([1,2])) # 1,2</pre></div>"
+    },
+    {
+      "id": 114,
+      "title": "114. typing.Protocol",
+      "language": "python",
+      "description": "Define a structural interface and accept any implementation.",
+      "initialCode": "from typing import Protocol\n\n# Define a Greeter Protocol with greet(name:str)->str\n# Implement EN and ES classes and a welcome(g,name) that prints g.greet(name)\n# Call with 'Bob' using both implementations\n\n",
+      "fullSolution": "from typing import Protocol\n\nclass Greeter(Protocol):\n    def greet(self, name: str) -> str: ...\n\nclass EN:\n    def greet(self, name: str) -> str:\n        return f'Hello, {name}'\n\nclass ES:\n    def greet(self, name: str) -> str:\n        return f'Hola, {name}'\n\ndef welcome(g: Greeter, name: str):\n    print(g.greet(name))\n\nwelcome(EN(), 'Bob')\nwelcome(ES(), 'Bob')\n",
+      "expectedOutput": "Hello, Bob\nHola, Bob",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Protocol</code> enables structural typing: any object with the required methods is accepted, improving testability and decoupling.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from typing import Protocol\nclass HasLen(Protocol):\n    def __len__(self) -&gt; int: ...\n\ndef size(x: HasLen):\n    return len(x)\n\nprint(size('hi'))</pre></div>"
+    },
+    {
+      "id": 115,
+      "title": "115. sqlite3 In-Memory",
+      "language": "python",
+      "description": "Create a table, insert rows, and aggregate with SQL.",
+      "initialCode": "import sqlite3\n\n# Create an in-memory DB, a table nums(v INT), insert 1,2,3\n# Query SELECT SUM(v) and print the result\n\n",
+      "fullSolution": "import sqlite3\n\ncon = sqlite3.connect(':memory:')\ncur = con.cursor()\ncur.execute('CREATE TABLE nums(v INT)')\ncur.executemany('INSERT INTO nums(v) VALUES (?)', [(1,),(2,),(3,)])\ncur.execute('SELECT SUM(v) FROM nums')\nprint(cur.fetchone()[0])\ncon.close()\n",
+      "expectedOutput": "6",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use SQLite for quick relational queries in-memory—great for ETL-style tasks and prototypes.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import sqlite3\ncon = sqlite3.connect(':memory:')\ncon.execute('CREATE TABLE t(x)')\ncon.execute('INSERT INTO t VALUES (42)')\nprint(con.execute('SELECT x FROM t').fetchone()[0])</pre></div>"
+    },
+    {
+      "id": 116,
+      "title": "116. decimal for Precision",
+      "language": "python",
+      "description": "Add 0.1 and 0.2 precisely using Decimal.",
+      "initialCode": "from decimal import Decimal\n\n# Print the result of Decimal('0.1') + Decimal('0.2')\n\n",
+      "fullSolution": "from decimal import Decimal\nprint(Decimal('0.1') + Decimal('0.2'))\n",
+      "expectedOutput": "0.3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Binary floats surprise: 0.1+0.2 != 0.3. Use <code>Decimal</code> for money and precise decimal arithmetic.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from decimal import Decimal\nprint(Decimal('1.005').quantize(Decimal('0.01'))) # 1.01</pre></div>"
+    },
+    {
+      "id": 117,
+      "title": "117. struct pack/unpack",
+      "language": "python",
+      "description": "Pack two numbers into bytes and unpack them again.",
+      "initialCode": "import struct\n\n# Pack 258 (unsigned short) and 7 (unsigned byte) big-endian, then unpack and print each on its own line\n\n",
+      "fullSolution": "import struct\n\ndata = struct.pack('>HB', 258, 7)\na, b = struct.unpack('>HB', data)\nprint(a)\nprint(b)\n",
+      "expectedOutput": "258\n7",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">The <code>struct</code> module converts between Python values and C-struct binary data—useful for protocols and file formats.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import struct\nprint(struct.unpack('&gt;I', b'\\x00\\x00\\x01\\x00')[0]) # 256</pre></div>"
+    },
+    {
+      "id": 118,
+      "title": "118. enum.Flag",
+      "language": "python",
+      "description": "Combine bit-flags and test membership.",
+      "initialCode": "from enum import Flag, auto\n\n# Define Perm with READ, WRITE, EXEC using Flag\n# Make perm = READ|WRITE, then print whether it includes READ and includes EXEC (two lines)\n\n",
+      "fullSolution": "from enum import Flag, auto\n\nclass Perm(Flag):\n    READ = auto()\n    WRITE = auto()\n    EXEC = auto()\n\nperm = Perm.READ | Perm.WRITE\nprint(bool(perm & Perm.READ))\nprint(bool(perm & Perm.EXEC))\n",
+      "expectedOutput": "True\nFalse",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Flag</code> supports bitwise OR of options; test membership with bitwise AND.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from enum import Flag, auto\nclass F(Flag): A=auto(); B=auto()\nprint(F.A | F.B)</pre></div>"
+    },
+    {
+      "id": 119,
+      "title": "119. ExitStack",
+      "language": "python",
+      "description": "Manage multiple context cleanups dynamically.",
+      "initialCode": "import contextlib\n\n# Use ExitStack to print 'inside' then ensure 'exit' prints at teardown\n\n",
+      "fullSolution": "import contextlib\n\nwith contextlib.ExitStack() as stack:\n    stack.callback(lambda: print('exit'))\n    print('inside')\n",
+      "expectedOutput": "inside\nexit",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>ExitStack</code> lets you register callbacks and enter contexts conditionally, guaranteeing teardown even when combining resources.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import contextlib\nwith contextlib.ExitStack() as st:\n    st.callback(lambda: print('done'))\n    print('work')</pre></div>"
+    },
+    {
+      "id": 120,
+      "title": "120. cached_property",
+      "language": "python",
+      "description": "Cache an expensive computation after the first access.",
+      "initialCode": "from functools import cached_property\n\n# Define a class with a cached_property that prints 'compute' once and returns 42\n# Access it twice and print the value both times\n\n",
+      "fullSolution": "from functools import cached_property\n\nclass Expensive:\n    @cached_property\n    def value(self):\n        print('compute')\n        return 42\n\ne = Expensive()\nprint(e.value)\nprint(e.value)\n",
+      "expectedOutput": "compute\n42\n42",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>cached_property</code> computes once per instance and reuses the value—handy for memoizing I/O or heavy calculations.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from functools import cached_property\nclass C:\n  @cached_property\n  def cfg(self): return 123\nprint(C().cfg)</pre></div>"
+    },
+    {
+      "id": 121,
+      "title": "121. heapq.merge",
+      "language": "python",
+      "description": "Merge two sorted iterables and print all items.",
+      "initialCode": "import heapq\n\n# Merge [1,3,5] and [2,4,6] and print each item on its own line\n\n",
+      "fullSolution": "import heapq\nfor x in heapq.merge([1,3,5], [2,4,6]):\n    print(x)\n",
+      "expectedOutput": "1\n2\n3\n4\n5\n6",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>heapq.merge</code> lazily merges multiple sorted inputs—useful for external sort or streaming merges.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import heapq\nprint(list(heapq.merge([1,4],[2,3])))</pre></div>"
+    },
+    {
+      "id": 122,
+      "title": "122. bisect.insort",
+      "language": "python",
+      "description": "Insert while keeping a list sorted.",
+      "initialCode": "import bisect\n\n# Start with arr=[1,3,4], insert 2 in order using insort, then print arr\n\n",
+      "fullSolution": "import bisect\narr = [1,3,4]\nbisect.insort(arr, 2)\nprint(arr)\n",
+      "expectedOutput": "[1, 2, 3, 4]",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>bisect</code> for binary search and ordered insertion without re-sorting.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import bisect\na=[1,2,4]\nbisect.insort(a,3)\nprint(a)</pre></div>"
+    },
+    {
+      "id": 124,
+      "title": "124. Capstone: Log Aggregator",
+      "language": "python",
+      "description": "Parse log lines and print total ERRORs and WARNs.",
+      "initialCode": "import re\n\nlogs = '''[INFO] boot\n[ERROR] fail A\n[WARN] disk\n[ERROR] fail B\n'''\n# Count lines starting with [ERROR] and [WARN] and print 'E:<n> W:<m>'\n\n",
+      "fullSolution": "import re\n\nlogs = '''[INFO] boot\n[ERROR] fail A\n[WARN] disk\n[ERROR] fail B\n'''\nE = len(re.findall(r'^\\[ERROR\\]', logs, flags=re.M))\nW = len(re.findall(r'^\\[WARN\\]', logs, flags=re.M))\nprint(f'E:{E} W:{W}')\n",
+      "expectedOutput": "E:2 W:1",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Combine regex with multiline anchors to scan logs and aggregate counts.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import re\ns='''A\nB\nA\n'''\nprint(len(re.findall(r'^A', s, flags=re.M)))</pre></div>"
+    },
+    {
+      "id": 125,
+      "title": "125. Capstone: Process Pool Map-Reduce",
+      "language": "python",
+      "description": "Square 1..10 in a process pool and print the sum.",
+      "initialCode": "from concurrent.futures import ProcessPoolExecutor\n\n# Define a top-level function sq(x) returning x*x (no lambdas)\n# On Windows, guard process pool code with if __name__ == '__main__'\n# Compute sum(x*x for x in 1..10) using ProcessPoolExecutor and print it\n\n",
+      "fullSolution": "from concurrent.futures import ProcessPoolExecutor\n\ndef sq(x):\n    return x*x\n\nif __name__ == '__main__':\n    with ProcessPoolExecutor() as ex:\n        print(sum(ex.map(sq, range(1,11))))\n",
+      "expectedOutput": "385",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Map-reduce pattern: map independent work across workers, then reduce results with <code>sum</code>.</p>"
+    },
+    {
+      "id": 126,
+      "title": "126. Capstone: asyncio Timeout",
+      "language": "python",
+      "description": "Run two tasks; one sleeps, one fast; print only the fast result using timeout.",
+      "initialCode": "import asyncio\n\n# Create two coroutines: slow sleeps 1.0s and returns 'slow', fast returns 'fast'\n# Use wait_for to get fast within 0.1s and print it\n\n",
+      "fullSolution": "import asyncio\n\nasync def slow():\n    await asyncio.sleep(1.0)\n    return 'slow'\n\nasync def fast():\n    return 'fast'\n\nasync def main():\n    print(await asyncio.wait_for(fast(), timeout=0.1))\n\nasyncio.run(main())\n",
+      "expectedOutput": "fast",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>asyncio.wait_for</code> to bound latency and fail fast or pick fast paths.</p>"
+    },
+    {
+      "id": 127,
+      "title": "127. Capstone: pathlib Scan",
+      "language": "python",
+      "description": "List .txt files from an in-memory working dir and print their sorted names.",
+      "initialCode": "from pathlib import Path\n\n# Create temp files a.txt, b.txt, c.log in CWD; list only .txt and print names sorted joined by ','\n\n",
+      "fullSolution": "from pathlib import Path\nPath('a.txt').write_text('a')\nPath('b.txt').write_text('b')\nPath('c.log').write_text('c')\nprint(','.join(sorted(p.name for p in Path('.').iterdir() if p.suffix=='.txt')))\n",
+      "expectedOutput": "a.txt,b.txt",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>pathlib</code> provides path operations and iteration over directories; work in the sandboxed CWD for safety.</p>"
+    },
+    {
+      "id": 128,
+      "title": "128. Capstone: OrderedDict LRU",
+      "language": "python",
+      "description": "Implement a tiny LRU with capacity 2 using OrderedDict.",
+      "initialCode": "from collections import OrderedDict\n\n# Create an OrderedDict behaving like LRU capacity=2: put 'a':1, 'b':2, 'c':3 and print keys left joined by ','\n\n",
+      "fullSolution": "from collections import OrderedDict\n\nclass LRU(OrderedDict):\n    def __init__(self, cap):\n        super().__init__()\n        self.cap = cap\n    def __setitem__(self, k, v):\n        if k in self: del self[k]\n        super().__setitem__(k, v)\n        if len(self) > self.cap:\n            self.popitem(last=False)\n\nlru = LRU(2)\nlru['a']=1; lru['b']=2; lru['c']=3\nprint(','.join(lru.keys()))\n",
+      "expectedOutput": "b,c",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Reorder on set and evict the oldest when capacity is exceeded.</p>"
+    },
+    {
+      "id": 123,
+      "title": "123. argparse (programmatic)",
+      "language": "python",
+      "description": "Parse options from a list and act on them.",
+      "initialCode": "import argparse\n\n# Build an ArgumentParser that accepts --times INT; parse ['--times','3']\n# Print 'x' repeated times times\n\n",
+      "fullSolution": "import argparse\nparser = argparse.ArgumentParser(add_help=False)\nparser.add_argument('--times', type=int, required=True)\nargs = parser.parse_args(['--times','3'])\nprint('x'*args.times)\n",
+      "expectedOutput": "xxx",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>argparse</code> to define CLI options. Parsing from a list makes it easy to test without real command-line args.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import argparse\np=argparse.ArgumentParser(add_help=False)\np.add_argument('--n', type=int)\nprint(p.parse_args(['--n','2']).n)</pre></div>"
     }
   ]
 }

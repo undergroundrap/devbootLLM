@@ -11,6 +11,51 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">In Java, the console is a text output window. To print text to it, we use a built-in command from the System library.</p><p class=\"mb-4 text-gray-300\">The command is <code>System.out.println()</code>. The <code>ln</code> part means \"line,\" so it prints the text and then moves to the next line.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">// This line will print \"Welcome to Java!\" to the console.\nSystem.out.println(\"Welcome to Java!\");\n\n// This will print a number. Numbers don't need quotes.\nSystem.out.println(123);</pre></div><p class=\"mt-4 text-gray-300\">For this lesson, you need to print the specific phrase \"Hello, World!\".</p>"
     },
     {
+      "id": 124,
+      "title": "124. Capstone: Word Count Top2",
+      "description": "Count words and print the top 2 by frequency (key:count).",
+      "initialCode": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        String s = \"a b a c b b\";\n        // Count words and print top 2 as 'b:3' then 'a:2' on separate lines\n\n    }\n}",
+      "fullSolution": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        String s = \"a b a c b b\";\n        Map<String, Long> m = Arrays.stream(s.split(\" \")).collect(Collectors.groupingBy(x -> x, Collectors.counting()));\n        m.entrySet().stream()\n            .sorted((e1,e2) -> Long.compare(e2.getValue(), e1.getValue()))\n            .limit(2)\n            .forEach(e -> System.out.println(e.getKey()+\":\"+e.getValue()));\n    }\n}",
+      "expectedOutput": "b:3\na:2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Combine groupingBy+counting with a custom sort to get top-k frequencies.</p>"
+    },
+    {
+      "id": 125,
+      "title": "125. Capstone: CompletableFuture Timeout",
+      "description": "Use completeOnTimeout to return 'fast' if slow task exceeds 100ms.",
+      "initialCode": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // Build a future that sleeps 1s then returns \"slow\"\n        // Use completeOnTimeout(\"fast\", 100, MILLISECONDS) and print the result\n\n    }\n}",
+      "fullSolution": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        CompletableFuture<String> slow = CompletableFuture.supplyAsync(() -> {\n            try { Thread.sleep(1000); } catch (InterruptedException e) { throw new RuntimeException(e); }\n            return \"slow\";\n        });\n        System.out.println(slow.completeOnTimeout(\"fast\", 100, TimeUnit.MILLISECONDS).join());\n    }\n}",
+      "expectedOutput": "fast",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Bound latency by completing a future with a fallback if it exceeds a deadline.</p>"
+    },
+    {
+      "id": 126,
+      "title": "126. Capstone: NIO Files + Grouping",
+      "description": "Create temp files and group names by extension; print 'txt:2'.",
+      "initialCode": "import java.nio.file.*;\nimport java.io.*;\nimport java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        // Create files a.txt, b.txt, c.log in CWD, then group by extension and print 'txt:2'\n\n    }\n}",
+      "fullSolution": "import java.nio.file.*;\nimport java.io.*;\nimport java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        Files.writeString(Path.of(\"a.txt\"), \"a\");\n        Files.writeString(Path.of(\"b.txt\"), \"b\");\n        Files.writeString(Path.of(\"c.log\"), \"c\");\n        Map<String, Long> m = Files.list(Path.of(\".\"))\n            .filter(p -> Files.isRegularFile(p))\n            .collect(Collectors.groupingBy(p -> { String n=p.getFileName().toString(); int i=n.lastIndexOf('.'); return i==-1?\"\":n.substring(i+1); }, Collectors.counting()));\n        System.out.println(\"txt:\" + m.get(\"txt\"));\n    }\n}",
+      "expectedOutput": "txt:2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use NIO <code>Files</code> utilities to write and list paths; group with streams.</p>"
+    },
+    {
+      "id": 127,
+      "title": "127. Capstone: Parallel Stream SumSquares",
+      "description": "Compute sum of squares 1..1000 in parallel and print it.",
+      "initialCode": "import java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // Use IntStream.rangeClosed with parallel() to compute sum of squares and print it\n\n    }\n}",
+      "fullSolution": "import java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        long sum = IntStream.rangeClosed(1, 1000).parallel().mapToLong(i -> (long)i*i).sum();\n        System.out.println(sum);\n    }\n}",
+      "expectedOutput": "333833500",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Parallel streams can speed up CPU-bound aggregations on large ranges.</p>"
+    },
+    {
+      "id": 128,
+      "title": "128. Capstone: CountDownLatch",
+      "description": "Coordinate two threads and print 'done' after both complete.",
+      "initialCode": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        // Create CountDownLatch(2); start two threads that sleep briefly then countDown; await and print 'done'\n\n    }\n}",
+      "fullSolution": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        CountDownLatch latch = new CountDownLatch(2);\n        Runnable r = () -> { try { Thread.sleep(50); } catch (InterruptedException e) {} finally { latch.countDown(); } };\n        new Thread(r).start();\n        new Thread(r).start();\n        latch.await();\n        System.out.println(\"done\");\n    }\n}",
+      "expectedOutput": "done",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>CountDownLatch</code> to wait for a set of operations to complete.</p>"
+    },
+    {
       "id": 2,
       "title": "2. Variables & Data Types",
       "description": "Variables are containers for storing data. Declare an integer variable named `myNumber`, assign it the value `42`, and then print the variable to the console.",
@@ -353,7 +398,7 @@
       "initialCode": "public class Main {\n    public static void main(String[] args) {\n        int[][] myNumbers = { {1, 2, 3}, {4, 5, 6} };\n\n        // Use nested for loops to print all elements.\n        // The outer loop iterates through the rows (myNumbers.length).\n        // The inner loop iterates through the columns of the current row (myNumbers[i].length).\n\n    }\n}",
       "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        int[][] myNumbers = { {1, 2, 3}, {4, 5, 6} };\n\n        // Use nested for loops to print all elements.\n        // The outer loop iterates through the rows (myNumbers.length).\n        // The inner loop iterates through the columns of the current row (myNumbers[i].length).\n        for (int i = 0; i < myNumbers.length; i++) {\n            for (int j = 0; j < myNumbers[i].length; j++) {\n                System.out.println(myNumbers[i][j]);\n            }\n        }\n    }\n}",
       "expectedOutput": "1\n2\n3\n4\n5\n6",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">To process every element in a 2D array, a common pattern is to use a \"nested loop\" — a loop inside another loop.</p><p class=\"mb-4 text-gray-300\">The outer loop iterates through each of the main arrays (the rows). The inner loop then iterates through all the elements within that specific row-array (the columns).</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example with for-each loops:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">String[][] data = {{\"A\", \"B\"}, {\"C\", \"D\"}};\n\nfor (String[] row : data) {\n    for (String element : row) {\n        System.out.print(element + \" \"); // Prints \"A B C D \"\n    }\n}</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">To process every element in a 2D array, a common pattern is to use a \"nested loop\" â€” a loop inside another loop.</p><p class=\"mb-4 text-gray-300\">The outer loop iterates through each of the main arrays (the rows). The inner loop then iterates through all the elements within that specific row-array (the columns).</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example with for-each loops:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">String[][] data = {{\"A\", \"B\"}, {\"C\", \"D\"}};\n\nfor (String[] row : data) {\n    for (String element : row) {\n        System.out.print(element + \" \"); // Prints \"A B C D \"\n    }\n}</pre></div>"
     },
     {
       "id": 40,
@@ -407,7 +452,7 @@
       "initialCode": "class Car {\n    String model;\n\n    // Constructor\n    public Car(String model) {\n        // Use 'this' to distinguish between the instance variable 'model'\n        // and the parameter 'model'.\n        model = model;\n    }\n\n    public void printModel() {\n        System.out.println(\"Car model: \" + this.model);\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Car myCar = new Car(\"Mustang\");\n        myCar.printModel();\n    }\n}",
       "fullSolution": "class Car {\n    String model;\n\n    // Constructor\n    public Car(String model) {\n        // Use 'this' to distinguish between the instance variable 'model'\n        // and the parameter 'model'.\n        this.model = model;\n    }\n\n    public void printModel() {\n        System.out.println(\"Car model: \" + this.model);\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Car myCar = new Car(\"Mustang\");\n        myCar.printModel();\n    }\n}",
       "expectedOutput": "Car model: Mustang",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">The <code>this</code> keyword is a reference to the current object — the object whose method or constructor is being called. It can be used to:</p><ul class=\"list-disc list-inside mb-4 text-gray-300 space-y-2\"><li>Disambiguate between instance variables and parameters when they have the same name (the most common use).</li><li>Call another constructor in the same class (e.g., <code>this(arguments)</code>).</li><li>Pass the current object as an argument in a method call.</li></ul><p class=\"mb-4 text-gray-300\">When a parameter has the same name as an instance variable, the parameter \"shadows\" the instance variable. Using <code>this.variableName</code> ensures you are referring to the instance variable.</p><p class=\"mb-4 text-gray-300\">Practice the concept using a short example below.</p> <h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">System.out.println(\"Hello, Java!\");</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">The <code>this</code> keyword is a reference to the current object â€” the object whose method or constructor is being called. It can be used to:</p><ul class=\"list-disc list-inside mb-4 text-gray-300 space-y-2\"><li>Disambiguate between instance variables and parameters when they have the same name (the most common use).</li><li>Call another constructor in the same class (e.g., <code>this(arguments)</code>).</li><li>Pass the current object as an argument in a method call.</li></ul><p class=\"mb-4 text-gray-300\">When a parameter has the same name as an instance variable, the parameter \"shadows\" the instance variable. Using <code>this.variableName</code> ensures you are referring to the instance variable.</p><p class=\"mb-4 text-gray-300\">Practice the concept using a short example below.</p> <h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">System.out.println(\"Hello, Java!\");</pre></div>"
     },
     {
       "id": 46,
@@ -1016,6 +1061,15 @@
       "fullSolutionCommented": "import java.util.*;\nimport java.util.stream.*;\n\nclass Event { String type; int ms; Event(String t,int m){ type=t; ms=m; } }\n\npublic class Main {\n    public static void main(String[] args) {\n        // Filter by event type, project to durations, then sum.\n        List<Event> es = Arrays.asList(new Event(\"CLICK\",10), new Event(\"VIEW\",5), new Event(\"CLICK\",20));\n        int total = es.stream()\n                      .filter(e -> e.type.equals(\"CLICK\"))\n                      .mapToInt(e -> e.ms)\n                      .sum();\n        System.out.println(total); // 30\n    }\n}",
       "expectedOutput": "30",
       "tutorial": "<p class=\"mb-4 text-gray-300\">Combine filtering and aggregation in a stream pipeline to compute metrics from domain objects.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">int sum = list.stream().filter(x -&gt; x &gt; 0).mapToInt(Integer::intValue).sum();</pre></div>"
+    },
+    {
+      "id": 123,
+      "title": "123. BigInteger mod pow",
+      "description": "Compute 2^10 mod 1000 using BigInteger.",
+      "initialCode": "import java.math.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // Print 2^10 mod 1000\n\n    }\n}",
+      "fullSolution": "import java.math.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(BigInteger.valueOf(2).pow(10).mod(BigInteger.valueOf(1000)));\n    }\n}",
+      "expectedOutput": "24",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>BigInteger</code> for arbitrary-precision math, including modular operations used in cryptography.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">BigInteger a = new BigInteger(\"12345678901234567890\");</pre></div>"
     }
   ]
 }

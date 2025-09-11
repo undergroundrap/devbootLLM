@@ -562,8 +562,8 @@ app.post('/run/java', (req, res) => {
             } catch (_) { /* ignore */ }
         };
 
-        // Step 1: Compile the Java code
-        const compile = spawn('javac', [filePath]);
+        // Step 1: Compile the Java code (run inside the temp dir)
+        const compile = spawn('javac', [filePath], { cwd: tempDir });
         let compileError = '';
 
         compile.stderr.on('data', (data) => {
@@ -587,7 +587,8 @@ app.post('/run/java', (req, res) => {
             console.log('Compilation successful, running code...');
 
             // Step 2: Run the compiled Java code with a small heap to limit memory
-            const run = spawn('java', ['-Xmx64m', '-cp', tempDir, 'Main']);
+            // Also set cwd so any relative file I/O happens inside the sandboxed temp dir
+            const run = spawn('java', ['-Xmx64m', '-cp', tempDir, 'Main'], { cwd: tempDir });
             let output = '';
             let runError = '';
             

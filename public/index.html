@@ -768,7 +768,14 @@
                     }
                     
                     this.elements.runBtn.addEventListener('click', () => this.runCodeCheck());
-                    this.elements.solveBtn.addEventListener('click', () => this.solveLesson());
+                    this.elements.solveBtn.addEventListener('click', () => {
+                        this.showConfirmation(
+                            'Load Solution?',
+                            'This will replace your current code in the editor with the official solution for this lesson. Your changes will be lost.',
+                            () => this.solveLesson(),
+                            'btn-warning'
+                        );
+                    });
                     this.elements.resetBtn.addEventListener('click', () => {
                         this.showConfirmation(
                             'Reset Code?',
@@ -994,14 +1001,22 @@
                     const lang = (lesson.language ? String(lesson.language) : (this.currentTrack || 'java')).toLowerCase();
                     if (lesson.fullSolution) {
                         let code = lesson.fullSolution;
+                        let usedCommented = false;
                         if (lang === 'python') {
                             const commented = lesson.fullSolutionCommented && String(lesson.fullSolutionCommented).trim().length > 0
                                 ? lesson.fullSolutionCommented
                                 : this.generateCommentedPythonSolution(code, lesson);
+                            if (commented && commented !== code) { usedCommented = true; }
+                            code = commented || code;
+                        } else {
+                            const commented = lesson.fullSolutionCommented && String(lesson.fullSolutionCommented).trim().length > 0
+                                ? lesson.fullSolutionCommented
+                                : this.generateCommentedJavaSolution(code, lesson);
+                            if (commented && commented !== code) { usedCommented = true; }
                             code = commented || code;
                         }
                         this.editor.setValue(code);
-                        this.logToConsole('Lesson solution loaded into the editor.', 'info');
+                        this.logToConsole(`Lesson solution loaded${usedCommented ? ' (commented)' : ''} into the editor.`, 'info');
                     } else {
                         this.showToast("No solution available for this lesson.", "error");
                     }
@@ -1032,6 +1047,53 @@
                                 cmt = `Assign value to ${varname}`;
                             }
                             if (cmt) out.push(`${indent}# ${cmt}`);
+                            out.push(ln);
+                        }
+                        return out.join('\n');
+                    } catch (_) {
+                        return code;
+                    }
+                }
+
+                generateCommentedJavaSolution(code, lesson) {
+                    try {
+                        const lines = String(code || '').split(/\r?\n/);
+                        const out = [];
+                        out.push('// --- Solution (with comments) ---');
+                        if (lesson && lesson.title) out.push(`// ${lesson.title}`);
+                        if (lesson && lesson.description) out.push(`// ${String(lesson.description).replace(/\n/g, ' ')}`);
+                        for (const ln of lines) {
+                            const trimmed = ln.trim();
+                            const indentMatch = ln.match(/^\s*/);
+                            const indent = indentMatch ? indentMatch[0] : '';
+                            if (!trimmed) { out.push(ln); continue; }
+                            // Skip existing comment or block-comment lines
+                            if (trimmed.startsWith('//') || trimmed.startsWith('/*') || trimmed.startsWith('*')) { out.push(ln); continue; }
+                            let cmt = null;
+                            if (/^System\.out\.println?\s*\(/.test(trimmed)) cmt = 'Print output to the console';
+                            else if (/^for\s*\(/.test(trimmed)) cmt = 'For loop iteration';
+                            else if (/^while\s*\(/.test(trimmed)) cmt = 'While loop';
+                            else if (/^if\s*\(/.test(trimmed)) cmt = 'If condition';
+                            else if (/^else\s+if\s*\(/.test(trimmed)) cmt = 'Else-if condition';
+                            else if (/^else\b/.test(trimmed)) cmt = 'Else branch';
+                            else if (/^(public|private|protected)?\s*static\s+void\s+main\s*\(/.test(trimmed)) cmt = 'Program entry point (main method)';
+                            else if (/^class\s+\w+/.test(trimmed)) cmt = 'Class definition';
+                            else if (/^(public|private|protected)?\s*(static\s+)?[A-Za-z_][\w<>\[\]]*\s+[A-Za-z_][\w]*\s*\(.*\)\s*\{?\s*$/.test(trimmed)) cmt = 'Method definition';
+                            else if (/\w+\s*\+\+/.test(trimmed) || /\+\+\w+/.test(trimmed)) {
+                                const m = trimmed.match(/(\w+)\s*\+\+|\+\+(\w+)/);
+                                const varname = m ? (m[1] || m[2]) : null;
+                                cmt = varname ? `Increment ${varname}` : 'Increment variable';
+                            } else if (/^\w+\s*\+=\s*1\b/.test(trimmed)) {
+                                const varname = trimmed.split('+=')[0].trim();
+                                cmt = `Increment ${varname}`;
+                            } else if (/^(final\s+)?[A-Za-z_][\w<>\[\]]*\s+[A-Za-z_][\w]*\s*=/.test(trimmed)) {
+                                const m = trimmed.match(/^(?:final\s+)?[A-Za-z_][\w<>\[\]]*\s+([A-Za-z_][\w]*)\s*=/);
+                                const varname = m ? m[1] : null;
+                                cmt = varname ? `Declare and initialize ${varname}` : 'Declare and initialize variable';
+                            } else if (/^return\b/.test(trimmed)) cmt = 'Return from method';
+                            else if (/\.add\s*\(/.test(trimmed)) cmt = 'Add element to collection';
+                            else if (/\.put\s*\(/.test(trimmed)) cmt = 'Insert entry into map';
+                            if (cmt) out.push(`${indent}// ${cmt}`);
                             out.push(ln);
                         }
                         return out.join('\n');

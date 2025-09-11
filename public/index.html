@@ -410,6 +410,12 @@
                     <aside id="lesson-sidebar" class="gemini-bg-secondary border-r gemini-border flex flex-col overflow-y-auto">
                         <div class="p-4 border-b gemini-border">
                             <h3 id="course-title" class="text-lg font-bold text-white">Java Fundamentals</h3>
+                            <label for="lesson-filter" class="block mt-3 text-xs uppercase tracking-wide text-gray-400">Filter</label>
+                            <select id="lesson-filter" class="mt-1 w-full bg-[#1e1f20] border gemini-border rounded-md text-sm p-2 focus:outline-none">
+                                <option value="all">All Lessons</option>
+                                <option value="fundamentals">Fundamentals (1–100)</option>
+                                <option value="advanced">Advanced (101+)</option>
+                            </select>
                         </div>
                         <nav id="lesson-list" class="flex-grow p-2 space-y-1"></nav>
                     </aside>
@@ -619,6 +625,7 @@
                     
                     // Rely entirely on external JSON files
                     this.lessons = [];
+                    this.lessonFilter = localStorage.getItem(`lessonFilter-${this.currentTrack}`) || 'all';
                 }
 
                 async init() {
@@ -628,6 +635,7 @@
                     // Load lessons for selected course before state init
                     await this.loadLessonsForTrack(this.currentTrack);
                     this.updateCourseTitle();
+                    this.initLessonFilter();
                     this.storageService.init();
                     this.initEditor();
                     this.addEventListeners();
@@ -649,7 +657,7 @@
                         'confirm-modal-cancel-btn', 'confirm-modal-confirm-btn', 'toast-container',
                         'clear-console-btn', 'db-status-light', 'db-status-text', 'reset-progress-btn',
                         'left-panel', 'right-panel', 'resizer', 'lesson-sidebar', 'sidebar-toggle-btn',
-                        'lesson-list', 'confetti-canvas', 'solve-btn', 'ai-clear-btn', 'course-select', 'course-title'
+                        'lesson-list', 'confetti-canvas', 'solve-btn', 'ai-clear-btn', 'course-select', 'course-title', 'lesson-filter'
                     ];
                     ids.forEach(id => {
                         const camelCaseId = id.replace(/-(\w)/g, (_, c) => c.toUpperCase());
@@ -815,6 +823,14 @@
                     }
                     if (this.elements.aiModelRefreshBtn) {
                         this.elements.aiModelRefreshBtn.addEventListener('click', () => this.initOllamaModels(true));
+                    }
+
+                    if (this.elements.lessonFilter) {
+                        this.elements.lessonFilter.addEventListener('change', () => {
+                            this.lessonFilter = this.elements.lessonFilter.value || 'all';
+                            try { localStorage.setItem(`lessonFilter-${this.currentTrack}`, this.lessonFilter); } catch (_) {}
+                            this.populateLessonSidebar();
+                        });
                     }
                 }
 
@@ -1239,7 +1255,14 @@
                 populateLessonSidebar() {
                     const list = this.elements.lessonList;
                     list.innerHTML = '';
-                    this.lessons.forEach((lesson, index) => {
+                    let view = this.lessons || [];
+                    if (this.lessonFilter === 'fundamentals') {
+                        view = view.filter(l => (typeof l.id === 'number') ? l.id <= 100 : true);
+                    } else if (this.lessonFilter === 'advanced') {
+                        view = view.filter(l => (typeof l.id === 'number') ? l.id >= 101 : false);
+                    }
+                    view.forEach((lesson) => {
+                        const index = this.lessons.findIndex(x => x.id === lesson.id);
                         const isCompleted = this.lessonCompletion[lesson.id];
                         const isActive = index === this.currentLessonIndex;
                         const item = document.createElement('a');
@@ -1255,6 +1278,15 @@
                         });
                         list.appendChild(item);
                     });
+                }
+
+                initLessonFilter() {
+                    const sel = this.elements.lessonFilter;
+                    if (!sel) return;
+                    const key = `lessonFilter-${this.currentTrack}`;
+                    const saved = localStorage.getItem(key) || this.lessonFilter || 'all';
+                    sel.value = ['all','fundamentals','advanced'].includes(saved) ? saved : 'all';
+                    this.lessonFilter = sel.value;
                 }
                 
                 showConfirmation(title, text, onConfirm, confirmClass = 'btn-danger') {
@@ -1886,6 +1918,8 @@
                         this.elements.courseSelect.value = this.currentTrack;
                     }
                     this.updateCourseTitle();
+                    // Update lesson filter dropdown to this course's saved preference
+                    this.initLessonFilter();
                     // Re-init provider and model selections per course
                     this.initProviderSelect();
                     await this.initOllamaModels();

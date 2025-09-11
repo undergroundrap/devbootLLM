@@ -436,3 +436,24 @@ docker run --rm `
 
 
 Tip: For a clean, idempotent mirror of your JSON files on each start, add `-e LESSONS_REPLACE_ON_START=1` to your regular `docker run` command (wipes then seeds). If you prefer non-destructive updates, use `-e LESSONS_UPSERT_ON_START=1` instead.
+
+## Verify Lesson Counts (PowerShell)
+
+```
+(Invoke-RestMethod http://localhost:3000/lessons-java.json).lessons.Length
+(Invoke-RestMethod http://localhost:3000/lessons-python.json).lessons.Length
+```
+
+Expected: both return 111 after reseeding or JSON load.
+
+## Advanced Lessons Added
+
+- Java and Python each received 10 advanced lessons (IDs 101–110) plus a capstone (111). Topics include streams/grouping, Optionals, concurrency (ExecutorService/CompletableFuture and asyncio/thread pools), data modeling (dataclasses), parsing (regex/CSV), containers (LinkedHashMap size‑bounded eviction), and numerics (BigDecimal). These extend fundamentals with production‑oriented patterns.
+
+## Lesson Filter (UI)
+
+- In the lesson sidebar, use the new Filter dropdown to switch between:
+  - All Lessons
+  - Fundamentals (1–100)
+  - Advanced (101+)
+- The selection persists per course in localStorage.

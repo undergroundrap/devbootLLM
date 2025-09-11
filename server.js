@@ -131,6 +131,15 @@ app.get('/lessons-python.json', (req, res) => {
     }
 });
 
+// Inspect active lessons storage mode (sqlite vs json) and paths
+app.get('/lessons/storage', (req, res) => {
+    try {
+        return res.json(lessonsStorageInfo());
+    } catch (err) {
+        return res.status(500).json({ error: 'Failed to get storage info', details: err && err.message });
+    }
+});
+
 // Combined lessons endpoint removed to avoid accidental duplication on the client.
 
 // ----------------------

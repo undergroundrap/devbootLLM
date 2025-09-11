@@ -1070,6 +1070,156 @@
       "fullSolution": "import java.math.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(BigInteger.valueOf(2).pow(10).mod(BigInteger.valueOf(1000)));\n    }\n}",
       "expectedOutput": "24",
       "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>BigInteger</code> for arbitrary-precision math, including modular operations used in cryptography.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">BigInteger a = new BigInteger(\"12345678901234567890\");</pre></div>"
+    },
+    {
+      "id": 129,
+      "title": "129. ConcurrentHashMap merge",
+      "language": "java",
+      "description": "Use merge to maintain a thread-safe counter.",
+      "initialCode": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        ConcurrentHashMap<String, Integer> m = new ConcurrentHashMap<>();\n        // Increment key 'a' twice using merge and print the value (2)\n\n    }\n}",
+      "fullSolution": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        ConcurrentHashMap<String, Integer> m = new ConcurrentHashMap<>();\n        m.merge(\"a\", 1, Integer::sum);\n        m.merge(\"a\", 1, Integer::sum);\n        System.out.println(m.get(\"a\"));\n    }\n}",
+      "expectedOutput": "2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>ConcurrentHashMap.merge</code> atomically updates a value given a remapping function, avoiding explicit locks for simple counters.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">ConcurrentHashMap<String,Integer> m = new ConcurrentHashMap<>();\nm.merge(\"k\", 1, Integer::sum);\nm.merge(\"k\", 1, Integer::sum);\nSystem.out.println(m.get(\"k\")); // 2</pre></div>"
+    },
+    {
+      "id": 130,
+      "title": "130. computeIfAbsent (grouping)",
+      "language": "java",
+      "description": "Initialize a list per key with computeIfAbsent and add items.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Map<String, List<Integer>> m = new HashMap<>();\n        // Add 10 and 20 under key 'k' using computeIfAbsent, then print list size (2)\n\n    }\n}",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Map<String, List<Integer>> m = new HashMap<>();\n        m.computeIfAbsent(\"k\", k -> new ArrayList<>()).add(10);\n        m.computeIfAbsent(\"k\", k -> new ArrayList<>()).add(20);\n        System.out.println(m.get(\"k\").size());\n    }\n}",
+      "expectedOutput": "2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>computeIfAbsent</code> simplifies multi-map style grouping: initialize a container when a key is first seen.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Map<String, List<Integer>> m = new HashMap<>();\nm.computeIfAbsent(\"k\", k -> new ArrayList<>()).add(1);</pre></div>"
+    },
+    {
+      "id": 131,
+      "title": "131. CompletableFuture allOf",
+      "language": "java",
+      "description": "Wait for several futures and combine results.",
+      "initialCode": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        // Create two supplyAsync futures returning \"A\" and \"B\"; wait for all and print \"AB\"\n\n    }\n}",
+      "fullSolution": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        CompletableFuture<String> f1 = CompletableFuture.supplyAsync(() -> \"A\");\n        CompletableFuture<String> f2 = CompletableFuture.supplyAsync(() -> \"B\");\n        CompletableFuture.allOf(f1, f2).join();\n        System.out.println(f1.get() + f2.get());\n    }\n}",
+      "expectedOutput": "AB",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>allOf</code> joins multiple futures; use their individual results after it completes.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">CompletableFuture<String> a = CompletableFuture.supplyAsync(() -> \"A\");\nCompletableFuture<String> b = CompletableFuture.supplyAsync(() -> \"B\");\nCompletableFuture.allOf(a,b).join();\nSystem.out.println(a.join()+b.join());</pre></div>"
+    },
+    {
+      "id": 132,
+      "title": "132. thenCompose (dependent async)",
+      "language": "java",
+      "description": "Chain futures where the second depends on the first.",
+      "initialCode": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // Start with 2, then square it in a second async stage and print 4\n\n    }\n}",
+      "fullSolution": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        CompletableFuture<Integer> f = CompletableFuture.supplyAsync(() -> 2)\n            .thenCompose(x -> CompletableFuture.supplyAsync(() -> x * x));\n        System.out.println(f.join());\n    }\n}",
+      "expectedOutput": "4",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>thenCompose</code> flattens nested futures and is the right choice when the next step is itself asynchronous.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">CompletableFuture.supplyAsync(() -> 2)\n  .thenCompose(x -> CompletableFuture.supplyAsync(() -> x+1))\n  .thenAccept(System.out::println);</pre></div>"
+    },
+    {
+      "id": 133,
+      "title": "133. LongAdder (concurrency)",
+      "language": "java",
+      "description": "High-throughput counter under contention.",
+      "initialCode": "import java.util.concurrent.*;\nimport java.util.concurrent.atomic.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        // Increment a LongAdder 100 times across a thread pool, then print sum (100)\n\n    }\n}",
+      "fullSolution": "import java.util.concurrent.*;\nimport java.util.concurrent.atomic.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        LongAdder adder = new LongAdder();\n        ExecutorService es = Executors.newFixedThreadPool(4);\n        for (int i=0;i<100;i++) es.submit(adder::increment);\n        es.shutdown();\n        es.awaitTermination(5, TimeUnit.SECONDS);\n        System.out.println(adder.sum());\n    }\n}",
+      "expectedOutput": "100",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>LongAdder</code> scales better than <code>AtomicLong</code> under high contention by maintaining multiple cells and aggregating on demand.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">LongAdder a = new LongAdder(); a.increment(); System.out.println(a.sum());</pre></div>"
+    },
+    {
+      "id": 134,
+      "title": "134. Semaphore (limit concurrency)",
+      "language": "java",
+      "description": "Bound parallelism with a Semaphore and count completions.",
+      "initialCode": "import java.util.concurrent.*;\nimport java.util.concurrent.atomic.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        // Use a Semaphore(2) and run 3 tasks; increment an AtomicInteger when each finishes, then print 3\n\n    }\n}",
+      "fullSolution": "import java.util.concurrent.*;\nimport java.util.concurrent.atomic.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        Semaphore sem = new Semaphore(2);\n        AtomicInteger done = new AtomicInteger(0);\n        ExecutorService es = Executors.newFixedThreadPool(3);\n        Runnable r = () -> {\n            try { sem.acquire(); try { /* work */ } finally { sem.release(); } done.incrementAndGet(); }\n            catch (InterruptedException e) { Thread.currentThread().interrupt(); }\n        };\n        es.submit(r); es.submit(r); es.submit(r);\n        es.shutdown(); es.awaitTermination(5, TimeUnit.SECONDS);\n        System.out.println(done.get());\n    }\n}",
+      "expectedOutput": "3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">A <code>Semaphore</code> limits how many threads can enter a critical region simultaneously, useful for rate-limiting or resource pools.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Semaphore s = new Semaphore(2); s.acquire(); try { /* work */ } finally { s.release(); }</pre></div>"
+    },
+    {
+      "id": 135,
+      "title": "135. IntSummaryStatistics",
+      "language": "java",
+      "description": "Summarize numeric streams with min/max/sum/count.",
+      "initialCode": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // Compute summary statistics for [1,2,3,4] and print 'min=1,max=4,sum=10'\n\n    }\n}",
+      "fullSolution": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        IntSummaryStatistics st = Arrays.asList(1,2,3,4).stream().mapToInt(Integer::intValue).summaryStatistics();\n        System.out.println(\"min=\"+st.getMin()+\",max=\"+st.getMax()+\",sum=\"+st.getSum());\n    }\n}",
+      "expectedOutput": "min=1,max=4,sum=10",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Map to a primitive stream with <code>mapToInt</code> and use <code>summaryStatistics()</code> to get aggregate metrics in one pass.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">IntSummaryStatistics s = IntStream.of(5,1,9).summaryStatistics();\nSystem.out.println(s.getMax()); // 9</pre></div>"
+    },
+    {
+      "id": 136,
+      "title": "136. collectingAndThen",
+      "language": "java",
+      "description": "Post-process a collected result (e.g., make unmodifiable).",
+      "initialCode": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // Distinct ['a','b','a'] then wrap as unmodifiable list and print its size (2)\n\n    }\n}",
+      "fullSolution": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> names = Arrays.asList(\"a\",\"b\",\"a\");\n        List<String> unique = names.stream().distinct().collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));\n        System.out.println(unique.size());\n    }\n}",
+      "expectedOutput": "2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>collectingAndThen</code> applies a finisher after collecting, useful for wrapping or transforming the container.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">List<String> xs = List.of(\"a\", \"b\");\nList<String> ro = Collections.unmodifiableList(xs);</pre></div>"
+    },
+    {
+      "id": 137,
+      "title": "137. Optional.flatMap",
+      "language": "java",
+      "description": "Flatten nested Optionals when mapping to another Optional.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n    static Optional<Integer> parse(String s) {\n        // Return Optional.of(Integer.parseInt(s)) or Optional.empty() on failure\n        return Optional.empty();\n    }\n    public static void main(String[] args) {\n        // Use flatMap on Optional.of(\"7\") with parse and print the value or 0\n\n    }\n}",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n    static Optional<Integer> parse(String s) {\n        try { return Optional.of(Integer.parseInt(s)); } catch (Exception e) { return Optional.empty(); }\n    }\n    public static void main(String[] args) {\n        Optional<Integer> v = Optional.of(\"7\").flatMap(Main::parse);\n        System.out.println(v.orElse(0));\n    }\n}",
+      "expectedOutput": "7",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>flatMap</code> avoids wrapping an Optional inside another Optional when your mapping returns an Optional.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Optional<String> s = Optional.of(\"42\");\nOptional<Integer> i = s.flatMap(x -> Optional.of(Integer.parseInt(x)));</pre></div>"
+    },
+    {
+      "id": 138,
+      "title": "138. computeIfPresent",
+      "language": "java",
+      "description": "Update an existing map entry in-place if present.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Map<String,Integer> m = new HashMap<>();\n        m.put(\"x\", 1);\n        // Increase 'x' by 2 using computeIfPresent, then print 3\n\n    }\n}",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Map<String,Integer> m = new HashMap<>();\n        m.put(\"x\", 1);\n        m.computeIfPresent(\"x\", (k,v) -> v + 2);\n        System.out.println(m.get(\"x\"));\n    }\n}",
+      "expectedOutput": "3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>computeIfPresent</code> runs the remapping function only when the key exists, letting you update values atomically.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Map<String,Integer> m = new HashMap<>();\nm.put(\"x\", 1);\nm.computeIfPresent(\"x\", (k,v) -> v+1);</pre></div>"
+    },
+    {
+      "id": 139,
+      "title": "139. ReadWriteLock",
+      "language": "java",
+      "description": "Protect a value with a read/write lock and print it.",
+      "initialCode": "import java.util.concurrent.locks.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        ReadWriteLock rw = new ReentrantReadWriteLock();\n        int[] box = {0};\n        // Use writeLock to set box[0]=42, then use readLock to read and print it\n\n    }\n}",
+      "fullSolution": "import java.util.concurrent.locks.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        ReadWriteLock rw = new ReentrantReadWriteLock();\n        int[] box = {0};\n        rw.writeLock().lock();\n        try { box[0] = 42; } finally { rw.writeLock().unlock(); }\n        rw.readLock().lock();\n        try { System.out.println(box[0]); } finally { rw.readLock().unlock(); }\n    }\n}",
+      "expectedOutput": "42",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">A <code>ReadWriteLock</code> allows multiple concurrent readers or a single writer, improving throughput for read-heavy workloads.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">ReadWriteLock rw = new ReentrantReadWriteLock();\nrw.writeLock().lock(); try { /* write */ } finally { rw.writeLock().unlock(); }\nrw.readLock().lock(); try { /* read */ } finally { rw.readLock().unlock(); }</pre></div>"
+    },
+    {
+      "id": 140,
+      "title": "140. ScheduledExecutor (fixed rate)",
+      "language": "java",
+      "description": "Run a task at a fixed rate and stop after 3 executions.",
+      "initialCode": "import java.util.concurrent.*;\nimport java.util.concurrent.atomic.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        // Schedule a task at fixed rate that increments an AtomicInteger; stop after it reaches 3 and print 3\n\n    }\n}",
+      "fullSolution": "import java.util.concurrent.*;\nimport java.util.concurrent.atomic.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);\n        AtomicInteger c = new AtomicInteger(0);\n        Runnable r = () -> { if (c.incrementAndGet() >= 3) ses.shutdown(); };\n        ses.scheduleAtFixedRate(r, 0, 1, TimeUnit.MILLISECONDS);\n        ses.awaitTermination(2, TimeUnit.SECONDS);\n        System.out.println(c.get());\n    }\n}",
+      "expectedOutput": "3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>ScheduledExecutorService</code> can run tasks periodically via <code>scheduleAtFixedRate</code>. Shut down the scheduler when your condition is met.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">ScheduledExecutorService s = Executors.newScheduledThreadPool(1);\nAtomicInteger c = new AtomicInteger();\ns.scheduleAtFixedRate(() -> { if (c.incrementAndGet()>=3) s.shutdown(); }, 0, 1, TimeUnit.MILLISECONDS);</pre></div>"
+    },
+    {
+      "id": 141,
+      "title": "141. Optional.ifPresentOrElse",
+      "language": "java",
+      "description": "Print a fallback when Optional is empty using ifPresentOrElse.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Optional<String> s = Optional.empty();\n        // Use ifPresentOrElse to print \"empty\"\n\n    }\n}",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Optional<String> s = Optional.empty();\n        s.ifPresentOrElse(System.out::println, () -> System.out.println(\"empty\"));\n    }\n}",
+      "expectedOutput": "empty",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>ifPresentOrElse</code> (Java 9+) handles both branches inline, improving clarity over <code>isPresent</code> checks.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Optional.of(\"X\").ifPresentOrElse(System.out::println, () -> System.out.println(\"fallback\"));</pre></div>"
+    },
+    {
+      "id": 142,
+      "title": "142. Files.lines + try-with-resources",
+      "language": "java",
+      "description": "Write a file, read it with Files.lines, and count matching lines.",
+      "initialCode": "import java.nio.file.*;\nimport java.io.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        // Write lines A, B, A to a.txt; read and count lines equal to \"A\" and print 2\n\n    }\n}",
+      "fullSolution": "import java.nio.file.*;\nimport java.io.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        Path p = Path.of(\"a.txt\");\n        Files.writeString(p, \"A\nB\nA\n\");\n        try (Stream<String> lines = Files.lines(p)) {\n            long c = lines.filter(s -> s.equals(\"A\")).count();\n            System.out.println(c);\n        }\n    }\n}",
+      "expectedOutput": "2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Files.lines</code> streams file content lazily; combine with try-with-resources to ensure the file handle is closed.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">try (var s = java.nio.file.Files.lines(java.nio.file.Path.of(\"f.txt\"))) { /* use stream */ }</pre></div>"
+    },
+    {
+      "id": 143,
+      "title": "143. Collectors.mapping",
+      "language": "java",
+      "description": "Map elements during collection (e.g., to a Set) and aggregate.",
+      "initialCode": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // Map ['a','bb'] to their lengths in a Set using Collectors.mapping, then print the sum of the set's elements (3)\n\n    }\n}",
+      "fullSolution": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> xs = Arrays.asList(\"a\", \"bb\");\n        Set<Integer> lens = xs.stream().collect(Collectors.mapping(String::length, Collectors.toSet()));\n        int sum = lens.stream().mapToInt(Integer::intValue).sum();\n        System.out.println(sum);\n    }\n}",
+      "expectedOutput": "3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Collectors.mapping</code> transforms elements as they are being collected, without an explicit pre-<code>map</code> step.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Set<Integer> s = List.of(\"a\",\"bbb\").stream()\n  .collect(Collectors.mapping(String::length, Collectors.toSet()));</pre></div>"
     }
   ]
 }

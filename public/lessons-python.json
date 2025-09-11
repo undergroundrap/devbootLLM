@@ -1250,7 +1250,7 @@
       "initialCode": "from concurrent.futures import ProcessPoolExecutor\n\n# Define a top-level function sq(x) returning x*x (no lambdas)\n# On Windows, guard process pool code with if __name__ == '__main__'\n# Compute sum(x*x for x in 1..10) using ProcessPoolExecutor and print it\n\n",
       "fullSolution": "from concurrent.futures import ProcessPoolExecutor\n\ndef sq(x):\n    return x*x\n\nif __name__ == '__main__':\n    with ProcessPoolExecutor() as ex:\n        print(sum(ex.map(sq, range(1,11))))\n",
       "expectedOutput": "385",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Map-reduce pattern: map independent work across workers, then reduce results with <code>sum</code>.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Map-reduce pattern: map independent work across workers, then reduce with <code>sum</code>. Use a top-level function and guard <code>__name__</code> on Windows.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from concurrent.futures import ProcessPoolExecutor\n\ndef sq(x):\n    return x*x\n\nif __name__ == '__main__':\n    with ProcessPoolExecutor() as ex:\n        print(sum(ex.map(sq, range(1,6))))</pre></div>"
     },
     {
       "id": 126,
@@ -1260,7 +1260,7 @@
       "initialCode": "import asyncio\n\n# Create two coroutines: slow sleeps 1.0s and returns 'slow', fast returns 'fast'\n# Use wait_for to get fast within 0.1s and print it\n\n",
       "fullSolution": "import asyncio\n\nasync def slow():\n    await asyncio.sleep(1.0)\n    return 'slow'\n\nasync def fast():\n    return 'fast'\n\nasync def main():\n    print(await asyncio.wait_for(fast(), timeout=0.1))\n\nasyncio.run(main())\n",
       "expectedOutput": "fast",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>asyncio.wait_for</code> to bound latency and fail fast or pick fast paths.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>asyncio.wait_for</code> to bound latency and pick the fast path.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import asyncio\n\nasync def slow():\n    await asyncio.sleep(1)\n    return 'slow'\n\nasync def main():\n    try:\n        print(await asyncio.wait_for(slow(), timeout=0.05))\n    except asyncio.TimeoutError:\n        print('timeout')\n\nasyncio.run(main())</pre></div>"
     },
     {
       "id": 127,
@@ -1270,7 +1270,7 @@
       "initialCode": "from pathlib import Path\n\n# Create temp files a.txt, b.txt, c.log in CWD; list only .txt and print names sorted joined by ','\n\n",
       "fullSolution": "from pathlib import Path\nPath('a.txt').write_text('a')\nPath('b.txt').write_text('b')\nPath('c.log').write_text('c')\nprint(','.join(sorted(p.name for p in Path('.').iterdir() if p.suffix=='.txt')))\n",
       "expectedOutput": "a.txt,b.txt",
-      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>pathlib</code> provides path operations and iteration over directories; work in the sandboxed CWD for safety.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>pathlib</code> provides path operations and safe iteration over directories.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from pathlib import Path\nPath('a.txt').write_text('a')\nPath('b.log').write_text('b')\nprint(','.join(sorted(p.name for p in Path('.').iterdir() if p.suffix=='.txt')))</pre></div>"
     },
     {
       "id": 128,
@@ -1280,7 +1280,7 @@
       "initialCode": "from collections import OrderedDict\n\n# Create an OrderedDict behaving like LRU capacity=2: put 'a':1, 'b':2, 'c':3 and print keys left joined by ','\n\n",
       "fullSolution": "from collections import OrderedDict\n\nclass LRU(OrderedDict):\n    def __init__(self, cap):\n        super().__init__()\n        self.cap = cap\n    def __setitem__(self, k, v):\n        if k in self: del self[k]\n        super().__setitem__(k, v)\n        if len(self) > self.cap:\n            self.popitem(last=False)\n\nlru = LRU(2)\nlru['a']=1; lru['b']=2; lru['c']=3\nprint(','.join(lru.keys()))\n",
       "expectedOutput": "b,c",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Reorder on set and evict the oldest when capacity is exceeded.</p>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Reorder on set and evict the oldest when capacity is exceeded.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from collections import OrderedDict\ncap = 2\nlru = OrderedDict()\nfor k in ['a','b','a','c']:\n    if k in lru: del lru[k]\n    lru[k] = 1\n    if len(lru) > cap:\n        lru.popitem(last=False)\nprint(','.join(lru.keys()))  # b,c</pre></div>"
     },
     {
       "id": 123,
@@ -1291,6 +1291,156 @@
       "fullSolution": "import argparse\nparser = argparse.ArgumentParser(add_help=False)\nparser.add_argument('--times', type=int, required=True)\nargs = parser.parse_args(['--times','3'])\nprint('x'*args.times)\n",
       "expectedOutput": "xxx",
       "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>argparse</code> to define CLI options. Parsing from a list makes it easy to test without real command-line args.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import argparse\np=argparse.ArgumentParser(add_help=False)\np.add_argument('--n', type=int)\nprint(p.parse_args(['--n','2']).n)</pre></div>"
+    },
+    {
+      "id": 129,
+      "title": "129. asyncio.Semaphore",
+      "language": "python",
+      "description": "Limit concurrent tasks with a semaphore and sum results.",
+      "initialCode": "import asyncio\n\n# Create a Semaphore(2) and run 3 workers that each return 1\n# Gather results and print their sum (should be 3)\n\n",
+      "fullSolution": "import asyncio\n\nasync def worker(sem):\n    async with sem:\n        await asyncio.sleep(0.01)\n        return 1\n\nasync def main():\n    sem = asyncio.Semaphore(2)\n    results = await asyncio.gather(*(worker(sem) for _ in range(3)))\n    print(sum(results))\n\nasyncio.run(main())\n",
+      "expectedOutput": "3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>asyncio.Semaphore</code> to cap concurrent access (e.g., outbound requests). It protects a critical section by allowing only N tasks inside at a time.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import asyncio\n\nasync def worker(sem, x):\n    async with sem:\n        await asyncio.sleep(0.01)\n        return x\n\nasync def main():\n    sem = asyncio.Semaphore(2)\n    print(sum(await asyncio.gather(*(worker(sem, 1) for _ in range(3)))))\n\nasyncio.run(main())</pre></div>"
+    },
+    {
+      "id": 130,
+      "title": "130. queue + Threads",
+      "language": "python",
+      "description": "Fan out work to threads using queue.Queue and collect results.",
+      "initialCode": "from queue import Queue\nfrom threading import Thread\n\n# Square [1,2,3,4] in two worker threads using a Queue and print the sum (30)\n\n",
+      "fullSolution": "from queue import Queue\nfrom threading import Thread\n\nq = Queue()\nout = []\n\ndef worker():\n    while True:\n        x = q.get()\n        if x is None:\n            break\n        out.append(x*x)\n\n# start workers\nthreads = [Thread(target=worker) for _ in range(2)]\nfor t in threads: t.start()\n# enqueue work\nfor n in [1,2,3,4]: q.put(n)\n# stop workers\nfor _ in threads: q.put(None)\n# wait\nfor t in threads: t.join()\nprint(sum(out))\n",
+      "expectedOutput": "30",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use a <code>Queue</code> to hand off work to a fixed set of worker threads. The queue provides safe communication without manual locking.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from queue import Queue\nfrom threading import Thread\n\nq=Queue(); out=[]\n\ndef worker():\n    while True:\n        x=q.get()\n        if x is None: break\n        out.append(x*x)\n\nthreads=[Thread(target=worker) for _ in range(2)]\nfor t in threads: t.start()\nfor n in [1,2,3,4]: q.put(n)\nfor _ in threads: q.put(None)\nfor t in threads: t.join()\nprint(sum(out))</pre></div>"
+    },
+    {
+      "id": 131,
+      "title": "131. Logging to stdout",
+      "language": "python",
+      "description": "Configure logging to write to stdout and log a message.",
+      "initialCode": "import logging, sys\n\n# Configure basicConfig to stream logs to stdout and log INFO level 'hi'\n# Print should be exactly \"INFO:hi\"\n\n",
+      "fullSolution": "import logging, sys\nlogging.basicConfig(level=logging.INFO, stream=sys.stdout, format='%(levelname)s:%(message)s')\nlogging.info('hi')\n",
+      "expectedOutput": "INFO:hi",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">By default <code>logging</code> writes to stderr. Redirect to stdout to capture logs as program output, and set a concise format.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import logging, sys\nlogging.basicConfig(level=logging.INFO, stream=sys.stdout, format='%(levelname)s:%(message)s')\nlogging.info('hello')</pre></div>"
+    },
+    {
+      "id": 132,
+      "title": "132. dataclass default_factory",
+      "language": "python",
+      "description": "Use field(default_factory=list) to avoid shared mutable defaults.",
+      "initialCode": "from dataclasses import dataclass, field\n\n# Define Bag with items: list[int] = field(default_factory=list)\n# Append two integers and print len(items)\n\n",
+      "fullSolution": "from dataclasses import dataclass, field\n\n@dataclass\nclass Bag:\n    items: list[int] = field(default_factory=list)\n\nb = Bag()\nb.items.append(1)\nb.items.append(2)\nprint(len(b.items))\n",
+      "expectedOutput": "2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Never use a mutable object as a default value. <code>field(default_factory=...)</code> creates a fresh value per instance.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from dataclasses import dataclass, field\n\n@dataclass\nclass Bag:\n    items: list[int] = field(default_factory=list)\n\nprint(Bag().items is Bag().items)  # False</pre></div>"
+    },
+    {
+      "id": 133,
+      "title": "133. typing.TypedDict",
+      "language": "python",
+      "description": "Define a TypedDict and use it like a dict at runtime.",
+      "initialCode": "from typing import TypedDict\n\n# Create Item with fields name:str and price:int, then construct and print 'Widget:10'\n\n",
+      "fullSolution": "from typing import TypedDict\n\nclass Item(TypedDict):\n    name: str\n    price: int\n\ni: Item = { 'name': 'Widget', 'price': 10 }\nprint(f\"{i['name']}:{i['price']}\")\n",
+      "expectedOutput": "Widget:10",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>TypedDict</code> describes dictionary-shaped objects for static type-checkers while staying a plain dict at runtime.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from typing import TypedDict\n\nclass User(TypedDict):\n    id: int\n    name: str\n\nu: User = {'id': 1, 'name': 'Ada'}\nprint(u['name'])</pre></div>"
+    },
+    {
+      "id": 134,
+      "title": "134. operator.itemgetter",
+      "language": "python",
+      "description": "Sort records by a key using itemgetter.",
+      "initialCode": "from operator import itemgetter\n\n# Sort [{'name':'a','age':3},{'name':'c','age':1},{'name':'b','age':2}] by age and print names each on its own line\n\n",
+      "fullSolution": "from operator import itemgetter\n\ndata = [{'name':'a','age':3},{'name':'c','age':1},{'name':'b','age':2}]\nfor d in sorted(data, key=itemgetter('age')):\n    print(d['name'])\n",
+      "expectedOutput": "c\nb\na",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>itemgetter</code> builds a fast key function for <code>sorted</code>, <code>min</code>, <code>max</code>, etc.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from operator import itemgetter\nrows=[{'k':2},{'k':1}]\nprint([r['k'] for r in sorted(rows, key=itemgetter('k'))])</pre></div>"
+    },
+    {
+      "id": 135,
+      "title": "135. as_completed (futures)",
+      "language": "python",
+      "description": "Accumulate results from futures as they complete.",
+      "initialCode": "from concurrent.futures import ThreadPoolExecutor, as_completed\n\n# Submit squares for 1..4 and sum results using as_completed, then print the sum (30)\n\n",
+      "fullSolution": "from concurrent.futures import ThreadPoolExecutor, as_completed\n\ndef sq(x):\n    return x*x\n\nwith ThreadPoolExecutor(max_workers=3) as ex:\n    futs = [ex.submit(sq, x) for x in [1,2,3,4]]\n    total = 0\n    for f in as_completed(futs):\n        total += f.result()\n    print(total)\n",
+      "expectedOutput": "30",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>as_completed</code> lets you act on results as soon as each future finishes, which is great for scatter/gather workloads.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from concurrent.futures import ThreadPoolExecutor, as_completed\nwith ThreadPoolExecutor(max_workers=2) as ex:\n    futs = [ex.submit(len, s) for s in ['aa','bbb','c']]\n    print(sum(f.result() for f in as_completed(futs)))</pre></div>"
+    },
+    {
+      "id": 136,
+      "title": "136. contextvars",
+      "language": "python",
+      "description": "Per-task context state that doesn't need to be passed explicitly.",
+      "initialCode": "import contextvars, asyncio\n\n# Create a ContextVar, set different values in two tasks, gather and print them joined by ',' (A,B)\n\n",
+      "fullSolution": "import contextvars, asyncio\n\nvar = contextvars.ContextVar('var', default='unset')\n\nasync def worker(v):\n    var.set(v)\n    await asyncio.sleep(0)\n    return var.get()\n\nasync def main():\n    a,b = await asyncio.gather(worker('A'), worker('B'))\n    print(f'{a},{b}')\n\nasyncio.run(main())\n",
+      "expectedOutput": "A,B",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>ContextVar</code> values are task-local and flow with execution, making them safer than globals for request-scoped state.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import contextvars\nuser = contextvars.ContextVar('user', default='anon')\nuser.set('ada')\nprint(user.get())</pre></div>"
+    },
+    {
+      "id": 137,
+      "title": "137. re.sub with function",
+      "language": "python",
+      "description": "Transform matches via a replacement function.",
+      "initialCode": "import re\n\n# Replace all digits in 'a1b2' with '#' using a function replacer and print the result\n\n",
+      "fullSolution": "import re\n\ns = 'a1b2'\nprint(re.sub(r'(\\d)', lambda m: '#', s))\n",
+      "expectedOutput": "a#b#",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>re.sub</code> can take a function to compute replacements dynamically from each match object.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import re\nprint(re.sub(r'[aeiou]', lambda m: m.group(0).upper(), 'banana'))</pre></div>"
+    },
+    {
+      "id": 138,
+      "title": "138. pathlib read/write",
+      "language": "python",
+      "description": "Write then read a small text file using pathlib.",
+      "initialCode": "from pathlib import Path\n\n# Write 'ok' to note.txt then read it back and print\n\n",
+      "fullSolution": "from pathlib import Path\nPath('note.txt').write_text('ok')\nprint(Path('note.txt').read_text())\n",
+      "expectedOutput": "ok",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Path.write_text</code> and <code>Path.read_text</code> are convenient wrappers around opening files with the correct encoding.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from pathlib import Path\nPath('file.txt').write_text('hello')\nprint(Path('file.txt').read_text())</pre></div>"
+    },
+    {
+      "id": 139,
+      "title": "139. dataclass frozen",
+      "language": "python",
+      "description": "Make an immutable dataclass and show assignment fails.",
+      "initialCode": "from dataclasses import dataclass, FrozenInstanceError\n\n# Define frozen Person(name:str), instantiate, try to set name, catch and print exception class name\n\n",
+      "fullSolution": "from dataclasses import dataclass, FrozenInstanceError\n\n@dataclass(frozen=True)\nclass Person:\n    name: str\n\np = Person('Ada')\ntry:\n    p.name = 'Grace'\nexcept FrozenInstanceError as e:\n    print(type(e).__name__)\n",
+      "expectedOutput": "FrozenInstanceError",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>frozen=True</code> to make dataclasses immutable. Attempting to assign to a field raises <code>FrozenInstanceError</code>.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from dataclasses import dataclass, FrozenInstanceError\n\n@dataclass(frozen=True)\nclass Point: x:int; y:int\ntry:\n    Point(1,2).x = 3\nexcept FrozenInstanceError as e:\n    print(type(e).__name__)</pre></div>"
+    },
+    {
+      "id": 140,
+      "title": "140. __slots__",
+      "language": "python",
+      "description": "Restrict attributes with __slots__ and catch invalid assignment.",
+      "initialCode": "# Define class P with __slots__=('x','y'), set x and y to 1, then try to set z and print 'AttributeError' when caught\n\n",
+      "fullSolution": "class P:\n    __slots__ = ('x','y')\n\np = P()\np.x = 1; p.y = 1\ntry:\n    p.z = 3\nexcept AttributeError:\n    print('AttributeError')\n",
+      "expectedOutput": "AttributeError",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>__slots__</code> prevents creation of <code>__dict__</code> and disallows undeclared attributes, reducing memory and catching mistakes.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class P: __slots__ = ('x',)\np = P(); p.x = 1\ntry:\n    p.y = 2\nexcept AttributeError:\n    print('no y')</pre></div>"
+    },
+    {
+      "id": 141,
+      "title": "141. functools.reduce",
+      "language": "python",
+      "description": "Use reduce to compute a product (factorial style).",
+      "initialCode": "from functools import reduce\nimport operator as op\n\n# Compute product of 1..5 with reduce and print it\n\n",
+      "fullSolution": "from functools import reduce\nimport operator as op\nprint(reduce(op.mul, [1,2,3,4,5]))\n",
+      "expectedOutput": "120",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>reduce</code> applies a binary function cumulatively to a sequence, reducing it to a single value.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from functools import reduce\nprint(reduce(lambda a,b: a+b, [1,2,3]))</pre></div>"
+    },
+    {
+      "id": 142,
+      "title": "142. json loads",
+      "language": "python",
+      "description": "Parse JSON and compute a small aggregation.",
+      "initialCode": "import json\n\n# Parse a JSON string like {a:1,b:2} (with proper quotes), sum values and print\n\n",
+      "fullSolution": "import json\nd = json.loads('{\"a\":1,\"b\":2}')\nprint(d['a']+d['b'])\n",
+      "expectedOutput": "3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>json.loads</code> parses a JSON string into Python objects; <code>json.dumps</code> serializes them back.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import json\nprint(json.dumps({'x': 1}))</pre></div>"
+    },
+    {
+      "id": 143,
+      "title": "143. fractions.Fraction",
+      "language": "python",
+      "description": "Exact rational arithmetic with Fraction.",
+      "initialCode": "from fractions import Fraction\n\n# Create Fraction(1,3) + Fraction(1,3) and print the result\n\n",
+      "fullSolution": "from fractions import Fraction\nprint(Fraction(1,3) + Fraction(1,3))\n",
+      "expectedOutput": "2/3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Fraction</code> keeps exact rational values without floating-point error.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from fractions import Fraction\nprint(Fraction(1,10) * 3)</pre></div>"
     }
   ]
 }

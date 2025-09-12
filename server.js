@@ -38,7 +38,7 @@ app.use(express.json({ limit: '100kb' }));
 // ----------------------
 // Lessons storage (SQLite with JSON fallback)
 // ----------------------
-const { openDb, ensureSchema, seedFromJsonIfEmpty, seedFromJsonFiles, replaceFromJsonFiles, getLessons } = require('./db');
+const { openDb, ensureSchema, seedFromJsonIfEmpty, seedFromJsonFiles, replaceFromJsonFiles, getLessons, countLessons, getLessonsPage, getLessonById } = require('./db');
 const DATA_DIR = process.env.DATA_DIR || process.env.DB_DIR || (process.platform === 'win32' ? path.join(process.cwd(), 'data') : '/data');
 const DB_FILE = process.env.DB_FILE || path.join(DATA_DIR, 'app.db');
 const LESSONS_MODE = (process.env.LESSONS_MODE || 'replace');
@@ -98,6 +98,12 @@ function readJsonSafe(absPath) {
     }
 }
 
+function clampInt(n, min, max, dflt) {
+    const x = Number(n);
+    if (!Number.isFinite(x)) return dflt;
+    return Math.max(min, Math.min(max, x | 0));
+}
+
 // Serve lessons from DB if available; otherwise fall back to public JSON files
 app.get('/lessons-java.json', (req, res) => {
     try {
@@ -141,6 +147,72 @@ app.get('/lessons/storage', (req, res) => {
 });
 
 // Combined lessons endpoint removed to avoid accidental duplication on the client.
+
+// ----------------------
+// Scalable Lessons API (pagination + detail)
+// ----------------------
+app.get('/api/lessons', (req, res) => {
+    try {
+        const lang = String(req.query.lang || '').toLowerCase();
+        if (!['java', 'python'].includes(lang)) {
+            return res.status(400).json({ error: 'Invalid lang. Use java or python' });
+        }
+        const offset = clampInt(req.query.offset, 0, 1_000_000, 0);
+        const limit = clampInt(req.query.limit, 1, 5000, 200);
+        const fields = (String(req.query.fields || 'summary').toLowerCase() === 'full') ? 'full' : 'summary';
+        const q = String(req.query.q || '').trim();
+
+        if (lessonsDb) {
+            const total = countLessons(lessonsDb, lang, q);
+            const items = getLessonsPage(lessonsDb, lang, { offset, limit, fields, q });
+            return res.json({ meta: { total, offset, limit, fields, lang }, items });
+        }
+
+        // JSON fallback
+        const fallback = readJsonSafe(path.join(__dirname, 'public', `lessons-${lang}.json`));
+        const all = Array.isArray(fallback) ? fallback : (fallback && Array.isArray(fallback.lessons) ? fallback.lessons : []);
+        if (!all || all.length === 0) {
+            return res.json({ meta: { total: 0, offset, limit, fields, lang }, items: [] });
+        }
+        const filtered = q ? all.filter(l => {
+            try {
+                const hay = `${l.title || ''} ${l.description || ''}`.toLowerCase();
+                return hay.includes(q.toLowerCase());
+            } catch { return true; }
+        }) : all;
+        const total = filtered.length;
+        const slice = filtered.slice(offset, offset + limit);
+        const items = (fields === 'summary')
+            ? slice.map(l => ({ id: l.id, language: (l.language || lang), title: l.title, description: l.description || '' }))
+            : slice;
+        return res.json({ meta: { total, offset, limit, fields, lang }, items });
+    } catch (err) {
+        return res.status(500).json({ error: 'Failed to list lessons', details: err && err.message });
+    }
+});
+
+app.get('/api/lessons/:lang/:id', (req, res) => {
+    try {
+        const lang = String(req.params.lang || '').toLowerCase();
+        const id = Number(req.params.id);
+        if (!['java', 'python'].includes(lang) || !Number.isFinite(id)) {
+            return res.status(400).json({ error: 'Invalid lang or id' });
+        }
+        if (lessonsDb) {
+            const item = getLessonById(lessonsDb, lang, id);
+            if (!item) return res.status(404).json({ error: 'Lesson not found' });
+            return res.json({ item });
+        }
+        // JSON fallback
+        const fallback = readJsonSafe(path.join(__dirname, 'public', `lessons-${lang}.json`));
+        const all = Array.isArray(fallback) ? fallback : (fallback && Array.isArray(fallback.lessons) ? fallback.lessons : []);
+        const item = (all || []).find(l => Number(l.id) === id);
+        if (!item) return res.status(404).json({ error: 'Lesson not found' });
+        return res.json({ item });
+    } catch (err) {
+        return res.status(500).json({ error: 'Failed to get lesson', details: err && err.message });
+    }
+});
 
 // ----------------------
 // Ollama integration

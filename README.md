@@ -34,6 +34,39 @@ docker run --rm `
   --memory 512m `
   --cpus 1 `
   devbootllm-app
+
+## Scaling Lessons to 1,000+
+
+To keep the UI fast as the catalog grows, the server now exposes a paginated Lessons API and the client lazily loads full lesson details on demand. This lets the sidebar load thousands of items without downloading all code/tutorial content upfront.
+
+- List summaries: `GET /api/lessons?lang=java|python&offset=0&limit=200&fields=summary[&q=search]`
+  - Returns lightweight items: `id, language, title, description`.
+- Get details: `GET /api/lessons/:lang/:id`
+  - Returns the full lesson including `initialCode`, `expectedOutput`, `tutorial`, etc.
+
+Behavior notes:
+- If SQLite is available, the API streams from `data/app.db` with proper indexes for speed.
+- If SQLite is unavailable, the API falls back to `public/lessons-*.json` while still returning summaries for the list call.
+- On app start, the server seeds the DB from `public/lessons-*.json` (idempotent) and optionally mirrors JSON on each boot when `LESSONS_REPLACE_ON_START=1`.
+
+Recommended workflow while adding lessons incrementally:
+- Use `node scripts/validate-lessons.mjs` to catch schema issues.
+- Use `node scripts/find-dup-ids.mjs` to prevent ID collisions across tracks.
+- Use `node scripts/next-id.mjs` to get the next available ID per language.
+- Optionally run `node scripts/test-added-lessons.mjs` for smoke checks.
+
+Quick checks (PowerShell):
+
+```
+# Total counts (summary API)
+(Invoke-RestMethod "http://localhost:3000/api/lessons?lang=java&limit=1").meta.total
+(Invoke-RestMethod "http://localhost:3000/api/lessons?lang=python&limit=1").meta.total
+
+# Fetch one detail
+Invoke-RestMethod "http://localhost:3000/api/lessons/java/1" | ConvertTo-Json -Depth 4
+```
+
+The client now prefers the summary API automatically and fetches full content only when a lesson is opened.
 ```
 
 Expected logs confirming SQLite (not JSON fallback):

@@ -105,6 +105,20 @@ You should see `storage` equal to `sqlite`.
 
   node scripts/validate-lessons.mjs
 
+- Normalize and autofix tutorials (adds missing language field, ensures code examples, sorts by id):
+
+  node scripts/normalize-lessons.mjs public/lessons-java.json
+  node scripts/normalize-lessons.mjs public/lessons-python.json
+
+- Append multiple lessons from a small module (auto-ids and title prefixes):
+
+  node scripts/add-lessons.mjs public/lessons-python.json scripts/new-lessons-python.mjs
+  node scripts/add-lessons.mjs public/lessons-java.json scripts/new-lessons-java.mjs
+
+- Fill a specific missing id (e.g., insert Java lesson id 160):
+
+  node scripts/insert-lesson.mjs public/lessons-java.json 160 scripts/java-lesson-160.mjs
+
 - Tips for consistency:
   - Include: id, title, description, initialCode, fullSolution, expectedOutput, tutorial.
   - Keep the numeric prefix in the title in sync with the id (e.g., "162. …").

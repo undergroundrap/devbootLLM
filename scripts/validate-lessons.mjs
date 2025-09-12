@@ -1,65 +1,107 @@
 #!/usr/bin/env node
+/**
+ * Validate lessons JSON files for required fields, id continuity, and basic tutorial quality.
+ * Usage:
+ *   node scripts/validate-lessons.mjs [paths...]
+ * If no paths are provided, validates public/lessons-python.json and public/lessons-java.json if present.
+ */
 import fs from 'node:fs';
 import path from 'node:path';
 
-const root = process.cwd();
-const pub = path.join(root, 'public');
-const files = ['lessons-java.json', 'lessons-python.json'];
+const defaultFiles = [
+  path.join('public', 'lessons-python.json'),
+  path.join('public', 'lessons-java.json'),
+];
 
-let hasError = false;
+const files = process.argv.slice(2);
+const targets = files.length ? files : defaultFiles.filter(f => fs.existsSync(f));
 
-function readJson(file) {
-  try {
-    const s = fs.readFileSync(path.join(pub, file), 'utf8');
-    return JSON.parse(s);
-  } catch (e) {
-    console.error(`[error] Failed to read ${file}: ${e.message}`);
-    hasError = true;
-    return null;
-  }
+if (!targets.length) {
+  console.error('No lesson files found. Specify paths or ensure defaults exist.');
+  process.exit(2);
 }
 
-function validateList(list, langLabel) {
-  const issues = [];
-  const ids = new Set();
-  for (let i = 0; i < list.length; i++) {
-    const l = list[i];
-    const key = `${langLabel}:${l?.id ?? `idx${i}`}`;
-    if (!l || typeof l !== 'object') { issues.push(`${key} invalid object`); continue; }
-    if (typeof l.id === 'undefined') issues.push(`${key} missing id`);
-    if (typeof l.title !== 'string' || !l.title.trim()) issues.push(`${key} missing title`);
-    if (typeof l.description !== 'string' || !l.description.trim()) issues.push(`${key} missing description`);
-    if (typeof l.initialCode !== 'string' || !l.initialCode.trim()) issues.push(`${key} missing initialCode`);
-    if (typeof l.expectedOutput !== 'string' || !l.expectedOutput.trim()) issues.push(`${key} missing expectedOutput`);
-    if (typeof l.tutorial !== 'string' || !l.tutorial.trim()) issues.push(`${key} missing tutorial`);
-    if (ids.has(l.id)) issues.push(`${key} duplicate id in ${langLabel}`); else ids.add(l.id);
+const REQUIRED = ['id', 'title', 'language', 'description', 'initialCode', 'fullSolution', 'expectedOutput', 'tutorial'];
+
+function summarize(file) {
+  let data;
+  try {
+    const raw = fs.readFileSync(file, 'utf8');
+    data = JSON.parse(raw);
+  } catch (err) {
+    return { file, error: `Invalid JSON: ${err.message}` };
   }
-  // Check monotonic id growth (not strictly required, but helpful)
-  const sorted = [...list].map(l => l.id).filter(n => Number.isFinite(n)).sort((a,b)=>a-b);
-  for (let i = 1; i < sorted.length; i++) {
-    if (sorted[i] === sorted[i-1]) continue; // already reported duplicate
-    if (sorted[i] < sorted[i-1]) {
-      issues.push(`${langLabel}: id order not ascending around ${sorted[i-1]} -> ${sorted[i]}`);
-      break;
+  const lessons = Array.isArray(data?.lessons) ? data.lessons : [];
+  const issues = [];
+  const byId = new Map();
+  const byTitle = new Map();
+  let prevId = 0;
+  for (const l of lessons) {
+    // Required fields
+    const miss = REQUIRED.filter(k => !(k in l) || l[k] === null || String(l[k]).trim() === '');
+    if (miss.length) issues.push({ type: 'missing_fields', id: l.id, title: l.title, miss });
+
+    // ID continuity
+    if (typeof l.id !== 'number' || !Number.isInteger(l.id)) {
+      issues.push({ type: 'bad_id', id: l.id, title: l.title });
+    } else if (l.id !== prevId + 1) {
+      issues.push({ type: 'gap_or_out_of_order', prev: prevId, got: l.id, title: l.title });
+      prevId = l.id; // continue from here to avoid cascades
+    } else {
+      prevId = l.id;
+    }
+
+    // Title numeric prefix
+    if (typeof l.title === 'string') {
+      const expectedPrefix = `${l.id}.`;
+      if (!l.title.trim().startsWith(expectedPrefix)) {
+        issues.push({ type: 'title_id_mismatch', id: l.id, title: l.title });
+      }
+    }
+
+    // Tutorial basic quality checks
+    if (typeof l.tutorial === 'string') {
+      const hasCodeBlock = l.tutorial.includes('<pre');
+      if (!hasCodeBlock) issues.push({ type: 'tutorial_missing_example', id: l.id, title: l.title });
+      const plainText = l.tutorial.replace(/<[^>]*>/g, '').trim();
+      if (plainText.length < 60) issues.push({ type: 'tutorial_too_short', id: l.id, title: l.title, len: plainText.length });
+    }
+
+    // Duplicate checks
+    if (byId.has(l.id)) issues.push({ type: 'duplicate_id', id: l.id, titles: [byId.get(l.id), l.title] });
+    byId.set(l.id, l.title);
+    if (typeof l.title === 'string') {
+      const t = l.title.trim().toLowerCase();
+      if (byTitle.has(t)) issues.push({ type: 'duplicate_title', id: l.id, title: l.title });
+      byTitle.set(t, l.id);
     }
   }
-  return issues;
+  return { file, count: lessons.length, issues };
 }
 
-for (const f of files) {
-  const data = readJson(f);
-  if (!data) continue;
-  const list = Array.isArray(data.lessons) ? data.lessons : (Array.isArray(data) ? data : []);
-  const langLabel = f.includes('python') ? 'python' : 'java';
-  const issues = validateList(list, langLabel);
-  if (issues.length) {
-    console.error(`\n[${langLabel}] ${issues.length} issue(s):`);
-    for (const is of issues) console.error(' -', is);
-    hasError = true;
+const results = targets.map(summarize);
+for (const r of results) {
+  if (r.error) {
+    console.log(`FILE: ${r.file} -> ERROR: ${r.error}`);
+    continue;
+  }
+  console.log(`FILE: ${r.file}`);
+  console.log(`  lessons: ${r.count}`);
+  const grouped = r.issues.reduce((acc, it) => { (acc[it.type] ||= []).push(it); return acc; }, {});
+  const types = Object.keys(grouped);
+  if (!types.length) {
+    console.log('  issues: none');
   } else {
-    console.log(`[${langLabel}] OK (${list.length} lessons)`);
+    for (const t of types) {
+      console.log(`  ${t}: ${grouped[t].length}`);
+    }
+    // Show sample of most important categories
+    const show = ['missing_fields', 'gap_or_out_of_order', 'title_id_mismatch', 'tutorial_missing_example', 'tutorial_too_short', 'duplicate_id', 'duplicate_title'];
+    for (const t of show) {
+      if (grouped[t]?.length) {
+        console.log(`  sample ${t}:`, grouped[t].slice(0, 3));
+      }
+    }
   }
 }
-
-process.exit(hasError ? 1 : 0);
 

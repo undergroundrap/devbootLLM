@@ -1857,9 +1857,9 @@
       "language": "python",
       "description": "Use re.search to find and print the email in the given text.",
       "initialCode": "import re\ntext = \"Contact us at support@example.com for help.\"\n# Print the email address from text\n",
-      "fullSolution": "import re\ntext = \"Contact us at support@example.com for help.\"\nm = re.search(r\"[w.-]+@[w.-]+\", text)\nif m:\n    print(m.group(0))\n",
+      "fullSolution": "import re\ntext = \"Contact us at support@example.com for help.\"\nm = re.search(r\"[\\w\\.-]+@[\\w\\.-]+\", text)\nif m:\n    print(m.group(0))\n",
       "expectedOutput": "support@example.com",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Regular expressions match patterns in text. Use re.search to find the first match, and groups to extract portions.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import re\nm = re.search(r\"d+\", \"Order A-1023\")\nprint(m.group(0))  # 1023</pre></div>",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Regular expressions match patterns in text. Use re.search to find the first match, and groups to extract portions.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import re\nm = re.search(r\"\\d+\", \"Order A-1023\")\nprint(m.group(0))  # 1023</pre></div>",
       "id": 185
     },
     {

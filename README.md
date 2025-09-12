@@ -55,6 +55,28 @@ You should see `storage` equal to `sqlite`.
 
 - AI chat now separates the model's Thinking from the final Answer. The Thinking section is styled differently and is collapsible. If a model emits <think>…</think> (e.g., DeepSeek R1) or prefixes like "Thinking:"/"Reasoning:", the UI captures it into the collapsible panel while the Answer remains front and center.
 - Lessons receive a quick validation on load (duplicates/missing required fields). Any issues are logged to the browser console to help keep tutorials consistent.
+- New: Tag filter and curated Senior Path. In the Learning view sidebar you can now:
+  - Filter by Level (All, Fundamentals, Advanced, Senior Path).
+  - Filter by Tag (e.g., Concurrency, I/O, Streams, OOP, Collections, Regex). Tags are auto‑derived from lesson content and also shown as chips under the lesson description.
+  - Senior Path is a curated sequence across advanced, real‑world topics. Pick it from the Level dropdown for a focused journey to senior proficiency.
+
+## Adding Lessons (Sequential IDs)
+
+- IDs are strictly sequential per language to make the path feel like a natural progression from beginner to senior.
+- Get the next ID:
+
+  node scripts/next-id.mjs public/lessons-java.json
+  node scripts/next-id.mjs public/lessons-python.json
+
+- After adding/editing lessons, validate the JSON for consistency:
+
+  node scripts/validate-lessons.mjs
+
+- Tips for consistency:
+  - Include: id, title, description, initialCode, fullSolution, expectedOutput, tutorial.
+  - Keep the numeric prefix in the title in sync with the id (e.g., "162. …").
+  - Write concise, testable prompts and exact expected outputs.
+  - Tutorials should include a short rationale plus an example code block.
 
 This project transitions the devbootLLM application from a front-end only simulation to a full-stack application with a local server for executing code. This allows users to run actual Java and Python code securely in an isolated environment.
 

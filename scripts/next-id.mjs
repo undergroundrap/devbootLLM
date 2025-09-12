@@ -1,17 +1,19 @@
 #!/usr/bin/env node
+/**
+ * Print the next sequential id for the given lessons JSON file.
+ * Usage: node scripts/next-id.mjs public/lessons-python.json
+ */
 import fs from 'node:fs';
-import path from 'node:path';
 
 const file = process.argv[2];
 if (!file) {
-  console.error('Usage: node scripts/next-id.mjs public/lessons-<lang>.json');
-  process.exit(1);
+  console.error('Usage: node scripts/next-id.mjs <path-to-lessons.json>');
+  process.exit(2);
 }
 
-const abs = path.resolve(file);
-const raw = JSON.parse(fs.readFileSync(abs, 'utf8'));
-const list = Array.isArray(raw.lessons) ? raw.lessons : raw;
-const ids = list.map(l => l && l.id).filter(n => Number.isFinite(n));
-const max = ids.length ? Math.max(...ids) : 0;
-console.log(String(max + 1));
+const raw = fs.readFileSync(file, 'utf8');
+const data = JSON.parse(raw);
+const lessons = Array.isArray(data?.lessons) ? data.lessons : [];
+const maxId = lessons.reduce((m, l) => (typeof l.id === 'number' && l.id > m ? l.id : m), 0);
+console.log(maxId + 1);
 

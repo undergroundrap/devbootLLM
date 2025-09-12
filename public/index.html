@@ -983,8 +983,16 @@
                     }
                 }
 
-                loadLesson(index, options = {}) {
+                async loadLesson(index, options = {}) {
                     if (index < 0 || index >= this.lessons.length || !this.isDbReady) return;
+                    // Ensure full lesson details are loaded before rendering
+                    try {
+                        const maybe = this.lessons[index] || {};
+                        const hasDetails = !!(maybe && typeof maybe === 'object' && maybe.initialCode && (('expectedOutput' in maybe) || maybe.expectedOutput === '') && maybe.tutorial);
+                        if (!hasDetails) {
+                            await this.ensureLessonDetails(index);
+                        }
+                    } catch (_) {}
                     
                     const lessonPanel = document.getElementById('lesson-panel');
                     lessonPanel.classList.remove('fade-in');
@@ -1034,6 +1042,23 @@
                         lessonPanel.style.opacity = '1';
                         lessonPanel.classList.add('fade-in');
                     }, 200);
+                }
+
+                async ensureLessonDetails(index) {
+                    try {
+                        const summary = this.lessons[index];
+                        if (!summary || typeof summary !== 'object') return;
+                        const hasDetails = !!(summary.initialCode && (('expectedOutput' in summary) || summary.expectedOutput === '') && summary.tutorial);
+                        if (hasDetails) return;
+                        const lang = (summary.language ? String(summary.language) : (this.currentTrack || 'java')).toLowerCase() === 'python' ? 'python' : 'java';
+                        const url = `/api/lessons/${lang}/${summary.id}`;
+                        const r = await fetch(url, { cache: 'no-cache' });
+                        if (!r.ok) return;
+                        const d = await r.json();
+                        if (d && d.item) {
+                            this.lessons[index] = { ...summary, ...d.item };
+                        }
+                    } catch (_) { /* ignore */ }
                 }
 
                 resetCode() {
@@ -1500,6 +1525,30 @@
                     try {
                         // Reset lessons first to avoid cross-course mixing
                         this.lessons = [];
+
+                        // Try scalable API first (returns summary list); fall back to JSON files if unavailable
+                        try {
+                            const lang = (track === 'python') ? 'python' : 'java';
+                            const apiUrl = `/api/lessons?lang=${lang}&limit=5000&fields=summary`;
+                            const resp = await fetch(apiUrl, { cache: 'no-cache' });
+                            if (resp.ok) {
+                                const data = await resp.json();
+                                if (data && Array.isArray(data.items)) {
+                                    this.lessons = data.items.filter(l => !l.language || String(l.language).toLowerCase() === lang);
+                                    // de-dupe
+                                    const seen = new Set();
+                                    this.lessons = (this.lessons || []).filter(l => {
+                                        const llang = (l.language ? String(l.language) : lang).toLowerCase();
+                                        const key = `${llang}:${l.id}`;
+                                        if (seen.has(key)) return false;
+                                        seen.add(key);
+                                        return true;
+                                    });
+                                    // lessons loaded via API; UI refresh handled in finally
+                                    return; // success via API; skip JSON fallback
+                                }
+                            }
+                        } catch (_) { /* ignore and fall back */ }
 
                         if (track === 'python') {
                             // Python lessons are expected in a separate JSON

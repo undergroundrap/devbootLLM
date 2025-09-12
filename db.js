@@ -51,6 +51,9 @@ function ensureSchema(db) {
       order_index INTEGER DEFAULT NULL,
       PRIMARY KEY (language, id)
     );
+    CREATE INDEX IF NOT EXISTS lessons_lang_id_idx ON lessons(language, id);
+    CREATE INDEX IF NOT EXISTS lessons_lang_order_idx ON lessons(language, COALESCE(order_index, id));
+    CREATE INDEX IF NOT EXISTS lessons_lang_title_idx ON lessons(language, title);
   `);
 }
 
@@ -156,6 +159,65 @@ function getLessons(db, language /* 'java' | 'python' | undefined */) {
   return rows.map(rowToJsonLesson);
 }
 
+function countLessons(db, language, q = '') {
+  if (!db) return 0;
+  const lang = String(language || '').toLowerCase();
+  const hasQ = !!(q && String(q).trim());
+  if (hasQ) {
+    const like = `%${String(q).trim()}%`;
+    const row = db.prepare(
+      'SELECT COUNT(1) AS c FROM lessons WHERE language = ? AND (title LIKE ? OR description LIKE ?)'
+    ).get(lang, like, like);
+    return (row && row.c) || 0;
+  }
+  const row = db.prepare('SELECT COUNT(1) AS c FROM lessons WHERE language = ?').get(lang);
+  return (row && row.c) || 0;
+}
+
+function getLessonsPage(db, language, opts = {}) {
+  if (!db) return [];
+  const lang = String(language || '').toLowerCase();
+  const offset = Math.max(0, Number(opts.offset || 0) | 0);
+  const limit = Math.max(1, Math.min(5000, Number(opts.limit || 100) | 0));
+  const fields = (opts.fields === 'full') ? 'full' : 'summary';
+  const q = String(opts.q || '').trim();
+  const hasQ = !!q;
+  if (fields === 'summary') {
+    if (hasQ) {
+      const like = `%${q}%`;
+      const rows = db.prepare(
+        'SELECT id, language, title, description, order_index FROM lessons WHERE language = ? AND (title LIKE ? OR description LIKE ?) ORDER BY COALESCE(order_index, id) ASC LIMIT ? OFFSET ?'
+      ).all(lang, like, like, limit, offset);
+      return rows.map(r => ({ id: r.id, language: r.language, title: r.title, description: r.description || '' }));
+    }
+    const rows = db.prepare(
+      'SELECT id, language, title, description, order_index FROM lessons WHERE language = ? ORDER BY COALESCE(order_index, id) ASC LIMIT ? OFFSET ?'
+    ).all(lang, limit, offset);
+    return rows.map(r => ({ id: r.id, language: r.language, title: r.title, description: r.description || '' }));
+  }
+  // full
+  if (hasQ) {
+    const like = `%${q}%`;
+    const rows = db.prepare(
+      'SELECT * FROM lessons WHERE language = ? AND (title LIKE ? OR description LIKE ?) ORDER BY COALESCE(order_index, id) ASC LIMIT ? OFFSET ?'
+    ).all(lang, like, like, limit, offset);
+    return rows.map(rowToJsonLesson);
+  }
+  const rows = db.prepare(
+    'SELECT * FROM lessons WHERE language = ? ORDER BY COALESCE(order_index, id) ASC LIMIT ? OFFSET ?'
+  ).all(lang, limit, offset);
+  return rows.map(rowToJsonLesson);
+}
+
+function getLessonById(db, language, id) {
+  if (!db) return null;
+  const lang = String(language || '').toLowerCase();
+  const rid = Number(id);
+  const row = db.prepare('SELECT * FROM lessons WHERE language = ? AND id = ?').get(lang, rid);
+  if (!row) return null;
+  return rowToJsonLesson(row);
+}
+
 function rowToJsonLesson(r) {
   const obj = {
     id: r.id,
@@ -182,4 +244,7 @@ module.exports = {
   replaceFromJsonFiles,
   seedFromJsonIfEmpty,
   getLessons,
+  countLessons,
+  getLessonsPage,
+  getLessonById,
 };

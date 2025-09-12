@@ -1373,8 +1373,8 @@
     }
     ,
     {
-      "id": 159,
-      "title": "159. Capstone: Files.walk + lines + sum",
+      "id": 161,
+      "title": "161. Capstone: Files.walk + lines + sum",
       "language": "java",
       "description": "Create a directory with .txt files, stream their lines, parse ints, and print the sum.",
       "initialCode": "import java.nio.file.*;\nimport java.io.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        // Create d/ with a.txt (1\\n2), b.txt (3), and c.log (x)\n        // Walk d/, filter *.txt, stream lines, parse ints, sum, print 6\n\n    }\n}",
@@ -1513,6 +1513,270 @@
       "fullSolution": "import java.nio.file.*;\nimport java.io.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        Path dir = Paths.get(\"d\");\n        Files.createDirectories(dir);\n        Files.writeString(dir.resolve(\"a.txt\"), \"1\\n2\\n\");\n        Files.writeString(dir.resolve(\"b.txt\"), \"3\\n\");\n        Files.writeString(dir.resolve(\"c.log\"), \"x\\n\");\n        long sum = Files.walk(dir)\n            .filter(p -> p.toString().endsWith(\".txt\"))\n            .flatMap(p -> { try { return Files.lines(p); } catch (IOException e) { return Stream.empty(); } })\n            .map(String::trim)\n            .filter(s -> !s.isEmpty())\n            .mapToLong(Long::parseLong)\n            .sum();\n        System.out.println(sum);\n    }\n}",
       "expectedOutput": "6",
       "tutorial": "<p class=\"mb-4 text-gray-300\">Capstone combining <code>Files.walk</code> with <code>Files.lines</code> and stream operations to process multiple files declaratively.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">java.nio.file.Files.walk(java.nio.file.Paths.get(\"d\"))\n  .filter(p -> p.toString().endsWith(\".txt\"))\n  .forEach(System.out::println);</pre></div>"
+    }
+    ,
+    {
+      "id": 162,
+      "title": "162. ExecutorService invokeAll (sum squares)",
+      "language": "java",
+      "description": "Use a fixed thread pool to compute squares of 1..3 in parallel and print their sum (14).",
+      "initialCode": "import java.util.*;\nimport java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        // Submit callables squaring 1..3 via invokeAll and print the sum (14)\n\n    }\n}",
+      "fullSolution": "import java.util.*;\nimport java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        ExecutorService es = Executors.newFixedThreadPool(3);\n        try {\n            List<Callable<Integer>> tasks = Arrays.asList(\n                () -> 1*1, () -> 2*2, () -> 3*3\n            );\n            int sum = 0;\n            for (Future<Integer> f : es.invokeAll(tasks)) { sum += f.get(); }\n            System.out.println(sum);\n        } finally { es.shutdown(); }\n    }\n}",
+      "expectedOutput": "14",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>ExecutorService.invokeAll</code> to submit a batch of tasks and wait for their results, then reduce them.</p>"
+    }
+    ,
+    {
+      "id": 163,
+      "title": "163. Files.walk (count .txt)",
+      "language": "java",
+      "description": "Create three files (a.txt, b.md, c.txt) and print how many end with .txt (2).",
+      "initialCode": "import java.nio.file.*;\nimport java.io.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        // Create a.txt, b.md, c.txt in dir d/; walk and count .txt (2)\n\n    }\n}",
+      "fullSolution": "import java.nio.file.*;\nimport java.io.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        Path d = Paths.get(\"d\");\n        Files.createDirectories(d);\n        Files.writeString(d.resolve(\"a.txt\"), \"x\");\n        Files.writeString(d.resolve(\"b.md\"), \"y\");\n        Files.writeString(d.resolve(\"c.txt\"), \"z\");\n        long c = Files.walk(d).filter(p -> p.toString().endsWith(\".txt\")).count();\n        System.out.println(c);\n    }\n}",
+      "expectedOutput": "2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Files.walk</code> traverses a directory tree; combine with filters to compute counts.</p>"
+    }
+    ,
+    {
+      "id": 164,
+      "title": "164. Optional map/filter chain",
+      "language": "java",
+      "description": "Trim and uppercase an Optional string and print its length (5).",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Optional<String> s = Optional.of(\" hello \");\n        // Chain map/filter to trim+uppercase and print length (5)\n\n    }\n}",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Optional<String> s = Optional.of(\" hello \");\n        int len = s.map(String::trim).map(String::toUpperCase).orElse(\"\").length();\n        System.out.println(len);\n    }\n}",
+      "expectedOutput": "5",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Prefer functional transformations with <code>map</code>/<code>filter</code> on <code>Optional</code> to avoid nested <code>if</code>s.</p>"
+    }
+    ,
+    {
+      "id": 165,
+      "title": "165. Comparator.comparing (custom sort)",
+      "language": "java",
+      "description": "Sort Person(name,age) by age then name and print names on separate lines.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n    static class Person { String name; int age; Person(String n,int a){name=n;age=a;} }\n    public static void main(String[] args) {\n        List<Person> ps = Arrays.asList(new Person(\"Zoe\", 30), new Person(\"Ada\", 30), new Person(\"Bob\", 25));\n        // Sort by age then name; print names each on a new line: Bob, Ada, Zoe\n\n    }\n}",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n    static class Person { String name; int age; Person(String n,int a){name=n;age=a;} }\n    public static void main(String[] args) {\n        List<Person> ps = Arrays.asList(new Person(\"Zoe\", 30), new Person(\"Ada\", 30), new Person(\"Bob\", 25));\n        ps.sort(Comparator.comparing((Person p) -> p.age).thenComparing(p -> p.name));\n        for (Person p : ps) System.out.println(p.name);\n    }\n}",
+      "expectedOutput": "Bob\nAda\nZoe",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Comparator.comparing</code> composes readable multi-key sorts; combine with <code>thenComparing</code>.</p>"
+    }
+    ,
+    {
+      "id": 166,
+      "title": "166. Streams: sum of squares (even)",
+      "language": "java",
+      "description": "Sum the squares of even numbers from 1..6 and print the result (56).",
+      "initialCode": "import java.util.stream.*;\n\npublic class Main {\n  public static void main(String[] args) {\n    // Use IntStream to compute 2^2 + 4^2 + 6^2 and print 56\n\n  }\n}",
+      "fullSolution": "import java.util.stream.*;\n\npublic class Main {\n  public static void main(String[] args) {\n    int sum = IntStream.rangeClosed(1, 6)\n      .filter(x -> x % 2 == 0)\n      .map(x -> x * x)\n      .sum();\n    System.out.println(sum);\n  }\n}",
+      "expectedOutput": "56",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Filter even values, map to squares, then sum using <code>IntStream</code>.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">int s = java.util.stream.IntStream.of(2,4,6).map(x->x*x).sum();</pre></div>"
+    }
+    ,
+    {
+      "id": 167,
+      "title": "167. Files.readAllLines (count)",
+      "language": "java",
+      "description": "Write three lines to a file and print the line count (3).",
+      "initialCode": "import java.nio.file.*;\nimport java.io.*;\nimport java.util.*;\n\npublic class Main {\n  public static void main(String[] args) throws Exception {\n    // Write a\\n b\\n c to d/t.txt then read all lines and print 3\n\n  }\n}",
+      "fullSolution": "import java.nio.file.*;\nimport java.io.*;\nimport java.util.*;\n\npublic class Main {\n  public static void main(String[] args) throws Exception {\n    Path d = Paths.get(\"d\");\n    Files.createDirectories(d);\n    Path p = d.resolve(\"t.txt\");\n    Files.write(p, Arrays.asList(\"a\", \"b\", \"c\"));\n    System.out.println(Files.readAllLines(p).size());\n  }\n}",
+      "expectedOutput": "3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>Files.readAllLines</code> for small files when you need the entire content as a list.</p>"
+    }
+    ,
+    {
+      "id": 168,
+      "title": "168. Regex: extract digits",
+      "language": "java",
+      "description": "Remove non-digits from 'a1b22c' and print '122'.",
+      "initialCode": "public class Main {\n  public static void main(String[] args) {\n    String s = \"a1b22c\";\n    // Remove non-digits and print 122\n\n  }\n}",
+      "fullSolution": "public class Main {\n  public static void main(String[] args) {\n    String s = \"a1b22c\";\n    System.out.println(s.replaceAll(\"\\\\D\", \"\"));\n  }\n}",
+      "expectedOutput": "122",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>\\D</code> matches non-digits; replacing them with empty string keeps only digits.</p>"
+    }
+    ,
+    {
+      "id": 169,
+      "title": "169. LocalDate: days between",
+      "language": "java",
+      "description": "Compute days between 2024-01-10 and 2024-01-15 (5).",
+      "initialCode": "import java.time.*;\n\npublic class Main {\n  public static void main(String[] args) {\n    // Print the number of days between 2024-01-10 and 2024-01-15 (5)\n\n  }\n}",
+      "fullSolution": "import java.time.*;\n\npublic class Main {\n  public static void main(String[] args) {\n    LocalDate a = LocalDate.parse(\"2024-01-10\");\n    LocalDate b = LocalDate.parse(\"2024-01-15\");\n    System.out.println(java.time.temporal.ChronoUnit.DAYS.between(a, b));\n  }\n}",
+      "expectedOutput": "5",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>ChronoUnit.DAYS.between</code> to compute date differences.</p>"
+    }
+    ,
+    {
+      "id": 170,
+      "title": "170. Optional.ifPresentOrElse",
+      "language": "java",
+      "description": "Use ifPresentOrElse to print 'EMPTY' for an empty Optional.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n  public static void main(String[] args) {\n    Optional<String> s = Optional.empty();\n    // Use ifPresentOrElse to print 'EMPTY'\n\n  }\n}",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n  public static void main(String[] args) {\n    Optional<String> s = Optional.empty();\n    s.ifPresentOrElse(x -> System.out.println(\"OK\"), () -> System.out.println(\"EMPTY\"));\n  }\n}",
+      "expectedOutput": "EMPTY",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>ifPresentOrElse</code> eliminates branching boilerplate for presence/absence.</p>"
+    }
+    ,
+    {
+      "id": 171,
+      "title": "171. record basics",
+      "language": "java",
+      "description": "Define a record Point(x,y), create (3,4), and print x+y (7).",
+      "initialCode": "public class Main {\n  record Point(int x, int y) {}\n  public static void main(String[] args) {\n    // Print x+y for Point(3,4) -> 7\n\n  }\n}",
+      "fullSolution": "public class Main {\n  record Point(int x, int y) {}\n  public static void main(String[] args) {\n    Point p = new Point(3,4);\n    System.out.println(p.x()+p.y());\n  }\n}",
+      "expectedOutput": "7",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">A <code>record</code> declares an immutable data carrier with generated accessors.</p>"
+    }
+    ,
+    {
+      "id": 172,
+      "title": "172. Collectors.joining",
+      "language": "java",
+      "description": "Join [a,b,c] with commas and print 'a,b,c'.",
+      "initialCode": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n  public static void main(String[] args) {\n    // Use Collectors.joining to print a,b,c\n\n  }\n}",
+      "fullSolution": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n  public static void main(String[] args) {\n    System.out.println(Arrays.asList(\"a\",\"b\",\"c\").stream().collect(Collectors.joining(\",\")));\n  }\n}",
+      "expectedOutput": "a,b,c",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Collectors.joining</code> concatenates strings with a delimiter.</p>"
+    }
+    ,
+    {
+      "id": 173,
+      "title": "173. Map.computeIfPresent (remove when zero)",
+      "language": "java",
+      "description": "Decrement a counter to zero and remove it; print map size (0).",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n  public static void main(String[] args) {\n    Map<String,Integer> m = new HashMap<>();\n    m.put(\"a\", 2);\n    // Decrement to zero via computeIfPresent, remove if equals 0; print size (0)\n\n  }\n}",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n  public static void main(String[] args) {\n    Map<String,Integer> m = new HashMap<>();\n    m.put(\"a\", 2);\n    m.computeIfPresent(\"a\", (k,v) -> v - 2);\n    m.remove(\"a\", 0);\n    System.out.println(m.size());\n  }\n}",
+      "expectedOutput": "0",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>computeIfPresent</code> for atomic updates; remove entries when counters hit zero.</p>"
+    }
+    ,
+    {
+      "id": 174,
+      "title": "174. Case-insensitive reverse sort",
+      "language": "java",
+      "description": "Sort [b,A,c] case-insensitively in descending order and print each on its own line.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n  public static void main(String[] args) {\n    List<String> xs = Arrays.asList(\"b\",\"A\",\"c\");\n    // Sort case-insensitively descending and print: c, b, A (each on new line)\n\n  }\n}",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n  public static void main(String[] args) {\n    List<String> xs = Arrays.asList(\"b\",\"A\",\"c\");\n    xs.sort(String.CASE_INSENSITIVE_ORDER.reversed());\n    for (String s : xs) System.out.println(s);\n  }\n}",
+      "expectedOutput": "c\nb\nA",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>String.CASE_INSENSITIVE_ORDER.reversed()</code> for case-insensitive descending order.</p>"
+    }
+    ,
+    {
+      "id": 175,
+      "title": "175. ArrayDeque as stack",
+      "language": "java",
+      "description": "Push 1,2,3 then pop and print each (3,2,1).",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n  public static void main(String[] args) {\n    Deque<Integer> dq = new ArrayDeque<>();\n    // Push 1,2,3 then pop and print each on its own line: 3,2,1\n\n  }\n}",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n  public static void main(String[] args) {\n    Deque<Integer> dq = new ArrayDeque<>();\n    dq.push(1); dq.push(2); dq.push(3);\n    while (!dq.isEmpty()) System.out.println(dq.pop());\n  }\n}",
+      "expectedOutput": "3\n2\n1",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>ArrayDeque</code> efficiently implements a stack with <code>push</code>/<code>pop</code>.</p>"
+    }
+    ,
+    {
+      "id": 176,
+      "title": "176. BigDecimal rounding",
+      "language": "java",
+      "description": "Round 1.005 to 2 decimals (HALF_UP) and print 1.01.",
+      "initialCode": "import java.math.*;\n\npublic class Main {\n  public static void main(String[] args) {\n    // Print BigDecimal(\"1.005\").setScale(2, RoundingMode.HALF_UP) -> 1.01\n\n  }\n}",
+      "fullSolution": "import java.math.*;\n\npublic class Main {\n  public static void main(String[] args) {\n    System.out.println(new BigDecimal(\"1.005\").setScale(2, RoundingMode.HALF_UP));\n  }\n}",
+      "expectedOutput": "1.01",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Prefer <code>BigDecimal</code> for currency/precise decimals; specify rounding mode.</p>"
+    }
+    ,
+    {
+      "id": 177,
+      "title": "177. Files.list (count directories)",
+      "language": "java",
+      "description": "Create d/a and d/b directories (and a file), then print directory count (2).",
+      "initialCode": "import java.nio.file.*;\nimport java.io.*;\n\npublic class Main {\n  public static void main(String[] args) throws Exception {\n    // Create d/a, d/b, and d/x.txt; list only directories and print 2\n\n  }\n}",
+      "fullSolution": "import java.nio.file.*;\nimport java.io.*;\n\npublic class Main {\n  public static void main(String[] args) throws Exception {\n    Path d = Paths.get(\"d\");\n    Files.createDirectories(d.resolve(\"a\"));\n    Files.createDirectories(d.resolve(\"b\"));\n    Files.writeString(d.resolve(\"x.txt\"), \"x\");\n    long count = Files.list(d).filter(Files::isDirectory).count();\n    System.out.println(count);\n  }\n}",
+      "expectedOutput": "2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>Files.list</code> with <code>Files::isDirectory</code> to count subdirectories.</p>"
+    }
+    ,
+    {
+      "id": 178,
+      "title": "178. groupingBy counting",
+      "language": "java",
+      "description": "Count by first character and print count for key 'a' (2).",
+      "initialCode": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n  public static void main(String[] args) {\n    List<String> xs = Arrays.asList(\"ax\",\"ay\",\"bz\");\n    // Group by first char and count; print count for 'a' (2)\n\n  }\n}",
+      "fullSolution": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n  public static void main(String[] args) {\n    List<String> xs = Arrays.asList(\"ax\",\"ay\",\"bz\");\n    Map<Character,Long> m = xs.stream().collect(Collectors.groupingBy(s -> s.charAt(0), Collectors.counting()));\n    System.out.println(m.get('a'));\n  }\n}",
+      "expectedOutput": "2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Combine <code>groupingBy</code> with <code>counting</code> to build frequency maps.</p>"
+    }
+    ,
+    {
+      "id": 179,
+      "title": "179. CompletableFuture.thenCombine",
+      "language": "java",
+      "description": "Combine two async computations (2 and 3) and print their sum (5).",
+      "initialCode": "import java.util.concurrent.*;\n\npublic class Main {\n  public static void main(String[] args) {\n    // Compose two futures and print 5 via thenCombine\n\n  }\n}",
+      "fullSolution": "import java.util.concurrent.*;\n\npublic class Main {\n  public static void main(String[] args) {\n    CompletableFuture<Integer> a = CompletableFuture.supplyAsync(() -> 2);\n    CompletableFuture<Integer> b = CompletableFuture.supplyAsync(() -> 3);\n    System.out.println(a.thenCombine(b, Integer::sum).join());\n  }\n}",
+      "expectedOutput": "5",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>thenCombine</code> merges results from two independent futures.</p>"
+    }
+    ,
+    {
+      "id": 180,
+      "title": "180. CompletableFuture.anyOf",
+      "language": "java",
+      "description": "Return the first of two futures (fast vs slow) and print 'fast'.",
+      "initialCode": "import java.util.concurrent.*;\n\npublic class Main {\n  static void sleep(long ms) { try { Thread.sleep(ms); } catch (InterruptedException e) { throw new RuntimeException(e); } }\n  public static void main(String[] args) {\n    // anyOf between a fast and a slow future; print fast\n\n  }\n}",
+      "fullSolution": "import java.util.concurrent.*;\n\npublic class Main {\n  static void sleep(long ms) { try { Thread.sleep(ms); } catch (InterruptedException e) { throw new RuntimeException(e); } }\n  public static void main(String[] args) {\n    CompletableFuture<String> fast = CompletableFuture.supplyAsync(() -> { sleep(50); return \"fast\"; });\n    CompletableFuture<String> slow = CompletableFuture.supplyAsync(() -> { sleep(200); return \"slow\"; });\n    System.out.println((String) CompletableFuture.anyOf(fast, slow).join());\n  }\n}",
+      "expectedOutput": "fast",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>anyOf</code> completes with the first finished future; use <code>join()</code> to get the result.</p>"
+    }
+    ,
+    {
+      "id": 181,
+      "title": "181. Files.lines + filter + sum",
+      "language": "java",
+      "description": "Write 1,3,5 to a file, filter >2, sum and print 8.",
+      "initialCode": "import java.nio.file.*;\nimport java.io.*;\nimport java.util.stream.*;\n\npublic class Main {\n  public static void main(String[] args) throws Exception {\n    // Create d/n.txt with 1\\n3\\n5; stream lines, filter >2, sum; print 8\n\n  }\n}",
+      "fullSolution": "import java.nio.file.*;\nimport java.io.*;\nimport java.util.stream.*;\n\npublic class Main {\n  public static void main(String[] args) throws Exception {\n    Path d = Paths.get(\"d\");\n    Files.createDirectories(d);\n    Path p = d.resolve(\"n.txt\");\n    Files.writeString(p, \"1\\n3\\n5\\n\");\n    long s = Files.lines(p).map(String::trim).filter(x -> !x.isEmpty()).mapToLong(Long::parseLong).filter(v -> v > 2).sum();\n    System.out.println(s);\n  }\n}",
+      "expectedOutput": "8",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Combine <code>Files.lines</code> with stream filters and reductions for file processing.</p>"
+    }
+    ,
+    {
+      "id": 182,
+      "title": "182. StringBuilder.reverse",
+      "language": "java",
+      "description": "Reverse 'stressed' and print 'desserts'.",
+      "initialCode": "public class Main {\n  public static void main(String[] args) {\n    // Use StringBuilder to reverse \"stressed\" and print \"desserts\"\n\n  }\n}",
+      "fullSolution": "public class Main {\n  public static void main(String[] args) {\n    System.out.println(new StringBuilder(\"stressed\").reverse().toString());\n  }\n}",
+      "expectedOutput": "desserts",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>StringBuilder.reverse()</code> efficiently reverses characters.</p>"
+    }
+    ,
+    {
+      "id": 183,
+      "title": "183. TreeMap floor/ceiling",
+      "language": "java",
+      "description": "Insert 10,20,30; print floorKey(25) then ceilingKey(25) on separate lines.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n  public static void main(String[] args) {\n    // Use TreeMap to get floor/ceiling around 25 from keys 10,20,30; print 20 then 30\n\n  }\n}",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n  public static void main(String[] args) {\n    TreeMap<Integer,String> m = new TreeMap<>();\n    m.put(10, \"a\"); m.put(20, \"b\"); m.put(30, \"c\");\n    System.out.println(m.floorKey(25));\n    System.out.println(m.ceilingKey(25));\n  }\n}",
+      "expectedOutput": "20\n30",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>TreeMap</code> offers navigation methods like <code>floorKey</code>/<code>ceilingKey</code>.</p>"
+    }
+    ,
+    {
+      "id": 184,
+      "title": "184. EnumSet basics",
+      "language": "java",
+      "description": "Create EnumSet.of(RED, BLUE) and test contains(GREEN); print false.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n  enum Color { RED, GREEN, BLUE }\n  public static void main(String[] args) {\n    // Create EnumSet.of(RED, BLUE) and print contains(GREEN) -> false\n\n  }\n}",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n  enum Color { RED, GREEN, BLUE }\n  public static void main(String[] args) {\n    EnumSet<Color> s = EnumSet.of(Color.RED, Color.BLUE);\n    System.out.println(s.contains(Color.GREEN));\n  }\n}",
+      "expectedOutput": "false",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>EnumSet</code> is a compact, fast set optimized for enum keys.</p>"
+    }
+    ,
+    {
+      "id": 185,
+      "title": "185. Instant/Duration (millis)",
+      "language": "java",
+      "description": "Compute Duration between epoch (0) and 123ms and print 123.",
+      "initialCode": "import java.time.*;\n\npublic class Main {\n  public static void main(String[] args) {\n    // Print Duration.between(Instant.EPOCH, Instant.ofEpochMilli(123)).toMillis()\n\n  }\n}",
+      "fullSolution": "import java.time.*;\n\npublic class Main {\n  public static void main(String[] args) {\n    System.out.println(Duration.between(Instant.EPOCH, Instant.ofEpochMilli(123)).toMillis());\n  }\n}",
+      "expectedOutput": "123",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Durations between <code>Instant</code>s can be converted directly to milliseconds.</p>"
     }
   ]
 }

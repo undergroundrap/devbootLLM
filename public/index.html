@@ -410,12 +410,16 @@
                     <aside id="lesson-sidebar" class="gemini-bg-secondary border-r gemini-border flex flex-col overflow-y-auto">
                         <div class="p-4 border-b gemini-border">
                             <h3 id="course-title" class="text-lg font-bold text-white">Java Fundamentals</h3>
-                            <label for="lesson-filter" class="block mt-3 text-xs uppercase tracking-wide text-gray-400">Filter</label>
+                            <label for="lesson-filter" class="block mt-3 text-xs uppercase tracking-wide text-gray-400">Level Filter</label>
                             <select id="lesson-filter" class="mt-1 w-full bg-[#1e1f20] border gemini-border rounded-md text-sm p-2 focus:outline-none">
                                 <option value="all">All Lessons</option>
                                 <option value="fundamentals">Fundamentals (1–100)</option>
                                 <option value="advanced">Advanced (101+)</option>
-                                <option value="senior">Senior (140+)</option>
+                                <option value="senior">Senior Path</option>
+                            </select>
+                            <label for="tag-filter" class="block mt-3 text-xs uppercase tracking-wide text-gray-400">Tag</label>
+                            <select id="tag-filter" class="mt-1 w-full bg-[#1e1f20] border gemini-border rounded-md text-sm p-2 focus:outline-none">
+                                <option value="all">All Tags</option>
                             </select>
                             <label for="lesson-search" class="block mt-3 text-xs uppercase tracking-wide text-gray-400">Search</label>
                             <input id="lesson-search" type="text" placeholder="Search lessons..." class="mt-1 w-full bg-[#1e1f20] border gemini-border rounded-md text-sm p-2 focus:outline-none" />
@@ -429,7 +433,8 @@
                         <div id="left-panel" class="w-3/5 flex flex-col border-r gemini-border h-full">
                             <div id="lesson-panel" class="p-6 gemini-bg-secondary border-b gemini-border fade-in flex-shrink-0">
                                 <h1 id="lesson-title" class="text-2xl font-bold text-white mb-2 flex items-center"></h1>
-                                <p id="lesson-description" class="text-gray-400 mb-5"></p>
+                                <p id="lesson-description" class="text-gray-400 mb-3"></p>
+                                <div id="lesson-tags" class="mb-5 flex flex-wrap gap-2"></div>
                                 <div class="flex justify-between items-center">
                                     <button id="prev-lesson-btn" class="btn btn-secondary" title="Go to the previous lesson"><i class="fa-solid fa-arrow-left"></i><span>Previous</span></button>
                                     <div class="flex items-center space-x-4">
@@ -630,6 +635,7 @@
                     this.lessons = [];
                     this.lessonFilter = localStorage.getItem(`lessonFilter-${this.currentTrack}`) || 'all';
                     this.lessonSearchQuery = localStorage.getItem(`lessonSearch-${this.currentTrack}`) || '';
+                    this.tagFilter = localStorage.getItem(`tagFilter-${this.currentTrack}`) || 'all';
                 }
 
                 async init() {
@@ -662,7 +668,7 @@
                         'confirm-modal-cancel-btn', 'confirm-modal-confirm-btn', 'toast-container',
                         'clear-console-btn', 'db-status-light', 'db-status-text', 'reset-progress-btn',
                         'left-panel', 'right-panel', 'resizer', 'lesson-sidebar', 'sidebar-toggle-btn',
-                        'lesson-list', 'confetti-canvas', 'solve-btn', 'ai-clear-btn', 'course-select', 'course-title', 'lesson-filter', 'lesson-search'
+                        'lesson-list', 'confetti-canvas', 'solve-btn', 'ai-clear-btn', 'course-select', 'course-title', 'lesson-filter', 'tag-filter', 'lesson-search', 'lesson-tags'
                     ];
                     ids.forEach(id => {
                         const camelCaseId = id.replace(/-(\w)/g, (_, c) => c.toUpperCase());
@@ -844,6 +850,13 @@
                             this.populateLessonSidebar();
                         });
                     }
+                    if (this.elements.tagFilter) {
+                        this.elements.tagFilter.addEventListener('change', () => {
+                            this.tagFilter = this.elements.tagFilter.value || 'all';
+                            try { localStorage.setItem(`tagFilter-${this.currentTrack}`, this.tagFilter); } catch (_) {}
+                            this.populateLessonSidebar();
+                        });
+                    }
                 }
 
                 initProviderSelect() {
@@ -988,6 +1001,12 @@
                     setTimeout(() => {
                         this.elements.lessonTitle.innerHTML = `${lesson.title} ${isCompleted ? '<i class="fa-solid fa-circle-check text-emerald-400 ml-3 text-xl"></i>' : ''}`;
                         this.elements.lessonDescription.textContent = lesson.description;
+                        // Render derived tags
+                        try {
+                            const tags = this.deriveTagsForLesson(lesson);
+                            const chips = (tags || []).map(t => `<span class="px-2 py-0.5 text-xs rounded-full bg-[#3c4043] text-gray-200 border border-[#4b5257]">${t}</span>`).join('');
+                            if (this.elements.lessonTags) this.elements.lessonTags.innerHTML = chips;
+                        } catch (_) { if (this.elements.lessonTags) this.elements.lessonTags.innerHTML = ''; }
                         
                         this.updateLessonStatus(lesson.id);
                         this.populateLessonSidebar();
@@ -1264,6 +1283,85 @@
                     this.elements.lessonSidebar.classList.toggle('hidden');
                 }
 
+                // ----- Senior Path + Tag helpers -----
+                getSeniorPathForCurrentTrack() {
+                    const map = {
+                        java: [112,113,114,118,115,165,164,163,162],
+                        python: [155,156,157,158,161,162,163,160],
+                    };
+                    const t = (this.currentTrack || 'java').toLowerCase();
+                    return Array.isArray(map[t]) ? map[t] : [];
+                }
+
+                seniorPathOrderIndexFor(id, track = null) {
+                    const arr = this.getSeniorPathForCurrentTrack(track);
+                    const idx = arr.indexOf(id);
+                    return idx === -1 ? Number.MAX_SAFE_INTEGER : idx;
+                }
+
+                stripHtml(s) {
+                    try { return String(s || '').replace(/<[^>]*>/g, ' '); } catch (_) { return String(s || ''); }
+                }
+
+                deriveTagsForLesson(lesson) {
+                    try {
+                        const tags = new Set();
+                        if (Array.isArray(lesson.tags)) {
+                            for (const t of lesson.tags) if (t && String(t).trim()) tags.add(String(t).trim());
+                        }
+                        const hay = [lesson.title, lesson.description, this.stripHtml(lesson.tutorial)]
+                            .filter(Boolean).join(' ').toLowerCase();
+                        const has = (...xs) => xs.some(x => hay.includes(x));
+                        // General domains
+                        if (has('stream', 'collectors', 'flatmap', 'map(', 'reduce', 'groupingby')) tags.add('Streams');
+                        if (has('file', 'path', 'nio', 'io.', 'read', 'write', 'open(', 'pathlib', 'with open')) tags.add('I/O');
+                        if (has('thread', 'executor', 'future', 'completablefuture', 'concurrent', 'lock', 'synchronized', 'asyncio', 'await', 'threadpoolexecutor')) tags.add('Concurrency');
+                        if (has('class', 'interface', 'inheritance', 'polymorph', 'dataclass')) tags.add('OOP');
+                        if (has('map<', 'hashmap', 'linkedhashset', 'set<', 'list<', 'collections', 'itertools')) tags.add('Collections');
+                        if (has('regex', 'pattern', 'matcher', 're.')) tags.add('Regex');
+                        if (has('optional', 'option', 'nullable')) tags.add('Optional');
+                        if (has('localdate', 'datetime')) tags.add('Date/Time');
+                        // Senior Path membership tag
+                        const seniorIds = this.getSeniorPathForCurrentTrack();
+                        if (seniorIds.includes(lesson.id)) tags.add('Senior Path');
+                        return Array.from(tags);
+                    } catch (_) { return []; }
+                }
+
+                collectAvailableTags() {
+                    const set = new Set();
+                    (this.lessons || []).forEach(l => {
+                        for (const t of this.deriveTagsForLesson(l)) set.add(t);
+                    });
+                    return Array.from(set).sort((a,b)=>a.localeCompare(b));
+                }
+
+                refreshTagFilterOptions() {
+                    const sel = this.elements.tagFilter;
+                    if (!sel) return;
+                    const cur = this.tagFilter || 'all';
+                    const tags = this.collectAvailableTags();
+                    sel.innerHTML = '';
+                    const def = document.createElement('option');
+                    def.value = 'all'; def.textContent = 'All Tags';
+                    sel.appendChild(def);
+                    tags.forEach(t => {
+                        const opt = document.createElement('option');
+                        opt.value = t; opt.textContent = t;
+                        sel.appendChild(opt);
+                    });
+                    sel.value = tags.includes(cur) || cur === 'all' ? cur : 'all';
+                }
+
+                initTagFilter() {
+                    const sel = this.elements.tagFilter;
+                    if (!sel) return;
+                    const key = `tagFilter-${this.currentTrack}`;
+                    const saved = localStorage.getItem(key) || this.tagFilter || 'all';
+                    this.tagFilter = saved;
+                    sel.value = saved;
+                }
+
                 populateLessonSidebar() {
                     const list = this.elements.lessonList;
                     list.innerHTML = '';
@@ -1273,7 +1371,16 @@
                     } else if (this.lessonFilter === 'advanced') {
                         view = view.filter(l => (typeof l.id === 'number') ? l.id >= 101 : false);
                     } else if (this.lessonFilter === 'senior') {
-                        view = view.filter(l => (typeof l.id === 'number') ? l.id >= 140 : false);
+                        const pathIds = this.getSeniorPathForCurrentTrack();
+                        view = view.filter(l => pathIds.includes(l.id));
+                        // Sort by curated order
+                        const order = new Map(pathIds.map((id, idx) => [id, idx]));
+                        view.sort((a,b) => (order.get(a.id) ?? 0) - (order.get(b.id) ?? 0));
+                    }
+                    // Tag filter
+                    const selectedTag = this.tagFilter || 'all';
+                    if (selectedTag && selectedTag !== 'all') {
+                        view = view.filter(l => this.deriveTagsForLesson(l).includes(selectedTag));
                     }
                     const q = String(this.lessonSearchQuery || '').toLowerCase();
                     if (q) {
@@ -1455,6 +1562,9 @@
                             this.currentLessonIndex = 0;
                         }
                         if (this.elements && this.elements.lessonList) {
+                            // Update dynamic tag options based on loaded lessons
+                            this.refreshTagFilterOptions();
+                            this.initTagFilter();
                             this.populateLessonSidebar();
                             this.loadLesson(this.currentLessonIndex, { isReload: true });
                         }

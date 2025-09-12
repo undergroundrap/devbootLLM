@@ -1618,5 +1618,269 @@
       "expectedOutput": "5",
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>replace</code> makes an updated copy of a dataclass instance; handy with immutable (<code>frozen=True</code>) types.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from dataclasses import dataclass, replace\n@dataclass(frozen=True)\nclass User: name:str; age:int\nprint(replace(User('a',1), age=2))</pre></div>"
     }
+    ,
+    {
+      "id": 163,
+      "title": "163. asyncio.gather (sum results)",
+      "language": "python",
+      "description": "Run 3 async tasks concurrently and print the sum of their results (6).",
+      "initialCode": "import asyncio\n\n# Create 3 coroutines returning 1,2,3 after small sleeps; gather and print sum (6)\n\n",
+      "fullSolution": "import asyncio\n\nasync def f(v, delay):\n    await asyncio.sleep(delay)\n    return v\n\nasync def main():\n    xs = await asyncio.gather(f(1,0.05), f(2,0.05), f(3,0.05))\n    print(sum(xs))\n\nasyncio.run(main())\n",
+      "expectedOutput": "6",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>asyncio.gather</code> runs coroutines concurrently and returns their results as a list.</p>"
+    }
+    ,
+    {
+      "id": 160,
+      "title": "160. ThreadPoolExecutor (sum squares)",
+      "language": "python",
+      "description": "Use a thread pool to square 1..3 and print the sum (14).",
+      "initialCode": "from concurrent.futures import ThreadPoolExecutor\n\n# Submit tasks that square 1..3 and print the sum (14)\n\n",
+      "fullSolution": "from concurrent.futures import ThreadPoolExecutor\n\nwith ThreadPoolExecutor(max_workers=3) as ex:\n    futs = [ex.submit(lambda x: x*x, i) for i in (1,2,3)]\n    print(sum(f.result() for f in futs))\n",
+      "expectedOutput": "14",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">For I/O-bound or lightweight CPU work, <code>ThreadPoolExecutor</code> offers a simple concurrency primitive.</p>"
+    }
+    ,
+    {
+      "id": 161,
+      "title": "161. pathlib write + size",
+      "language": "python",
+      "description": "Create a directory and a file, write 'hi', then print file size (2).",
+      "initialCode": "from pathlib import Path\n\n# Create d/ and d/t.txt with 'hi' then print t.txt size (2)\n\n",
+      "fullSolution": "from pathlib import Path\n\nd = Path('d'); d.mkdir(exist_ok=True)\n(p := d/'t.txt').write_text('hi')\nprint(p.stat().st_size)\n",
+      "expectedOutput": "2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>pathlib</code> provides an object-oriented filesystem API; <code>Path.write_text</code> is a handy convenience.</p>"
+    }
+    ,
+    {
+      "id": 162,
+      "title": "162. itertools.groupby (top counts)",
+      "language": "python",
+      "description": "Group words and print the top 2 as 'b:3' then 'a:2'.",
+      "initialCode": "from itertools import groupby\n\n# Using s='a b a c b b', group words to count occurrences and print top 2: b:3 then a:2\n\n",
+      "fullSolution": "from itertools import groupby\n\ns = 'a b a c b b'\nwords = sorted(s.split())\ncounts = [(k, sum(1 for _ in g)) for k, g in groupby(words)]\nfor k, c in sorted(counts, key=lambda kv: -kv[1])[:2]:\n    print(f'{k}:{c}')\n",
+      "expectedOutput": "b:3\na:2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>groupby</code> requires a sorted input to group identical keys; aggregate group sizes to compute frequencies.</p>"
+    }
+    ,
+    {
+      "id": 164,
+      "title": "164. re.findall digits",
+      "language": "python",
+      "description": "Extract digits from 'a1b22c' and print '122'.",
+      "initialCode": "import re\n\n# Using re.findall, extract digits from 'a1b22c' and print 122\n\n",
+      "fullSolution": "import re\nprint(''.join(re.findall(r'\\d', 'a1b22c')))\n",
+      "expectedOutput": "122",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>re.findall</code> returns all non-overlapping matches; join them into a string.</p>"
+    }
+    ,
+    {
+      "id": 165,
+      "title": "165. datetime: days between",
+      "language": "python",
+      "description": "Compute days between 2024-01-10 and 2024-01-15 (5).",
+      "initialCode": "from datetime import date\n\n# Print (date(2024,1,15) - date(2024,1,10)).days (5)\n\n",
+      "fullSolution": "from datetime import date\nprint((date(2024,1,15) - date(2024,1,10)).days)\n",
+      "expectedOutput": "5",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Subtract two <code>date</code> objects to get a <code>timedelta</code>; use <code>.days</code>.</p>"
+    }
+    ,
+    {
+      "id": 166,
+      "title": "166. pathlib.glob (count .txt)",
+      "language": "python",
+      "description": "Create a.txt, b.md, c.txt in d/ and print how many .txt files exist (2).",
+      "initialCode": "from pathlib import Path\n\n# Create d/a.txt, d/b.md, d/c.txt, then print count of *.txt under d (2)\n\n",
+      "fullSolution": "from pathlib import Path\n\nd = Path('d'); d.mkdir(exist_ok=True)\n(d/'a.txt').write_text('x')\n(d/'b.md').write_text('y')\n(d/'c.txt').write_text('z')\nprint(len(list(d.glob('*.txt'))))\n",
+      "expectedOutput": "2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Path.glob</code> matches patterns within a directory; convert to a list to count.</p>"
+    }
+    ,
+    {
+      "id": 167,
+      "title": "167. collections.Counter (top 2)",
+      "language": "python",
+      "description": "Use Counter to print top 2 words for s='a b a c b b' as b:3 then a:2.",
+      "initialCode": "from collections import Counter\n\n# With s='a b a c b b', use Counter to print b:3 then a:2\n\n",
+      "fullSolution": "from collections import Counter\n\ns = 'a b a c b b'\nfor k, c in Counter(s.split()).most_common(2):\n    print(f'{k}:{c}')\n",
+      "expectedOutput": "b:3\na:2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Counter.most_common</code> returns items sorted by frequency.</p>"
+    }
+    ,
+    {
+      "id": 168,
+      "title": "168. itertools.product",
+      "language": "python",
+      "description": "Compute Cartesian product of ['a','b'] and [1,2] and print a1,a2,b1,b2 each on its own line.",
+      "initialCode": "from itertools import product\n\n# Print a1, a2, b1, b2 (each on new line) from product(['a','b'], [1,2])\n\n",
+      "fullSolution": "from itertools import product\nfor a,b in product(['a','b'], [1,2]):\n    print(f'{a}{b}')\n",
+      "expectedOutput": "a1\na2\nb1\nb2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>product</code> nests loops in order: first sequence outer, second inner.</p>"
+    }
+    ,
+    {
+      "id": 169,
+      "title": "169. functools.lru_cache (fib)",
+      "language": "python",
+      "description": "Cache Fibonacci to compute fib(10) and print 55.",
+      "initialCode": "from functools import lru_cache\n\n# Define @lru_cache fib(n) and print fib(10) (55)\n\n",
+      "fullSolution": "from functools import lru_cache\n\n@lru_cache(maxsize=None)\ndef fib(n):\n    return n if n < 2 else fib(n-1)+fib(n-2)\n\nprint(fib(10))\n",
+      "expectedOutput": "55",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Memoization speeds up recursive computations significantly.</p>"
+    }
+    ,
+    {
+      "id": 170,
+      "title": "170. threading.Lock (increment)",
+      "language": "python",
+      "description": "Safely increment a shared counter with 5 threads x 100 increments and print 500.",
+      "initialCode": "from threading import Thread, Lock\n\n# Use a Lock to safely increment a shared counter to 500\n\n",
+      "fullSolution": "from threading import Thread, Lock\n\nn = 0\nlock = Lock()\n\ndef inc():\n    global n\n    for _ in range(100):\n        with lock:\n            n += 1\n\nths = [Thread(target=inc) for _ in range(5)]\nfor t in ths: t.start()\nfor t in ths: t.join()\nprint(n)\n",
+      "expectedOutput": "500",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use a <code>Lock</code> around critical sections to avoid race conditions.</p>"
+    }
+    ,
+    {
+      "id": 171,
+      "title": "171. read lines count",
+      "language": "python",
+      "description": "Write three lines to d/t.txt then read and print the line count (3).",
+      "initialCode": "# Write a\\n b\\n c to d/t.txt then print line count (3)\n\n",
+      "fullSolution": "from pathlib import Path\n\nd = Path('d'); d.mkdir(exist_ok=True)\n(p := d/'t.txt').write_text('a\\n b\\n c\\n')\nprint(len(p.read_text().splitlines()))\n",
+      "expectedOutput": "3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>Path.read_text</code> then <code>.splitlines()</code> to count lines.</p>"
+    }
+    ,
+    {
+      "id": 172,
+      "title": "172. json.dumps sorted keys",
+      "language": "python",
+      "description": "Dump {'b':1,'a':2} with sorted keys and print {\"a\": 2, \"b\": 1}.",
+      "initialCode": "import json\n\n# Print json.dumps({'b':1,'a':2}, sort_keys=True)\n\n",
+      "fullSolution": "import json\nprint(json.dumps({'b':1,'a':2}, sort_keys=True))\n",
+      "expectedOutput": "{\"a\": 2, \"b\": 1}",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>json.dumps</code> with <code>sort_keys=True</code> produces deterministic key order.</p>"
+    }
+    ,
+    {
+      "id": 173,
+      "title": "173. enum.auto name",
+      "language": "python",
+      "description": "Define an Enum with auto() and print the member name 'RED'.",
+      "initialCode": "from enum import Enum, auto\n\n# Define Color(RED, GREEN) using auto and print Color.RED.name\n\n",
+      "fullSolution": "from enum import Enum, auto\n\nclass Color(Enum):\n    RED = auto()\n    GREEN = auto()\n\nprint(Color.RED.name)\n",
+      "expectedOutput": "RED",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>auto()</code> assigns incrementing values automatically; use <code>.name</code> for the identifier.</p>"
+    }
+    ,
+    {
+      "id": 174,
+      "title": "174. decimal quantize (HALF_UP)",
+      "language": "python",
+      "description": "Round Decimal('1.005') to two decimals (HALF_UP) and print 1.01.",
+      "initialCode": "from decimal import Decimal, ROUND_HALF_UP\n\n# Print Decimal('1.005').quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)\n\n",
+      "fullSolution": "from decimal import Decimal, ROUND_HALF_UP\nprint(Decimal('1.005').quantize(Decimal('0.01'), rounding=ROUND_HALF_UP))\n",
+      "expectedOutput": "1.01",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>Decimal</code> for precise rounding semantics.</p>"
+    }
+    ,
+    {
+      "id": 175,
+      "title": "175. heapq.merge",
+      "language": "python",
+      "description": "Merge [1,4] and [2,3] and print items in order each on its own line.",
+      "initialCode": "import heapq\n\n# Print 1,2,3,4 (each on new line) from heapq.merge([1,4],[2,3])\n\n",
+      "fullSolution": "import heapq\nfor x in heapq.merge([1,4],[2,3]):\n    print(x)\n",
+      "expectedOutput": "1\n2\n3\n4",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>heapq.merge</code> lazily merges sorted iterables.</p>"
+    }
+    ,
+    {
+      "id": 176,
+      "title": "176. itertools.groupby (adjacent)",
+      "language": "python",
+      "description": "For 'aaabbc', print adjacent run lengths: a:3 then b:2 then c:1.",
+      "initialCode": "from itertools import groupby\n\n# Using s='aaabbc', print a:3 then b:2 then c:1 (each on new line)\n\n",
+      "fullSolution": "from itertools import groupby\n\ns = 'aaabbc'\nfor k, g in groupby(s):\n    print(f'{k}:{sum(1 for _ in g)}')\n",
+      "expectedOutput": "a:3\nb:2\nc:1",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">On unsorted strings, <code>groupby</code> groups adjacent equal items.</p>"
+    }
+    ,
+    {
+      "id": 177,
+      "title": "177. array.array sum",
+      "language": "python",
+      "description": "Create array('i',[1,2,3]) and print the sum (6).",
+      "initialCode": "from array import array\n\n# Print sum(array('i',[1,2,3])) -> 6\n\n",
+      "fullSolution": "from array import array\nprint(sum(array('i',[1,2,3])))\n",
+      "expectedOutput": "6",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>array</code> stores homogenous values efficiently; many built-ins like <code>sum</code> work directly.</p>"
+    }
+    ,
+    {
+      "id": 178,
+      "title": "178. dataclasses.field metadata",
+      "language": "python",
+      "description": "Define a dataclass with metadata and print a field's metadata value.",
+      "initialCode": "from dataclasses import dataclass, field\n\n# Define User(name: str = field(metadata={'role':'admin'})); print the role metadata\n\n",
+      "fullSolution": "from dataclasses import dataclass, field\n\n@dataclass\nclass User:\n    name: str = field(metadata={'role':'admin'})\n\nprint(User.__dataclass_fields__['name'].metadata['role'])\n",
+      "expectedOutput": "admin",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>field(metadata=...)</code> is a hook for frameworks and annotations.</p>"
+    }
+    ,
+    {
+      "id": 179,
+      "title": "179. typing.NamedTuple",
+      "language": "python",
+      "description": "Define Person(name,id) as NamedTuple, create ('Ada',1), and print the name.",
+      "initialCode": "from typing import NamedTuple\n\n# Define Person(name:str,id:int); print Person('Ada',1).name\n\n",
+      "fullSolution": "from typing import NamedTuple\n\nclass Person(NamedTuple):\n    name: str\n    id: int\n\nprint(Person('Ada',1).name)\n",
+      "expectedOutput": "Ada",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>NamedTuple</code> provides lightweight, typed, immutable records.</p>"
+    }
+    ,
+    {
+      "id": 180,
+      "title": "180. Path.read_text().upper()",
+      "language": "python",
+      "description": "Write 'ok' to d/t.txt and print its uppercase content 'OK'.",
+      "initialCode": "from pathlib import Path\n\n# Write 'ok' to d/t.txt, then print Path('d/t.txt').read_text().upper()\n\n",
+      "fullSolution": "from pathlib import Path\n\nd = Path('d'); d.mkdir(exist_ok=True)\n(d/'t.txt').write_text('ok')\nprint((d/'t.txt').read_text().upper())\n",
+      "expectedOutput": "OK",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Combine <code>Path.write_text</code> and <code>Path.read_text</code> for simple text IO.</p>"
+    }
+    ,
+    {
+      "id": 181,
+      "title": "181. asyncio.wait_for timeout",
+      "language": "python",
+      "description": "Timeout a slow coroutine and print 'timeout'.",
+      "initialCode": "import asyncio\n\n# Use asyncio.wait_for on a 0.2s sleep with 0.05s timeout; print 'timeout'\n\n",
+      "fullSolution": "import asyncio\n\nasync def slow():\n    await asyncio.sleep(0.2)\n\ntry:\n    asyncio.run(asyncio.wait_for(slow(), 0.05))\n    print('ok')\nexcept asyncio.TimeoutError:\n    print('timeout')\n",
+      "expectedOutput": "timeout",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>wait_for</code> cancels if the operation exceeds the timeout.</p>"
+    }
+    ,
+    {
+      "id": 182,
+      "title": "182. itertools.accumulate (product)",
+      "language": "python",
+      "description": "Multiply 1..4 via accumulate and print final result (24).",
+      "initialCode": "from itertools import accumulate\nimport operator\n\n# Compute product of 1..4 using accumulate and print 24\n\n",
+      "fullSolution": "from itertools import accumulate\nimport operator\n\nxs = list(accumulate([1,2,3,4], operator.mul))\nprint(xs[-1])\n",
+      "expectedOutput": "24",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>accumulate</code> can fold a sequence with a custom operator.</p>"
+    }
+    ,
+    {
+      "id": 183,
+      "title": "183. re.sub replace digits",
+      "language": "python",
+      "description": "Replace digits in 'a1b22' with '#' and print 'a#b##'.",
+      "initialCode": "import re\n\n# Print re.sub(r'\\d', '#', 'a1b22') -> a#b##\n\n",
+      "fullSolution": "import re\nprint(re.sub(r'\\d', '#', 'a1b22'))\n",
+      "expectedOutput": "a#b##",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>re.sub</code> replaces all matches; escape <code>\\\\d</code> properly.</p>"
+    }
   ]
 }

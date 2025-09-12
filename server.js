@@ -36,6 +36,28 @@ const MAX_EXECUTION_MS = 10_000; // 10 seconds per run
 app.use(express.json({ limit: '100kb' }));
 
 // ----------------------
+// Small helpers (DRY up chat endpoints, streaming headers, etc.)
+// ----------------------
+function toText(parts) {
+    return Array.isArray(parts) ? parts.map(p => (p && (p.text || ''))).join('\n') : '';
+}
+
+function normalizeChatHistory(history) {
+    return (history || [])
+        .map(m => ({
+            role: m.role === 'model' ? 'assistant' : (m.role || 'user'),
+            content: toText(m.parts)
+        }))
+        .filter(m => m.content && m.content.trim().length > 0);
+}
+
+function setStreamHeaders(res) {
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
+}
+
+// ----------------------
 // Lessons storage (SQLite with JSON fallback)
 // ----------------------
 const { openDb, ensureSchema, seedFromJsonIfEmpty, seedFromJsonFiles, replaceFromJsonFiles, getLessons, countLessons, getLessonsPage, getLessonById } = require('./db');
@@ -262,12 +284,7 @@ app.get('/lmstudio/models', async (req, res) => {
 app.post('/lmstudio/chat', async (req, res) => {
     const { model, history } = req.body || {};
     if (!model) return res.status(400).json({ error: 'Missing model' });
-
-    const toText = (parts) => Array.isArray(parts) ? parts.map(p => p.text || '').join('\n') : '';
-    const messages = (history || []).map(m => ({
-        role: m.role === 'model' ? 'assistant' : (m.role || 'user'),
-        content: toText(m.parts)
-    })).filter(m => m.content && m.content.trim().length > 0);
+    const messages = normalizeChatHistory(history);
 
     try {
         const headers = { 'Content-Type': 'application/json' };
@@ -301,12 +318,7 @@ app.post('/lmstudio/chat', async (req, res) => {
 app.post('/lmstudio/chat/stream', async (req, res) => {
     const { model, history } = req.body || {};
     if (!model) return res.status(400).json({ error: 'Missing model' });
-
-    const toText = (parts) => Array.isArray(parts) ? parts.map(p => p.text || '').join('\n') : '';
-    const messages = (history || []).map(m => ({
-        role: m.role === 'model' ? 'assistant' : (m.role || 'user'),
-        content: toText(m.parts)
-    })).filter(m => m.content && m.content.trim().length > 0);
+    const messages = normalizeChatHistory(history);
 
     const headers = { 'Content-Type': 'application/json' };
     if (LMSTUDIO_API_KEY) headers['Authorization'] = `Bearer ${LMSTUDIO_API_KEY}`;
@@ -325,9 +337,7 @@ app.post('/lmstudio/chat/stream', async (req, res) => {
             return res.status(upstream.status || 500).json({ error: `LM Studio chat error ${upstream.status}`, details: text });
         }
 
-        res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-        res.setHeader('Cache-Control', 'no-cache');
-        res.setHeader('Connection', 'keep-alive');
+        setStreamHeaders(res);
 
         const decoder = new TextDecoder();
         let buffer = '';
@@ -419,12 +429,7 @@ app.post('/lmstudio/chat/stream', async (req, res) => {
 app.post('/ollama/chat/stream', async (req, res) => {
     const { model, history } = req.body || {};
     if (!model) return res.status(400).json({ error: 'Missing model' });
-
-    const toText = (parts) => Array.isArray(parts) ? parts.map(p => p.text || '').join('\n') : '';
-    const messages = (history || []).map(m => ({
-        role: m.role === 'model' ? 'assistant' : (m.role || 'user'),
-        content: toText(m.parts)
-    })).filter(m => m.content && m.content.trim().length > 0);
+    const messages = normalizeChatHistory(history);
 
     let controller;
     try {
@@ -440,9 +445,7 @@ app.post('/ollama/chat/stream', async (req, res) => {
             return res.status(upstream.status || 500).json({ error: `Ollama chat error ${upstream.status}`, details: text });
         }
 
-        res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-        res.setHeader('Cache-Control', 'no-cache');
-        res.setHeader('Connection', 'keep-alive');
+        setStreamHeaders(res);
 
         const decoder = new TextDecoder();
         let buffer = '';
@@ -531,8 +534,13 @@ app.get('/health', async (req, res) => {
         try {
             const p = spawn(cmd, args, { stdio: ['ignore', 'pipe', 'pipe'] });
             let out = '';
+            let err = '';
             p.stdout.on('data', d => out += d.toString());
-            p.on('close', (code) => resolve(code === 0 ? out.trim() : null));
+            p.stderr.on('data', d => err += d.toString());
+            p.on('close', () => {
+                const v = (out || err || '').trim();
+                resolve(v || null);
+            });
             p.on('error', () => resolve(null));
         } catch {
             resolve(null);
@@ -576,11 +584,7 @@ app.post('/ollama/chat', async (req, res) => {
     if (!model) return res.status(400).json({ error: 'Missing model' });
 
     // Convert existing chatHistory format to Ollama messages
-    const toText = (parts) => Array.isArray(parts) ? parts.map(p => p.text || '').join('\n') : '';
-    const messages = (history || []).map(m => ({
-        role: m.role === 'model' ? 'assistant' : (m.role || 'user'),
-        content: toText(m.parts)
-    })).filter(m => m.content && m.content.trim().length > 0);
+    const messages = normalizeChatHistory(history);
 
     try {
         const resp = await fetch(`${OLLAMA_URL}/api/chat`, {

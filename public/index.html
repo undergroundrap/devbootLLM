@@ -636,6 +636,9 @@
                     this.lessonFilter = localStorage.getItem(`lessonFilter-${this.currentTrack}`) || 'all';
                     this.lessonSearchQuery = localStorage.getItem(`lessonSearch-${this.currentTrack}`) || '';
                     this.tagFilter = localStorage.getItem(`tagFilter-${this.currentTrack}`) || 'all';
+
+                    // Debounced sidebar updater to reduce UI thrash on input/filter changes
+                    this.populateLessonSidebarDebounced = this.debounce(() => this.populateLessonSidebar(), 150);
                 }
 
                 async init() {
@@ -840,21 +843,21 @@
                         this.elements.lessonFilter.addEventListener('change', () => {
                             this.lessonFilter = this.elements.lessonFilter.value || 'all';
                             try { localStorage.setItem(`lessonFilter-${this.currentTrack}`, this.lessonFilter); } catch (_) {}
-                            this.populateLessonSidebar();
+                            this.populateLessonSidebarDebounced();
                         });
                     }
                     if (this.elements.lessonSearch) {
                         this.elements.lessonSearch.addEventListener('input', () => {
                             this.lessonSearchQuery = String(this.elements.lessonSearch.value || '').trim();
                             try { localStorage.setItem(`lessonSearch-${this.currentTrack}`, this.lessonSearchQuery); } catch (_) {}
-                            this.populateLessonSidebar();
+                            this.populateLessonSidebarDebounced();
                         });
                     }
                     if (this.elements.tagFilter) {
                         this.elements.tagFilter.addEventListener('change', () => {
                             this.tagFilter = this.elements.tagFilter.value || 'all';
                             try { localStorage.setItem(`tagFilter-${this.currentTrack}`, this.tagFilter); } catch (_) {}
-                            this.populateLessonSidebar();
+                            this.populateLessonSidebarDebounced();
                         });
                     }
                 }
@@ -911,6 +914,15 @@
                         window.addEventListener('mousemove', mouseMoveHandler);
                         window.addEventListener('mouseup', mouseUpHandler);
                     });
+                }
+
+                // Utility: simple debounce bound to this instance
+                debounce(fn, wait = 150) {
+                    let t = null;
+                    return (...args) => {
+                        if (t) clearTimeout(t);
+                        t = setTimeout(() => fn.apply(this, args), wait);
+                    };
                 }
 
                 resetUI() {

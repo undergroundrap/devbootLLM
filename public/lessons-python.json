@@ -1911,6 +1911,156 @@
       "expectedOutput": "AB",
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>ExitStack</code> lets you dynamically compose multiple context managers (files, locks, etc.) and guarantees cleanup in reverse order.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from contextlib import ExitStack\nwith ExitStack() as stack:\n    f1 = stack.enter_context(open('x.txt', 'w'))\n    f2 = stack.enter_context(open('y.txt', 'w'))\n    f1.write('X'); f2.write('Y')\n</pre></div>",
       "id": 190
+    },
+    {
+      "id": 191,
+      "title": "191. sqlite3 in-memory (row count)",
+      "language": "python",
+      "description": "Create an in-memory SQLite DB, insert two rows, and print the count (2).",
+      "initialCode": "import sqlite3\n\n# Create :memory: DB, table users(id INT, name TEXT), insert two rows, then SELECT COUNT(*) and print it\n\n",
+      "fullSolution": "import sqlite3\n\nconn = sqlite3.connect(':memory:')\nc = conn.cursor()\nc.execute('CREATE TABLE users(id INT, name TEXT)')\nc.executemany('INSERT INTO users VALUES(?,?)', [(1,'Alice'), (2,'Bob')])\nconn.commit()\ncount = c.execute('SELECT COUNT(*) FROM users').fetchone()[0]\nprint(count)\n",
+      "expectedOutput": "2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use the built-in <code>sqlite3</code> module for lightweight relational storage. <code>':memory:'</code> keeps data ephemeral.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">conn = sqlite3.connect(':memory:')\nc = conn.cursor()\nc.execute('CREATE TABLE t(x)')\nc.execute('INSERT INTO t VALUES(1)')\nprint(c.execute('SELECT COUNT(*) FROM t').fetchone()[0])</pre></div>"
+    },
+    {
+      "id": 192,
+      "title": "192. dataclasses ordering",
+      "language": "python",
+      "description": "Define an ordered dataclass User(age, name), sort, and print the youngest name (Anna).",
+      "initialCode": "from dataclasses import dataclass\n\n# Define @dataclass(order=True) User with fields: age:int, name:str\n# Sort [User(30,'Zoe'), User(20,'Anna')] and print the first name\n\n",
+      "fullSolution": "from dataclasses import dataclass\n\n@dataclass(order=True)\nclass User:\n    age: int\n    name: str\n\nusers = [User(30,'Zoe'), User(20,'Anna')]\nusers.sort()\nprint(users[0].name)\n",
+      "expectedOutput": "Anna",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">With <code>@dataclass(order=True)</code>, Python generates comparison methods using field order, enabling natural sorting.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">@dataclass(order=True)\nclass Point: x: int; y: int\nprint(sorted([Point(1,2), Point(0,9)]))</pre></div>"
+    },
+    {
+      "id": 193,
+      "title": "193. functools.singledispatch",
+      "language": "python",
+      "description": "Dispatch a function on argument type; print 'int:1' then 'str:a'.",
+      "initialCode": "from functools import singledispatch\n\n# Define show(x) using @singledispatch with int and str specializations\n# Call show(1) then show('a') and print per-type results\n\n",
+      "fullSolution": "from functools import singledispatch\n\n@singledispatch\ndef show(x):\n    return f'obj:{x}'\n\n@show.register(int)\ndef _(x: int):\n    return f'int:{x}'\n\n@show.register(str)\ndef _(x: str):\n    return f'str:{x}'\n\nprint(show(1))\nprint(show('a'))\n",
+      "expectedOutput": "int:1\nstr:a",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">\u003ccode\u003e@singledispatch\u003c/code\u003e enables type-based function overloading for the first argument, keeping APIs clean.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">@singledispatch\ndef f(x): ...\n@f.register(list)\ndef _(x): ...</pre></div>"
+    },
+    {
+      "id": 194,
+      "title": "194. itertools.accumulate (running sum)",
+      "language": "python",
+      "description": "Use accumulate to print running sums for [1,2,3]: 1, 3, 6 (each on new line).",
+      "initialCode": "from itertools import accumulate\n\n# For [1,2,3], print running sums using accumulate (each on its own line)\n\n",
+      "fullSolution": "from itertools import accumulate\nfor s in accumulate([1,2,3]):\n    print(s)\n",
+      "expectedOutput": "1\n3\n6",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">\u003ccode\u003eaccumulate\u003c/code\u003e computes prefix results (default: sums). Supply a function for other reductions (e.g., \u003ccode\u003emax\u003c/code\u003e).</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from itertools import accumulate\nprint(list(accumulate([1,2,3])))  # [1, 3, 6]</pre></div>"
+    },
+    {
+      "id": 195,
+      "title": "195. bisect_right (insertion index)",
+      "language": "python",
+      "description": "Find the right-side insertion index of 3 in [1,2,3,4] and print 3.",
+      "initialCode": "import bisect\n\n# Print bisect.bisect_right([1,2,3,4], 3)\n\n",
+      "fullSolution": "import bisect\nprint(bisect.bisect_right([1,2,3,4], 3))\n",
+      "expectedOutput": "3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use \u003ccode\u003ebisect_right\u003c/code\u003e for stable insertion after existing equals; \u003ccode\u003ebisect_left\u003c/code\u003e inserts before.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import bisect\nxs = [1,2,3,4]\nprint(bisect.bisect_right(xs, 3))  # 3</pre></div>"
+    },
+    {
+      "id": 196,
+      "title": "196. pathlib.glob (*.txt count)",
+      "language": "python",
+      "description": "Create a.txt, b.py, c.txt then print how many *.txt files exist (2).",
+      "initialCode": "from pathlib import Path\n\n# Create files a.txt, b.py, c.txt in CWD\n# Use Path('.').glob('*.txt') to count and print 2\n\n",
+      "fullSolution": "from pathlib import Path\nPath('a.txt').write_text('A')\nPath('b.py').write_text('print(1)')\nPath('c.txt').write_text('C')\nprint(sum(1 for _ in Path('.').glob('*.txt')))\n",
+      "expectedOutput": "2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">\u003ccode\u003epathlib\u003c/code\u003e provides object-oriented paths. \u003ccode\u003eglob\u003c/code\u003e returns matching entries lazily.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from pathlib import Path\n# Count *.py files in current dir\nprint(sum(1 for _ in Path('.').glob('*.py')))</pre></div>"
+    },
+    {
+      "id": 197,
+      "title": "197. subprocess.run (call Python)",
+      "language": "python",
+      "description": "Spawn a child Python process that prints OK and relay the output.",
+      "initialCode": "import subprocess, sys\n\n# Use subprocess.run to invoke the current Python to print 'OK'\n# Hint: [sys.executable, '-c', \"print('OK')\"]\n\n",
+      "fullSolution": "import subprocess, sys\nres = subprocess.run([sys.executable, '-c', \"print('OK')\"], capture_output=True, text=True)\nprint(res.stdout.strip())\n",
+      "expectedOutput": "OK",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use \u003ccode\u003esubprocess.run\u003c/code\u003e for child processes. Prefer explicit \u003ccode\u003eargs\u003c/code\u003e and capture outputs deterministically.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import subprocess, sys\nsubprocess.run([sys.executable, '-c', \"print('hi')\"])</pre></div>"
+    },
+    {
+      "id": 198,
+      "title": "198. hashlib.sha256",
+      "language": "python",
+      "description": "Compute the SHA-256 hex digest of 'abc' and print it.",
+      "initialCode": "import hashlib\n\n# Print hashlib.sha256(b'abc').hexdigest()\n\n",
+      "fullSolution": "import hashlib\nprint(hashlib.sha256(b'abc').hexdigest())\n",
+      "expectedOutput": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use \u003ccode\u003ehashlib\u003c/code\u003e for cryptographic hashes (integrity checks, fingerprints).</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import hashlib\nprint(hashlib.sha256(b'abc').hexdigest())</pre></div>"
+    },
+    {
+      "id": 199,
+      "title": "199. zipfile write/read (count)",
+      "language": "python",
+      "description": "Create a zip with two files then open and print the number of entries (2).",
+      "initialCode": "import zipfile, pathlib\n\n# Create files a.txt and b.txt, zip them to x.zip, then reopen and print len(namelist())\n\n",
+      "fullSolution": "import zipfile, pathlib\npathlib.Path('a.txt').write_text('A')\npathlib.Path('b.txt').write_text('B')\nwith zipfile.ZipFile('x.zip','w') as z:\n    z.write('a.txt')\n    z.write('b.txt')\nwith zipfile.ZipFile('x.zip') as z:\n    print(len(z.namelist()))\n",
+      "expectedOutput": "2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">\u003ccode\u003ezipfile\u003c/code\u003e packs multiple files; \u003ccode\u003enamelist()\u003c/code\u003e lists contained paths.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import zipfile\nwith zipfile.ZipFile('x.zip','w') as z:\n    z.writestr('t.txt', 'data')\nprint(len(zipfile.ZipFile('x.zip').namelist()))</pre></div>"
+    },
+    {
+      "id": 200,
+      "title": "200. datetime with UTC tz",
+      "language": "python",
+      "description": "Create 2020-01-02 03:04:05 UTC and print ISO 8601 string.",
+      "initialCode": "from datetime import datetime, timezone\n\n# Build aware datetime(2020,1,2,3,4,5, tzinfo=timezone.utc) and print .isoformat()\n\n",
+      "fullSolution": "from datetime import datetime, timezone\nprint(datetime(2020,1,2,3,4,5, tzinfo=timezone.utc).isoformat())\n",
+      "expectedOutput": "2020-01-02T03:04:05+00:00",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Always prefer timezone-aware datetimes for correctness across zones; UTC is a reliable default.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from datetime import datetime, timezone\nprint(datetime.now(timezone.utc).isoformat())</pre></div>"
+    },
+    {
+      "id": 201,
+      "title": "201. lru_cache Fibonacci",
+      "language": "python",
+      "description": "Use functools.lru_cache to compute fib(30) and print the result (832040).",
+      "initialCode": "from functools import lru_cache\n\n# Implement memoized fib(n) with @lru_cache and print fib(30)\n\n",
+      "fullSolution": "from functools import lru_cache\n\n@lru_cache(maxsize=None)\ndef fib(n: int) -> int:\n    return n if n < 2 else fib(n-1) + fib(n-2)\n\nprint(fib(30))\n",
+      "expectedOutput": "832040",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">\u003ccode\u003elru_cache\u003c/code\u003e provides transparent memoization for pure functions, dramatically improving performance.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from functools import lru_cache\n@lru_cache(maxsize=None)\ndef f(n): return 1 if n<2 else f(n-1)+f(n-2)\nprint(f(10))  # 89</pre></div>"
+    },
+    {
+      "id": 202,
+      "title": "202. collections.Counter.most_common",
+      "language": "python",
+      "description": "Count letters in 'aabbbc' and print the most common entry b:3.",
+      "initialCode": "from collections import Counter\n\n# Print the most common letter and count from 'aabbbc' in format k:v (b:3)\n\n",
+      "fullSolution": "from collections import Counter\n(k,v), = Counter('aabbbc').most_common(1)\nprint(f'{k}:{v}')\n",
+      "expectedOutput": "b:3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Counters tally occurrences quickly; use \u003ccode\u003emost_common(1)\u003c/code\u003e for the top item.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from collections import Counter\nprint(Counter('abca').most_common(1))</pre></div>"
+    },
+    {
+      "id": 203,
+      "title": "203. struct pack/unpack (big-endian)",
+      "language": "python",
+      "description": "Pack 1024 as a big-endian unsigned int and unpack; print 1024.",
+      "initialCode": "import struct\n\n# Pack 1024 with '>I' then unpack and print the value\n\n",
+      "fullSolution": "import struct\nblob = struct.pack('>I', 1024)\nprint(struct.unpack('>I', blob)[0])\n",
+      "expectedOutput": "1024",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use \u003ccode\u003estruct\u003c/code\u003e for binary protocols; format strings control width and endianness.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import struct\nprint(struct.unpack('>H', b'\\x00\\x2a')[0])  # 42</pre></div>"
+    },
+    {
+      "id": 204,
+      "title": "204. contextlib.suppress",
+      "language": "python",
+      "description": "Delete a non-existent file without raising and print OK.",
+      "initialCode": "from contextlib import suppress\nfrom pathlib import Path\n\n# Safely suppress FileNotFoundError when removing missing file, then print 'OK'\n\n",
+      "fullSolution": "from contextlib import suppress\nfrom pathlib import Path\nwith suppress(FileNotFoundError):\n    Path('nope.txt').unlink()\nprint('OK')\n",
+      "expectedOutput": "OK",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">\u003ccode\u003esuppress\u003c/code\u003e keeps code concise by ignoring specific, expected exceptions.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from contextlib import suppress\nwith suppress(ZeroDivisionError):\n    1/0</pre></div>"
+    },
+    {
+      "id": 205,
+      "title": "205. threading.Event (signal)",
+      "language": "python",
+      "description": "Use a worker thread to set an Event; main waits then prints 'done'.",
+      "initialCode": "import threading, time\n\n# Start a thread that sleeps briefly then sets an Event. Main waits and prints 'done'.\n\n",
+      "fullSolution": "import threading, time\n\nflag = threading.Event()\n\ndef worker():\n    time.sleep(0.02)\n    flag.set()\n\nthreading.Thread(target=worker).start()\nflag.wait()\nprint('done')\n",
+      "expectedOutput": "done",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use \u003ccode\u003eEvent\u003c/code\u003e for one-shot signaling between threads without busy-waiting.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import threading, time\nflag = threading.Event()\nthreading.Thread(target=lambda: (time.sleep(0.01), flag.set())).start()\nflag.wait()</pre></div>"
     }
   ]
 }

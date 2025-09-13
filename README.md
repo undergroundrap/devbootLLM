@@ -84,6 +84,13 @@ Optional verification (PowerShell):
 
 You should see `storage` equal to `sqlite`.
 
+## Senior Path Additions (Highlights)
+
+- Python: sqlite3 mini-DB (191), dataclasses ordering (192), singledispatch (193), accumulate (194), bisect_right (195), pathlib glob (196), subprocess.run (197), hashlib SHA-256 (198), zipfile write/read (199), timezone-aware datetime (200), lru_cache Fibonacci (201), Counter.most_common (202), struct pack/unpack (203), contextlib.suppress (204), threading.Event (205).
+- Java: groupingBy counts (194), partitioningBy (195), Optional chain (196), ForkJoin RecursiveTask (197), ScheduledExecutorService delay (198), Files.walk filter (199), Pattern/Matcher reformat (200), MessageDigest SHA-256 (201), BigInteger factorial (202), Stream.flatMap sum (203), ByteBuffer putInt/getInt (204), AtomicLong across threads (205), PriorityQueue max-heap (206), Collectors.toMap merge (207), ReentrantReadWriteLock demo (208).
+
+Use the Level filter to choose “Senior Path” and Tags (e.g., Concurrency, I/O, Streams, Collections) to quickly discover these modules in the Learning view.
+
 ## What's New
 
 - AI chat now separates the model's Thinking from the final Answer. The Thinking section is styled differently and is collapsible. If a model emits <think>…</think> (e.g., DeepSeek R1) or prefixes like "Thinking:"/"Reasoning:", the UI captures it into the collapsible panel while the Answer remains front and center.

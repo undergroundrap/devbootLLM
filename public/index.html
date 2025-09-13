@@ -1322,9 +1322,13 @@
 
                 // ----- Senior Path + Tag helpers -----
                 getSeniorPathForCurrentTrack() {
+                    // Curated Senior Path focuses on advanced, production-oriented topics
+                    // and is anchored to the most recent (highest-id) lessons.
+                    // Keep these lists in strictly increasing id order.
                     const map = {
-                        java: [112,113,114,118,115,165,164,163,162],
-                        python: [155,156,157,158,161,162,163,160],
+                        // Updated to only include late, senior-level lessons near the end
+                        java: [188,189,190,191,192,193],
+                        python: [187,188,189,190],
                     };
                     const t = (this.currentTrack || 'java').toLowerCase();
                     return Array.isArray(map[t]) ? map[t] : [];

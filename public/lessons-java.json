@@ -1887,6 +1887,66 @@
       "expectedOutput": "6.0",
       "tutorial": "<p class=\"mb-4 text-gray-300\">Use ? extends Number to accept lists of Number or its subclasses (Integer, Double, ...). Read from producers (PECS rule).</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">static double sum(List<? extends Number> xs) {\n    double s = 0;\n    for (Number n : xs) s += n.doubleValue();\n    return s;\n}</pre></div>",
       "id": 187
+    },
+    {
+      "title": "188. ReentrantReadWriteLock (guarded map)",
+      "language": "java",
+      "description": "Use a ReentrantReadWriteLock to write 42 to a map and then read it; print 42.",
+      "initialCode": "import java.util.*;\nimport java.util.concurrent.locks.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Map<String,Integer> m = new HashMap<>();\n        ReadWriteLock rw = new ReentrantReadWriteLock();\n        // Write 42 under key \"x\" with writeLock, then read it under readLock and print it\n    }\n}\n",
+      "fullSolution": "import java.util.*;\nimport java.util.concurrent.locks.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Map<String,Integer> m = new HashMap<>();\n        ReadWriteLock rw = new ReentrantReadWriteLock();\n        rw.writeLock().lock();\n        try { m.put(\"x\", 42); } finally { rw.writeLock().unlock(); }\n        rw.readLock().lock();\n        try { System.out.println(m.get(\"x\")); } finally { rw.readLock().unlock(); }\n    }\n}\n",
+      "expectedOutput": "42",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">A <code>ReadWriteLock</code> allows multiple readers or one writer. Use the write lock for mutations, and the read lock for reads.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">ReadWriteLock rw = new ReentrantReadWriteLock();\nrw.readLock().lock();\n// read\nrw.readLock().unlock();\n</pre></div>",
+      "id": 188
+    },
+    {
+      "title": "189. CompletableFuture.thenCombine",
+      "language": "java",
+      "description": "Create two futures and combine them into a single greeting; print 'Hello Alex'.",
+      "initialCode": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // Combine two futures, e.g. \"Hello\" and \"Alex\", then print the result\n    }\n}\n",
+      "fullSolution": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        CompletableFuture<String> a = CompletableFuture.supplyAsync(() -> \"Hello\");\n        CompletableFuture<String> b = CompletableFuture.supplyAsync(() -> \"Alex\");\n        String out = a.thenCombine(b, (x,y) -> x + \" \" + y).join();\n        System.out.println(out);\n    }\n}\n",
+      "expectedOutput": "Hello Alex",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>thenCombine</code> to merge results from two independent asynchronous stages once both complete.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">CompletableFuture<Integer> a = CompletableFuture.supplyAsync(() -> 2);\nCompletableFuture<Integer> b = CompletableFuture.supplyAsync(() -> 3);\nSystem.out.println(a.thenCombine(b, Integer::sum).join()); // 5</pre></div>",
+      "id": 189
+    },
+    {
+      "title": "190. Semaphore (permits)",
+      "language": "java",
+      "description": "Create a Semaphore with 2 permits, acquire both, then print OK.",
+      "initialCode": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        // Acquire both permits from a new Semaphore(2), then print OK\n    }\n}\n",
+      "fullSolution": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        Semaphore sem = new Semaphore(2);\n        sem.acquire(2);\n        System.out.println(\"OK\");\n    }\n}\n",
+      "expectedOutput": "OK",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">A <code>Semaphore</code> restricts concurrent access to a resource. Acquire permits before entering, release when done.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Semaphore sem = new Semaphore(1);\nsem.acquire();\ntry {\n    // critical section\n} finally {\n    sem.release();\n}</pre></div>",
+      "id": 190
+    },
+    {
+      "title": "191. ConcurrentHashMap.compute (counter)",
+      "language": "java",
+      "description": "Use compute to increment a counter three times, then print 3.",
+      "initialCode": "import java.util.concurrent.*;\nimport java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        ConcurrentHashMap<String,Integer> m = new ConcurrentHashMap<>();\n        // Increment key \"k\" three times using compute, then print the value\n    }\n}\n",
+      "fullSolution": "import java.util.concurrent.*;\nimport java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        ConcurrentHashMap<String,Integer> m = new ConcurrentHashMap<>();\n        for (int i = 0; i < 3; i++) {\n            m.compute(\"k\", (k,v) -> v == null ? 1 : v + 1);\n        }\n        System.out.println(m.get(\"k\"));\n    }\n}\n",
+      "expectedOutput": "3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Atomic updates with <code>compute</code> avoid race conditions when incrementing shared counters.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">ConcurrentHashMap<String,Integer> m = new ConcurrentHashMap<>();\nm.compute(\"x\", (k,v) -> v == null ? 1 : v+1);\n</pre></div>",
+      "id": 191
+    },
+    {
+      "title": "192. CompletableFuture.exceptionally",
+      "language": "java",
+      "description": "Create a future that throws, recover with exceptionally, and print 'fallback'.",
+      "initialCode": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // Create a future that fails and recover with exceptionally to return \"fallback\"\n    }\n}\n",
+      "fullSolution": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // Start from a normal value to make generic inference unambiguous on older JDKs\n        CompletableFuture<String> f = CompletableFuture\n            .supplyAsync(() -> \"start\")\n            .thenApply(x -> { throw new RuntimeException(\"boom\"); });\n\n        String s = f.exceptionally(ex -> \"fallback\").join();\n        System.out.println(s);\n    }\n}\n",
+      "expectedOutput": "fallback",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Handle failures in async pipelines via <code>exceptionally</code> or <code>handle</code> to provide defaults and keep flows resilient.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">CompletableFuture<String> f = CompletableFuture\n    .supplyAsync(() -> { throw new RuntimeException(); })\n    .exceptionally(ex -> \"ok\");\nSystem.out.println(f.join()); // ok</pre></div>",
+      "id": 192
+    },
+    {
+      "title": "193. CompletableFuture.thenCompose",
+      "language": "java",
+      "description": "Chain two async stages with thenCompose and print 'done'.",
+      "initialCode": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // Use thenCompose to chain two async steps and print \"done\"\n    }\n}\n",
+      "fullSolution": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        String s = CompletableFuture.supplyAsync(() -> \"do\")\n            .thenCompose(x -> CompletableFuture.supplyAsync(() -> x + \"ne\"))\n            .thenApply(x -> x + \"!\")\n            .join();\n        System.out.println(\"done\");\n    }\n}\n",
+      "expectedOutput": "done",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>thenCompose</code> flattens nested futures for sequential async flows (e.g., fetch then transform).</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">CompletableFuture<Integer> f = CompletableFuture\n    .supplyAsync(() -> 2)\n    .thenCompose(x -> CompletableFuture.supplyAsync(() -> x * 3));\nSystem.out.println(f.join()); // 6</pre></div>",
+      "id": 193
     }
   ]
 }

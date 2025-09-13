@@ -1871,6 +1871,46 @@
       "expectedOutput": "Alice",
       "tutorial": "<p class=\"mb-4 text-gray-300\">Use the json module to convert between Python objects and JSON strings: dumps() to serialize, loads() to parse.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import json\npayload = {\"ok\": True}\ns = json.dumps(payload)\nprint(s)  # {\"ok\": true}</pre></div>",
       "id": 186
+    },
+    {
+      "title": "187. asyncio.Semaphore (limit concurrency)",
+      "language": "python",
+      "description": "Run 4 async tasks with a concurrency limit of 2 using Semaphore; print the total tasks run (4).",
+      "initialCode": "import asyncio\n\n# Use an asyncio.Semaphore to limit concurrency to 2 while running 4 tasks.\n# Each task should return 1; after gathering, print the sum (4).\n\n",
+      "fullSolution": "import asyncio\n\nasync def worker(sema):\n    async with sema:\n        await asyncio.sleep(0.05)\n        return 1\n\nasync def main():\n    sema = asyncio.Semaphore(2)\n    tasks = [asyncio.create_task(worker(sema)) for _ in range(4)]\n    results = await asyncio.gather(*tasks)\n    print(sum(results))\n\nasyncio.run(main())\n",
+      "expectedOutput": "4",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>asyncio.Semaphore</code> to bound simultaneous operations (e.g., API calls, file I/O). It prevents too many tasks from running at once.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import asyncio\nsema = asyncio.Semaphore(2)\nasync def work():\n    async with sema:\n        await asyncio.sleep(0.01)\n        return 1\n</pre></div>",
+      "id": 187
+    },
+    {
+      "title": "188. ProcessPoolExecutor (sum of cubes)",
+      "language": "python",
+      "description": "Use ProcessPoolExecutor to compute the sum of cubes from 1..50 and print it.",
+      "initialCode": "from concurrent.futures import ProcessPoolExecutor\n\n# Define a top-level cube(x) and safely run a ProcessPoolExecutor\n# to sum x*x*x for x in 1..50, then print the total.\n\n",
+      "fullSolution": "from concurrent.futures import ProcessPoolExecutor\n\ndef cube(x):\n    return x*x*x\n\nif __name__ == '__main__':\n    with ProcessPoolExecutor() as ex:\n        total = sum(ex.map(cube, range(1, 51)))\n        print(total)\n",
+      "expectedOutput": "1625625",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">CPU-bound work scales with processes, not threads. Use <code>ProcessPoolExecutor</code> to fan out heavy computation across cores and then reduce results.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from concurrent.futures import ProcessPoolExecutor\ndef f(x):\n    return x*x\nif __name__ == '__main__':\n    with ProcessPoolExecutor() as ex:\n        print(sum(ex.map(f, range(5))))  # 0+1+4+9+16 = 30</pre></div>",
+      "id": 188
+    },
+    {
+      "title": "189. asyncio.Queue producer/consumer",
+      "language": "python",
+      "description": "Use an asyncio.Queue with a producer that enqueues 5 items and a consumer that counts them; print 5.",
+      "initialCode": "import asyncio\n\n# Create an asyncio.Queue. Producer should put 5 items then a sentinel (None).\n# Consumer should count items until sentinel, then print the count (5).\n\n",
+      "fullSolution": "import asyncio\n\nasync def producer(q):\n    for i in range(5):\n        await q.put(i)\n    await q.put(None)  # sentinel\n\nasync def consumer(q):\n    count = 0\n    while True:\n        item = await q.get()\n        if item is None:\n            print(count)\n            return\n        count += 1\n\nasync def main():\n    q = asyncio.Queue()\n    await asyncio.gather(producer(q), consumer(q))\n\nasyncio.run(main())\n",
+      "expectedOutput": "5",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>asyncio.Queue</code> coordinates producers and consumers without busy-waiting. Use a sentinel to signal completion.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">q = asyncio.Queue()\n# producer: await q.put(x)\n# consumer: x = await q.get()\n</pre></div>",
+      "id": 189
+    },
+    {
+      "title": "190. contextlib.ExitStack (multiple resources)",
+      "language": "python",
+      "description": "Use ExitStack to manage two file handles, write 'A' and 'B', then read both and print AB.",
+      "initialCode": "from contextlib import ExitStack\n\n# Open a.txt and b.txt with ExitStack, write 'A' and 'B' respectively.\n# Reopen and read both, then print their concatenation (AB).\n\n",
+      "fullSolution": "from contextlib import ExitStack\n\nwith ExitStack() as stack:\n    fa = stack.enter_context(open('a.txt', 'w'))\n    fb = stack.enter_context(open('b.txt', 'w'))\n    fa.write('A')\n    fb.write('B')\n\nwith ExitStack() as stack:\n    fa = stack.enter_context(open('a.txt'))\n    fb = stack.enter_context(open('b.txt'))\n    print(fa.read() + fb.read())\n",
+      "expectedOutput": "AB",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>ExitStack</code> lets you dynamically compose multiple context managers (files, locks, etc.) and guarantees cleanup in reverse order.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from contextlib import ExitStack\nwith ExitStack() as stack:\n    f1 = stack.enter_context(open('x.txt', 'w'))\n    f2 = stack.enter_context(open('y.txt', 'w'))\n    f1.write('X'); f2.write('Y')\n</pre></div>",
+      "id": 190
     }
   ]
 }

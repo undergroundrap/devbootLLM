@@ -84,21 +84,14 @@ Optional verification (PowerShell):
 
 You should see `storage` equal to `sqlite`.
 
-## Senior Path Additions (Highlights)
-
-- Python: sqlite3 mini-DB (191), dataclasses ordering (192), singledispatch (193), accumulate (194), bisect_right (195), pathlib glob (196), subprocess.run (197), hashlib SHA-256 (198), zipfile write/read (199), timezone-aware datetime (200), lru_cache Fibonacci (201), Counter.most_common (202), struct pack/unpack (203), contextlib.suppress (204), threading.Event (205).
-- Java: groupingBy counts (194), partitioningBy (195), Optional chain (196), ForkJoin RecursiveTask (197), ScheduledExecutorService delay (198), Files.walk filter (199), Pattern/Matcher reformat (200), MessageDigest SHA-256 (201), BigInteger factorial (202), Stream.flatMap sum (203), ByteBuffer putInt/getInt (204), AtomicLong across threads (205), PriorityQueue max-heap (206), Collectors.toMap merge (207), ReentrantReadWriteLock demo (208).
-
-Use the Level filter to choose “Senior Path” and Tags (e.g., Concurrency, I/O, Streams, Collections) to quickly discover these modules in the Learning view.
-
 ## What's New
 
+- Replaced the Tailwind CDN runtime with a compiled stylesheet. Run `npm run build:css` after changing UI classes to regenerate `public/css/tailwind.css`.
 - AI chat now separates the model's Thinking from the final Answer. The Thinking section is styled differently and is collapsible. If a model emits <think>…</think> (e.g., DeepSeek R1) or prefixes like "Thinking:"/"Reasoning:", the UI captures it into the collapsible panel while the Answer remains front and center.
 - Lessons receive a quick validation on load (duplicates/missing required fields). Any issues are logged to the browser console to help keep tutorials consistent.
-- New: Tag filter and curated Senior Path. In the Learning view sidebar you can now:
-  - Filter by Level (All, Fundamentals, Advanced, Senior Path).
-  - Filter by Tag (e.g., Concurrency, I/O, Streams, OOP, Collections, Regex). Tags are auto‑derived from lesson content and also shown as chips under the lesson description.
-  - Senior Path is a curated sequence across advanced, real‑world topics. Pick it from the Level dropdown for a focused journey to senior proficiency.
+- New: Tag filter in the Learning view sidebar. You can now:
+  - Filter by Level (All, Fundamentals, Advanced).
+  - Filter by Tag (e.g., Concurrency, I/O, Streams, OOP, Collections, Regex). Tags are auto-derived from lesson content and also shown as chips under the lesson description.
 
 ## Adding Lessons (Sequential IDs)
 

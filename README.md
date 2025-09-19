@@ -35,6 +35,12 @@ docker run --rm `
   --cpus 1 `
   devbootllm-app
 
+## Tooling Prerequisites
+
+To run the local build scripts and lesson compilation checks you need:
+
+- Node.js 18+ (for the Tailwind build and lesson utilities).
+- Microsoft OpenJDK 17 so the automated Java compilation sweep can run locally. Install with winget install --id Microsoft.OpenJDK.17 -e --source winget and verify with javac -version.
 ## Scaling Lessons to 1,000+
 
 To keep the UI fast as the catalog grows, the server now exposes a paginated Lessons API and the client lazily loads full lesson details on demand. This lets the sidebar load thousands of items without downloading all code/tutorial content upfront.
@@ -529,3 +535,4 @@ Expected (as of latest content update): Python 143, Java 132. Counts may change 
   - Fundamentals (1–100)
   - Advanced (101+)
 - The selection persists per course in localStorage.
+

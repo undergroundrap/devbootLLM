@@ -741,8 +741,22 @@
       "id": 72
     },
     {
-      "id": 73,
-      "title": "73. Sort Dicts",
+      "title": "73. Git Conflict Resolution Practice",
+      "language": "python",
+      "description": "Simulate resolving a merge conflict by printing the sequence of commands and describing the manual edit step.",
+      "initialCode": "source = 'feature/landing'\ntarget = 'main'\nconflicted_files = ['templates/home.html', 'static/site.css']\n\n# Print commands: checkout target, merge source, edit each conflicted file placeholder, then continue the merge\n",
+      "fullSolution": "source = 'feature/landing'\ntarget = 'main'\nconflicted_files = ['templates/home.html', 'static/site.css']\n\nprint(f'git checkout {target}')\nprint(f'git merge {source}')\nfor path in conflicted_files:\n    print(f'# resolve conflicts in {path}')\nprint('git add ' + ' '.join(conflicted_files))\nprint('git commit --no-edit')\n",
+      "expectedOutput": "git checkout main\ngit merge feature/landing\n# resolve conflicts in templates/home.html\n# resolve conflicts in static/site.css\ngit add templates/home.html static/site.css\ngit commit --no-edit",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Walk through the steps required after a merge conflict: switch, merge, edit, stage, and commit.</p>",
+      "tags": [
+        "Git",
+        "Workflow"
+      ],
+      "id": 73
+    },
+    {
+      "id": 74,
+      "title": "74. Sort Dicts",
       "language": "python",
       "description": "Sort a list of dicts by age and print names in order.",
       "initialCode": "people=[{'name':'Bob','age':30},{'name':'Alice','age':25},{'name':'Eve','age':35}]\n# Sort by 'age' ascending and print names\n\n",
@@ -751,8 +765,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">To sort a list of dictionaries, use a `lambda` function as the key to specify which dictionary value to sort by.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">people = [{'name': 'Bob', 'age': 30}, {'name': 'Alice', 'age': 25}]\nprint(sorted(people, key=lambda p: p['age']))</pre></div>"
     },
     {
-      "id": 74,
-      "title": "74. Extended Unpacking",
+      "id": 75,
+      "title": "75. Extended Unpacking",
       "language": "python",
       "description": "Unpack first and last values, ignoring the middle.",
       "initialCode": "data=[1,2,3,4]\n# Unpack to a and b (first/last) then print a and b on new lines\n\n",
@@ -761,8 +775,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">Use an asterisk `*` to capture multiple items into a list during unpacking. This is often used to get the first/last items.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">nums = [1, 2, 3, 4]\nfirst, *middle, last = nums\nprint(first, last) # 1 4\nprint(middle) # [2, 3]</pre></div>"
     },
     {
-      "id": 75,
-      "title": "75. Closures",
+      "id": 76,
+      "title": "76. Closures",
       "language": "python",
       "description": "Return a function that adds a captured value and use it.",
       "initialCode": "def make_adder(n):\n    # return a function that adds n\n    pass\n\nadd5 = make_adder(5)\nprint(add5(10))\n",
@@ -771,8 +785,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">A closure is a function that remembers variables from the enclosing scope even after that scope has finished executing.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">def make_adder(n):\n    def adder(x):\n        return x + n\n    return adder\n\nadd_five = make_adder(5)\nprint(add_five(10)) # 15</pre></div>"
     },
     {
-      "id": 76,
-      "title": "76. Decorators",
+      "id": 77,
+      "title": "77. Decorators",
       "language": "python",
       "description": "Write a decorator that uppercases a function's return value.",
       "initialCode": "# Implement @uppercase and decorate greet so it prints HELLO WORLD\n\n",
@@ -781,8 +795,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">A decorator is a function that takes another function as an argument, adds some functionality, and returns another function.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">def my_decorator(func):\n    def wrapper():\n        print(\"Something is happening before the function is called.\")\n        func()\n        print(\"Something is happening after the function is called.\")\n    return wrapper\n\n@my_decorator\ndef say_whee():\n    print(\"Whee!\")\n\nsay_whee()</pre></div>"
     },
     {
-      "id": 77,
-      "title": "77. Dataclasses",
+      "id": 78,
+      "title": "78. Dataclasses",
       "language": "python",
       "description": "Define a simple dataclass and print its fields.",
       "initialCode": "from dataclasses import dataclass\n# Define Person(name:str, age:int) and print \"Ada:42\"\n\n",
@@ -791,8 +805,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">A variable is a named reference to a value. Python infers types at runtime (dynamic typing).</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">my_number = 42\nname = \"Alice\"\npi = 3.14\nis_active = True\nprint(name, my_number)</pre></div>"
     },
     {
-      "id": 78,
-      "title": "78. @property",
+      "id": 79,
+      "title": "79. @property",
       "language": "python",
       "description": "Create a computed property for rectangle area.",
       "initialCode": "class Rect:\n    def __init__(self, w, h):\n        self.w, self.h = w, h\n    # Define property area returning w*h\n\nr = Rect(4,5)\nprint(r.area)\n",
@@ -801,8 +815,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">@property turns a method into a computed attribute accessed without parentheses.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class Person:\n    def __init__(self, first, last):\n        self.first, self.last = first, last\n    @property\n    def full_name(self):\n        return f'{self.first} {self.last}'\nprint(Person('Ada','Lovelace').full_name)</pre></div>"
     },
     {
-      "id": 79,
-      "title": "79. Type Hints",
+      "id": 80,
+      "title": "80. Type Hints",
       "language": "python",
       "description": "Add type hints to a simple function and call it.",
       "initialCode": "# Define add(a:int,b:int)->int and print add(3,4)\n\n",
@@ -811,8 +825,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">Type hints are a way to statically indicate the type of a value in your Python code. They are not enforced at runtime but can be checked by tools like mypy.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">def greet(name: str) -> str:\n    return \"Hello, \" + name\n\nprint(greet(\"World\"))</pre></div>"
     },
     {
-      "id": 80,
-      "title": "80. itertools.chain",
+      "id": 81,
+      "title": "81. itertools.chain",
       "language": "python",
       "description": "Concatenate iterables lazily and print all values.",
       "initialCode": "import itertools\n# Chain [1,2] and [3,4] and print each\n\n",
@@ -821,8 +835,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">`itertools.chain()` takes several iterables as arguments and returns a single iterator that produces the contents of all of them as if they came from a single sequence.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import itertools\n\nfor i in itertools.chain([1, 2], [\"a\", \"b\"]):\n    print(i)</pre></div>"
     },
     {
-      "id": 81,
-      "title": "81. groupby Counts",
+      "id": 82,
+      "title": "82. groupby Counts",
       "language": "python",
       "description": "Group words by first letter and count.",
       "initialCode": "import itertools\nwords=['ant','ape','bat']\n# Print a:2 then b:1 (group by first letter)\n\n",
@@ -831,8 +845,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">`itertools.groupby()` makes an iterator that returns consecutive keys and groups from the iterable. The input needs to be sorted on the same key function.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from itertools import groupby\n\nfor key, group in groupby(\"AAABBC\"): # Works on strings too\n    print(f'{key}: {list(group)}')</pre></div>"
     },
     {
-      "id": 82,
-      "title": "82. Counter",
+      "id": 83,
+      "title": "83. Counter",
       "language": "python",
       "description": "Use Counter to count letters in a word (preserve first-seen order).",
       "initialCode": "from collections import Counter\n# Count letters in 'banana' and print b:1, a:3, n:2 on new lines\n\n",
@@ -841,8 +855,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">`collections.Counter` is a dict subclass for counting hashable objects. It is an unordered collection where elements are stored as dictionary keys and their counts are stored as dictionary values.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from collections import Counter\n\nc = Counter(\"gallahad\")\nprint(c) # Counter({'a': 3, 'l': 2, 'g': 1, 'h': 1, 'd': 1})</pre></div>"
     },
     {
-      "id": 83,
-      "title": "83. defaultdict",
+      "id": 84,
+      "title": "84. defaultdict",
       "language": "python",
       "description": "Group values by key without pre-initializing lists.",
       "initialCode": "from collections import defaultdict\n# Append two reds and print the red count (2)\n\n",
@@ -851,8 +865,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">`collections.defaultdict` is a subclass of `dict` that calls a factory function to supply missing values.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from collections import defaultdict\n\nd = defaultdict(int) # 0 is the default for int()\nprint(d[\"missing_key\"]) # prints 0</pre></div>"
     },
     {
-      "id": 84,
-      "title": "84. deque",
+      "id": 85,
+      "title": "85. deque",
       "language": "python",
       "description": "Use deque for fast appends/pops on both ends.",
       "initialCode": "from collections import deque\n# Start with [1,2], appendleft(0), append(3), print list(d)\n\n",
@@ -861,8 +875,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">`collections.deque` is a list-like container with fast appends and pops on either end.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from collections import deque\n\nd = deque([\"task2\", \"task3\"])\nd.appendleft(\"task1\")\nd.append(\"task4\")\nprint(d.popleft()) # task1</pre></div>"
     },
     {
-      "id": 85,
-      "title": "85. namedtuple",
+      "id": 86,
+      "title": "86. namedtuple",
       "language": "python",
       "description": "Create a lightweight tuple-like object with named fields.",
       "initialCode": "from collections import namedtuple\n# Define Point(x,y) and print sum of (2,3)\n\n",
@@ -871,8 +885,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">Unpack iterables on the left-hand side to bind multiple names at once.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">a,b,c = (1,2,3)\nprint(a)\nprint(c)</pre></div>"
     },
     {
-      "id": 86,
-      "title": "86. contextmanager",
+      "id": 87,
+      "title": "87. contextmanager",
       "language": "python",
       "description": "Implement a simple context manager using @contextmanager.",
       "initialCode": "from contextlib import contextmanager\n# Print enter, work, exit in order using a context manager\n\n",
@@ -881,8 +895,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">The `@contextmanager` decorator lets you build a context manager from a simple generator function, automatically handling the `__enter__` and `__exit__` parts.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from contextlib import contextmanager\n\n@contextmanager\ndef managed_resource(*args, **kwds):\n    print(\"Acquiring resource\")\n    yield\n    print(\"Releasing resource\")\n\nwith managed_resource():\n    print(\"Doing work\")</pre></div>"
     },
     {
-      "id": 87,
-      "title": "87. suppress",
+      "id": 88,
+      "title": "88. suppress",
       "language": "python",
       "description": "Ignore specific exceptions and continue.",
       "initialCode": "from contextlib import suppress\n# Suppress ZeroDivisionError then print kept\n\n",
@@ -891,8 +905,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">`contextlib.suppress` is a context manager to selectively ignore specified exceptions.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from contextlib import suppress\n\nwith suppress(FileNotFoundError):\n    with open(\"non_existent_file.txt\") as f:\n        print(\"This will not print\")\n\nprint(\"Program continues without crashing\")</pre></div>"
     },
     {
-      "id": 88,
-      "title": "88. pathlib",
+      "id": 89,
+      "title": "89. pathlib",
       "language": "python",
       "description": "Write then read a small text file using pathlib.",
       "initialCode": "from pathlib import Path\n# Write 'hi' to note.txt then read and print it\n\n",
@@ -901,8 +915,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">The `pathlib` module offers classes representing filesystem paths with semantics appropriate for different operating systems.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from pathlib import Path\n\np = Path(\"my_file.txt\")\np.write_text(\"Hello from pathlib!\")\nprint(p.read_text())</pre></div>"
     },
     {
-      "id": 89,
-      "title": "89. JSON dumps",
+      "id": 90,
+      "title": "90. JSON dumps",
       "language": "python",
       "description": "Serialize a dict to a compact JSON string.",
       "initialCode": "import json\n# Dump {'a':1,'b':2} without spaces and print\n\n",
@@ -911,8 +925,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">`json.dumps()` serializes a Python object to a JSON formatted `str`.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import json\n\ndata = {\"name\": \"John\", \"age\": 30}\njson_string = json.dumps(data, indent=2)\nprint(json_string)</pre></div>"
     },
     {
-      "id": 90,
-      "title": "90. CSV write/read",
+      "id": 91,
+      "title": "91. CSV write/read",
       "language": "python",
       "description": "Write a tiny CSV then read it back and print a value.",
       "initialCode": "import csv\n# Write rows ['x','y'] and ['1','2'] to data.csv, read and print 2\n\n",
@@ -921,8 +935,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">The `csv` module implements classes to read and write tabular data in CSV format.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import csv, io\n\noutput = io.StringIO()\nwriter = csv.writer(output)\nwriter.writerow([\"name\", \"age\"])\nwriter.writerow([\"Alice\", 25])\nprint(output.getvalue())</pre></div>"
     },
     {
-      "id": 91,
-      "title": "91. Regex Substitution",
+      "id": 92,
+      "title": "92. Regex Substitution",
       "language": "python",
       "description": "Replace all digits with # and print the result.",
       "initialCode": "import re\n# Replace digits in 'a1b2' with '#' and print\n\n",
@@ -931,8 +945,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">`re.sub()` returns the string obtained by replacing the leftmost non-overlapping occurrences of pattern in string by the replacement `repl`.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import re\n\nprint(re.sub(r\"\\d+\", \"#\", \"There are 12 apples and 34 oranges.\"))</pre></div>"
     },
     {
-      "id": 92,
-      "title": "92. datetime Format",
+      "id": 93,
+      "title": "93. datetime Format",
       "language": "python",
       "description": "Parse an ISO date and print a different format.",
       "initialCode": "from datetime import datetime\n# Parse '2023-01-02' and print '2023/01/02'\n\n",
@@ -941,8 +955,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">The `datetime` module supplies classes for manipulating dates and times.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from datetime import datetime\n\nnow = datetime.now()\nprint(now.strftime(\"%Y-%m-%d %H:%M:%S\"))</pre></div>"
     },
     {
-      "id": 93,
-      "title": "93. Logging",
+      "id": 94,
+      "title": "94. Logging",
       "language": "python",
       "description": "Configure logging to print a simple INFO message.",
       "initialCode": "import logging\n# Configure to print 'INFO:Ready' and log it\n\n",
@@ -951,8 +965,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">The `logging` module defines functions and classes which implement a flexible event logging system for applications and libraries.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import logging\n\nlogging.basicConfig(level=logging.INFO)\nlogging.info(\"This is an info message.\")</pre></div>"
     },
     {
-      "id": 94,
-      "title": "94. *args",
+      "id": 95,
+      "title": "95. *args",
       "language": "python",
       "description": "Use *args to accept a variable number of arguments.",
       "initialCode": "# Define f(*args) printing len(args); call f(1,2,3)\n\n",
@@ -961,8 +975,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">The special syntax `*args` in function definitions is used to pass a variable number of non-keyword arguments to a function.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">def my_sum(*numbers):\n    return sum(numbers)\n\nprint(my_sum(1, 2, 3, 4)) # 10</pre></div>"
     },
     {
-      "id": 95,
-      "title": "95. functools.partial",
+      "id": 96,
+      "title": "96. functools.partial",
       "language": "python",
       "description": "Create a function with one argument pre-filled.",
       "initialCode": "from functools import partial\n# Make add5 so add5(7) == 12 and print it\n\n",
@@ -971,8 +985,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">`functools.partial` allows you to \"freeze\" some portion of a function's arguments and/or keywords, resulting in a new object with a simplified signature.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from functools import partial\n\nbasetwo = partial(int, base=2)\nprint(basetwo(\"10010\")) # 18</pre></div>"
     },
     {
-      "id": 96,
-      "title": "96. lru_cache",
+      "id": 97,
+      "title": "97. lru_cache",
       "language": "python",
       "description": "Memoize an expensive function and reuse results.",
       "initialCode": "from functools import lru_cache\n# Memoize fib and print fib(10)\n\n",
@@ -981,8 +995,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">`functools.lru_cache` is a decorator to wrap a function with a memoizing callable that saves up to the `maxsize` most recent calls.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from functools import lru_cache\n\n@lru_cache(maxsize=None)\ndef fib(n):\n    if n < 2: return n\n    return fib(n-1) + fib(n-2)\n\nprint(fib(10)) # 55</pre></div>"
     },
     {
-      "id": 97,
-      "title": "97. Custom Ordering (__lt__)",
+      "id": 98,
+      "title": "98. Custom Ordering (__lt__)",
       "language": "python",
       "description": "Implement __lt__ to make a class sortable.",
       "initialCode": "# Define Box with value and __lt__ then sort [3,1,2] boxes and print values\n\n",
@@ -991,8 +1005,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">Implementing the `__lt__` (less than) rich comparison method allows instances of your class to be sorted naturally.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class Person:\n    def __init__(self, name, age):\n        self.name, self.age = name, age\n    def __lt__(self, other):\n        return self.age < other.age\n\np1 = Person(\"Alice\", 25)\np2 = Person(\"Bob\", 30)\nprint(p1 < p2) # True</pre></div>"
     },
     {
-      "id": 98,
-      "title": "98. __str__",
+      "id": 99,
+      "title": "99. __str__",
       "language": "python",
       "description": "Customize string representation for a class.",
       "initialCode": "# Make Person print as Person(Alice)\n\n",
@@ -1001,8 +1015,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">The `__str__` method should return a \"user-friendly\" string representation of the object, which is what `print()` and `str()` will display.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class Person:\n    def __init__(self, name):\n        self.name = name\n    def __str__(self):\n        return f\"Person: {self.name}\"\n\nprint(Person(\"Alice\"))</pre></div>"
     },
     {
-      "id": 99,
-      "title": "99. Ordered Dataclass",
+      "id": 100,
+      "title": "100. Ordered Dataclass",
       "language": "python",
       "description": "Make dataclass orderable and compare two instances.",
       "initialCode": "from dataclasses import dataclass\n# Make Item(order=True) and print Item(5) < Item(7)\n\n",
@@ -1011,8 +1025,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">A variable is a named reference to a value. Python infers types at runtime (dynamic typing).</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">my_number = 42\nname = \"Alice\"\npi = 3.14\nis_active = True\nprint(name, my_number)</pre></div>"
     },
     {
-      "id": 100,
-      "title": "100. itertools.product",
+      "id": 101,
+      "title": "101. itertools.product",
       "language": "python",
       "description": "Cartesian product of two lists.",
       "initialCode": "import itertools\n# Print 1a,1b,2a,2b each on new lines\n\n",
@@ -1021,8 +1035,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">`itertools.product()` provides the cartesian product of input iterables.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import itertools\n\nfor p in itertools.product(\"AB\", \"12\"):\n    print(\"\".join(p)) # A1, A2, B1, B2</pre></div>"
     },
     {
-      "id": 101,
-      "title": "101. permutations",
+      "id": 102,
+      "title": "102. permutations",
       "language": "python",
       "description": "Generate all length-2 permutations of 'abc'.",
       "initialCode": "import itertools\n# Print: ab, ac, ba, bc, ca, cb (each on new line)\n\n",
@@ -1031,8 +1045,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">`itertools.permutations()` returns successive r-length permutations of elements in an iterable.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import itertools\n\nprint(list(itertools.permutations(\"ABC\", 2)))</pre></div>"
     },
     {
-      "id": 102,
-      "title": "102. accumulate",
+      "id": 103,
+      "title": "103. accumulate",
       "language": "python",
       "description": "Produce running totals and print them.",
       "initialCode": "import itertools\n# Accumulate sums over [1,2,3] and print each\n\n",
@@ -1041,8 +1055,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">`itertools.accumulate()` makes an iterator that returns accumulated sums, or accumulated results of other binary functions.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import itertools\n\nprint(list(itertools.accumulate([1, 2, 3, 4]))) # [1, 3, 6, 10]</pre></div>"
     },
     {
-      "id": 103,
-      "title": "103. Exception Chaining",
+      "id": 104,
+      "title": "104. Exception Chaining",
       "language": "python",
       "description": "Raise from another exception and show the cause type.",
       "initialCode": "# Print ValueError by raising RuntimeError from ValueError\n\n",
@@ -1051,8 +1065,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">Wrap risky code in try/except. Catch specific exceptions first to handle them appropriately.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">try:\n    1/0\nexcept ZeroDivisionError:\n    print('Oops! Division by zero')</pre></div>"
     },
     {
-      "id": 104,
-      "title": "104. threading + Lock",
+      "id": 105,
+      "title": "105. threading + Lock",
       "language": "python",
       "description": "Use two threads to append values safely, then sum.",
       "initialCode": "import threading\n# Start two threads appending 1 and 2 (with a lock) then print the sum 3\n\n",
@@ -1061,8 +1075,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">The `threading` module provides a way to create and manage threads. A `Lock` is a synchronization primitive that is not owned by a particular thread when locked.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import threading\n\nlock = threading.Lock()\n\ndef critical_section():\n    with lock:\n        print(\"Critical section accessed\")\n\ncritical_section()</pre></div>"
     },
     {
-      "id": 105,
-      "title": "105. ThreadPoolExecutor",
+      "id": 106,
+      "title": "106. ThreadPoolExecutor",
       "language": "python",
       "description": "Submit tasks and collect results in order.",
       "initialCode": "from concurrent.futures import ThreadPoolExecutor\n# Submit squares 1..3 and print results 1,4,9 on new lines\n\n",
@@ -1071,43 +1085,43 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">`concurrent.futures.ThreadPoolExecutor` provides a high-level interface for asynchronously executing callables in a pool of threads.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from concurrent.futures import ThreadPoolExecutor\n\nwith ThreadPoolExecutor(max_workers=1) as executor:\n    future = executor.submit(pow, 2, 5)\n    print(future.result()) # 32</pre></div>"
     },
     {
-      "title": "106. Pick the Right Concurrency Tool",
+      "title": "107. Pick the Right Concurrency Tool",
       "language": "python",
       "description": "Complete pick_tool(kind) so 'many-waits' -> 'asyncio', 'io-bound' -> 'threading', and 'cpu-bound' -> 'multiprocessing'. Then print the tool for each workload.",
       "initialCode": "def pick_tool(kind):\n    # Return the best concurrency tool for the workload kind\n    pass\n\nworkloads = ['many-waits', 'io-bound', 'cpu-bound']\nfor work in workloads:\n    print(pick_tool(work))\n",
       "fullSolution": "def pick_tool(kind):\n    mapping = {\n        'many-waits': 'asyncio',\n        'io-bound': 'threading',\n        'cpu-bound': 'multiprocessing',\n    }\n    return mapping[kind]\n\nworkloads = ['many-waits', 'io-bound', 'cpu-bound']\nfor work in workloads:\n    print(pick_tool(work))\n",
       "expectedOutput": "asyncio\nthreading\nmultiprocessing",
       "tutorial": "<p class=\"mb-4 text-gray-300\">Different workloads call for different concurrency models. Network-heavy or timer-heavy tasks fit <code>asyncio</code>, blocking I/O suits threads, and CPU-intensive crunching benefits from separate processes.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">def choose(work):\n    if work == \"io-bound\":\n        return \"threading\"\n    if work == \"cpu-bound\":\n        return \"multiprocessing\"\n    return \"asyncio\"\n\nprint(choose('io-bound'))  # threading</pre></div>",
-      "id": 106
+      "id": 107
     },
     {
-      "title": "107. WSGI Hello App",
+      "title": "108. WSGI Hello App",
       "language": "python",
       "description": "Implement a minimal WSGI app that returns 'Hello, Ada!' and prints the decoded response body using a fake start_response.",
       "initialCode": "def app(environ, start_response):\n    # Call start_response with '200 OK' and text/plain header, return [b'Hello, Ada!']\n    pass\n\ncaptured = {}\n\ndef fake_start_response(status, headers):\n    captured['status'] = status\n    captured['headers'] = headers\n\nbody = app({}, fake_start_response)\nprint(body[0].decode('utf-8'))\n",
       "fullSolution": "def app(environ, start_response):\n    start_response('200 OK', [('Content-Type', 'text/plain')])\n    return [b'Hello, Ada!']\n\ncaptured = {}\n\ndef fake_start_response(status, headers):\n    captured['status'] = status\n    captured['headers'] = headers\n\nbody = app({}, fake_start_response)\nprint(body[0].decode('utf-8'))\n",
       "expectedOutput": "Hello, Ada!",
       "tutorial": "<p class=\"mb-4 text-gray-300\">Flask and Django sit atop the WSGI protocol. A WSGI application is a callable returning an iterable of byte chunks after announcing the status and headers via <code>start_response</code>.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">def app(environ, start_response):\n    start_response('200 OK', [('Content-Type', 'text/plain')])\n    return [b'OK']\n</pre></div>",
-      "id": 107,
-      "tags": [
-        "Flask"
-      ]
-    },
-    {
-      "title": "108. Mini Route Decorator",
-      "language": "python",
-      "description": "Build a decorator that stores view functions in a routes dict and returns the registered result.",
-      "initialCode": "routes = {}\n\ndef route(path):\n    # Implement decorator that stores the function under routes[path]\n    pass\n\n@route('/status')\ndef status():\n    return 'OK'\n\nprint(routes['/status']())\n",
-      "fullSolution": "routes = {}\n\ndef route(path):\n    def decorator(func):\n        routes[path] = func\n        return func\n    return decorator\n\n@route('/status')\ndef status():\n    return 'OK'\n\nprint(routes['/status']())\n",
-      "expectedOutput": "OK",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Frameworks like Flask register view functions via decorators. Capturing the function and keeping a route table mirrors how URL maps are built.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">views = {}\n\ndef register(name):\n    def wrap(fn):\n        views[name] = fn\n        return fn\n    return wrap\n\n@register('home')\ndef home():\n    return 'hi'</pre></div>",
       "id": 108,
       "tags": [
         "Flask"
       ]
     },
     {
-      "title": "109. Flask Mini Project Plan",
+      "title": "109. Mini Route Decorator",
+      "language": "python",
+      "description": "Build a decorator that stores view functions in a routes dict and returns the registered result.",
+      "initialCode": "routes = {}\n\ndef route(path):\n    # Implement decorator that stores the function under routes[path]\n    pass\n\n@route('/status')\ndef status():\n    return 'OK'\n\nprint(routes['/status']())\n",
+      "fullSolution": "routes = {}\n\ndef route(path):\n    def decorator(func):\n        routes[path] = func\n        return func\n    return decorator\n\n@route('/status')\ndef status():\n    return 'OK'\n\nprint(routes['/status']())\n",
+      "expectedOutput": "OK",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Frameworks like Flask register view functions via decorators. Capturing the function and keeping a route table mirrors how URL maps are built.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">views = {}\n\ndef register(name):\n    def wrap(fn):\n        views[name] = fn\n        return fn\n    return wrap\n\n@register('home')\ndef home():\n    return 'hi'</pre></div>",
+      "id": 109,
+      "tags": [
+        "Flask"
+      ]
+    },
+    {
+      "title": "110. Flask Mini Project Plan",
       "language": "python",
       "description": "Build a project checklist that lists the files for a simple Flask app and print each path with its purpose.",
       "initialCode": "project_name = 'inventory_app'\nfiles = [\n    ('app.py', 'create Flask app and routes'),\n    ('templates/base.html', 'layout template'),\n    ('templates/index.html', 'list inventory items'),\n    ('static/style.css', 'basic styling')\n]\n\n# Print lines in format '<project>/<path> -> <description>'\n",
@@ -1118,11 +1132,25 @@
         "Flask",
         "Project"
       ],
-      "id": 109
+      "id": 110
     },
     {
-      "id": 110,
-      "title": "110. asyncio.gather",
+      "title": "111. Flask Skeleton Files",
+      "language": "python",
+      "description": "Generate minimal contents for app.py and templates/index.html to turn the project plan into starter code.",
+      "initialCode": "app_py = \"\"\"from flask import Flask, render_template\\n\\napp = Flask(__name__)\\n\\n@app.route('/')\\ndef index():\\n    return render_template('index.html', items=[])\\n\"\"\"\n\nindex_html = \"\"\"<!DOCTYPE html>\\n<html lang='en'>\\n<head><meta charset='utf-8'><title>Inventory</title></head>\\n<body>\\n    <h1>Inventory</h1>\\n    {% if items %}\\n        <ul>{% for item in items %}<li>{{ item }}</li>{% endfor %}</ul>\\n    {% else %}<p>No items yet.</p>{% endif %}\\n</body>\\n</html>\\n\"\"\"\n\n# Print file -> snippet mapping\n",
+      "fullSolution": "app_py = \"\"\"from flask import Flask, render_template\\n\\napp = Flask(__name__)\\n\\n@app.route('/')\\ndef index():\\n    return render_template('index.html', items=[])\\n\"\"\"\n\nindex_html = \"\"\"<!DOCTYPE html>\\n<html lang='en'>\\n<head><meta charset='utf-8'><title>Inventory</title></head>\\n<body>\\n    <h1>Inventory</h1>\\n    {% if items %}\\n        <ul>{% for item in items %}<li>{{ item }}</li>{% endfor %}</ul>\\n    {% else %}<p>No items yet.</p>{% endif %}\\n</body>\\n</html>\\n\"\"\"\n\nprint('app.py ->')\nprint(app_py.strip())\nprint('templates/index.html ->')\nprint(index_html.strip())\n",
+      "expectedOutput": "app.py ->\nfrom flask import Flask, render_template\n\napp = Flask(__name__)\n\n@app.route('/')\ndef index():\n    return render_template('index.html', items=[])\ntemplates/index.html ->\n<!DOCTYPE html>\n<html lang='en'>\n<head><meta charset='utf-8'><title>Inventory</title></head>\n<body>\n    <h1>Inventory</h1>\n    {% if items %}\n        <ul>{% for item in items %}<li>{{ item }}</li>{% endfor %}</ul>\n    {% else %}<p>No items yet.</p>{% endif %}\n</body>\n</html>",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Provide the starter files so learners can launch the project immediately after planning.</p>",
+      "tags": [
+        "Flask",
+        "Project"
+      ],
+      "id": 111
+    },
+    {
+      "id": 112,
+      "title": "112. asyncio.gather",
       "language": "python",
       "description": "Run async tasks concurrently and print results.",
       "initialCode": "import asyncio\n# Define async f(x)->2*x; gather for 1,2,3 and print results\n\n",
@@ -1131,8 +1159,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">`asyncio` is a library to write concurrent code using the `async/await` syntax. `asyncio.gather` runs awaitable objects concurrently.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import asyncio\n\nasync def main():\n    print(await asyncio.gather(asyncio.sleep(1, result=\"Done\")))\n\nasyncio.run(main())</pre></div>"
     },
     {
-      "id": 111,
-      "title": "111. glob",
+      "id": 113,
+      "title": "113. glob",
       "language": "python",
       "description": "Create files and match them with glob pattern.",
       "initialCode": "import glob\n# Create a.txt and b.txt then glob and print names sorted\n\n",
@@ -1141,8 +1169,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">The `glob` module finds all the pathnames matching a specified pattern according to the rules used by the Unix shell.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import glob\n\n# This example won't run here, but shows the concept.\n# open(\"a.txt\", \"w\"); open(\"b.log\", \"w\")\n# print(glob.glob(\"*.txt\")) # ['a.txt']</pre></div>"
     },
     {
-      "id": 112,
-      "title": "112. decimal",
+      "id": 114,
+      "title": "114. decimal",
       "language": "python",
       "description": "Exact decimal arithmetic for financial values.",
       "initialCode": "from decimal import Decimal\n# Print Decimal('0.1')+Decimal('0.2')\n\n",
@@ -1151,8 +1179,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">The `decimal` module provides a `Decimal` datatype for decimal floating-point arithmetic, which is useful for financial applications.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from decimal import Decimal\n\nprint(Decimal(\"0.1\") + Decimal(\"0.2\")) # 0.3</pre></div>"
     },
     {
-      "id": 113,
-      "title": "113. fractions",
+      "id": 115,
+      "title": "115. fractions",
       "language": "python",
       "description": "Do rational arithmetic with exact fractions.",
       "initialCode": "from fractions import Fraction\n# Print Fraction(1,3)+Fraction(1,6)\n\n",
@@ -1161,8 +1189,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">The `fractions` module provides support for rational number arithmetic.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from fractions import Fraction\n\nprint(Fraction(1, 3) + Fraction(1, 3)) # 2/3</pre></div>"
     },
     {
-      "id": 114,
-      "title": "114. bisect_left",
+      "id": 116,
+      "title": "116. bisect_left",
       "language": "python",
       "description": "Binary search for insertion position.",
       "initialCode": "import bisect\n# Find insertion index of 3 in [1,2,4,5] using bisect_left and print\n\n",
@@ -1171,8 +1199,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">The `bisect` module provides support for maintaining a list in sorted order without having to sort the list after each insertion.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import bisect\n\nitems = [1, 2, 4]\nbisect.insort(items, 3)\nprint(items) # [1, 2, 3, 4]</pre></div>"
     },
     {
-      "id": 115,
-      "title": "115. heapq",
+      "id": 117,
+      "title": "117. heapq",
       "language": "python",
       "description": "Use a min-heap to pop the smallest item.",
       "initialCode": "import heapq\n# Push 3,1,2; pop and print the smallest\n\n",
@@ -1181,8 +1209,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">The `heapq` module provides an implementation of the min-heap queue algorithm.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import heapq\n\nh = [3, 1, 4, 1, 5, 9, 2]\nheapq.heapify(h)\nprint(heapq.heappop(h)) # 1</pre></div>"
     },
     {
-      "id": 116,
-      "title": "116. statistics.mean",
+      "id": 118,
+      "title": "118. statistics.mean",
       "language": "python",
       "description": "Compute the mean of a small list.",
       "initialCode": "import statistics\n# Print mean of [1,2,3]\n\n",
@@ -1191,8 +1219,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">The `statistics` module provides functions for calculating mathematical statistics of numeric data.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import statistics\n\nprint(statistics.mean([1, 2, 3, 4, 4])) # 2.8</pre></div>"
     },
     {
-      "id": 117,
-      "title": "117. Slice Assignment",
+      "id": 119,
+      "title": "119. Slice Assignment",
       "language": "python",
       "description": "Replace a slice of a list in-place.",
       "initialCode": "letters=['a','b','c']\n# Replace letters[1:3] with ['X'] then print letters\n\n",
@@ -1201,8 +1229,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">You can assign to a slice of a list to replace, remove, or insert elements.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">a = [1, 2, 3, 4]\na[1:3] = [8, 9, 10]\nprint(a) # [1, 8, 9, 10, 4]</pre></div>"
     },
     {
-      "id": 118,
-      "title": "118. OrderedDict",
+      "id": 120,
+      "title": "120. OrderedDict",
       "language": "python",
       "description": "Preserve insertion order of keys explicitly.",
       "initialCode": "from collections import OrderedDict\n# Create OrderedDict and print keys in order b then a\n\n",
@@ -1211,8 +1239,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">`collections.OrderedDict` is a dict subclass that remembers the order that keys were first inserted. (Note: standard dicts in Python 3.7+ also preserve insertion order.)</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from collections import OrderedDict\n\nd = OrderedDict.fromkeys(\"abcde\")\nd.move_to_end(\"b\")\nprint(\"\".join(d.keys())) # acdeb</pre></div>"
     },
     {
-      "id": 119,
-      "title": "119. frozenset",
+      "id": 121,
+      "title": "121. frozenset",
       "language": "python",
       "description": "Use an immutable set and test membership.",
       "initialCode": "# Create frozenset({1,2,3}) and print if 2 in it\n\n",
@@ -1221,8 +1249,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">`frozenset` is an immutable version of `set`. Since it is hashable, it can be used as a dictionary key or as an element of another set.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">fs = frozenset([1, 2, 3])\n# fs.add(4) would raise an AttributeError</pre></div>"
     },
     {
-      "id": 120,
-      "title": "120. Sort by Last Char",
+      "id": 122,
+      "title": "122. Sort by Last Char",
       "language": "python",
       "description": "Sort words by their last character in descending order.",
       "initialCode": "words=['ab','ba','aa']\n# Sort by last char descending and print each on new lines\n\n",
@@ -1231,8 +1259,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">You can provide a `lambda` to the `key` argument of `sorted` to implement custom sorting logic, such as sorting by the last character of a string.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">words = [\"apple\", \"fig\", \"banana\"]\nprint(sorted(words, key=lambda w: w[-1]))</pre></div>"
     },
     {
-      "id": 121,
-      "title": "121. Custom Iterator",
+      "id": 123,
+      "title": "123. Custom Iterator",
       "language": "python",
       "description": "Implement a simple iterator that yields 1..3.",
       "initialCode": "# Make a class that implements __iter__ and __next__ to yield 1,2,3 then StopIteration\n\n",
@@ -1241,8 +1269,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">To create a custom iterator, a class needs to implement the `__iter__()` and `__next__()` methods.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class UpToThree:\n    def __init__(self):\n        self.count = 1\n    def __iter__(self):\n        return self\n    def __next__(self):\n        if self.count > 3: raise StopIteration\n        val = self.count\n        self.count += 1\n        return val\n\nprint(list(UpToThree())) # [1, 2, 3]</pre></div>"
     },
     {
-      "id": 122,
-      "title": "122. Capstone: Top Student",
+      "id": 124,
+      "title": "124. Capstone: Top Student",
       "language": "python",
       "description": "Parse JSON of students and print the top-scoring student's name.",
       "initialCode": "import json\n# Given the JSON string s below, parse it and print the top student's name\n# by score.\n\ns = '[{\"name\":\"Alice\",\"score\":90},{\"name\":\"Bob\",\"score\":80},{\"name\":\"Charlie\",\"score\":100}]'\n# Your code here\n\n",
@@ -1251,8 +1279,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">This capstone combines several concepts: JSON parsing, finding the maximum item in a list of dictionaries using a lambda function as the key.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import json\ns = '[{\"name\":\"Alice\",\"score\":90},{\"name\":\"Charlie\",\"score\":100}]'\nstudents = json.loads(s)\nrichest = max(students, key=lambda s: s[\"score\"])\nprint(richest[\"name\"]) # Charlie</pre></div>"
     },
     {
-      "id": 123,
-      "title": "123. Dataclasses Basics",
+      "id": 125,
+      "title": "125. Dataclasses Basics",
       "language": "python",
       "description": "Define a dataclass and compute an average score.",
       "initialCode": "from dataclasses import dataclass\nfrom typing import List\n\n# Define a @dataclass Student with fields name: str and scores: List[int].\n# Create Student('Alice', [100, 80]) and print the average score as a float.\n\n",
@@ -1262,8 +1290,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>@dataclass</code> to auto-generate boilerplate like __init__ and __repr__. It works well for simple data containers.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from dataclasses import dataclass\n\n@dataclass\nclass Point:\n    x: int\n    y: int\n\nprint(Point(1, 2))</pre></div>"
     },
     {
-      "id": 124,
-      "title": "124. functools.lru_cache",
+      "id": 126,
+      "title": "126. functools.lru_cache",
       "language": "python",
       "description": "Memoize a recursive Fibonacci function and print fib(10).",
       "initialCode": "from functools import lru_cache\n\n# Define fib(n) using @lru_cache(None) and print fib(10)\n\n",
@@ -1273,8 +1301,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>functools.lru_cache</code> to cache function results and avoid recomputation in recursive algorithms.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from functools import lru_cache\n\n@lru_cache(None)\ndef f(x):\n    return x*x\n\nprint(f(5))</pre></div>"
     },
     {
-      "id": 125,
-      "title": "125. itertools.groupby",
+      "id": 127,
+      "title": "127. itertools.groupby",
       "language": "python",
       "description": "Count consecutive character groups using groupby and print counts.",
       "initialCode": "from itertools import groupby\n\ns = 'aabbbc'\n# Use groupby to print: a:2, b:3, c:1 each on new lines\n\n",
@@ -1284,8 +1312,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">`itertools.groupby` groups consecutive items with the same key. Convert the group iterator to a list to count items.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from itertools import groupby\nprint([(k, len(list(g))) for k,g in groupby('aaabb')]) # [('a', 3), ('b', 2)]</pre></div>"
     },
     {
-      "id": 126,
-      "title": "126. Generator Flatten",
+      "id": 128,
+      "title": "128. Generator Flatten",
       "language": "python",
       "description": "Use a generator with yield from to flatten nested lists.",
       "initialCode": "# Define flatten(nested) that yields each int from nested lists\n# Then print each number on its own line for [[1,2],[3],[4,5]]\n\n",
@@ -1295,8 +1323,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">`yield from` delegates to a sub-iterator, making generator composition simple and readable.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">def chain(*iters):\n    for it in iters:\n        yield from it\n\nprint(list(chain([1,2], [3]))) # [1, 2, 3]</pre></div>"
     },
     {
-      "id": 127,
-      "title": "127. asyncio.gather",
+      "id": 129,
+      "title": "129. asyncio.gather",
       "language": "python",
       "description": "Run coroutines concurrently and sum results.",
       "initialCode": "import asyncio\n\n# Define async def square(x): return x*x\n# Use asyncio.gather over [1,2,3] and print the sum of results\n\n",
@@ -1306,8 +1334,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">`asyncio.gather` concurrently awaits multiple coroutines and returns their results as a list.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import asyncio\n\nasync def add(a,b):\n    return a+b\n\nprint(asyncio.run(add(2,3)))</pre></div>"
     },
     {
-      "id": 128,
-      "title": "128. Context Manager",
+      "id": 130,
+      "title": "130. Context Manager",
       "language": "python",
       "description": "Use contextlib.contextmanager to manage setup and teardown.",
       "initialCode": "import contextlib\n\n# Create a context manager that prints 'enter' on enter and 'exit' on exit\n# Within it, print 'inside'\n\n",
@@ -1317,8 +1345,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">Context managers wrap a block with setup and teardown steps. Use them for resources like files, locks, or timing.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import contextlib\n\n@contextlib.contextmanager\ndef banner():\n    print('---')\n    try:\n        yield\n    finally:\n        print('---')\n\nwith banner():\n    print('Hello')</pre></div>"
     },
     {
-      "id": 129,
-      "title": "129. @property",
+      "id": 131,
+      "title": "131. @property",
       "language": "python",
       "description": "Expose a computed attribute via @property.",
       "initialCode": "# Define Temperature(celsius) with a @property fahrenheit that converts C->F\n# Print the fahrenheit for 100C as an integer\n\n",
@@ -1328,8 +1356,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>@property</code> for computed attributes that look like fields but run logic on access.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class Circle:\n    def __init__(self, r): self.r = r\n    @property\n    def area(self): return 3.14159 * self.r * self.r\n\nprint(int(Circle(10).area))</pre></div>"
     },
     {
-      "id": 130,
-      "title": "130. heapq.nlargest",
+      "id": 132,
+      "title": "132. heapq.nlargest",
       "language": "python",
       "description": "Print the two largest numbers in descending order.",
       "initialCode": "import heapq\n\narr = [5,1,9,7,2]\n# Print the two largest values on separate lines (largest first)\n\n",
@@ -1339,8 +1367,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">`heapq.nlargest(k, iterable)` efficiently returns the k largest items without fully sorting the list.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import heapq\nprint(heapq.nlargest(3, [5,1,9,7,2])) # [9, 7, 5]</pre></div>"
     },
     {
-      "id": 131,
-      "title": "131. Regex Named Groups",
+      "id": 133,
+      "title": "133. Regex Named Groups",
       "language": "python",
       "description": "Extract fields using named capture groups.",
       "initialCode": "import re\n\ns = 'User alice, id=42'\n# Print 'alice:42' using named groups 'name' and 'id'\n\n",
@@ -1350,8 +1378,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">Named groups make regex matches easier to read and maintain. Access them by name via <code>match.group('name')</code>.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import re\nm = re.search(r\"(?P&lt;word&gt;\\w+)-(\\d+)\", 'abc-123')\nprint(m.group('word')) # abc</pre></div>"
     },
     {
-      "id": 132,
-      "title": "132. ThreadPoolExecutor",
+      "id": 134,
+      "title": "134. ThreadPoolExecutor",
       "language": "python",
       "description": "Use a thread pool to map a function and sum results.",
       "initialCode": "from concurrent.futures import ThreadPoolExecutor\n\n# Square the numbers [1,2,3,4] using a ThreadPoolExecutor and print the sum\n\n",
@@ -1361,8 +1389,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">`ThreadPoolExecutor` runs callables on a pool of threads. Use <code>map</code> to apply a function to many inputs.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from concurrent.futures import ThreadPoolExecutor\nwith ThreadPoolExecutor() as ex:\n    print(list(ex.map(lambda x: x+1, [1,2,3]))) # [2,3,4]</pre></div>"
     },
     {
-      "id": 133,
-      "title": "133. Capstone: CSV ETL",
+      "id": 135,
+      "title": "135. Capstone: CSV ETL",
       "language": "python",
       "description": "Parse a CSV string and compute total revenue for rows with price >= 10.",
       "initialCode": "import csv\nimport io\n\ndata = '''id,price,qty\n1,10,2\n2,15,1\n3,8,5\n'''\n# Compute total revenue (price*qty) for rows with price >= 10 and print it\n\n",
@@ -1372,8 +1400,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">CSV is a common interchange format. Use <code>csv.DictReader</code> to parse rows into dicts and combine filtering and aggregation.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import csv, io\ns = 'a,b\\n1,2\\n'\nprint(list(csv.DictReader(io.StringIO(s))))</pre></div>"
     },
     {
-      "id": 134,
-      "title": "134. ProcessPoolExecutor",
+      "id": 136,
+      "title": "136. ProcessPoolExecutor",
       "language": "python",
       "description": "Use a process pool to cube [1,2,3,4] and print the sum.",
       "initialCode": "from concurrent.futures import ProcessPoolExecutor\n\n# Define a top-level function cube(x) returning x*x*x (no lambdas)\n# On Windows, guard process pool code with if __name__ == '__main__'\n# Use ProcessPoolExecutor to compute cubes for [1,2,3,4] and print the sum\n\n",
@@ -1382,8 +1410,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>ProcessPoolExecutor</code> for CPU-bound work to sidestep the GIL. Map a pure function across inputs and aggregate.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from concurrent.futures import ProcessPoolExecutor\nwith ProcessPoolExecutor() as ex:\n    print(sum(ex.map(lambda x: x*x, [1,2,3]))) # 14</pre></div>"
     },
     {
-      "id": 135,
-      "title": "135. functools.singledispatch",
+      "id": 137,
+      "title": "137. functools.singledispatch",
       "language": "python",
       "description": "Register type-specific implementations and dispatch at runtime.",
       "initialCode": "from functools import singledispatch\n\n# Create a singledispatch function describe(x)\n# - default returns 'unknown'\n# - int specialization returns 'int:<value>'\n# - list specialization returns 'list:<len>'\n# Print describe(5) then describe([1,2,3])\n\n",
@@ -1392,8 +1420,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>singledispatch</code> lets you write generic functions with type-based specializations for better extensibility.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from functools import singledispatch\n@singledispatch\ndef stringify(x): return str(x)\n@stringify.register(list)\ndef _(x): return ','.join(map(str,x))\nprint(stringify([1,2])) # 1,2</pre></div>"
     },
     {
-      "id": 136,
-      "title": "136. typing.Protocol",
+      "id": 138,
+      "title": "138. typing.Protocol",
       "language": "python",
       "description": "Define a structural interface and accept any implementation.",
       "initialCode": "from typing import Protocol\n\n# Define a Greeter Protocol with greet(name:str)->str\n# Implement EN and ES classes and a welcome(g,name) that prints g.greet(name)\n# Call with 'Bob' using both implementations\n\n",
@@ -1402,8 +1430,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Protocol</code> enables structural typing: any object with the required methods is accepted, improving testability and decoupling.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from typing import Protocol\nclass HasLen(Protocol):\n    def __len__(self) -&gt; int: ...\n\ndef size(x: HasLen):\n    return len(x)\n\nprint(size('hi'))</pre></div>"
     },
     {
-      "id": 137,
-      "title": "137. sqlite3 In-Memory",
+      "id": 139,
+      "title": "139. sqlite3 In-Memory",
       "language": "python",
       "description": "Create a table, insert rows, and aggregate with SQL.",
       "initialCode": "import sqlite3\n\n# Create an in-memory DB, a table nums(v INT), insert 1,2,3\n# Query SELECT SUM(v) and print the result\n\n",
@@ -1412,8 +1440,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">Use SQLite for quick relational queries in-memory\u00e2\u20ac\u201dgreat for ETL-style tasks and prototypes.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import sqlite3\ncon = sqlite3.connect(':memory:')\ncon.execute('CREATE TABLE t(x)')\ncon.execute('INSERT INTO t VALUES (42)')\nprint(con.execute('SELECT x FROM t').fetchone()[0])</pre></div>"
     },
     {
-      "id": 138,
-      "title": "138. decimal for Precision",
+      "id": 140,
+      "title": "140. decimal for Precision",
       "language": "python",
       "description": "Add 0.1 and 0.2 precisely using Decimal.",
       "initialCode": "from decimal import Decimal\n\n# Print the result of Decimal('0.1') + Decimal('0.2')\n\n",
@@ -1422,8 +1450,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">Binary floats surprise: 0.1+0.2 != 0.3. Use <code>Decimal</code> for money and precise decimal arithmetic.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from decimal import Decimal\nprint(Decimal('1.005').quantize(Decimal('0.01'))) # 1.01</pre></div>"
     },
     {
-      "id": 139,
-      "title": "139. struct pack/unpack",
+      "id": 141,
+      "title": "141. struct pack/unpack",
       "language": "python",
       "description": "Pack two numbers into bytes and unpack them again.",
       "initialCode": "import struct\n\n# Pack 258 (unsigned short) and 7 (unsigned byte) big-endian, then unpack and print each on its own line\n\n",
@@ -1432,8 +1460,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">The <code>struct</code> module converts between Python values and C-struct binary data\u00e2\u20ac\u201duseful for protocols and file formats.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import struct\nprint(struct.unpack('&gt;I', b'\\x00\\x00\\x01\\x00')[0]) # 256</pre></div>"
     },
     {
-      "id": 140,
-      "title": "140. enum.Flag",
+      "id": 142,
+      "title": "142. enum.Flag",
       "language": "python",
       "description": "Combine bit-flags and test membership.",
       "initialCode": "from enum import Flag, auto\n\n# Define Perm with READ, WRITE, EXEC using Flag\n# Make perm = READ|WRITE, then print whether it includes READ and includes EXEC (two lines)\n\n",
@@ -1442,8 +1470,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Flag</code> supports bitwise OR of options; test membership with bitwise AND.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from enum import Flag, auto\nclass F(Flag): A=auto(); B=auto()\nprint(F.A | F.B)</pre></div>"
     },
     {
-      "id": 141,
-      "title": "141. ExitStack",
+      "id": 143,
+      "title": "143. ExitStack",
       "language": "python",
       "description": "Manage multiple context cleanups dynamically.",
       "initialCode": "import contextlib\n\n# Use ExitStack to print 'inside' then ensure 'exit' prints at teardown\n\n",
@@ -1452,8 +1480,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>ExitStack</code> lets you register callbacks and enter contexts conditionally, guaranteeing teardown even when combining resources.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import contextlib\nwith contextlib.ExitStack() as st:\n    st.callback(lambda: print('done'))\n    print('work')</pre></div>"
     },
     {
-      "id": 142,
-      "title": "142. cached_property",
+      "id": 144,
+      "title": "144. cached_property",
       "language": "python",
       "description": "Cache an expensive computation after the first access.",
       "initialCode": "from functools import cached_property\n\n# Define a class with a cached_property that prints 'compute' once and returns 42\n# Access it twice and print the value both times\n\n",
@@ -1462,8 +1490,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>cached_property</code> computes once per instance and reuses the value\u00e2\u20ac\u201dhandy for memoizing I/O or heavy calculations.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from functools import cached_property\nclass C:\n  @cached_property\n  def cfg(self): return 123\nprint(C().cfg)</pre></div>"
     },
     {
-      "id": 143,
-      "title": "143. heapq.merge",
+      "id": 145,
+      "title": "145. heapq.merge",
       "language": "python",
       "description": "Merge two sorted iterables and print all items.",
       "initialCode": "import heapq\n\n# Merge [1,3,5] and [2,4,6] and print each item on its own line\n\n",
@@ -1472,8 +1500,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>heapq.merge</code> lazily merges multiple sorted inputs\u00e2\u20ac\u201duseful for external sort or streaming merges.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import heapq\nprint(list(heapq.merge([1,4],[2,3])))</pre></div>"
     },
     {
-      "id": 144,
-      "title": "144. bisect.insort",
+      "id": 146,
+      "title": "146. bisect.insort",
       "language": "python",
       "description": "Insert while keeping a list sorted.",
       "initialCode": "import bisect\n\n# Start with arr=[1,3,4], insert 2 in order using insort, then print arr\n\n",
@@ -1482,8 +1510,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>bisect</code> for binary search and ordered insertion without re-sorting.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import bisect\na=[1,2,4]\nbisect.insort(a,3)\nprint(a)</pre></div>"
     },
     {
-      "id": 145,
-      "title": "145. argparse (programmatic)",
+      "id": 147,
+      "title": "147. argparse (programmatic)",
       "language": "python",
       "description": "Parse options from a list and act on them.",
       "initialCode": "import argparse\n\n# Build an ArgumentParser that accepts --times INT; parse ['--times','3']\n# Print 'x' repeated times times\n\n",
@@ -1492,8 +1520,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>argparse</code> to define CLI options. Parsing from a list makes it easy to test without real command-line args.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import argparse\np=argparse.ArgumentParser(add_help=False)\np.add_argument('--n', type=int)\nprint(p.parse_args(['--n','2']).n)</pre></div>"
     },
     {
-      "id": 146,
-      "title": "146. Capstone: Log Aggregator",
+      "id": 148,
+      "title": "148. Capstone: Log Aggregator",
       "language": "python",
       "description": "Parse log lines and print total ERRORs and WARNs.",
       "initialCode": "import re\n\nlogs = '''[INFO] boot\n[ERROR] fail A\n[WARN] disk\n[ERROR] fail B\n'''\n# Count lines starting with [ERROR] and [WARN] and print 'E:<n> W:<m>'\n\n",
@@ -1502,8 +1530,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">Combine regex with multiline anchors to scan logs and aggregate counts.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import re\ns='''A\nB\nA\n'''\nprint(len(re.findall(r'^A', s, flags=re.M)))</pre></div>"
     },
     {
-      "id": 147,
-      "title": "147. Capstone: Process Pool Map-Reduce",
+      "id": 149,
+      "title": "149. Capstone: Process Pool Map-Reduce",
       "language": "python",
       "description": "Square 1..10 in a process pool and print the sum.",
       "initialCode": "from concurrent.futures import ProcessPoolExecutor\n\n# Define a top-level function sq(x) returning x*x (no lambdas)\n# On Windows, guard process pool code with if __name__ == '__main__'\n# Compute sum(x*x for x in 1..10) using ProcessPoolExecutor and print it\n\n",
@@ -1512,8 +1540,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">Map-reduce pattern: map independent work across workers, then reduce with <code>sum</code>. Use a top-level function and guard <code>__name__</code> on Windows.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from concurrent.futures import ProcessPoolExecutor\n\ndef sq(x):\n    return x*x\n\nif __name__ == '__main__':\n    with ProcessPoolExecutor() as ex:\n        print(sum(ex.map(sq, range(1,6))))</pre></div>"
     },
     {
-      "id": 148,
-      "title": "148. Capstone: asyncio Timeout",
+      "id": 150,
+      "title": "150. Capstone: asyncio Timeout",
       "language": "python",
       "description": "Run two tasks; one sleeps, one fast; print only the fast result using timeout.",
       "initialCode": "import asyncio\n\n# Create two coroutines: slow sleeps 1.0s and returns 'slow', fast returns 'fast'\n# Use wait_for to get fast within 0.1s and print it\n\n",
@@ -1522,8 +1550,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>asyncio.wait_for</code> to bound latency and pick the fast path.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import asyncio\n\nasync def slow():\n    await asyncio.sleep(1)\n    return 'slow'\n\nasync def main():\n    try:\n        print(await asyncio.wait_for(slow(), timeout=0.05))\n    except asyncio.TimeoutError:\n        print('timeout')\n\nasyncio.run(main())</pre></div>"
     },
     {
-      "id": 149,
-      "title": "149. Capstone: pathlib Scan",
+      "id": 151,
+      "title": "151. Capstone: pathlib Scan",
       "language": "python",
       "description": "List .txt files from an in-memory working dir and print their sorted names.",
       "initialCode": "from pathlib import Path\n\n# Create temp files a.txt, b.txt, c.log in CWD; list only .txt and print names sorted joined by ','\n\n",
@@ -1532,8 +1560,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>pathlib</code> provides path operations and safe iteration over directories.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from pathlib import Path\nPath('a.txt').write_text('a')\nPath('b.log').write_text('b')\nprint(','.join(sorted(p.name for p in Path('.').iterdir() if p.suffix=='.txt')))</pre></div>"
     },
     {
-      "id": 150,
-      "title": "150. Capstone: OrderedDict LRU",
+      "id": 152,
+      "title": "152. Capstone: OrderedDict LRU",
       "language": "python",
       "description": "Implement a tiny LRU with capacity 2 using OrderedDict.",
       "initialCode": "from collections import OrderedDict\n\n# Create an OrderedDict behaving like LRU capacity=2: put 'a':1, 'b':2, 'c':3 and print keys left joined by ','\n\n",
@@ -1542,8 +1570,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">Reorder on set and evict the oldest when capacity is exceeded.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from collections import OrderedDict\ncap = 2\nlru = OrderedDict()\nfor k in ['a','b','a','c']:\n    if k in lru: del lru[k]\n    lru[k] = 1\n    if len(lru) > cap:\n        lru.popitem(last=False)\nprint(','.join(lru.keys()))  # b,c</pre></div>"
     },
     {
-      "id": 151,
-      "title": "151. asyncio.Semaphore",
+      "id": 153,
+      "title": "153. asyncio.Semaphore",
       "language": "python",
       "description": "Limit concurrent tasks with a semaphore and sum results.",
       "initialCode": "import asyncio\n\n# Create a Semaphore(2) and run 3 workers that each return 1\n# Gather results and print their sum (should be 3)\n\n",
@@ -1552,8 +1580,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>asyncio.Semaphore</code> to cap concurrent access (e.g., outbound requests). It protects a critical section by allowing only N tasks inside at a time.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import asyncio\n\nasync def worker(sem, x):\n    async with sem:\n        await asyncio.sleep(0.01)\n        return x\n\nasync def main():\n    sem = asyncio.Semaphore(2)\n    print(sum(await asyncio.gather(*(worker(sem, 1) for _ in range(3)))))\n\nasyncio.run(main())</pre></div>"
     },
     {
-      "id": 152,
-      "title": "152. queue + Threads",
+      "id": 154,
+      "title": "154. queue + Threads",
       "language": "python",
       "description": "Fan out work to threads using queue.Queue and collect results.",
       "initialCode": "from queue import Queue\nfrom threading import Thread\n\n# Square [1,2,3,4] in two worker threads using a Queue and print the sum (30)\n\n",
@@ -1562,8 +1590,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">Use a <code>Queue</code> to hand off work to a fixed set of worker threads. The queue provides safe communication without manual locking.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from queue import Queue\nfrom threading import Thread\n\nq=Queue(); out=[]\n\ndef worker():\n    while True:\n        x=q.get()\n        if x is None: break\n        out.append(x*x)\n\nthreads=[Thread(target=worker) for _ in range(2)]\nfor t in threads: t.start()\nfor n in [1,2,3,4]: q.put(n)\nfor _ in threads: q.put(None)\nfor t in threads: t.join()\nprint(sum(out))</pre></div>"
     },
     {
-      "id": 153,
-      "title": "153. Logging to stdout",
+      "id": 155,
+      "title": "155. Logging to stdout",
       "language": "python",
       "description": "Configure logging to write to stdout and log a message.",
       "initialCode": "import logging, sys\n\n# Configure basicConfig to stream logs to stdout and log INFO level 'hi'\n# Print should be exactly \"INFO:hi\"\n\n",
@@ -1572,8 +1600,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">By default <code>logging</code> writes to stderr. Redirect to stdout to capture logs as program output, and set a concise format.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import logging, sys\nlogging.basicConfig(level=logging.INFO, stream=sys.stdout, format='%(levelname)s:%(message)s')\nlogging.info('hello')</pre></div>"
     },
     {
-      "id": 154,
-      "title": "154. dataclass default_factory",
+      "id": 156,
+      "title": "156. dataclass default_factory",
       "language": "python",
       "description": "Use field(default_factory=list) to avoid shared mutable defaults.",
       "initialCode": "from dataclasses import dataclass, field\n\n# Define Bag with items: list[int] = field(default_factory=list)\n# Append two integers and print len(items)\n\n",
@@ -1582,8 +1610,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">Never use a mutable object as a default value. <code>field(default_factory=...)</code> creates a fresh value per instance.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from dataclasses import dataclass, field\n\n@dataclass\nclass Bag:\n    items: list[int] = field(default_factory=list)\n\nprint(Bag().items is Bag().items)  # False</pre></div>"
     },
     {
-      "id": 155,
-      "title": "155. typing.TypedDict",
+      "id": 157,
+      "title": "157. typing.TypedDict",
       "language": "python",
       "description": "Define a TypedDict and use it like a dict at runtime.",
       "initialCode": "from typing import TypedDict\n\n# Create Item with fields name:str and price:int, then construct and print 'Widget:10'\n\n",
@@ -1592,8 +1620,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>TypedDict</code> describes dictionary-shaped objects for static type-checkers while staying a plain dict at runtime.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from typing import TypedDict\n\nclass User(TypedDict):\n    id: int\n    name: str\n\nu: User = {'id': 1, 'name': 'Ada'}\nprint(u['name'])</pre></div>"
     },
     {
-      "id": 156,
-      "title": "156. operator.itemgetter",
+      "id": 158,
+      "title": "158. operator.itemgetter",
       "language": "python",
       "description": "Sort records by a key using itemgetter.",
       "initialCode": "from operator import itemgetter\n\n# Sort [{'name':'a','age':3},{'name':'c','age':1},{'name':'b','age':2}] by age and print names each on its own line\n\n",
@@ -1602,8 +1630,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>itemgetter</code> builds a fast key function for <code>sorted</code>, <code>min</code>, <code>max</code>, etc.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from operator import itemgetter\nrows=[{'k':2},{'k':1}]\nprint([r['k'] for r in sorted(rows, key=itemgetter('k'))])</pre></div>"
     },
     {
-      "id": 157,
-      "title": "157. as_completed (futures)",
+      "id": 159,
+      "title": "159. as_completed (futures)",
       "language": "python",
       "description": "Accumulate results from futures as they complete.",
       "initialCode": "from concurrent.futures import ThreadPoolExecutor, as_completed\n\n# Submit squares for 1..4 and sum results using as_completed, then print the sum (30)\n\n",
@@ -1612,8 +1640,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>as_completed</code> lets you act on results as soon as each future finishes, which is great for scatter/gather workloads.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from concurrent.futures import ThreadPoolExecutor, as_completed\nwith ThreadPoolExecutor(max_workers=2) as ex:\n    futs = [ex.submit(len, s) for s in ['aa','bbb','c']]\n    print(sum(f.result() for f in as_completed(futs)))</pre></div>"
     },
     {
-      "id": 158,
-      "title": "158. contextvars",
+      "id": 160,
+      "title": "160. contextvars",
       "language": "python",
       "description": "Per-task context state that doesn't need to be passed explicitly.",
       "initialCode": "import contextvars, asyncio\n\n# Create a ContextVar, set different values in two tasks, gather and print them joined by ',' (A,B)\n\n",
@@ -1622,8 +1650,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>ContextVar</code> values are task-local and flow with execution, making them safer than globals for request-scoped state.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import contextvars\nuser = contextvars.ContextVar('user', default='anon')\nuser.set('ada')\nprint(user.get())</pre></div>"
     },
     {
-      "id": 159,
-      "title": "159. re.sub with function",
+      "id": 161,
+      "title": "161. re.sub with function",
       "language": "python",
       "description": "Transform matches via a replacement function.",
       "initialCode": "import re\n\n# Replace all digits in 'a1b2' with '#' using a function replacer and print the result\n\n",
@@ -1632,8 +1660,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>re.sub</code> can take a function to compute replacements dynamically from each match object.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import re\nprint(re.sub(r'[aeiou]', lambda m: m.group(0).upper(), 'banana'))</pre></div>"
     },
     {
-      "id": 160,
-      "title": "160. pathlib read/write",
+      "id": 162,
+      "title": "162. pathlib read/write",
       "language": "python",
       "description": "Write then read a small text file using pathlib.",
       "initialCode": "from pathlib import Path\n\n# Write 'ok' to note.txt then read it back and print\n\n",
@@ -1642,8 +1670,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Path.write_text</code> and <code>Path.read_text</code> are convenient wrappers around opening files with the correct encoding.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from pathlib import Path\nPath('file.txt').write_text('hello')\nprint(Path('file.txt').read_text())</pre></div>"
     },
     {
-      "id": 161,
-      "title": "161. dataclass frozen",
+      "id": 163,
+      "title": "163. dataclass frozen",
       "language": "python",
       "description": "Make an immutable dataclass and show assignment fails.",
       "initialCode": "from dataclasses import dataclass, FrozenInstanceError\n\n# Define frozen Person(name:str), instantiate, try to set name, catch and print exception class name\n\n",
@@ -1652,8 +1680,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>frozen=True</code> to make dataclasses immutable. Attempting to assign to a field raises <code>FrozenInstanceError</code>.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from dataclasses import dataclass, FrozenInstanceError\n\n@dataclass(frozen=True)\nclass Point: x:int; y:int\ntry:\n    Point(1,2).x = 3\nexcept FrozenInstanceError as e:\n    print(type(e).__name__)</pre></div>"
     },
     {
-      "id": 162,
-      "title": "162. __slots__",
+      "id": 164,
+      "title": "164. __slots__",
       "language": "python",
       "description": "Restrict attributes with __slots__ and catch invalid assignment.",
       "initialCode": "# Define class P with __slots__=('x','y'), set x and y to 1, then try to set z and print 'AttributeError' when caught\n\n",
@@ -1662,8 +1690,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>__slots__</code> prevents creation of <code>__dict__</code> and disallows undeclared attributes, reducing memory and catching mistakes.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class P: __slots__ = ('x',)\np = P(); p.x = 1\ntry:\n    p.y = 2\nexcept AttributeError:\n    print('no y')</pre></div>"
     },
     {
-      "id": 163,
-      "title": "163. functools.reduce",
+      "id": 165,
+      "title": "165. functools.reduce",
       "language": "python",
       "description": "Use reduce to compute a product (factorial style).",
       "initialCode": "from functools import reduce\nimport operator as op\n\n# Compute product of 1..5 with reduce and print it\n\n",
@@ -1672,8 +1700,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>reduce</code> applies a binary function cumulatively to a sequence, reducing it to a single value.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from functools import reduce\nprint(reduce(lambda a,b: a+b, [1,2,3]))</pre></div>"
     },
     {
-      "id": 164,
-      "title": "164. json loads",
+      "id": 166,
+      "title": "166. json loads",
       "language": "python",
       "description": "Parse JSON and compute a small aggregation.",
       "initialCode": "import json\n\n# Parse a JSON string like {a:1,b:2} (with proper quotes), sum values and print\n\n",
@@ -1682,8 +1710,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>json.loads</code> parses a JSON string into Python objects; <code>json.dumps</code> serializes them back.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import json\nprint(json.dumps({'x': 1}))</pre></div>"
     },
     {
-      "id": 165,
-      "title": "165. fractions.Fraction",
+      "id": 167,
+      "title": "167. fractions.Fraction",
       "language": "python",
       "description": "Exact rational arithmetic with Fraction.",
       "initialCode": "from fractions import Fraction\n\n# Create Fraction(1,3) + Fraction(1,3) and print the result\n\n",
@@ -1692,8 +1720,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Fraction</code> keeps exact rational values without floating-point error.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from fractions import Fraction\nprint(Fraction(1,10) * 3)</pre></div>"
     },
     {
-      "id": 166,
-      "title": "166. itertools.product",
+      "id": 168,
+      "title": "168. itertools.product",
       "language": "python",
       "description": "Compute Cartesian product size using itertools.product.",
       "initialCode": "from itertools import product\n\n# Compute the number of pairs in product([1,2], [3,4]) and print it\n\n",
@@ -1702,8 +1730,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>product</code> forms all combinations from input iterables. Wrapping with <code>list</code> materializes the pairs for counting.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from itertools import product\nfor a,b in product('ab', 'xy'):\n    print(a+b)</pre></div>"
     },
     {
-      "id": 167,
-      "title": "167. collections.Counter",
+      "id": 169,
+      "title": "169. collections.Counter",
       "language": "python",
       "description": "Count occurrences with Counter and index by key.",
       "initialCode": "from collections import Counter\n\n# Count letters in 'aab' and print the count for 'a'\n\n",
@@ -1712,8 +1740,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Counter</code> is a dict subclass for counting hashable items. Access counts by key like a normal dict.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from collections import Counter\nc = Counter([1,2,1,3])\nprint(c[1])  # 2</pre></div>"
     },
     {
-      "id": 168,
-      "title": "168. f-string formatting",
+      "id": 170,
+      "title": "170. f-string formatting",
       "language": "python",
       "description": "Format floats to two decimals using f-strings.",
       "initialCode": "# Print 3.14159 rounded to two decimals using an f-string\n\n",
@@ -1722,8 +1750,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">An f-string can include format specifiers after a colon. <code>.2f</code> formats as fixed-point with two decimals.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">value = 2/3\nprint(f\"{value:.3f}\")  # 0.667</pre></div>"
     },
     {
-      "id": 169,
-      "title": "169. abc.ABC + abstractmethod",
+      "id": 171,
+      "title": "171. abc.ABC + abstractmethod",
       "language": "python",
       "description": "Create an abstract Shape with area(), implement Rect, and print Rect(3,4).area().",
       "initialCode": "from abc import ABC, abstractmethod\n\n# Define abstract class Shape with abstract method area(self)\n# Implement Rect(width,height) that returns width*height in area()\n# Print the area for a 3x4 rectangle (12)\n\n",
@@ -1732,8 +1760,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">abc.ABC defines abstract base classes; use <code>@abstractmethod</code> to force subclasses to implement required methods.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from abc import ABC, abstractmethod\nclass Base(ABC):\n    @abstractmethod\n    def f(self): ...\nclass Impl(Base):\n    def f(self): return 42\nprint(Impl().f())</pre></div>"
     },
     {
-      "id": 170,
-      "title": "170. functools.singledispatch",
+      "id": 172,
+      "title": "172. functools.singledispatch",
       "language": "python",
       "description": "Use singledispatch to sum a list and print the result.",
       "initialCode": "from functools import singledispatch\n\n# Create total(x) with @singledispatch defaulting to 0\n# Register a list handler that returns sum(xs)\n# Print total([1,2,3]) (6)\n\n",
@@ -1742,8 +1770,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>@singledispatch</code> enables function overloading by argument type at runtime.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from functools import singledispatch\n@singledispatch\ndef show(x): return \"?\"\n@show.register(int)\ndef _(x): return x+1\nprint(show(3))</pre></div>"
     },
     {
-      "id": 171,
-      "title": "171. decimal.Decimal",
+      "id": 173,
+      "title": "173. decimal.Decimal",
       "language": "python",
       "description": "Add precise decimals 0.1 + 0.2 and print the exact result.",
       "initialCode": "from decimal import Decimal\n\n# Print Decimal('0.1') + Decimal('0.2')\n\n",
@@ -1752,8 +1780,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Decimal</code> avoids binary floating-point rounding issues; construct from strings for exact values.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from decimal import Decimal\nprint(Decimal('1.00')/Decimal('3'))</pre></div>"
     },
     {
-      "id": 172,
-      "title": "172. heapq.nsmallest",
+      "id": 174,
+      "title": "174. heapq.nsmallest",
       "language": "python",
       "description": "Print the two smallest numbers using heapq.nsmallest.",
       "initialCode": "import heapq\n\n# Given xs = [5,1,4,2,3], print the two smallest (each on its own line)\n\n",
@@ -1762,8 +1790,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>heapq.nsmallest</code> efficiently returns the k smallest items without fully sorting the input.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import heapq\nprint(heapq.nsmallest(3, [9,1,5,2,8]))</pre></div>"
     },
     {
-      "id": 173,
-      "title": "173. bisect_left",
+      "id": 175,
+      "title": "175. bisect_left",
       "language": "python",
       "description": "Find the insertion index for 3 in [1,2,4,5] using bisect_left.",
       "initialCode": "import bisect\n\n# Print bisect_left([1,2,4,5], 3)\n\n",
@@ -1772,8 +1800,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">The <code>bisect</code> module finds insertion points in sorted lists for binary search style operations.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import bisect\nxs=[1,2,4,5]\nprint(bisect.bisect_right(xs,2))</pre></div>"
     },
     {
-      "id": 174,
-      "title": "174. Class-based context manager",
+      "id": 176,
+      "title": "176. Class-based context manager",
       "language": "python",
       "description": "Implement __enter__/__exit__ to print enter/work/exit in order.",
       "initialCode": "# Define MyCtx with __enter__ printing 'enter' and __exit__ printing 'exit'\n# Use with MyCtx(): print('work') in the body\n\n",
@@ -1782,8 +1810,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">Context managers can be classes implementing <code>__enter__</code> and <code>__exit__</code>; they manage setup/teardown deterministically.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class R:\n  def __enter__(self): print('open'); return self\n  def __exit__(self, *exc): print('close')\nwith R(): print('work')</pre></div>"
     },
     {
-      "id": 175,
-      "title": "175. enum.IntFlag",
+      "id": 177,
+      "title": "177. enum.IntFlag",
       "language": "python",
       "description": "Use IntFlag for bitwise permissions and check membership.",
       "initialCode": "from enum import IntFlag, auto\n\n# Define Perm with READ, WRITE, EXEC using auto()\n# Create a flag with READ|WRITE and print whether READ is set\n\n",
@@ -1792,8 +1820,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>IntFlag</code> supports bitwise operations while remaining an enum; combine flags with <code>|</code> and test with <code>&</code>.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from enum import IntFlag, auto\nclass F(IntFlag): A=auto(); B=auto()\nprint(F.A|F.B)</pre></div>"
     },
     {
-      "id": 176,
-      "title": "176. dataclasses.asdict",
+      "id": 178,
+      "title": "178. dataclasses.asdict",
       "language": "python",
       "description": "Convert a dataclass to dict and access a value.",
       "initialCode": "from dataclasses import dataclass, asdict\n\n# Define User(name:str, id:int); create User('Ada',1) and print asdict(user)['name']\n\n",
@@ -1802,8 +1830,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>asdict</code> recursively converts a dataclass instance into a plain dict, suitable for serialization.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from dataclasses import dataclass, asdict\n@dataclass\nclass P: x:int; y:int\nprint(asdict(P(1,2)))</pre></div>"
     },
     {
-      "id": 177,
-      "title": "177. inspect.signature",
+      "id": 179,
+      "title": "179. inspect.signature",
       "language": "python",
       "description": "Inspect a function's parameters via inspect.signature and print the count.",
       "initialCode": "import inspect\n\n# Define f(a,b,c=0); get its signature and print number of parameters (3)\n\n",
@@ -1812,8 +1840,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">The <code>inspect</code> module offers runtime introspection, including function signatures and parameter kinds.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import inspect\nprint(inspect.signature(lambda x, y=0: None))</pre></div>"
     },
     {
-      "id": 178,
-      "title": "178. functools.total_ordering",
+      "id": 180,
+      "title": "180. functools.total_ordering",
       "language": "python",
       "description": "Use total_ordering to implement comparisons and sort custom objects.",
       "initialCode": "from functools import total_ordering\n\n# Define @total_ordering class Box(v) with __eq__ and __lt__\n# Sort [Box(3),Box(1),Box(2)] and print their v each on its own line\n\n",
@@ -1822,8 +1850,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>@total_ordering</code> fills in the rest of the rich comparison methods when you define <code>__eq__</code> and one ordering method.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from functools import total_ordering\n@total_ordering\nclass V:\n  def __init__(self,x): self.x=x\n  def __eq__(self,o): return self.x==o.x\n  def __lt__(self,o): return self.x<o.x\nprint([v.x for v in sorted([V(2),V(1)])])</pre></div>"
     },
     {
-      "id": 179,
-      "title": "179. dataclasses.default_factory",
+      "id": 181,
+      "title": "181. dataclasses.default_factory",
       "language": "python",
       "description": "Use field(default_factory=list) to avoid shared mutable defaults.",
       "initialCode": "from dataclasses import dataclass, field\n\n# Define Bag with items: list[str] = field(default_factory=list)\n# Append 'x' to items and print its length (1)\n\n",
@@ -1832,8 +1860,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>default_factory</code> to create a new default object per-instance and avoid shared mutable defaults.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from dataclasses import dataclass, field\n@dataclass\nclass C: xs: list[int] = field(default_factory=list)\nprint(C().xs)</pre></div>"
     },
     {
-      "id": 180,
-      "title": "180. dataclasses.replace",
+      "id": 182,
+      "title": "182. dataclasses.replace",
       "language": "python",
       "description": "Use dataclasses.replace to copy with a modified field.",
       "initialCode": "from dataclasses import dataclass, replace\n\n# Define frozen Point(x:int, y:int), create p=Point(1,2)\n# Create q = replace(p, y=5) and print q.y\n\n",
@@ -1842,8 +1870,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>replace</code> makes an updated copy of a dataclass instance; handy with immutable (<code>frozen=True</code>) types.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from dataclasses import dataclass, replace\n@dataclass(frozen=True)\nclass User: name:str; age:int\nprint(replace(User('a',1), age=2))</pre></div>"
     },
     {
-      "id": 181,
-      "title": "181. Capstone: CSV + File IO + Sum",
+      "id": 183,
+      "title": "183. Capstone: CSV + File IO + Sum",
       "language": "python",
       "description": "Write a CSV file, read it with csv.DictReader, sum a column, and print the total.",
       "initialCode": "import csv\n\n# Create a.csv with rows: name,score then Ada,10 then Bob,20 then Cia,15\n# Read it back using csv.DictReader, sum the 'score' as ints, and print the total (45)\n\n",
@@ -1852,8 +1880,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">Capstone combining file I/O and the <code>csv</code> module: write a small CSV, read it via <code>DictReader</code>, transform fields, and aggregate.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import csv\nwith open('t.csv','w',newline='') as f:\n  csv.writer(f).writerow(['x','1'])\nwith open('t.csv') as f:\n  print(next(csv.DictReader(f))['x'])</pre></div>"
     },
     {
-      "id": 182,
-      "title": "182. ThreadPoolExecutor (sum squares)",
+      "id": 184,
+      "title": "184. ThreadPoolExecutor (sum squares)",
       "language": "python",
       "description": "Use a thread pool to square 1..3 and print the sum (14).",
       "initialCode": "from concurrent.futures import ThreadPoolExecutor\n\n# Submit tasks that square 1..3 and print the sum (14)\n\n",
@@ -1862,8 +1890,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">For I/O-bound or lightweight CPU work, <code>ThreadPoolExecutor</code> offers a simple concurrency primitive.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from concurrent.futures import ThreadPoolExecutor\n\nwith ThreadPoolExecutor(max_workers=3) as ex:\n    futs = [ex.submit(lambda x: x*x, i) for i in (1,2,3)]\n    print(sum(f.result() for f in futs))</pre></div>"
     },
     {
-      "id": 183,
-      "title": "183. pathlib write + size",
+      "id": 185,
+      "title": "185. pathlib write + size",
       "language": "python",
       "description": "Create a directory and a file, write 'hi', then print file size (2).",
       "initialCode": "from pathlib import Path\n\n# Create d/ and d/t.txt with 'hi' then print t.txt size (2)\n\n",
@@ -1872,8 +1900,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>pathlib</code> provides an object-oriented filesystem API; <code>Path.write_text</code> is a handy convenience.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from pathlib import Path\n\nd = Path('d'); d.mkdir(exist_ok=True)\n(p := d/'t.txt').write_text('hi')\nprint(p.stat().st_size)</pre></div>"
     },
     {
-      "id": 184,
-      "title": "184. itertools.groupby (top counts)",
+      "id": 186,
+      "title": "186. itertools.groupby (top counts)",
       "language": "python",
       "description": "Group words and print the top 2 as 'b:3' then 'a:2'.",
       "initialCode": "from itertools import groupby\n\n# Using s='a b a c b b', group words to count occurrences and print top 2: b:3 then a:2\n\n",
@@ -1882,8 +1910,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>groupby</code> requires a sorted input to group identical keys; aggregate group sizes to compute frequencies.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from itertools import groupby\n\ns = 'a b a c b b'\nwords = sorted(s.split())\ncounts = [(k, sum(1 for _ in g)) for k, g in groupby(words)]\nfor k, c in sorted(counts, key=lambda kv: -kv[1])[:2]:\n    print(f'{k}:{c}')</pre></div>"
     },
     {
-      "id": 185,
-      "title": "185. asyncio.gather (sum results)",
+      "id": 187,
+      "title": "187. asyncio.gather (sum results)",
       "language": "python",
       "description": "Run 3 async tasks concurrently and print the sum of their results (6).",
       "initialCode": "import asyncio\n\n# Create 3 coroutines returning 1,2,3 after small sleeps; gather and print sum (6)\n\n",
@@ -1892,8 +1920,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>asyncio.gather</code> runs coroutines concurrently and returns their results as a list.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import asyncio\n\nasync def f(v, delay):\n    await asyncio.sleep(delay)\n    return v\n\nasync def main():\n    xs = await asyncio.gather(f(1,0.05), f(2,0.05), f(3,0.05))\n    print(sum(xs))\n\nasyncio.run(main())</pre></div>"
     },
     {
-      "id": 186,
-      "title": "186. re.findall digits",
+      "id": 188,
+      "title": "188. re.findall digits",
       "language": "python",
       "description": "Extract digits from 'a1b22c' and print '122'.",
       "initialCode": "import re\n\n# Using re.findall, extract digits from 'a1b22c' and print 122\n\n",
@@ -1902,8 +1930,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>re.findall</code> returns all non-overlapping matches; join them into a string.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import re\nprint(''.join(re.findall(r'\\d', 'a1b22c')))</pre></div>"
     },
     {
-      "id": 187,
-      "title": "187. datetime: days between",
+      "id": 189,
+      "title": "189. datetime: days between",
       "language": "python",
       "description": "Compute days between 2024-01-10 and 2024-01-15 (5).",
       "initialCode": "from datetime import date\n\n# Print (date(2024,1,15) - date(2024,1,10)).days (5)\n\n",
@@ -1912,8 +1940,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">Subtract two <code>date</code> objects to get a <code>timedelta</code>; use <code>.days</code>.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from datetime import date\nprint((date(2024,1,15) - date(2024,1,10)).days)</pre></div>"
     },
     {
-      "id": 188,
-      "title": "188. pathlib.glob (count .txt)",
+      "id": 190,
+      "title": "190. pathlib.glob (count .txt)",
       "language": "python",
       "description": "Create a.txt, b.md, c.txt in d/ and print how many .txt files exist (2).",
       "initialCode": "from pathlib import Path\n\n# Create d/a.txt, d/b.md, d/c.txt, then print count of *.txt under d (2)\n\n",
@@ -1922,8 +1950,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Path.glob</code> matches patterns within a directory; convert to a list to count.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from pathlib import Path\n\nd = Path('d'); d.mkdir(exist_ok=True)\n(d/'a.txt').write_text('x')\n(d/'b.md').write_text('y')\n(d/'c.txt').write_text('z')\nprint(len(list(d.glob('*.txt'))))</pre></div>"
     },
     {
-      "id": 189,
-      "title": "189. collections.Counter (top 2)",
+      "id": 191,
+      "title": "191. collections.Counter (top 2)",
       "language": "python",
       "description": "Use Counter to print top 2 words for s='a b a c b b' as b:3 then a:2.",
       "initialCode": "from collections import Counter\n\n# With s='a b a c b b', use Counter to print b:3 then a:2\n\n",
@@ -1932,8 +1960,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Counter.most_common</code> returns items sorted by frequency.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from collections import Counter\n\ns = 'a b a c b b'\nfor k, c in Counter(s.split()).most_common(2):\n    print(f'{k}:{c}')</pre></div>"
     },
     {
-      "id": 190,
-      "title": "190. itertools.product",
+      "id": 192,
+      "title": "192. itertools.product",
       "language": "python",
       "description": "Compute Cartesian product of ['a','b'] and [1,2] and print a1,a2,b1,b2 each on its own line.",
       "initialCode": "from itertools import product\n\n# Print a1, a2, b1, b2 (each on new line) from product(['a','b'], [1,2])\n\n",
@@ -1942,8 +1970,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>product</code> nests loops in order: first sequence outer, second inner.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from itertools import product\nfor a,b in product(['a','b'], [1,2]):\n    print(f'{a}{b}')</pre></div>"
     },
     {
-      "id": 191,
-      "title": "191. functools.lru_cache (fib)",
+      "id": 193,
+      "title": "193. functools.lru_cache (fib)",
       "language": "python",
       "description": "Cache Fibonacci to compute fib(10) and print 55.",
       "initialCode": "from functools import lru_cache\n\n# Define @lru_cache fib(n) and print fib(10) (55)\n\n",
@@ -1952,8 +1980,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">Memoization speeds up recursive computations significantly.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from functools import lru_cache\n\n@lru_cache(maxsize=None)\ndef fib(n):\n    return n if n &lt; 2 else fib(n-1)+fib(n-2)\n\nprint(fib(10))</pre></div>"
     },
     {
-      "id": 192,
-      "title": "192. threading.Lock (increment)",
+      "id": 194,
+      "title": "194. threading.Lock (increment)",
       "language": "python",
       "description": "Safely increment a shared counter with 5 threads x 100 increments and print 500.",
       "initialCode": "from threading import Thread, Lock\n\n# Use a Lock to safely increment a shared counter to 500\n\n",
@@ -1962,8 +1990,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">Use a <code>Lock</code> around critical sections to avoid race conditions.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from threading import Thread, Lock\n\nn = 0\nlock = Lock()\n\ndef inc():\n    global n\n    for _ in range(100):\n        with lock:\n            n += 1\n\nths = [Thread(target=inc) for _ in range(5)]</pre></div>"
     },
     {
-      "id": 193,
-      "title": "193. read lines count",
+      "id": 195,
+      "title": "195. read lines count",
       "language": "python",
       "description": "Write three lines to d/t.txt then read and print the line count (3).",
       "initialCode": "# Write a\\n b\\n c to d/t.txt then print line count (3)\n\n",
@@ -1972,8 +2000,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>Path.read_text</code> then <code>.splitlines()</code> to count lines.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from pathlib import Path\n\nd = Path('d'); d.mkdir(exist_ok=True)\n(p := d/'t.txt').write_text('a\\n b\\n c\\n')\nprint(len(p.read_text().splitlines()))</pre></div>"
     },
     {
-      "id": 194,
-      "title": "194. json.dumps sorted keys",
+      "id": 196,
+      "title": "196. json.dumps sorted keys",
       "language": "python",
       "description": "Dump {'b':1,'a':2} with sorted keys and print {\"a\": 2, \"b\": 1}.",
       "initialCode": "import json\n\n# Print json.dumps({'b':1,'a':2}, sort_keys=True)\n\n",
@@ -1982,8 +2010,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>json.dumps</code> with <code>sort_keys=True</code> produces deterministic key order.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import json\nprint(json.dumps({'b':1,'a':2}, sort_keys=True))</pre></div>"
     },
     {
-      "id": 195,
-      "title": "195. enum.auto name",
+      "id": 197,
+      "title": "197. enum.auto name",
       "language": "python",
       "description": "Define an Enum with auto() and print the member name 'RED'.",
       "initialCode": "from enum import Enum, auto\n\n# Define Color(RED, GREEN) using auto and print Color.RED.name\n\n",
@@ -1992,8 +2020,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>auto()</code> assigns incrementing values automatically; use <code>.name</code> for the identifier.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from enum import Enum, auto\n\nclass Color(Enum):\n    RED = auto()\n    GREEN = auto()\n\nprint(Color.RED.name)</pre></div>"
     },
     {
-      "id": 196,
-      "title": "196. decimal quantize (HALF_UP)",
+      "id": 198,
+      "title": "198. decimal quantize (HALF_UP)",
       "language": "python",
       "description": "Round Decimal('1.005') to two decimals (HALF_UP) and print 1.01.",
       "initialCode": "from decimal import Decimal, ROUND_HALF_UP\n\n# Print Decimal('1.005').quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)\n\n",
@@ -2002,8 +2030,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>Decimal</code> for precise rounding semantics.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from decimal import Decimal, ROUND_HALF_UP\nprint(Decimal('1.005').quantize(Decimal('0.01'), rounding=ROUND_HALF_UP))</pre></div>"
     },
     {
-      "id": 197,
-      "title": "197. heapq.merge",
+      "id": 199,
+      "title": "199. heapq.merge",
       "language": "python",
       "description": "Merge [1,4] and [2,3] and print items in order each on its own line.",
       "initialCode": "import heapq\n\n# Print 1,2,3,4 (each on new line) from heapq.merge([1,4],[2,3])\n\n",
@@ -2012,8 +2040,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>heapq.merge</code> lazily merges sorted iterables.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import heapq\nfor x in heapq.merge([1,4],[2,3]):\n    print(x)</pre></div>"
     },
     {
-      "id": 198,
-      "title": "198. itertools.groupby (adjacent)",
+      "id": 200,
+      "title": "200. itertools.groupby (adjacent)",
       "language": "python",
       "description": "For 'aaabbc', print adjacent run lengths: a:3 then b:2 then c:1.",
       "initialCode": "from itertools import groupby\n\n# Using s='aaabbc', print a:3 then b:2 then c:1 (each on new line)\n\n",
@@ -2022,8 +2050,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">On unsorted strings, <code>groupby</code> groups adjacent equal items.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from itertools import groupby\n\ns = 'aaabbc'\nfor k, g in groupby(s):\n    print(f'{k}:{sum(1 for _ in g)}')</pre></div>"
     },
     {
-      "id": 199,
-      "title": "199. array.array sum",
+      "id": 201,
+      "title": "201. array.array sum",
       "language": "python",
       "description": "Create array('i',[1,2,3]) and print the sum (6).",
       "initialCode": "from array import array\n\n# Print sum(array('i',[1,2,3])) -> 6\n\n",
@@ -2032,8 +2060,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>array</code> stores homogenous values efficiently; many built-ins like <code>sum</code> work directly.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from array import array\nprint(sum(array('i',[1,2,3])))</pre></div>"
     },
     {
-      "id": 200,
-      "title": "200. dataclasses.field metadata",
+      "id": 202,
+      "title": "202. dataclasses.field metadata",
       "language": "python",
       "description": "Define a dataclass with metadata and print a field's metadata value.",
       "initialCode": "from dataclasses import dataclass, field\n\n# Define User(name: str = field(metadata={'role':'admin'})); print the role metadata\n\n",
@@ -2042,8 +2070,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>field(metadata=...)</code> is a hook for frameworks and annotations.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from dataclasses import dataclass, field\n\n@dataclass\nclass User:\n    name: str = field(metadata={'role':'admin'})\n\nprint(User.__dataclass_fields__['name'].metadata['role'])</pre></div>"
     },
     {
-      "id": 201,
-      "title": "201. typing.NamedTuple",
+      "id": 203,
+      "title": "203. typing.NamedTuple",
       "language": "python",
       "description": "Define Person(name,id) as NamedTuple, create ('Ada',1), and print the name.",
       "initialCode": "from typing import NamedTuple\n\n# Define Person(name:str,id:int); print Person('Ada',1).name\n\n",
@@ -2052,8 +2080,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>NamedTuple</code> provides lightweight, typed, immutable records.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from typing import NamedTuple\n\nclass Person(NamedTuple):\n    name: str\n    id: int\n\nprint(Person('Ada',1).name)</pre></div>"
     },
     {
-      "id": 202,
-      "title": "202. Path.read_text().upper()",
+      "id": 204,
+      "title": "204. Path.read_text().upper()",
       "language": "python",
       "description": "Write 'ok' to d/t.txt and print its uppercase content 'OK'.",
       "initialCode": "from pathlib import Path\n\n# Write 'ok' to d/t.txt, then print Path('d/t.txt').read_text().upper()\n\n",
@@ -2062,8 +2090,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">Combine <code>Path.write_text</code> and <code>Path.read_text</code> for simple text IO.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from pathlib import Path\n\nd = Path('d'); d.mkdir(exist_ok=True)\n(d/'t.txt').write_text('ok')\nprint((d/'t.txt').read_text().upper())</pre></div>"
     },
     {
-      "id": 203,
-      "title": "203. asyncio.wait_for timeout",
+      "id": 205,
+      "title": "205. asyncio.wait_for timeout",
       "language": "python",
       "description": "Timeout a slow coroutine and print 'timeout'.",
       "initialCode": "import asyncio\n\n# Use asyncio.wait_for on a 0.2s sleep with 0.05s timeout; print 'timeout'\n\n",
@@ -2072,8 +2100,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>wait_for</code> cancels if the operation exceeds the timeout.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import asyncio\n\nasync def slow():\n    await asyncio.sleep(0.2)\n\ntry:\n    asyncio.run(asyncio.wait_for(slow(), 0.05))\n    print('ok')\nexcept asyncio.TimeoutError:\n    print('timeout')</pre></div>"
     },
     {
-      "id": 204,
-      "title": "204. itertools.accumulate (product)",
+      "id": 206,
+      "title": "206. itertools.accumulate (product)",
       "language": "python",
       "description": "Multiply 1..4 via accumulate and print final result (24).",
       "initialCode": "from itertools import accumulate\nimport operator\n\n# Compute product of 1..4 using accumulate and print 24\n\n",
@@ -2082,8 +2110,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>accumulate</code> can fold a sequence with a custom operator.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from itertools import accumulate\nimport operator\n\nxs = list(accumulate([1,2,3,4], operator.mul))\nprint(xs[-1])</pre></div>"
     },
     {
-      "id": 205,
-      "title": "205. re.sub replace digits",
+      "id": 207,
+      "title": "207. re.sub replace digits",
       "language": "python",
       "description": "Replace digits in 'a1b22' with '#' and print 'a#b##'.",
       "initialCode": "import re\n\n# Print re.sub(r'\\d', '#', 'a1b22') -> a#b##\n\n",
@@ -2092,78 +2120,78 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>re.sub</code> replaces all matches; escape <code>\\\\d</code> properly.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import re\nprint(re.sub(r'\\d', '#', 'a1b22'))</pre></div>"
     },
     {
-      "title": "206. Assertions for Lightweight Tests",
+      "title": "208. Assertions for Lightweight Tests",
       "language": "python",
       "description": "Implement add(a, b) and verify with assert; print OK when all tests pass.",
       "initialCode": "def add(a, b):\n    # TODO: return the sum\n    pass\n\n# Add a couple of asserts and print \"OK\" if they pass\n",
       "fullSolution": "def add(a, b):\n    return a + b\n\nassert add(2, 3) == 5\nassert add(-1, 1) == 0\nprint(\"OK\")\n",
       "expectedOutput": "OK",
       "tutorial": "<p class=\"mb-4 text-gray-300\">assert is a simple built-in way to check expectations while coding. If the condition is False, Python raises AssertionError and stops; if all asserts pass, execution continues.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">def square(x):\n    return x * x\n\nassert square(3) == 9\nprint(\"OK\")</pre></div>",
-      "id": 206
+      "id": 208
     },
     {
-      "title": "207. Regex Basics: Extract Email",
+      "title": "209. Regex Basics: Extract Email",
       "language": "python",
       "description": "Use re.search to find and print the email in the given text.",
       "initialCode": "import re\ntext = \"Contact us at support@example.com for help.\"\n# Print the email address from text\n",
       "fullSolution": "import re\ntext = \"Contact us at support@example.com for help.\"\nm = re.search(r\"[\\w\\.-]+@[\\w\\.-]+\", text)\nif m:\n    print(m.group(0))\n",
       "expectedOutput": "support@example.com",
       "tutorial": "<p class=\"mb-4 text-gray-300\">Regular expressions match patterns in text. Use re.search to find the first match, and groups to extract portions.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import re\nm = re.search(r\"\\d+\", \"Order A-1023\")\nprint(m.group(0))  # 1023</pre></div>",
-      "id": 207
+      "id": 209
     },
     {
-      "title": "208. JSON Encode/Decode",
+      "title": "210. JSON Encode/Decode",
       "language": "python",
       "description": "Serialize a dict to JSON and parse it back; print the name value.",
       "initialCode": "import json\ndata = {\"name\": \"Alice\", \"age\": 30}\n# Dump to JSON, load it back, then print the name\n",
       "fullSolution": "import json\ndata = {\"name\": \"Alice\", \"age\": 30}\ns = json.dumps(data)\nobj = json.loads(s)\nprint(obj[\"name\"])\n",
       "expectedOutput": "Alice",
       "tutorial": "<p class=\"mb-4 text-gray-300\">Use the json module to convert between Python objects and JSON strings: dumps() to serialize, loads() to parse.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import json\npayload = {\"ok\": True}\ns = json.dumps(payload)\nprint(s)  # {\"ok\": true}</pre></div>",
-      "id": 208
+      "id": 210
     },
     {
-      "title": "209. asyncio.Semaphore (limit concurrency)",
+      "title": "211. asyncio.Semaphore (limit concurrency)",
       "language": "python",
       "description": "Run 4 async tasks with a concurrency limit of 2 using Semaphore; print the total tasks run (4).",
       "initialCode": "import asyncio\n\n# Use an asyncio.Semaphore to limit concurrency to 2 while running 4 tasks.\n# Each task should return 1; after gathering, print the sum (4).\n\n",
       "fullSolution": "import asyncio\n\nasync def worker(sema):\n    async with sema:\n        await asyncio.sleep(0.05)\n        return 1\n\nasync def main():\n    sema = asyncio.Semaphore(2)\n    tasks = [asyncio.create_task(worker(sema)) for _ in range(4)]\n    results = await asyncio.gather(*tasks)\n    print(sum(results))\n\nasyncio.run(main())\n",
       "expectedOutput": "4",
       "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>asyncio.Semaphore</code> to bound simultaneous operations (e.g., API calls, file I/O). It prevents too many tasks from running at once.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import asyncio\nsema = asyncio.Semaphore(2)\nasync def work():\n    async with sema:\n        await asyncio.sleep(0.01)\n        return 1\n</pre></div>",
-      "id": 209
+      "id": 211
     },
     {
-      "title": "210. ProcessPoolExecutor (sum of cubes)",
+      "title": "212. ProcessPoolExecutor (sum of cubes)",
       "language": "python",
       "description": "Use ProcessPoolExecutor to compute the sum of cubes from 1..50 and print it.",
       "initialCode": "from concurrent.futures import ProcessPoolExecutor\n\n# Define a top-level cube(x) and safely run a ProcessPoolExecutor\n# to sum x*x*x for x in 1..50, then print the total.\n\n",
       "fullSolution": "from concurrent.futures import ProcessPoolExecutor\n\ndef cube(x):\n    return x*x*x\n\nif __name__ == '__main__':\n    with ProcessPoolExecutor() as ex:\n        total = sum(ex.map(cube, range(1, 51)))\n        print(total)\n",
       "expectedOutput": "1625625",
       "tutorial": "<p class=\"mb-4 text-gray-300\">CPU-bound work scales with processes, not threads. Use <code>ProcessPoolExecutor</code> to fan out heavy computation across cores and then reduce results.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from concurrent.futures import ProcessPoolExecutor\ndef f(x):\n    return x*x\nif __name__ == '__main__':\n    with ProcessPoolExecutor() as ex:\n        print(sum(ex.map(f, range(5))))  # 0+1+4+9+16 = 30</pre></div>",
-      "id": 210
+      "id": 212
     },
     {
-      "title": "211. asyncio.Queue producer/consumer",
+      "title": "213. asyncio.Queue producer/consumer",
       "language": "python",
       "description": "Use an asyncio.Queue with a producer that enqueues 5 items and a consumer that counts them; print 5.",
       "initialCode": "import asyncio\n\n# Create an asyncio.Queue. Producer should put 5 items then a sentinel (None).\n# Consumer should count items until sentinel, then print the count (5).\n\n",
       "fullSolution": "import asyncio\n\nasync def producer(q):\n    for i in range(5):\n        await q.put(i)\n    await q.put(None)  # sentinel\n\nasync def consumer(q):\n    count = 0\n    while True:\n        item = await q.get()\n        if item is None:\n            print(count)\n            return\n        count += 1\n\nasync def main():\n    q = asyncio.Queue()\n    await asyncio.gather(producer(q), consumer(q))\n\nasyncio.run(main())\n",
       "expectedOutput": "5",
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>asyncio.Queue</code> coordinates producers and consumers without busy-waiting. Use a sentinel to signal completion.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">q = asyncio.Queue()\n# producer: await q.put(x)\n# consumer: x = await q.get()\n</pre></div>",
-      "id": 211
+      "id": 213
     },
     {
-      "title": "212. contextlib.ExitStack (multiple resources)",
+      "title": "214. contextlib.ExitStack (multiple resources)",
       "language": "python",
       "description": "Use ExitStack to manage two file handles, write 'A' and 'B', then read both and print AB.",
       "initialCode": "from contextlib import ExitStack\n\n# Open a.txt and b.txt with ExitStack, write 'A' and 'B' respectively.\n# Reopen and read both, then print their concatenation (AB).\n\n",
       "fullSolution": "from contextlib import ExitStack\n\nwith ExitStack() as stack:\n    fa = stack.enter_context(open('a.txt', 'w'))\n    fb = stack.enter_context(open('b.txt', 'w'))\n    fa.write('A')\n    fb.write('B')\n\nwith ExitStack() as stack:\n    fa = stack.enter_context(open('a.txt'))\n    fb = stack.enter_context(open('b.txt'))\n    print(fa.read() + fb.read())\n",
       "expectedOutput": "AB",
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>ExitStack</code> lets you dynamically compose multiple context managers (files, locks, etc.) and guarantees cleanup in reverse order.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from contextlib import ExitStack\nwith ExitStack() as stack:\n    f1 = stack.enter_context(open('x.txt', 'w'))\n    f2 = stack.enter_context(open('y.txt', 'w'))\n    f1.write('X'); f2.write('Y')\n</pre></div>",
-      "id": 212
+      "id": 214
     },
     {
-      "id": 213,
-      "title": "213. sqlite3 in-memory (row count)",
+      "id": 215,
+      "title": "215. sqlite3 in-memory (row count)",
       "language": "python",
       "description": "Create an in-memory SQLite DB, insert two rows, and print the count (2).",
       "initialCode": "import sqlite3\n\n# Create :memory: DB, table users(id INT, name TEXT), insert two rows, then SELECT COUNT(*) and print it\n\n",
@@ -2172,8 +2200,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">Use the built-in <code>sqlite3</code> module for lightweight relational storage. <code>':memory:'</code> keeps data ephemeral.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">conn = sqlite3.connect(':memory:')\nc = conn.cursor()\nc.execute('CREATE TABLE t(x)')\nc.execute('INSERT INTO t VALUES(1)')\nprint(c.execute('SELECT COUNT(*) FROM t').fetchone()[0])</pre></div>"
     },
     {
-      "id": 214,
-      "title": "214. dataclasses ordering",
+      "id": 216,
+      "title": "216. dataclasses ordering",
       "language": "python",
       "description": "Define an ordered dataclass User(age, name), sort, and print the youngest name (Anna).",
       "initialCode": "from dataclasses import dataclass\n\n# Define @dataclass(order=True) User with fields: age:int, name:str\n# Sort [User(30,'Zoe'), User(20,'Anna')] and print the first name\n\n",
@@ -2182,8 +2210,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">With <code>@dataclass(order=True)</code>, Python generates comparison methods using field order, enabling natural sorting.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">@dataclass(order=True)\nclass Point: x: int; y: int\nprint(sorted([Point(1,2), Point(0,9)]))</pre></div>"
     },
     {
-      "id": 215,
-      "title": "215. functools.singledispatch",
+      "id": 217,
+      "title": "217. functools.singledispatch",
       "language": "python",
       "description": "Dispatch a function on argument type; print 'int:1' then 'str:a'.",
       "initialCode": "from functools import singledispatch\n\n# Define show(x) using @singledispatch with int and str specializations\n# Call show(1) then show('a') and print per-type results\n\n",
@@ -2192,8 +2220,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>@singledispatch</code> enables type-based function overloading for the first argument, keeping APIs clean.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">@singledispatch\ndef f(x): ...\n@f.register(list)\ndef _(x): ...</pre></div>"
     },
     {
-      "id": 216,
-      "title": "216. itertools.accumulate (running sum)",
+      "id": 218,
+      "title": "218. itertools.accumulate (running sum)",
       "language": "python",
       "description": "Use accumulate to print running sums for [1,2,3]: 1, 3, 6 (each on new line).",
       "initialCode": "from itertools import accumulate\n\n# For [1,2,3], print running sums using accumulate (each on its own line)\n\n",
@@ -2202,8 +2230,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>accumulate</code> computes prefix results (default: sums). Supply a function for other reductions (e.g., <code>max</code>).</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from itertools import accumulate\nprint(list(accumulate([1,2,3])))  # [1, 3, 6]</pre></div>"
     },
     {
-      "id": 217,
-      "title": "217. bisect_right (insertion index)",
+      "id": 219,
+      "title": "219. bisect_right (insertion index)",
       "language": "python",
       "description": "Find the right-side insertion index of 3 in [1,2,3,4] and print 3.",
       "initialCode": "import bisect\n\n# Print bisect.bisect_right([1,2,3,4], 3)\n\n",
@@ -2212,8 +2240,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>bisect_right</code> for stable insertion after existing equals; <code>bisect_left</code> inserts before.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import bisect\nxs = [1,2,3,4]\nprint(bisect.bisect_right(xs, 3))  # 3</pre></div>"
     },
     {
-      "id": 218,
-      "title": "218. pathlib.glob (*.txt count)",
+      "id": 220,
+      "title": "220. pathlib.glob (*.txt count)",
       "language": "python",
       "description": "Create a.txt, b.py, c.txt then print how many *.txt files exist (2).",
       "initialCode": "from pathlib import Path\n\n# Create files a.txt, b.py, c.txt in CWD\n# Use Path('.').glob('*.txt') to count and print 2\n\n",
@@ -2222,8 +2250,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>pathlib</code> provides object-oriented paths. <code>glob</code> returns matching entries lazily.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from pathlib import Path\n# Count *.py files in current dir\nprint(sum(1 for _ in Path('.').glob('*.py')))</pre></div>"
     },
     {
-      "id": 219,
-      "title": "219. subprocess.run (call Python)",
+      "id": 221,
+      "title": "221. subprocess.run (call Python)",
       "language": "python",
       "description": "Spawn a child Python process that prints OK and relay the output.",
       "initialCode": "import subprocess, sys\n\n# Use subprocess.run to invoke the current Python to print 'OK'\n# Hint: [sys.executable, '-c', \"print('OK')\"]\n\n",
@@ -2232,8 +2260,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>subprocess.run</code> for child processes. Prefer explicit <code>args</code> and capture outputs deterministically.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import subprocess, sys\nsubprocess.run([sys.executable, '-c', \"print('hi')\"])</pre></div>"
     },
     {
-      "id": 220,
-      "title": "220. hashlib.sha256",
+      "id": 222,
+      "title": "222. hashlib.sha256",
       "language": "python",
       "description": "Compute the SHA-256 hex digest of 'abc' and print it.",
       "initialCode": "import hashlib\n\n# Print hashlib.sha256(b'abc').hexdigest()\n\n",
@@ -2242,8 +2270,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>hashlib</code> for cryptographic hashes (integrity checks, fingerprints).</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import hashlib\nprint(hashlib.sha256(b'abc').hexdigest())</pre></div>"
     },
     {
-      "id": 221,
-      "title": "221. zipfile write/read (count)",
+      "id": 223,
+      "title": "223. zipfile write/read (count)",
       "language": "python",
       "description": "Create a zip with two files then open and print the number of entries (2).",
       "initialCode": "import zipfile, pathlib\n\n# Create files a.txt and b.txt, zip them to x.zip, then reopen and print len(namelist())\n\n",
@@ -2252,8 +2280,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>zipfile</code> packs multiple files; <code>namelist()</code> lists contained paths.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import zipfile\nwith zipfile.ZipFile('x.zip','w') as z:\n    z.writestr('t.txt', 'data')\nprint(len(zipfile.ZipFile('x.zip').namelist()))</pre></div>"
     },
     {
-      "id": 222,
-      "title": "222. datetime with UTC tz",
+      "id": 224,
+      "title": "224. datetime with UTC tz",
       "language": "python",
       "description": "Create 2020-01-02 03:04:05 UTC and print ISO 8601 string.",
       "initialCode": "from datetime import datetime, timezone\n\n# Build aware datetime(2020,1,2,3,4,5, tzinfo=timezone.utc) and print .isoformat()\n\n",
@@ -2262,8 +2290,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">Always prefer timezone-aware datetimes for correctness across zones; UTC is a reliable default.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from datetime import datetime, timezone\nprint(datetime.now(timezone.utc).isoformat())</pre></div>"
     },
     {
-      "id": 223,
-      "title": "223. lru_cache Fibonacci",
+      "id": 225,
+      "title": "225. lru_cache Fibonacci",
       "language": "python",
       "description": "Use functools.lru_cache to compute fib(30) and print the result (832040).",
       "initialCode": "from functools import lru_cache\n\n# Implement memoized fib(n) with @lru_cache and print fib(30)\n\n",
@@ -2272,8 +2300,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>lru_cache</code> provides transparent memoization for pure functions, dramatically improving performance.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from functools import lru_cache\n@lru_cache(maxsize=None)\ndef f(n): return 1 if n<2 else f(n-1)+f(n-2)\nprint(f(10))  # 89</pre></div>"
     },
     {
-      "id": 224,
-      "title": "224. collections.Counter.most_common",
+      "id": 226,
+      "title": "226. collections.Counter.most_common",
       "language": "python",
       "description": "Count letters in 'aabbbc' and print the most common entry b:3.",
       "initialCode": "from collections import Counter\n\n# Print the most common letter and count from 'aabbbc' in format k:v (b:3)\n\n",
@@ -2282,8 +2310,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">Counters tally occurrences quickly; use <code>most_common(1)</code> for the top item.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from collections import Counter\nprint(Counter('abca').most_common(1))</pre></div>"
     },
     {
-      "id": 225,
-      "title": "225. struct pack/unpack (big-endian)",
+      "id": 227,
+      "title": "227. struct pack/unpack (big-endian)",
       "language": "python",
       "description": "Pack 1024 as a big-endian unsigned int and unpack; print 1024.",
       "initialCode": "import struct\n\n# Pack 1024 with '>I' then unpack and print the value\n\n",
@@ -2292,8 +2320,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>struct</code> for binary protocols; format strings control width and endianness.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import struct\nprint(struct.unpack('>H', b'\\x00\\x2a')[0])  # 42</pre></div>"
     },
     {
-      "id": 226,
-      "title": "226. contextlib.suppress",
+      "id": 228,
+      "title": "228. contextlib.suppress",
       "language": "python",
       "description": "Delete a non-existent file without raising and print OK.",
       "initialCode": "from contextlib import suppress\nfrom pathlib import Path\n\n# Safely suppress FileNotFoundError when removing missing file, then print 'OK'\n\n",
@@ -2302,8 +2330,8 @@
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>suppress</code> keeps code concise by ignoring specific, expected exceptions.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from contextlib import suppress\nwith suppress(ZeroDivisionError):\n    1/0</pre></div>"
     },
     {
-      "id": 227,
-      "title": "227. threading.Event (signal)",
+      "id": 229,
+      "title": "229. threading.Event (signal)",
       "language": "python",
       "description": "Use a worker thread to set an Event; main waits then prints 'done'.",
       "initialCode": "import threading, time\n\n# Start a thread that sleeps briefly then sets an Event. Main waits and prints 'done'.\n\n",

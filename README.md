@@ -519,7 +519,7 @@ Tip: For a clean, idempotent mirror of your JSON files on each start, add `-e LE
 (Invoke-RestMethod http://localhost:3000/lessons-python.json).lessons.Length
 ```
 
-Expected (as of latest content update): Python 143, Java 132. Counts may change as lessons evolve.
+Expected (as of latest content update): Python 275, Java 269. Counts may change as lessons evolve.
 
 ## Advanced Lessons Added
 

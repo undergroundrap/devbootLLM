@@ -2490,6 +2490,186 @@
       "fullSolution": "error_budget_minutes = 43.2\ndowntime_minutes = [12.0, 4.5, 0, 9.3, 5.1]\ndays_elapsed = 18\nPERIOD_DAYS = 30\n\nspent = round(sum(downtime_minutes), 1)\nremaining = round(error_budget_minutes - spent, 1)\nburn_per_day = sum(downtime_minutes) / days_elapsed\nprojected = burn_per_day * PERIOD_DAYS\nstatus = \"AT_RISK\" if projected > error_budget_minutes else \"HEALTHY\"\n\nprint(f\"Error budget: {round(error_budget_minutes, 1)} min\")\nprint(f\"Spent: {spent} min\")\nprint(f\"Remaining: {remaining} min\")\nprint(f\"Status: {status}\")",
       "expectedOutput": "Error budget: 43.2 min\nSpent: 30.9 min\nRemaining: 12.3 min\nStatus: AT_RISK",
       "tutorial": "<p class=\"mb-4 text-gray-300\">SRE leadership tracks burn rate to see whether the team is on pace to blow past the error budget.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">spent = sum(incidents)\nrate = spent / days\nprojected = rate * 30</pre></div>"
+    },
+    {
+      "id": 243,
+      "title": "243. Binary Search Implementation",
+      "language": "python",
+      "description": "Implement an iterative binary_search that returns the index of the target or -1 when missing.",
+      "initialCode": "def binary_search(nums, target):\n    # TODO: implement iterative binary search\n    pass\n\n\nprint(binary_search([1, 4, 7, 9, 11, 15], 9))\nprint(binary_search([1, 4, 7, 9, 11, 15], 5))\n",
+      "fullSolution": "def binary_search(nums, target):\n    left, right = 0, len(nums) - 1\n    while left <= right:\n        mid = (left + right) // 2\n        if nums[mid] == target:\n            return mid\n        if nums[mid] < target:\n            left = mid + 1\n        else:\n            right = mid - 1\n    return -1\n\n\nprint(binary_search([1, 4, 7, 9, 11, 15], 9))\nprint(binary_search([1, 4, 7, 9, 11, 15], 5))\n",
+      "expectedOutput": "3\n-1",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Binary search keeps halving the interval until only the answer remains. Track low and high pointers and shift them based on how the midpoint compares to the target.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">nums = [1, 4, 7, 9]\n# mid = 7 -> move the right pointer because 7 is above the target</pre></div>"
+    },
+    {
+      "id": 244,
+      "title": "244. Merge Sort Recursion",
+      "language": "python",
+      "description": "Write merge_sort that uses divide and conquer to return a new sorted list.",
+      "initialCode": "def merge_sort(nums):\n    # TODO: implement merge sort that returns a new sorted list\n    return nums\n\n\nprint(merge_sort([5, 1, 4, 2, 8]))\n",
+      "fullSolution": "def merge_sort(nums):\n    if len(nums) <= 1:\n        return nums\n    mid = len(nums) // 2\n    left = merge_sort(nums[:mid])\n    right = merge_sort(nums[mid:])\n    merged = []\n    i = j = 0\n    while i < len(left) and j < len(right):\n        if left[i] <= right[j]:\n            merged.append(left[i])\n            i += 1\n        else:\n            merged.append(right[j])\n            j += 1\n    merged.extend(left[i:])\n    merged.extend(right[j:])\n    return merged\n\n\nprint(merge_sort([5, 1, 4, 2, 8]))\n",
+      "expectedOutput": "[1, 2, 4, 5, 8]",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Merge sort splits the list, sorts each half, and merges the halves back together in order. The merge step walks each list once, giving O(n log n) time.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">merge_sort([4, 1, 3, 2]) -> split into [4, 1] and [3, 2]</pre></div>"
+    },
+    {
+      "id": 245,
+      "title": "245. Reverse Singly Linked List",
+      "language": "python",
+      "description": "Reverse a singly linked list iteratively and return the new head.",
+      "initialCode": "class ListNode:\n    def __init__(self, val, next=None):\n        self.val = val\n        self.next = next\n\n\ndef reverse_list(head):\n    # TODO: reverse the list iteratively\n    return head\n\n\nhead = ListNode(1, ListNode(2, ListNode(3, ListNode(4))))\nnode = reverse_list(head)\nvalues = []\nwhile node:\n    values.append(node.val)\n    node = node.next\nprint(values)\n",
+      "fullSolution": "class ListNode:\n    def __init__(self, val, next=None):\n        self.val = val\n        self.next = next\n\n\ndef reverse_list(head):\n    prev = None\n    current = head\n    while current:\n        nxt = current.next\n        current.next = prev\n        prev = current\n        current = nxt\n    return prev\n\n\nhead = ListNode(1, ListNode(2, ListNode(3, ListNode(4))))\nnode = reverse_list(head)\nvalues = []\nwhile node:\n    values.append(node.val)\n    node = node.next\nprint(values)\n",
+      "expectedOutput": "[4, 3, 2, 1]",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Walk the list once, rewiring each node to point to the previous node. Keep track of the next pointer before rewriting it.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">prev = None -> 1 -> 2 -> 3\n# rewire 1.next to prev, slide pointers forward</pre></div>"
+    },
+    {
+      "id": 246,
+      "title": "246. BFS Shortest Path",
+      "language": "python",
+      "description": "Use breadth-first search to return the number of edges between start and goal, or -1 when unreachable.",
+      "initialCode": "from collections import deque\n\ngraph = {\n    'A': ['B', 'C'],\n    'B': ['D', 'E'],\n    'C': ['F'],\n    'D': [],\n    'E': ['F'],\n    'F': []\n}\n\n\ndef shortest_path(graph, start, goal):\n    # TODO: implement BFS to find the shortest path length\n    return -1\n\n\nprint(shortest_path(graph, 'A', 'F'))\nprint(shortest_path(graph, 'B', 'C'))\n",
+      "fullSolution": "from collections import deque\n\ngraph = {\n    'A': ['B', 'C'],\n    'B': ['D', 'E'],\n    'C': ['F'],\n    'D': [],\n    'E': ['F'],\n    'F': []\n}\n\n\ndef shortest_path(graph, start, goal):\n    visited = {start}\n    queue = deque([(start, 0)])\n    while queue:\n        node, depth = queue.popleft()\n        if node == goal:\n            return depth\n        for neighbor in graph.get(node, []):\n            if neighbor not in visited:\n                visited.add(neighbor)\n                queue.append((neighbor, depth + 1))\n    return -1\n\n\nprint(shortest_path(graph, 'A', 'F'))\nprint(shortest_path(graph, 'B', 'C'))\n",
+      "expectedOutput": "2\n-1",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Breadth-first search explores neighbors level by level. Use a queue to store (node, depth) pairs so the first time you reach the goal you have the minimum edge count.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">deque([(start, 0)]) -> pop, enqueue neighbors with depth + 1</pre></div>"
+    },
+    {
+      "id": 247,
+      "title": "247. Dijkstra Shortest Path Cost",
+      "language": "python",
+      "description": "Implement Dijkstra's algorithm to return the minimal cost between two nodes.",
+      "initialCode": "import heapq\n\ngraph = {\n    'A': [('B', 1), ('C', 4)],\n    'B': [('C', 2), ('D', 5)],\n    'C': [('D', 1)],\n    'D': [('E', 3)],\n    'E': []\n}\n\n\ndef dijkstra(graph, start, goal):\n    # TODO: return the minimal traversal cost or float(\"inf\") if unreachable\n    return float('inf')\n\n\nprint(dijkstra(graph, 'A', 'E'))\n",
+      "fullSolution": "import heapq\n\ngraph = {\n    'A': [('B', 1), ('C', 4)],\n    'B': [('C', 2), ('D', 5)],\n    'C': [('D', 1)],\n    'D': [('E', 3)],\n    'E': []\n}\n\n\ndef dijkstra(graph, start, goal):\n    heap = [(0, start)]\n    distances = {start: 0}\n    while heap:\n        cost, node = heapq.heappop(heap)\n        if node == goal:\n            return cost\n        if cost > distances.get(node, float('inf')):\n            continue\n        for neighbor, weight in graph.get(node, []):\n            new_cost = cost + weight\n            if new_cost < distances.get(neighbor, float('inf')):\n                distances[neighbor] = new_cost\n                heapq.heappush(heap, (new_cost, neighbor))\n    return float('inf')\n\n\nprint(dijkstra(graph, 'A', 'E'))\n",
+      "expectedOutput": "7",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Dijkstra's algorithm keeps a priority queue of frontier nodes ordered by current distance. When you pop a node, its distance is finalized; relax each neighbor and push improved costs.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">heapq.heappush(queue, (distance + weight, neighbor))</pre></div>"
+    },
+    {
+      "id": 248,
+      "title": "248. LRU Cache with OrderedDict",
+      "language": "python",
+      "description": "Build a fixed-capacity LRU cache supporting get and put with eviction of the oldest entry.",
+      "initialCode": "from collections import OrderedDict\n\nclass LRUCache:\n    def __init__(self, capacity):\n        self.capacity = capacity\n        self.data = OrderedDict()\n\n    def get(self, key):\n        # TODO: return the value when present and move the key to the end\n        return -1\n\n    def put(self, key, value):\n        # TODO: insert or update, then evict the least recently used key when over capacity\n        pass\n\n\ncache = LRUCache(2)\ncache.put('user:1', 'alice')\ncache.put('user:2', 'bob')\nprint(cache.get('user:1'))\ncache.put('user:3', 'charlie')\nprint(cache.get('user:2'))\nprint(cache.get('user:3'))\n",
+      "fullSolution": "from collections import OrderedDict\n\nclass LRUCache:\n    def __init__(self, capacity):\n        self.capacity = capacity\n        self.data = OrderedDict()\n\n    def get(self, key):\n        if key not in self.data:\n            return -1\n        value = self.data.pop(key)\n        self.data[key] = value\n        return value\n\n    def put(self, key, value):\n        if key in self.data:\n            self.data.pop(key)\n        self.data[key] = value\n        if len(self.data) > self.capacity:\n            self.data.popitem(last=False)\n\n\ncache = LRUCache(2)\ncache.put('user:1', 'alice')\ncache.put('user:2', 'bob')\nprint(cache.get('user:1'))\ncache.put('user:3', 'charlie')\nprint(cache.get('user:2'))\nprint(cache.get('user:3'))\n",
+      "expectedOutput": "alice\n-1\ncharlie",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">OrderedDict keeps keys in insertion order. When you read a key, re-insert it to mark it as most recent. When capacity is exceeded, popitem(last=False) to remove the oldest entry.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">cache.data.popitem(last=False)  # evict least recently used</pre></div>"
+    },
+    {
+      "id": 249,
+      "title": "249. Dynamic Programming: Min Coins",
+      "language": "python",
+      "description": "Compute the minimum number of coins needed to reach a target amount, or -1 when it is not possible.",
+      "initialCode": "def min_coins(amount, coins):\n    # TODO: bottom-up dynamic programming to find the fewest coins\n    return -1\n\n\nprint(min_coins(11, [1, 2, 5]))\nprint(min_coins(3, [2]))\n",
+      "fullSolution": "def min_coins(amount, coins):\n    dp = [float('inf')] * (amount + 1)\n    dp[0] = 0\n    for coin in coins:\n        for value in range(coin, amount + 1):\n            dp[value] = min(dp[value], dp[value - coin] + 1)\n    return dp[amount] if dp[amount] != float('inf') else -1\n\n\nprint(min_coins(11, [1, 2, 5]))\nprint(min_coins(3, [2]))\n",
+      "expectedOutput": "3\n-1",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Build up answers for every amount up to the target. Each coin lets you reuse the best answer for amount - coin plus one more coin.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">dp[value] = min(dp[value], dp[value - coin] + 1)</pre></div>"
+    },
+    {
+      "id": 250,
+      "title": "250. Dynamic Programming: LIS Length",
+      "language": "python",
+      "description": "Return the length of the longest increasing subsequence using the O(n log n) patience algorithm.",
+      "initialCode": "import bisect\n\n\ndef lis_length(nums):\n    # TODO: maintain a tails list and use binary search to place each value\n    return 0\n\n\nprint(lis_length([10, 9, 2, 5, 3, 7, 101, 18]))\nprint(lis_length([7, 7, 7, 7, 7]))\n",
+      "fullSolution": "import bisect\n\n\ndef lis_length(nums):\n    tails = []\n    for num in nums:\n        idx = bisect.bisect_left(tails, num)\n        if idx == len(tails):\n            tails.append(num)\n        else:\n            tails[idx] = num\n    return len(tails)\n\n\nprint(lis_length([10, 9, 2, 5, 3, 7, 101, 18]))\nprint(lis_length([7, 7, 7, 7, 7]))\n",
+      "expectedOutput": "4\n1",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Keep a list of the smallest tail seen for each subsequence length. Binary search finds where the current number slots in, giving an O(n log n) solution.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">tails = [2, 3, 7, 18]</pre></div>"
+    },
+    {
+      "id": 251,
+      "title": "251. System Design: Read-Heavy Scale Plan",
+      "language": "python",
+      "description": "Summarize a scale plan for a read-heavy service highlighting data, cache, async, and observability decisions.",
+      "initialCode": "plan = {\n    'service': 'ProductCatalog',\n    'traffic': '120k req/s peak',\n    'primary_db': 'PostgreSQL with read replicas',\n    'cache': 'Redis cluster (sharded)',\n    'async': ['Kafka event bus', 'Inventory projector'],\n    'observability': ['Red metrics dashboard', 'Trace sampling 15%']\n}\n\n# TODO: print the plan in the exact format:\n# ProductCatalog Service Scale Plan\n# Peak load: 120k req/s peak\n# Primary store: PostgreSQL with read replicas\n# Cache: Redis cluster (sharded)\n# Async pipelines:\n# - Kafka event bus\n# - Inventory projector\n# Observability:\n# - Red metrics dashboard\n# - Trace sampling 15%\n",
+      "fullSolution": "plan = {\n    'service': 'ProductCatalog',\n    'traffic': '120k req/s peak',\n    'primary_db': 'PostgreSQL with read replicas',\n    'cache': 'Redis cluster (sharded)',\n    'async': ['Kafka event bus', 'Inventory projector'],\n    'observability': ['Red metrics dashboard', 'Trace sampling 15%']\n}\n\nprint(f\"{plan['service']} Service Scale Plan\")\nprint(f\"Peak load: {plan['traffic']}\")\nprint(f\"Primary store: {plan['primary_db']}\")\nprint(f\"Cache: {plan['cache']}\")\nprint('Async pipelines:')\nfor item in plan['async']:\n    print(f\"- {item}\")\nprint('Observability:')\nfor item in plan['observability']:\n    print(f\"- {item}\")\n",
+      "expectedOutput": "ProductCatalog Service Scale Plan\nPeak load: 120k req/s peak\nPrimary store: PostgreSQL with read replicas\nCache: Redis cluster (sharded)\nAsync pipelines:\n- Kafka event bus\n- Inventory projector\nObservability:\n- Red metrics dashboard\n- Trace sampling 15%",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Senior engineers narrate the plan across data, caching, async flows, and observability so stakeholders see the trade-offs quickly.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Checklist:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print('Async pipelines:')\nfor item in plan['async']:\n    print(f\"- {item}\")</pre></div>"
+    },
+    {
+      "id": 252,
+      "title": "252. Database Scaling Playbook",
+      "language": "python",
+      "description": "Lay out an ordered database scaling plan plus the observability guardrails that keep it safe.",
+      "initialCode": "playbook = {\n    'order': [\n        'Add read replicas for reporting',\n        'Shard tenants by region',\n        'Introduce write-ahead queue for spikes'\n    ],\n    'observability': [\n        'Slow query log sampled 1%',\n        'Replication lag alert at 30s'\n    ]\n}\n\n# TODO: print the playbook in the exact format:\n# Database Scaling Playbook\n# 1. Add read replicas for reporting\n# 2. Shard tenants by region\n# 3. Introduce write-ahead queue for spikes\n# Observability:\n# - Slow query log sampled 1%\n# - Replication lag alert at 30s\n",
+      "fullSolution": "playbook = {\n    'order': [\n        'Add read replicas for reporting',\n        'Shard tenants by region',\n        'Introduce write-ahead queue for spikes'\n    ],\n    'observability': [\n        'Slow query log sampled 1%',\n        'Replication lag alert at 30s'\n    ]\n}\n\nprint('Database Scaling Playbook')\nfor idx, step in enumerate(playbook['order'], start=1):\n    print(f\"{idx}. {step}\")\nprint('Observability:')\nfor item in playbook['observability']:\n    print(f\"- {item}\")\n",
+      "expectedOutput": "Database Scaling Playbook\n1. Add read replicas for reporting\n2. Shard tenants by region\n3. Introduce write-ahead queue for spikes\nObservability:\n- Slow query log sampled 1%\n- Replication lag alert at 30s",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Scaling plans need deliberate steps plus the telemetry that proves the system is healthy at each stage.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">for idx, step in enumerate(playbook['order'], start=1):\n    print(f\"{idx}. {step}\")</pre></div>"
+    },
+    {
+      "id": 253,
+      "title": "253. Security Threat Modeling Summary",
+      "language": "python",
+      "description": "Summarize key entry points, threats, and mitigations for a payments API.",
+      "initialCode": "threat_model = {\n    'system': 'Payments API',\n    'entrypoints': ['Public REST gateway', 'Admin console'],\n    'threats': ['Replay attacks', 'Privilege escalation', 'Secrets exfiltration'],\n    'controls': ['Idempotency keys', 'Fine-grained RBAC', 'Vault auto-rotation']\n}\n\n# TODO: print the summary in the exact format:\n# Payments API Threat Model\n# Entry points:\n# - Public REST gateway\n# - Admin console\n# Key threats:\n# - ...\n# Mitigations:\n# - ...\n",
+      "fullSolution": "threat_model = {\n    'system': 'Payments API',\n    'entrypoints': ['Public REST gateway', 'Admin console'],\n    'threats': ['Replay attacks', 'Privilege escalation', 'Secrets exfiltration'],\n    'controls': ['Idempotency keys', 'Fine-grained RBAC', 'Vault auto-rotation']\n}\n\nprint(f\"{threat_model['system']} Threat Model\")\nprint('Entry points:')\nfor item in threat_model['entrypoints']:\n    print(f\"- {item}\")\nprint('Key threats:')\nfor item in threat_model['threats']:\n    print(f\"- {item}\")\nprint('Mitigations:')\nfor item in threat_model['controls']:\n    print(f\"- {item}\")\n",
+      "expectedOutput": "Payments API Threat Model\nEntry points:\n- Public REST gateway\n- Admin console\nKey threats:\n- Replay attacks\n- Privilege escalation\n- Secrets exfiltration\nMitigations:\n- Idempotency keys\n- Fine-grained RBAC\n- Vault auto-rotation",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Threat modeling forces you to enumerate entry points, likely attacks, and concrete controls. Keep the summary short so stakeholders can act.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Reminder:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print('Key threats:')\nfor threat in threat_model['threats']:\n    print(f\"- {threat}\")</pre></div>"
+    },
+    {
+      "id": 254,
+      "title": "254. Edge & CDN Strategy Snapshot",
+      "language": "python",
+      "description": "Capture the key configuration choices for an edge delivery and CDN strategy.",
+      "initialCode": "edge_plan = {\n    'provider': 'CloudFront multi-region',\n    'ttl': '120s default',\n    'origin_shield': 'Enabled',\n    'regional_edges': ['us-east-1', 'eu-west-1', 'ap-southeast-1'],\n    'failover': ['Health check every 30s', 'Multi-origin failover policy']\n}\n\n# TODO: print the snapshot in the exact format:\n# Edge Delivery Strategy\n# CDN provider: CloudFront multi-region\n# Cache TTL: 120s default\n# Origin shield: Enabled\n# Regional edge cache:\n# - us-east-1\n# - eu-west-1\n# - ap-southeast-1\n# Failover:\n# - Health check every 30s\n# - Multi-origin failover policy\n",
+      "fullSolution": "edge_plan = {\n    'provider': 'CloudFront multi-region',\n    'ttl': '120s default',\n    'origin_shield': 'Enabled',\n    'regional_edges': ['us-east-1', 'eu-west-1', 'ap-southeast-1'],\n    'failover': ['Health check every 30s', 'Multi-origin failover policy']\n}\n\nprint('Edge Delivery Strategy')\nprint(f\"CDN provider: {edge_plan['provider']}\")\nprint(f\"Cache TTL: {edge_plan['ttl']}\")\nprint(f\"Origin shield: {edge_plan['origin_shield']}\")\nprint('Regional edge cache:')\nfor region in edge_plan['regional_edges']:\n    print(f\"- {region}\")\nprint('Failover:')\nfor item in edge_plan['failover']:\n    print(f\"- {item}\")\n",
+      "expectedOutput": "Edge Delivery Strategy\nCDN provider: CloudFront multi-region\nCache TTL: 120s default\nOrigin shield: Enabled\nRegional edge cache:\n- us-east-1\n- eu-west-1\n- ap-southeast-1\nFailover:\n- Health check every 30s\n- Multi-origin failover policy",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Edge plans outline cache behaviour, origin shielding, and failover so traffic stays fast and resilient during global peaks.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">for region in edge_plan['regional_edges']:\n    print(f\"- {region}\")</pre></div>"
+    },
+    {
+      "id": 255,
+      "title": "255. Event Pipeline Case Study",
+      "language": "python",
+      "description": "Summarize the multi-region fanout architecture from the provided scenario dictionary.",
+      "initialCode": "scenario = {\n    \"service\": \"SocialFeedFanout\",\n    \"regions\": [\"us-east-1\", \"eu-west-1\"],\n    \"ingest_rate\": \"85k events/s avg\",\n    \"queue\": \"Kafka (24 partitions)\",\n    \"fanout\": \"Go workers push to Redis channels\",\n    \"persistence\": [\"Aurora followers table\", \"S3 activity log\"],\n    \"observability\": [\"Lag dashboard < 2s\", \"Fanout error budget 0.2%\"]\n}\n\n# TODO: print the summary exactly as:\n# SocialFeedFanout Event Pipeline\n# Ingest rate: 85k events/s avg\n# Regions: us-east-1, eu-west-1\n# Queue: Kafka (24 partitions)\n# Fanout workers: Go workers push to Redis channels\n# Persistence:\n# - Aurora followers table\n# - S3 activity log\n# Observability:\n# - Lag dashboard < 2s\n# - Fanout error budget 0.2%\n",
+      "fullSolution": "scenario = {\n    \"service\": \"SocialFeedFanout\",\n    \"regions\": [\"us-east-1\", \"eu-west-1\"],\n    \"ingest_rate\": \"85k events/s avg\",\n    \"queue\": \"Kafka (24 partitions)\",\n    \"fanout\": \"Go workers push to Redis channels\",\n    \"persistence\": [\"Aurora followers table\", \"S3 activity log\"],\n    \"observability\": [\"Lag dashboard < 2s\", \"Fanout error budget 0.2%\"]\n}\n\nprint(f\"{scenario['service']} Event Pipeline\")\nprint(f\"Ingest rate: {scenario['ingest_rate']}\")\nprint(f\"Regions: {', '.join(scenario['regions'])}\")\nprint(f\"Queue: {scenario['queue']}\")\nprint(f\"Fanout workers: {scenario['fanout']}\")\nprint(\"Persistence:\")\nfor item in scenario['persistence']:\n    print(f\"- {item}\")\nprint(\"Observability:\")\nfor item in scenario['observability']:\n    print(f\"- {item}\")\n",
+      "expectedOutput": "SocialFeedFanout Event Pipeline\nIngest rate: 85k events/s avg\nRegions: us-east-1, eu-west-1\nQueue: Kafka (24 partitions)\nFanout workers: Go workers push to Redis channels\nPersistence:\n- Aurora followers table\n- S3 activity log\nObservability:\n- Lag dashboard < 2s\n- Fanout error budget 0.2%",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Architectural narratives should surface throughput, geography, queues, persistence, and guardrails so stakeholders see blast radius and resilience at a glance.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Checklist:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Persistence:\")\nfor item in scenario['persistence']:\n    print(f\"- {item}\")</pre></div>"
+    },
+    {
+      "id": 256,
+      "title": "256. Capacity Planning Calculator",
+      "language": "python",
+      "description": "Compute the server count for peak and average load with redundancy.",
+      "initialCode": "import math\n\nrequests_peak = 180_000\nrequests_avg = 90_000\ntps_per_server = 4_500\nredundancy_factor = 1.25\n\n# TODO: compute ceil((load / tps_per_server) * redundancy_factor) for peak and average.\n# Print exactly:\n# Peak servers needed: 50\n# Average servers needed: 25\n",
+      "fullSolution": "import math\n\nrequests_peak = 180_000\nrequests_avg = 90_000\ntps_per_server = 4_500\nredundancy_factor = 1.25\n\npeak_servers = math.ceil((requests_peak / tps_per_server) * redundancy_factor)\navg_servers = math.ceil((requests_avg / tps_per_server) * redundancy_factor)\n\nprint(f\"Peak servers needed: {peak_servers}\")\nprint(f\"Average servers needed: {avg_servers}\")\n",
+      "expectedOutput": "Peak servers needed: 50\nAverage servers needed: 25",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Translate requirements per second into capacity, then add the agreed redundancy factor so a single AZ failure still leaves headroom.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Formula:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">math.ceil((load / tps_per_server) * redundancy)</pre></div>"
+    },
+    {
+      "id": 257,
+      "title": "257. Global Cache Strategy Brief",
+      "language": "python",
+      "description": "Lay out the cache mode, primaries, mitigations, and fallback from the decision dictionary.",
+      "initialCode": "decision = {\n    \"mode\": \"Read-through cache with regional write-behind\",\n    \"primaries\": [\"us-east-1 primary\", \"ap-southeast-1 primary\"],\n    \"consistency\": \"Multi-region eventual\",\n    \"mitigations\": [\"Versioned writes\", \"Conflict alarms 5/min\"],\n    \"fallback\": \"Read from regional replica when cache miss > 150ms\"\n}\n\n# TODO: print exactly:\n# Global Cache Strategy\n# Mode: Read-through cache with regional write-behind\n# Primaries: us-east-1 primary, ap-southeast-1 primary\n# Consistency: Multi-region eventual\n# Mitigations:\n# - Versioned writes\n# - Conflict alarms 5/min\n# Fallback: Read from regional replica when cache miss > 150ms\n",
+      "fullSolution": "decision = {\n    \"mode\": \"Read-through cache with regional write-behind\",\n    \"primaries\": [\"us-east-1 primary\", \"ap-southeast-1 primary\"],\n    \"consistency\": \"Multi-region eventual\",\n    \"mitigations\": [\"Versioned writes\", \"Conflict alarms 5/min\"],\n    \"fallback\": \"Read from regional replica when cache miss > 150ms\"\n}\n\nprint(\"Global Cache Strategy\")\nprint(f\"Mode: {decision['mode']}\")\nprint(f\"Primaries: {', '.join(decision['primaries'])}\")\nprint(f\"Consistency: {decision['consistency']}\")\nprint(\"Mitigations:\")\nfor item in decision['mitigations']:\n    print(f\"- {item}\")\nprint(f\"Fallback: {decision['fallback']}\")\n",
+      "expectedOutput": "Global Cache Strategy\nMode: Read-through cache with regional write-behind\nPrimaries: us-east-1 primary, ap-southeast-1 primary\nConsistency: Multi-region eventual\nMitigations:\n- Versioned writes\n- Conflict alarms 5/min\nFallback: Read from regional replica when cache miss > 150ms",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Great cache briefs frame how reads behave, where writes land, and which guardrails keep drift in check.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Reminder:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Mitigations:\")</pre></div>"
+    },
+    {
+      "id": 258,
+      "title": "258. Python Profiling Runbook",
+      "language": "python",
+      "description": "Turn the runbook dictionary into an ordered profiling checklist.",
+      "initialCode": "runbook = {\n    \"cprofile\": \"python -m cProfile -o stats run_workload.py\",\n    \"visualize\": [\n        \"snakeviz stats\",\n        \"python -m viztracer run_workload.py\",\n        \"vizviewer\"\n    ],\n    \"sampling\": \"py-spy top --pid 1234\"\n}\n\n# TODO: print exactly:\n# Python Performance Profiling\n# cProfile: python -m cProfile -o stats run_workload.py\n# Visualization:\n# - snakeviz stats\n# - python -m viztracer run_workload.py\n# - vizviewer\n# Sampling: py-spy top --pid 1234\n",
+      "fullSolution": "runbook = {\n    \"cprofile\": \"python -m cProfile -o stats run_workload.py\",\n    \"visualize\": [\n        \"snakeviz stats\",\n        \"python -m viztracer run_workload.py\",\n        \"vizviewer\"\n    ],\n    \"sampling\": \"py-spy top --pid 1234\"\n}\n\nprint(\"Python Performance Profiling\")\nprint(f\"cProfile: {runbook['cprofile']}\")\nprint(\"Visualization:\")\nfor step in runbook['visualize']:\n    print(f\"- {step}\")\nprint(f\"Sampling: {runbook['sampling']}\")\n",
+      "expectedOutput": "Python Performance Profiling\ncProfile: python -m cProfile -o stats run_workload.py\nVisualization:\n- snakeviz stats\n- python -m viztracer run_workload.py\n- vizviewer\nSampling: py-spy top --pid 1234",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Operational runbooks call out deterministic commands for profiling, visualization, and sampling so responders waste zero cycles guessing flags.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">for step in runbook['visualize']:\n    print(f\"- {step}\")</pre></div>"
+    },
+    {
+      "id": 259,
+      "title": "259. Network Diagnostics Checklist",
+      "language": "python",
+      "description": "Print the network investigation commands in the required order.",
+      "initialCode": "checks = {\n    \"latency\": \"mtr --report 10 api.prod\",\n    \"packet_capture\": \"sudo tcpdump -ni eth0 host 203.0.113.8\",\n    \"dns\": \"dig +trace api.prod\",\n    \"http\": \"curl -w '\\nconnect: %{time_connect}s total: %{time_total}s\\n' https://api.prod/health\"\n}\n\n# TODO: print exactly:\n# Network Diagnostics Checklist\n# Latency: mtr --report 10 api.prod\n# Packet capture: sudo tcpdump -ni eth0 host 203.0.113.8\n# DNS: dig +trace api.prod\n# HTTP timing: curl -w '\nconnect: %{time_connect}s total: %{time_total}s\n' https://api.prod/health\n",
+      "fullSolution": "checks = {\n    \"latency\": \"mtr --report 10 api.prod\",\n    \"packet_capture\": \"sudo tcpdump -ni eth0 host 203.0.113.8\",\n    \"dns\": \"dig +trace api.prod\",\n    \"http\": \"curl -w '\\nconnect: %{time_connect}s total: %{time_total}s\\n' https://api.prod/health\"\n}\n\nprint(\"Network Diagnostics Checklist\")\nprint(f\"Latency: {checks['latency']}\")\nprint(f\"Packet capture: {checks['packet_capture']}\")\nprint(f\"DNS: {checks['dns']}\")\nprint(f\"HTTP timing: {checks['http']}\")\n",
+      "expectedOutput": "Network Diagnostics Checklist\nLatency: mtr --report 10 api.prod\nPacket capture: sudo tcpdump -ni eth0 host 203.0.113.8\nDNS: dig +trace api.prod\nHTTP timing: curl -w '\nconnect: %{time_connect}s total: %{time_total}s\n' https://api.prod/health",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Pull latency, capture, DNS, and HTTP timing data in one pass so you can isolate whether the issue is network, resolution, or origin service.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Tip:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(f\"HTTP timing: {checks['http']}\")</pre></div>"
+    },
+    {
+      "id": 260,
+      "title": "260. Behavioral Story Outline: Incident Leadership",
+      "language": "python",
+      "description": "Turn the STAR components into a structured incident leadership story.",
+      "initialCode": "story = {\n    \"situation\": \"Peak sale traffic saturated checkout service\",\n    \"task\": \"Restore cart checkout under 10 minutes\",\n    \"actions\": [\n        \"Declared incident and spun up war room\",\n        \"Throttled recommendation calls at ingress\",\n        \"Coordinated rollback of faulty feature flag\"\n    ],\n    \"result\": \"Checkout error rate dropped from 35% to 1.2% in 7 minutes\"\n}\n\n# TODO: print exactly:\n# STAR Incident Leadership Story\n# Situation: Peak sale traffic saturated checkout service\n# Task: Restore cart checkout under 10 minutes\n# Actions:\n# - Declared incident and spun up war room\n# - Throttled recommendation calls at ingress\n# - Coordinated rollback of faulty feature flag\n# Result: Checkout error rate dropped from 35% to 1.2% in 7 minutes\n",
+      "fullSolution": "story = {\n    \"situation\": \"Peak sale traffic saturated checkout service\",\n    \"task\": \"Restore cart checkout under 10 minutes\",\n    \"actions\": [\n        \"Declared incident and spun up war room\",\n        \"Throttled recommendation calls at ingress\",\n        \"Coordinated rollback of faulty feature flag\"\n    ],\n    \"result\": \"Checkout error rate dropped from 35% to 1.2% in 7 minutes\"\n}\n\nprint(\"STAR Incident Leadership Story\")\nprint(f\"Situation: {story['situation']}\")\nprint(f\"Task: {story['task']}\")\nprint(\"Actions:\")\nfor action in story['actions']:\n    print(f\"- {action}\")\nprint(f\"Result: {story['result']}\")\n",
+      "expectedOutput": "STAR Incident Leadership Story\nSituation: Peak sale traffic saturated checkout service\nTask: Restore cart checkout under 10 minutes\nActions:\n- Declared incident and spun up war room\n- Throttled recommendation calls at ingress\n- Coordinated rollback of faulty feature flag\nResult: Checkout error rate dropped from 35% to 1.2% in 7 minutes",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Top-tier interviews expect crisp STAR stories that highlight ownership, cross-team orchestration, and quantitative outcomes.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Actions:\")\nfor action in story['actions']:\n    print(f\"- {action}\")</pre></div>"
     }
   ]
 }

@@ -1509,7 +1509,7 @@
       "initialCode": "import sqlite3\n\n# Create an in-memory DB, a table nums(v INT), insert 1,2,3\n# Query SELECT SUM(v) and print the result\n\n",
       "fullSolution": "import sqlite3\n\ncon = sqlite3.connect(':memory:')\ncur = con.cursor()\ncur.execute('CREATE TABLE nums(v INT)')\ncur.executemany('INSERT INTO nums(v) VALUES (?)', [(1,),(2,),(3,)])\ncur.execute('SELECT SUM(v) FROM nums')\nprint(cur.fetchone()[0])\ncon.close()\n",
       "expectedOutput": "6",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Use SQLite for quick relational queries in-memory\u00e2\u20ac\u201dgreat for ETL-style tasks and prototypes.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import sqlite3\ncon = sqlite3.connect(':memory:')\ncon.execute('CREATE TABLE t(x)')\ncon.execute('INSERT INTO t VALUES (42)')\nprint(con.execute('SELECT x FROM t').fetchone()[0])</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use SQLite for quick relational queries in-memoryâ€”great for ETL-style tasks and prototypes.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import sqlite3\ncon = sqlite3.connect(':memory:')\ncon.execute('CREATE TABLE t(x)')\ncon.execute('INSERT INTO t VALUES (42)')\nprint(con.execute('SELECT x FROM t').fetchone()[0])</pre></div>"
     },
     {
       "id": 145,
@@ -1529,7 +1529,7 @@
       "initialCode": "import struct\n\n# Pack 258 (unsigned short) and 7 (unsigned byte) big-endian, then unpack and print each on its own line\n\n",
       "fullSolution": "import struct\n\ndata = struct.pack('>HB', 258, 7)\na, b = struct.unpack('>HB', data)\nprint(a)\nprint(b)\n",
       "expectedOutput": "258\n7",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">The <code>struct</code> module converts between Python values and C-struct binary data\u00e2\u20ac\u201duseful for protocols and file formats.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import struct\nprint(struct.unpack('&gt;I', b'\\x00\\x00\\x01\\x00')[0]) # 256</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">The <code>struct</code> module converts between Python values and C-struct binary dataâ€”useful for protocols and file formats.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import struct\nprint(struct.unpack('&gt;I', b'\\x00\\x00\\x01\\x00')[0]) # 256</pre></div>"
     },
     {
       "id": 147,
@@ -1559,7 +1559,7 @@
       "initialCode": "from functools import cached_property\n\n# Define a class with a cached_property that prints 'compute' once and returns 42\n# Access it twice and print the value both times\n\n",
       "fullSolution": "from functools import cached_property\n\nclass Expensive:\n    @cached_property\n    def value(self):\n        print('compute')\n        return 42\n\ne = Expensive()\nprint(e.value)\nprint(e.value)\n",
       "expectedOutput": "compute\n42\n42",
-      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>cached_property</code> computes once per instance and reuses the value\u00e2\u20ac\u201dhandy for memoizing I/O or heavy calculations.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from functools import cached_property\nclass C:\n  @cached_property\n  def cfg(self): return 123\nprint(C().cfg)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>cached_property</code> computes once per instance and reuses the valueâ€”handy for memoizing I/O or heavy calculations.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from functools import cached_property\nclass C:\n  @cached_property\n  def cfg(self): return 123\nprint(C().cfg)</pre></div>"
     },
     {
       "id": 150,
@@ -1569,7 +1569,7 @@
       "initialCode": "import heapq\n\n# Merge [1,3,5] and [2,4,6] and print each item on its own line\n\n",
       "fullSolution": "import heapq\nfor x in heapq.merge([1,3,5], [2,4,6]):\n    print(x)\n",
       "expectedOutput": "1\n2\n3\n4\n5\n6",
-      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>heapq.merge</code> lazily merges multiple sorted inputs\u00e2\u20ac\u201duseful for external sort or streaming merges.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import heapq\nprint(list(heapq.merge([1,4],[2,3])))</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>heapq.merge</code> lazily merges multiple sorted inputsâ€”useful for external sort or streaming merges.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import heapq\nprint(list(heapq.merge([1,4],[2,3])))</pre></div>"
     },
     {
       "id": 151,
@@ -2670,6 +2670,156 @@
       "fullSolution": "story = {\n    \"situation\": \"Peak sale traffic saturated checkout service\",\n    \"task\": \"Restore cart checkout under 10 minutes\",\n    \"actions\": [\n        \"Declared incident and spun up war room\",\n        \"Throttled recommendation calls at ingress\",\n        \"Coordinated rollback of faulty feature flag\"\n    ],\n    \"result\": \"Checkout error rate dropped from 35% to 1.2% in 7 minutes\"\n}\n\nprint(\"STAR Incident Leadership Story\")\nprint(f\"Situation: {story['situation']}\")\nprint(f\"Task: {story['task']}\")\nprint(\"Actions:\")\nfor action in story['actions']:\n    print(f\"- {action}\")\nprint(f\"Result: {story['result']}\")\n",
       "expectedOutput": "STAR Incident Leadership Story\nSituation: Peak sale traffic saturated checkout service\nTask: Restore cart checkout under 10 minutes\nActions:\n- Declared incident and spun up war room\n- Throttled recommendation calls at ingress\n- Coordinated rollback of faulty feature flag\nResult: Checkout error rate dropped from 35% to 1.2% in 7 minutes",
       "tutorial": "<p class=\"mb-4 text-gray-300\">Top-tier interviews expect crisp STAR stories that highlight ownership, cross-team orchestration, and quantitative outcomes.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Actions:\")\nfor action in story['actions']:\n    print(f\"- {action}\")</pre></div>"
+    },
+    {
+      "id": 261,
+      "title": "261. SQL SELECT Builder: Active Customers",
+      "description": "Build a SELECT statement string using the provided columns, table, predicate, and order clause.",
+      "initialCode": "columns = [\"id\", \"email\", \"tier\"]\ntable = \"customers\"\npredicate = \"status = 'ACTIVE'\"\norder_by = \"last_login DESC\"\n\n# TODO: build and print the SELECT statement described below\n",
+      "fullSolution": "columns = [\"id\", \"email\", \"tier\"]\ntable = \"customers\"\npredicate = \"status = 'ACTIVE'\"\norder_by = \"last_login DESC\"\n\nselect_list = \", \".join(columns)\nstatement = f\"SELECT {select_list} FROM {table} WHERE {predicate} ORDER BY {order_by};\"\nprint(statement)\n",
+      "expectedOutput": "SELECT id, email, tier FROM customers WHERE status = 'ACTIVE' ORDER BY last_login DESC;",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">A SELECT statement needs column names, the table, filters, and sort order. Join the columns with commas, then add WHERE and ORDER BY clauses before finishing with a semicolon.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">select_list = \", \".join([\"id\", \"email\"])\nprint(f\"SELECT {select_list} FROM customers;\")</pre></div><p class=\"mt-4 text-gray-300\">Combine the provided values into one SQL string, then print it.</p>",
+      "language": "python"
+    },
+    {
+      "id": 262,
+      "title": "262. SQL JOIN Builder: Orders + Payments",
+      "description": "Format a multi-line SQL query that joins orders to customers and payments with the supplied segments.",
+      "initialCode": "select_columns = [\"o.id\", \"o.total\", \"c.email\", \"p.status\"]\nbase = \"orders o\"\njoins = [\n    \"JOIN customers c ON c.id = o.customer_id\",\n    \"LEFT JOIN payments p ON p.order_id = o.id\",\n]\nfilters = [\"o.state = 'PAID'\", \"o.region = 'NA'\"]\n\n# TODO: print the formatted SQL statement described below\n",
+      "fullSolution": "select_columns = [\"o.id\", \"o.total\", \"c.email\", \"p.status\"]\nbase = \"orders o\"\njoins = [\n    \"JOIN customers c ON c.id = o.customer_id\",\n    \"LEFT JOIN payments p ON p.order_id = o.id\",\n]\nfilters = [\"o.state = 'PAID'\", \"o.region = 'NA'\"]\n\nprint(\"SELECT \" + \", \".join(select_columns))\nprint(\"FROM \" + base)\nfor clause in joins:\n    print(clause)\nprint(\"WHERE \" + \" AND \".join(filters) + \";\")\n",
+      "expectedOutput": "SELECT o.id, o.total, c.email, p.status\nFROM orders o\nJOIN customers c ON c.id = o.customer_id\nLEFT JOIN payments p ON p.order_id = o.id\nWHERE o.state = 'PAID' AND o.region = 'NA';",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Keep complex joins readable by printing each clause on its own line: SELECT, FROM, stacked JOINs, and the closing WHERE.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"SELECT o.id\")\nprint(\"FROM orders o\")\nprint(\"JOIN customers c ON c.id = o.customer_id\")</pre></div><p class=\"mt-4 text-gray-300\">Join the filters with AND so the final WHERE clause matches the expected format.</p>",
+      "language": "python"
+    },
+    {
+      "id": 263,
+      "title": "263. Index Strategy Summary",
+      "description": "Summarize the primary, covering, and partial indexes defined for the orders table.",
+      "initialCode": "table = \"orders\"\nprimary = {\"name\": \"orders_pkey\", \"columns\": \"id\"}\ncovering = [\n    {\"name\": \"idx_orders_state_status\", \"columns\": \"state, status\"},\n    {\"name\": \"idx_orders_customer_created\", \"columns\": \"customer_id, created_at DESC\"},\n]\npartial = {\"name\": \"idx_orders_ready\", \"definition\": \"WHERE status = 'READY_TO_SHIP'\"}\n\n# TODO: print the index strategy summary exactly as described\n",
+      "fullSolution": "table = \"orders\"\nprimary = {\"name\": \"orders_pkey\", \"columns\": \"id\"}\ncovering = [\n    {\"name\": \"idx_orders_state_status\", \"columns\": \"state, status\"},\n    {\"name\": \"idx_orders_customer_created\", \"columns\": \"customer_id, created_at DESC\"},\n]\npartial = {\"name\": \"idx_orders_ready\", \"definition\": \"WHERE status = 'READY_TO_SHIP'\"}\n\nprint(f\"Index Strategy: {table}\")\nprint(f\"Primary key: {primary['name']} ({primary['columns']})\")\nprint(\"Covering indexes:\")\nfor index in covering:\n    print(f\"- {index['name']} on ({index['columns']})\")\nprint(\"Partial index:\")\nprint(f\"- {partial['name']} {partial['definition']}\")\n",
+      "expectedOutput": "Index Strategy: orders\nPrimary key: orders_pkey (id)\nCovering indexes:\n- idx_orders_state_status on (state, status)\n- idx_orders_customer_created on (customer_id, created_at DESC)\nPartial index:\n- idx_orders_ready WHERE status = 'READY_TO_SHIP'",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Explain which queries each index accelerates by grouping them as primary, covering, and partial definitions.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Covering indexes:\")\nprint(\"- idx_orders_state_status on (state, status)\")</pre></div><p class=\"mt-4 text-gray-300\">Keep the headings and bullet formatting exactly as shown so the intent is obvious on review.</p>",
+      "language": "python"
+    },
+    {
+      "id": 264,
+      "title": "264. SQLAlchemy Model Outline: Order",
+      "description": "Use the provided field definitions to print a minimal SQLAlchemy declarative model for the orders table.",
+      "initialCode": "fields = [\n    (\"Mapped[int]\", \"mapped_column(primary_key=True)\", \"id\"),\n    (\"Mapped[str]\", \"mapped_column(nullable=False)\", \"status\"),\n    (\"Mapped[int]\", \"mapped_column(name='customer_id')\", \"customer_id\"),\n    (\"Mapped[int]\", \"mapped_column(name='total_cents')\", \"total_cents\"),\n]\n\n# TODO: print the SQLAlchemy model snippet exactly as described\n",
+      "fullSolution": "fields = [\n    (\"Mapped[int]\", \"mapped_column(primary_key=True)\", \"id\"),\n    (\"Mapped[str]\", \"mapped_column(nullable=False)\", \"status\"),\n    (\"Mapped[int]\", \"mapped_column(name='customer_id')\", \"customer_id\"),\n    (\"Mapped[int]\", \"mapped_column(name='total_cents')\", \"total_cents\"),\n]\n\nprint(\"from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column\")\nprint(\"\")\nprint(\"class Base(DeclarativeBase):\")\nprint(\"    pass\")\nprint(\"\")\nprint(\"class Order(Base):\")\nprint(\"    __tablename__ = \"orders\"\")\nprint(\"\")\nfor mapped_type, column_call, name in fields:\n    print(f\"    {name}: {mapped_type} = {column_call}\")\n",
+      "expectedOutput": "from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column\n\nclass Base(DeclarativeBase):\n    pass\n\nclass Order(Base):\n    __tablename__ = \"orders\"\n\n    id: Mapped[int] = mapped_column(primary_key=True)\n    status: Mapped[str] = mapped_column(nullable=False)\n    customer_id: Mapped[int] = mapped_column(name='customer_id')\n    total_cents: Mapped[int] = mapped_column(name='total_cents')",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Declarative models expose table mappings in one place. Pair each field's type annotation with its <code>mapped_column()</code> call to show constraints and column names.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class Order(Base):\n    __tablename__ = \"orders\"\n    id: Mapped[int] = mapped_column(primary_key=True)</pre></div><p class=\"mt-4 text-gray-300\">Use the supplied metadata to print a copy/paste-ready snippet.</p>",
+      "language": "python"
+    },
+    {
+      "id": 265,
+      "title": "265. SQLAlchemy Repository Sketch",
+      "description": "Print a repository class with imports and query helpers for the Order aggregate.",
+      "initialCode": "imports = [\n    \"from datetime import datetime\",\n    \"from typing import Iterable, Optional\",\n    \"from sqlalchemy import select\",\n    \"from sqlalchemy.orm import Session\",\n    \"from .models import Order\",\n]\nmethods = [\n    \"    def __init__(self, session: Session) -> None:\",\n    \"        self._session = session\",\n    \"\",\n    \"    def get_by_external_id(self, external_id: str) -> Optional[Order]:\",\n    \"        stmt = select(Order).where(Order.external_id == external_id)\",\n    \"        return self._session.scalar(stmt)\",\n    \"\",\n    \"    def list_by_statuses(self, statuses: Iterable[str]) -> list[Order]:\",\n    \"        stmt = select(Order).where(Order.status.in_(list(statuses)))\",\n    \"        return list(self._session.scalars(stmt))\",\n    \"\",\n    \"    def find_stuck_orders(self, cutoff: datetime) -> list[Order]:\",\n    \"        stmt = select(Order).where(Order.created_at < cutoff, Order.status == \"PENDING\")\",\n    \"        return list(self._session.scalars(stmt))\",\n]\n\n# TODO: print the imports, a blank line, the class header, the methods, then the closing line\n",
+      "fullSolution": "imports = [\n    \"from datetime import datetime\",\n    \"from typing import Iterable, Optional\",\n    \"from sqlalchemy import select\",\n    \"from sqlalchemy.orm import Session\",\n    \"from .models import Order\",\n]\nmethods = [\n    \"    def __init__(self, session: Session) -> None:\",\n    \"        self._session = session\",\n    \"\",\n    \"    def get_by_external_id(self, external_id: str) -> Optional[Order]:\",\n    \"        stmt = select(Order).where(Order.external_id == external_id)\",\n    \"        return self._session.scalar(stmt)\",\n    \"\",\n    \"    def list_by_statuses(self, statuses: Iterable[str]) -> list[Order]:\",\n    \"        stmt = select(Order).where(Order.status.in_(list(statuses)))\",\n    \"        return list(self._session.scalars(stmt))\",\n    \"\",\n    \"    def find_stuck_orders(self, cutoff: datetime) -> list[Order]:\",\n    \"        stmt = select(Order).where(Order.created_at < cutoff, Order.status == \"PENDING\")\",\n    \"        return list(self._session.scalars(stmt))\",\n]\n\nfor line in imports:\n    print(line)\nprint(\"\")\nprint(\"class OrderRepository:\")\nfor line in methods:\n    print(line)\n",
+      "expectedOutput": "from datetime import datetime\nfrom typing import Iterable, Optional\nfrom sqlalchemy import select\nfrom sqlalchemy.orm import Session\nfrom .models import Order\n\nclass OrderRepository:\n    def __init__(self, session: Session) -> None:\n        self._session = session\n\n    def get_by_external_id(self, external_id: str) -> Optional[Order]:\n        stmt = select(Order).where(Order.external_id == external_id)\n        return self._session.scalar(stmt)\n\n    def list_by_statuses(self, statuses: Iterable[str]) -> list[Order]:\n        stmt = select(Order).where(Order.status.in_(list(statuses)))\n        return list(self._session.scalars(stmt))\n\n    def find_stuck_orders(self, cutoff: datetime) -> list[Order]:\n        stmt = select(Order).where(Order.created_at < cutoff, Order.status == \"PENDING\")\n        return list(self._session.scalars(stmt))",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Repository classes keep persistence code in one place. Print the imports first, then the class definition with purpose-built query helpers.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class OrderRepository:\n    def __init__(self, session: Session) -> None:\n        self._session = session</pre></div><p class=\"mt-4 text-gray-300\">Match the spacing and blank lines so the snippet is ready to paste into a codebase.</p>",
+      "language": "python"
+    },
+    {
+      "id": 266,
+      "title": "266. Transactional Service Flow",
+      "description": "Lay out the ordered steps for a transactional order reservation use case.",
+      "initialCode": "steps = [\n    \"load order with SELECT ... FOR UPDATE\",\n    \"check inventory via inventory_gateway\",\n    \"reserve stock and update order status\",\n    \"publish OrderReserved event\",\n]\n\n# TODO: print the heading and numbered steps starting at 1\n",
+      "fullSolution": "steps = [\n    \"load order with SELECT ... FOR UPDATE\",\n    \"check inventory via inventory_gateway\",\n    \"reserve stock and update order status\",\n    \"publish OrderReserved event\",\n]\n\nprint(\"Transactional Order Flow\")\nfor index, step in enumerate(steps, start=1):\n    print(f\"{index}. {step}\")\n",
+      "expectedOutput": "Transactional Order Flow\n1. load order with SELECT ... FOR UPDATE\n2. check inventory via inventory_gateway\n3. reserve stock and update order status\n4. publish OrderReserved event",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Spell out each transactional hop so you can reason about locking, integration calls, and emitted events.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">for i, step in enumerate(steps, 1):\n    print(f\"{i}. {step}\")</pre></div><p class=\"mt-4 text-gray-300\">Number the steps to highlight the ordering inside the transaction boundary.</p>",
+      "language": "python"
+    },
+    {
+      "id": 267,
+      "title": "267. FastAPI Security Dependency Plan",
+      "description": "Summarize the key rules required to secure the order API.",
+      "initialCode": "items = [\n    \"enforce HTTPS via forwarded headers middleware\",\n    \"inject OAuth2PasswordBearer dependency for protected routes\",\n    \"require admin scope for POST /admin/**\",\n    \"permit_all for GET /status\",\n]\n\n# TODO: print the heading followed by each bullet prefixed with \"- \"\n",
+      "fullSolution": "items = [\n    \"enforce HTTPS via forwarded headers middleware\",\n    \"inject OAuth2PasswordBearer dependency for protected routes\",\n    \"require admin scope for POST /admin/**\",\n    \"permit_all for GET /status\",\n]\n\nprint(\"Security Dependency Plan\")\nfor item in items:\n    print(f\"- {item}\")\n",
+      "expectedOutput": "Security Dependency Plan\n- enforce HTTPS via forwarded headers middleware\n- inject OAuth2PasswordBearer dependency for protected routes\n- require admin scope for POST /admin/**\n- permit_all for GET /status",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Documenting FastAPI security dependencies makes it clear which endpoints demand tokens, scopes, or elevated roles.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"- require admin scope for POST /admin/**\")</pre></div><p class=\"mt-4 text-gray-300\">Keep each bullet concise so the enforcement story is easy to scan.</p>",
+      "language": "python"
+    },
+    {
+      "id": 268,
+      "title": "268. Integration Test Checklist: Order API",
+      "description": "List the container, migration, seeding, and verification steps for a full-stack test.",
+      "initialCode": "tasks = [\n    \"start PostgreSQL Testcontainer\",\n    \"apply Alembic migrations\",\n    \"seed reference products\",\n    \"call POST /orders\",\n    \"assert 201 status and Location header\",\n    \"query database for saved order\",\n]\n\n# TODO: print the heading and each bullet prefixed with \"- \"\n",
+      "fullSolution": "tasks = [\n    \"start PostgreSQL Testcontainer\",\n    \"apply Alembic migrations\",\n    \"seed reference products\",\n    \"call POST /orders\",\n    \"assert 201 status and Location header\",\n    \"query database for saved order\",\n]\n\nprint(\"Integration Test Checklist\")\nfor task in tasks:\n    print(f\"- {task}\")\n",
+      "expectedOutput": "Integration Test Checklist\n- start PostgreSQL Testcontainer\n- apply Alembic migrations\n- seed reference products\n- call POST /orders\n- assert 201 status and Location header\n- query database for saved order",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">High-signal integration tests spin up real infrastructure, hit the HTTP layer, and confirm persistence side effects.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"- start PostgreSQL Testcontainer\")</pre></div><p class=\"mt-4 text-gray-300\">List each step so a failing checklist item points straight to the culprit.</p>",
+      "language": "python"
+    },
+    {
+      "id": 269,
+      "title": "269. Docker Compose Outline: Order Service",
+      "description": "Summarize the docker-compose services, including builds, environment variables, and dependencies.",
+      "initialCode": "services = {\n    \"app\": [\"build ./\", \"env APP_ENV=prod\", \"depends_on db\"],\n    \"db\": [\"image postgres:16\", \"env POSTGRES_DB=orders\", \"volumes ./data:/var/lib/postgresql/data\"],\n}\n\n# TODO: print the docker-compose summary exactly as described\n",
+      "fullSolution": "services = {\n    \"app\": [\"build ./\", \"env APP_ENV=prod\", \"depends_on db\"],\n    \"db\": [\"image postgres:16\", \"env POSTGRES_DB=orders\", \"volumes ./data:/var/lib/postgresql/data\"],\n}\n\nprint(\"docker-compose.yml\")\nprint(\"services:\")\nfor name, details in services.items():\n    print(f\"- {name} -> {', '.join(details)}\")\n",
+      "expectedOutput": "docker-compose.yml\nservices:\n- app -> build ./, env APP_ENV=prod, depends_on db\n- db -> image postgres:16, env POSTGRES_DB=orders, volumes ./data:/var/lib/postgresql/data",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">A concise compose summary communicates how each container builds, which settings it needs, and the dependencies between services.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"- app -> build ./, env APP_ENV=prod\")</pre></div><p class=\"mt-4 text-gray-300\">Iterate in insertion order so the output mirrors the compose file.</p>",
+      "language": "python"
+    },
+    {
+      "id": 270,
+      "title": "270. CI Pipeline Stages: Order Service",
+      "description": "List the continuous integration stages needed before shipping the service.",
+      "initialCode": "stages = [\n    \"checkout\",\n    \"setup Python 3.11\",\n    \"install dependencies\",\n    \"run pytest\",\n    \"build docker image\",\n    \"push image to registry\",\n]\n\n# TODO: print the heading and numbered stages starting at 1\n",
+      "fullSolution": "stages = [\n    \"checkout\",\n    \"setup Python 3.11\",\n    \"install dependencies\",\n    \"run pytest\",\n    \"build docker image\",\n    \"push image to registry\",\n]\n\nprint(\"CI Pipeline\")\nfor index, stage in enumerate(stages, start=1):\n    print(f\"{index}. {stage}\")\n",
+      "expectedOutput": "CI Pipeline\n1. checkout\n2. setup Python 3.11\n3. install dependencies\n4. run pytest\n5. build docker image\n6. push image to registry",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Enumerate each stage so build failures point directly to checkouts, dependency setup, tests, or packaging.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">for i, stage in enumerate(stages, 1):\n    print(f\"{i}. {stage}\")</pre></div><p class=\"mt-4 text-gray-300\">Number the stages to show the promotion path toward deployable artifacts.</p>",
+      "language": "python"
+    },
+    {
+      "id": 271,
+      "title": "271. Kubernetes Deployment Snippet",
+      "description": "Output the key manifest lines for running the service on Kubernetes.",
+      "initialCode": "lines = [\n    \"apiVersion: apps/v1\",\n    \"kind: Deployment\",\n    \"metadata:\",\n    \"  name: orders-api\",\n    \"spec:\",\n    \"  replicas: 3\",\n    \"  template:\",\n    \"    spec:\",\n    \"      containers:\",\n    \"      - name: app\",\n    \"        image: ghcr.io/acme/orders-api:latest\",\n    \"        env:\",\n    \"        - name: APP_ENV\",\n    \"          value: prod\",\n]\n\n# TODO: print each line in order\n",
+      "fullSolution": "lines = [\n    \"apiVersion: apps/v1\",\n    \"kind: Deployment\",\n    \"metadata:\",\n    \"  name: orders-api\",\n    \"spec:\",\n    \"  replicas: 3\",\n    \"  template:\",\n    \"    spec:\",\n    \"      containers:\",\n    \"      - name: app\",\n    \"        image: ghcr.io/acme/orders-api:latest\",\n    \"        env:\",\n    \"        - name: APP_ENV\",\n    \"          value: prod\",\n]\n\nfor line in lines:\n    print(line)\n",
+      "expectedOutput": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: orders-api\nspec:\n  replicas: 3\n  template:\n    spec:\n      containers:\n      - name: app\n        image: ghcr.io/acme/orders-api:latest\n        env:\n        - name: APP_ENV\n          value: prod",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Indentation communicates pod structure. Capture the apiVersion, metadata, and container spec so the manifest is deploy-ready.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"kind: Deployment\")\nprint(\"  name: orders-api\")</pre></div><p class=\"mt-4 text-gray-300\">Print each line without extra spaces or missing indentation.</p>",
+      "language": "python"
+    },
+    {
+      "id": 272,
+      "title": "272. AWS Reference Stack: Orders",
+      "description": "Summarize the core AWS services powering the production deployment.",
+      "initialCode": "components = [\n    \"API Gateway -> Lambda webhook fanout\",\n    \"ECS service -> orders-api (Fargate, 3 tasks)\",\n    \"RDS cluster -> aurora-postgresql\",\n    \"SQS queue -> orders-events\",\n    \"CloudWatch alarms -> p95 latency > 500ms\",\n]\n\n# TODO: print the heading and bullet list\n",
+      "fullSolution": "components = [\n    \"API Gateway -> Lambda webhook fanout\",\n    \"ECS service -> orders-api (Fargate, 3 tasks)\",\n    \"RDS cluster -> aurora-postgresql\",\n    \"SQS queue -> orders-events\",\n    \"CloudWatch alarms -> p95 latency > 500ms\",\n]\n\nprint(\"AWS Reference Stack\")\nfor component in components:\n    print(f\"- {component}\")\n",
+      "expectedOutput": "AWS Reference Stack\n- API Gateway -> Lambda webhook fanout\n- ECS service -> orders-api (Fargate, 3 tasks)\n- RDS cluster -> aurora-postgresql\n- SQS queue -> orders-events\n- CloudWatch alarms -> p95 latency > 500ms",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Tie each AWS service to the responsibility it owns so stakeholders understand the deployment topology.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"- RDS cluster -> aurora-postgresql\")</pre></div><p class=\"mt-4 text-gray-300\">Keep the bullets concise but descriptive enough to guide on-call responders.</p>",
+      "language": "python"
+    },
+    {
+      "id": 273,
+      "title": "273. Observability Instrumentation Map",
+      "description": "Describe the metrics, logs, and traces that give production insight into orders.",
+      "initialCode": "plan = {\n    \"Metrics\": [\"order_submitted_total (counter)\", \"payment_latency_seconds (histogram)\"],\n    \"Logs\": [\"structured JSON with order_id, trace_id, status\"],\n    \"Traces\": [\"name HTTP POST /orders\", \"propagate traceparent header\"],\n}\n\n# TODO: print the heading followed by each category and its bullet items\n",
+      "fullSolution": "plan = {\n    \"Metrics\": [\"order_submitted_total (counter)\", \"payment_latency_seconds (histogram)\"],\n    \"Logs\": [\"structured JSON with order_id, trace_id, status\"],\n    \"Traces\": [\"name HTTP POST /orders\", \"propagate traceparent header\"],\n}\n\nprint(\"Observability Plan\")\nfor category, items in plan.items():\n    print(f\"{category}:\")\n    for item in items:\n        print(f\"- {item}\")\n",
+      "expectedOutput": "Observability Plan\nMetrics:\n- order_submitted_total (counter)\n- payment_latency_seconds (histogram)\nLogs:\n- structured JSON with order_id, trace_id, status\nTraces:\n- name HTTP POST /orders\n- propagate traceparent header",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Link metrics, logs, and traces so incident responders can triangulate failures quickly.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Metrics:\")\nprint(\"- order_submitted_total (counter)\")</pre></div><p class=\"mt-4 text-gray-300\">Group signals by type to highlight any instrumentation gaps.</p>",
+      "language": "python"
+    },
+    {
+      "id": 274,
+      "title": "274. Resume Bullet Transformer",
+      "description": "Convert accomplishment data into a compelling resume bullet.",
+      "initialCode": "headline = \"Scaled FastAPI order service to 120k req/min\"\nactions = [\"introducing Redis caching\", \"async fulfillment\"]\nimpact = \"cut p95 from 940ms to 210ms\"\n\n# TODO: print the heading followed by the completed resume bullet\n",
+      "fullSolution": "headline = \"Scaled FastAPI order service to 120k req/min\"\nactions = [\"introducing Redis caching\", \"async fulfillment\"]\nimpact = \"cut p95 from 940ms to 210ms\"\n\naction_text = \" and \".join(actions)\nprint(\"Resume Bullet\")\nprint(f\"{headline} by {action_text}; {impact}.\")\n",
+      "expectedOutput": "Resume Bullet\nScaled FastAPI order service to 120k req/min by introducing Redis caching and async fulfillment; cut p95 from 940ms to 210ms.",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">High-impact resume bullets lead with scale, describe the leverage you applied, and quantify the outcome.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Scaled platform X by introducing Y; improved Z.\")</pre></div><p class=\"mt-4 text-gray-300\">Join the provided fragments into one strong sentence.</p>",
+      "language": "python"
+    },
+    {
+      "id": 275,
+      "title": "275. Senior Interview Prep Sprint",
+      "description": "Draft a five-day prep plan covering system design, coding, behavioral, architecture, and negotiation drills.",
+      "initialCode": "plan = {\n    \"Day 1\": \"system design -> design global rate limiter\",\n    \"Day 2\": \"coding -> implement LRU cache in 30 min\",\n    \"Day 3\": \"behavioral -> lead incident retrospective story\",\n    \"Day 4\": \"architecture -> review service observability\",\n    \"Day 5\": \"negotiation -> target base + equity bands\",\n}\n\n# TODO: print the heading then each day entry on its own line\n",
+      "fullSolution": "plan = {\n    \"Day 1\": \"system design -> design global rate limiter\",\n    \"Day 2\": \"coding -> implement LRU cache in 30 min\",\n    \"Day 3\": \"behavioral -> lead incident retrospective story\",\n    \"Day 4\": \"architecture -> review service observability\",\n    \"Day 5\": \"negotiation -> target base + equity bands\",\n}\n\nprint(\"Interview Prep Sprint\")\nfor day, focus in plan.items():\n    print(f\"{day}: {focus}\")\n",
+      "expectedOutput": "Interview Prep Sprint\nDay 1: system design -> design global rate limiter\nDay 2: coding -> implement LRU cache in 30 min\nDay 3: behavioral -> lead incident retrospective story\nDay 4: architecture -> review service observability\nDay 5: negotiation -> target base + equity bands",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Plan a focused prep sprint so you rotate through every interview discipline without last-minute panic.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Day 1: system design -> practice high-scale feeds\")</pre></div><p class=\"mt-4 text-gray-300\">Keep the schedule ordered so it doubles as a checklist during prep week.</p>",
+      "language": "python"
     }
   ]
 }

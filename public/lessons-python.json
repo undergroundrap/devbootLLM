@@ -3070,6 +3070,76 @@
       "fullSolution": "import asyncio\n\nasync def backend(name, delay):\n    await asyncio.sleep(delay)\n    if name == \"api\":\n        raise RuntimeError(\"api down\")\n    return f\"{name} ok\"\n\nasync def main():\n    try:\n        async with asyncio.TaskGroup() as tg:\n            tg.create_task(backend(\"api\", 0.01))\n            tg.create_task(backend(\"cache\", 0.05))\n    except* RuntimeError as group:\n        first = group.exceptions[0]\n        print(first.args[0])\n\nasyncio.run(main())\n",
       "expectedOutput": "api down",
       "tutorial": "<p class=\"mb-4 text-gray-300\">When a <code>TaskGroup</code> member fails, Python raises an <code>ExceptionGroup</code>. Use <code>except*</code> to handle only the relevant exception types and introspect their messages.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">try:\n    async with asyncio.TaskGroup() as tg:\n        tg.create_task(do_work())\nexcept* ValueError as group:\n    for exc in group.exceptions:\n        log(exc)\n</pre></div>\n<p class=\"mt-4 text-gray-300\">This keeps error paths explicit while TaskGroup cancels any surviving coroutines for you.</p>"
+    },
+    {
+      "id": 301,
+      "title": "301. Pyproject Dependency Summary",
+      "language": "python",
+      "description": "Summarize runtime and dev dependencies plus the build backend for a pyproject.toml entry.",
+      "initialCode": "project = {\n    \"name\": \"inventory-api\",\n    \"version\": \"1.2.0\",\n    \"runtime\": [\n        \"fastapi>=0.110\",\n        \"uvicorn[standard]>=0.29\",\n    ],\n    \"dev\": [\n        \"pytest\",\n        \"mypy\",\n        \"ruff\",\n    ],\n    \"build_backend\": \"setuptools.build_meta\",\n}\n\n# TODO: print the summary in the exact format:\n# Pyproject Summary\n# Name: inventory-api\n# Version: 1.2.0\n# Runtime deps:\n# - fastapi>=0.110\n# - uvicorn[standard]>=0.29\n# Dev deps:\n# - pytest\n# - mypy\n# - ruff\n# Build backend: setuptools.build_meta\n",
+      "fullSolution": "project = {\n    \"name\": \"inventory-api\",\n    \"version\": \"1.2.0\",\n    \"runtime\": [\n        \"fastapi>=0.110\",\n        \"uvicorn[standard]>=0.29\",\n    ],\n    \"dev\": [\n        \"pytest\",\n        \"mypy\",\n        \"ruff\",\n    ],\n    \"build_backend\": \"setuptools.build_meta\",\n}\n\nprint(\"Pyproject Summary\")\nprint(f\"Name: {project['name']}\")\nprint(f\"Version: {project['version']}\")\nprint(\"Runtime deps:\")\nfor dep in project[\"runtime\"]:\n    print(f\"- {dep}\")\nprint(\"Dev deps:\")\nfor dep in project[\"dev\"]:\n    print(f\"- {dep}\")\nprint(f\"Build backend: {project['build_backend']}\")\n",
+      "expectedOutput": "Pyproject Summary\nName: inventory-api\nVersion: 1.2.0\nRuntime deps:\n- fastapi>=0.110\n- uvicorn[standard]>=0.29\nDev deps:\n- pytest\n- mypy\n- ruff\nBuild backend: setuptools.build_meta",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Surface runtime versus development dependencies so reviewers can spot environment drift before release.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Tip:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Runtime deps:\")</pre></div>"
+    },
+    {
+      "id": 302,
+      "title": "302. Wheel Release Checklist",
+      "language": "python",
+      "description": "Lay out the exact commands for building and publishing a wheel to PyPI.",
+      "initialCode": "steps = [\n    (\"Environment\", \"python -m pip install --upgrade build twine\"),\n    (\"Build\", \"python -m build\"),\n    (\"Verify\", \"python -m twine check dist/*\"),\n    (\"Publish\", \"python -m twine upload dist/*\"),\n]\n\n# TODO: print the heading and numbered steps exactly as required:\n# Wheel Release Checklist\n# 1. Environment: python -m pip install --upgrade build twine\n# 2. Build: python -m build\n# 3. Verify: python -m twine check dist/*\n# 4. Publish: python -m twine upload dist/*\n",
+      "fullSolution": "steps = [\n    (\"Environment\", \"python -m pip install --upgrade build twine\"),\n    (\"Build\", \"python -m build\"),\n    (\"Verify\", \"python -m twine check dist/*\"),\n    (\"Publish\", \"python -m twine upload dist/*\"),\n]\n\nprint(\"Wheel Release Checklist\")\nfor index, (label, command) in enumerate(steps, start=1):\n    print(f\"{index}. {label}: {command}\")\n",
+      "expectedOutput": "Wheel Release Checklist\n1. Environment: python -m pip install --upgrade build twine\n2. Build: python -m build\n3. Verify: python -m twine check dist/*\n4. Publish: python -m twine upload dist/*",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Pair each stage name with the exact command so release engineers can copy and execute without guesswork.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Reminder:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">for index, step in enumerate(steps, start=1):</pre></div>"
+    },
+    {
+      "id": 303,
+      "title": "303. Mypy Strict Profile",
+      "language": "python",
+      "description": "Print a strict type-checking profile highlighting the most important flags.",
+      "initialCode": "config = {\n    \"python_version\": \"3.12\",\n    \"disallow_untyped_defs\": True,\n    \"warn_return_any\": True,\n    \"warn_unused_ignores\": True,\n    \"plugins\": [\"pydantic.mypy\"],\n}\n\n# TODO: print the profile in the exact format:\n# Mypy Strict Profile\n# Python version: 3.12\n# Disallow untyped defs: True\n# Warn return any: True\n# Warn unused ignores: True\n# Plugins:\n# - pydantic.mypy\n",
+      "fullSolution": "config = {\n    \"python_version\": \"3.12\",\n    \"disallow_untyped_defs\": True,\n    \"warn_return_any\": True,\n    \"warn_unused_ignores\": True,\n    \"plugins\": [\"pydantic.mypy\"],\n}\n\nprint(\"Mypy Strict Profile\")\nprint(f\"Python version: {config['python_version']}\")\nprint(f\"Disallow untyped defs: {config['disallow_untyped_defs']}\")\nprint(f\"Warn return any: {config['warn_return_any']}\")\nprint(f\"Warn unused ignores: {config['warn_unused_ignores']}\")\nprint(\"Plugins:\")\nfor plugin in config[\"plugins\"]:\n    print(f\"- {plugin}\")\n",
+      "expectedOutput": "Mypy Strict Profile\nPython version: 3.12\nDisallow untyped defs: True\nWarn return any: True\nWarn unused ignores: True\nPlugins:\n- pydantic.mypy",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Document the strict flags so the whole team aligns on the safety net enforced by CI.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Plugins:\")</pre></div>"
+    },
+    {
+      "id": 304,
+      "title": "304. Pytest Fixture & Parametrization",
+      "language": "python",
+      "description": "Produce a pytest example that combines a reusable fixture with a parametrized test.",
+      "initialCode": "lines = [\n    \"import pytest\",\n    \"\",\n    \"@pytest.fixture\",\n    \"def api_client():\",\n    \"    return {\\\"base_url\\\": \\\"http://localhost:8000\\\"}\",\n    \"\",\n    \"@pytest.mark.parametrize('status_code', [200, 503])\",\n    \"def test_health_check(api_client, status_code):\",\n    \"    assert status_code in (200, 503)\",\n    \"    assert api_client['base_url'].startswith('http://')\",\n]\n\n# TODO: join the lines with newlines and print the result\n",
+      "fullSolution": "lines = [\n    \"import pytest\",\n    \"\",\n    \"@pytest.fixture\",\n    \"def api_client():\",\n    \"    return {\\\"base_url\\\": \\\"http://localhost:8000\\\"}\",\n    \"\",\n    \"@pytest.mark.parametrize('status_code', [200, 503])\",\n    \"def test_health_check(api_client, status_code):\",\n    \"    assert status_code in (200, 503)\",\n    \"    assert api_client['base_url'].startswith('http://')\",\n]\n\nprint(\"\\n\".join(lines))\n",
+      "expectedOutput": "import pytest\n\n@pytest.fixture\ndef api_client():\n    return {\"base_url\": \"http://localhost:8000\"}\n\n@pytest.mark.parametrize('status_code', [200, 503])\ndef test_health_check(api_client, status_code):\n    assert status_code in (200, 503)\n    assert api_client['base_url'].startswith('http://')",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Show the fixture, parametrization, and assertions together so reviewers see the whole testing pattern at a glance.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"\n\".join(lines))</pre></div>"
+    },
+    {
+      "id": 305,
+      "title": "305. multiprocessing Pool Sum",
+      "language": "python",
+      "description": "Use multiprocessing.Pool to square numbers across workers and print the total.",
+      "initialCode": "from multiprocessing import Pool\n\nnumbers = [1, 2, 3, 4, 5]\n\n\ndef square(value: int) -> int:\n    return value * value\n\n\nif __name__ == \"__main__\":\n    # TODO: map the square function across the numbers with a Pool and print the sum\n    pass\n",
+      "fullSolution": "from multiprocessing import Pool\n\nnumbers = [1, 2, 3, 4, 5]\n\n\ndef square(value: int) -> int:\n    return value * value\n\n\nif __name__ == \"__main__\":\n    with Pool(processes=2) as pool:\n        results = pool.map(square, numbers)\n    print(sum(results))\n",
+      "expectedOutput": "55",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Always guard Pool work with <code>if __name__ == \"__main__\"</code> so Windows and macOS spawn workers safely.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Reminder:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">with Pool(processes=2) as pool:</pre></div>"
+    },
+    {
+      "id": 306,
+      "title": "306. logging.dictConfig",
+      "language": "python",
+      "description": "Apply a dictConfig definition and emit a log line from the deploy logger.",
+      "initialCode": "import logging\nimport logging.config\n\nconfig = {\n    \"version\": 1,\n    \"disable_existing_loggers\": False,\n    \"formatters\": {\n        \"standard\": {\"format\": \"%(levelname)s:%(name)s:%(message)s\"}\n    },\n    \"handlers\": {\n        \"console\": {\n            \"class\": \"logging.StreamHandler\",\n            \"formatter\": \"standard\",\n            \"level\": \"INFO\",\n        }\n    },\n    \"loggers\": {\n        \"deploy\": {\n            \"handlers\": [\"console\"],\n            \"level\": \"INFO\",\n        }\n    },\n}\n\n# TODO: apply the config and log \"ready\" via the deploy logger\n",
+      "fullSolution": "import logging\nimport logging.config\n\nconfig = {\n    \"version\": 1,\n    \"disable_existing_loggers\": False,\n    \"formatters\": {\n        \"standard\": {\"format\": \"%(levelname)s:%(name)s:%(message)s\"}\n    },\n    \"handlers\": {\n        \"console\": {\n            \"class\": \"logging.StreamHandler\",\n            \"formatter\": \"standard\",\n            \"level\": \"INFO\",\n        }\n    },\n    \"loggers\": {\n        \"deploy\": {\n            \"handlers\": [\"console\"],\n            \"level\": \"INFO\",\n        }\n    },\n}\n\nlogging.config.dictConfig(config)\nlogger = logging.getLogger(\"deploy\")\nlogger.info(\"ready\")\n",
+      "expectedOutput": "INFO:deploy:ready",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">dictConfig lets you ship logging policy as data so ops can override handlers without code edits.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Snippet:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">logging.config.dictConfig(config)</pre></div>"
+    },
+    {
+      "id": 307,
+      "title": "307. typing.Annotated Summary",
+      "language": "python",
+      "description": "Inspect Annotated metadata with get_type_hints(include_extras=True) and report each entry.",
+      "initialCode": "from typing import Annotated, get_args, get_type_hints\n\n\ndef schedule(\n    hours: Annotated[int, \"per_week\"],\n    location: Annotated[str, \"timezone\"],\n) -> Annotated[str, \"label\"]:\n    return f\"{hours}h@{location}\"\n\n\n# TODO: print the annotated summary exactly as shown:\n# Annotated Summary\n# hours -> int ['per_week']\n# location -> str ['timezone']\n# return -> str ['label']\n",
+      "fullSolution": "from typing import Annotated, get_args, get_type_hints\n\n\ndef schedule(\n    hours: Annotated[int, \"per_week\"],\n    location: Annotated[str, \"timezone\"],\n) -> Annotated[str, \"label\"]:\n    return f\"{hours}h@{location}\"\n\n\ndef describe(name: str, annotated):\n    base, *meta = get_args(annotated)\n    print(f\"{name} -> {base.__name__} {meta}\")\n\nprint(\"Annotated Summary\")\nfor field in (\"hours\", \"location\", \"return\"):\n    describe(field, get_type_hints(schedule, include_extras=True)[field])\n",
+      "expectedOutput": "Annotated Summary\nhours -> int ['per_week']\nlocation -> str ['timezone']\nreturn -> str ['label']",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">include_extras keeps the metadata attached to Annotated types, which is invaluable for validators and documentation generators.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">base, *meta = get_args(annotated)</pre></div>"
     }
   ]
 }

@@ -747,7 +747,7 @@
       "initialCode": "source = 'feature/landing'\ntarget = 'main'\nconflicted_files = ['templates/home.html', 'static/site.css']\n\n# Print commands: checkout target, merge source, edit each conflicted file placeholder, then continue the merge\n",
       "fullSolution": "source = 'feature/landing'\ntarget = 'main'\nconflicted_files = ['templates/home.html', 'static/site.css']\n\nprint(f'git checkout {target}')\nprint(f'git merge {source}')\nfor path in conflicted_files:\n    print(f'# resolve conflicts in {path}')\nprint('git add ' + ' '.join(conflicted_files))\nprint('git commit --no-edit')\n",
       "expectedOutput": "git checkout main\ngit merge feature/landing\n# resolve conflicts in templates/home.html\n# resolve conflicts in static/site.css\ngit add templates/home.html static/site.css\ngit commit --no-edit",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Walk through the steps required after a merge conflict: switch, merge, edit, stage, and commit.</p>",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Walk through the steps required after a merge conflict: switch, merge, edit, stage, and commit.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">git checkout main\ngit merge feature/landing\n# resolve conflicts in templates/home.html\n# resolve conflicts in static/site.css\ngit add templates/home.html static/site.css\ngit commit --no-edit</pre></div>\n<p class=\"mt-4 text-gray-300\">Narrate the manual edits so reviewers know every file you touched before you wrap the merge.</p>",
       "tags": [
         "Git",
         "Workflow"
@@ -761,7 +761,7 @@
       "initialCode": "target_branch = 'release/1.2'\ncommits = ['feat-a1', 'fix-a2']\n\n# Print commands to checkout, cherry-pick each commit, then verify with git log --oneline\n",
       "fullSolution": "target_branch = 'release/1.2'\ncommits = ['feat-a1', 'fix-a2']\n\nprint(f'git checkout {target_branch}')\nfor commit in commits:\n    print(f'git cherry-pick {commit}')\nprint('git log --oneline -5')\n",
       "expectedOutput": "git checkout release/1.2\ngit cherry-pick feat-a1\ngit cherry-pick fix-a2\ngit log --oneline -5",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Cherry-picking replays specific commits. Planning the sequence helps avoid surprises when targeting release branches.</p>",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Cherry-picking replays specific commits. Planning the sequence helps avoid surprises when targeting release branches.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">git checkout release/1.2\ngit cherry-pick feat-a1\ngit cherry-pick fix-a2\ngit log --oneline -5</pre></div>\n<p class=\"mt-4 text-gray-300\">Include the verification command so others can double-check the history before tagging.</p>",
       "tags": [
         "Git",
         "Workflow"
@@ -1155,7 +1155,7 @@
       "initialCode": "app_py = \"\"\"from flask import Flask, render_template\\n\\napp = Flask(__name__)\\n\\n@app.route('/')\\ndef index():\\n    return render_template('index.html', items=[])\\n\"\"\"\n\nindex_html = \"\"\"<!DOCTYPE html>\\n<html lang='en'>\\n<head><meta charset='utf-8'><title>Inventory</title></head>\\n<body>\\n    <h1>Inventory</h1>\\n    {% if items %}\\n        <ul>{% for item in items %}<li>{{ item }}</li>{% endfor %}</ul>\\n    {% else %}<p>No items yet.</p>{% endif %}\\n</body>\\n</html>\\n\"\"\"\n\n# Print file -> snippet mapping\n",
       "fullSolution": "app_py = \"\"\"from flask import Flask, render_template\\n\\napp = Flask(__name__)\\n\\n@app.route('/')\\ndef index():\\n    return render_template('index.html', items=[])\\n\"\"\"\n\nindex_html = \"\"\"<!DOCTYPE html>\\n<html lang='en'>\\n<head><meta charset='utf-8'><title>Inventory</title></head>\\n<body>\\n    <h1>Inventory</h1>\\n    {% if items %}\\n        <ul>{% for item in items %}<li>{{ item }}</li>{% endfor %}</ul>\\n    {% else %}<p>No items yet.</p>{% endif %}\\n</body>\\n</html>\\n\"\"\"\n\nprint('app.py ->')\nprint(app_py.strip())\nprint('templates/index.html ->')\nprint(index_html.strip())\n",
       "expectedOutput": "app.py ->\nfrom flask import Flask, render_template\n\napp = Flask(__name__)\n\n@app.route('/')\ndef index():\n    return render_template('index.html', items=[])\ntemplates/index.html ->\n<!DOCTYPE html>\n<html lang='en'>\n<head><meta charset='utf-8'><title>Inventory</title></head>\n<body>\n    <h1>Inventory</h1>\n    {% if items %}\n        <ul>{% for item in items %}<li>{{ item }}</li>{% endfor %}</ul>\n    {% else %}<p>No items yet.</p>{% endif %}\n</body>\n</html>",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Provide the starter files so learners can launch the project immediately after planning.</p>",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Provide the starter files so learners can launch the project immediately after planning.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">app.py ->\nfrom flask import Flask, render_template\n\napp = Flask(__name__)\n\n@app.route('/')\ndef index():\n    return render_template('index.html', items=[])\ntemplates/index.html ->\n&lt;!DOCTYPE html&gt;\n&lt;html lang='en'&gt;\n&lt;head&gt;&lt;meta charset='utf-8'&gt;&lt;title&gt;Inventory&lt;/title&gt;&lt;/head&gt;\n&lt;body&gt;\n    &lt;h1&gt;Inventory&lt;/h1&gt;\n&lt;/body&gt;\n&lt;/html&gt;</pre></div>\n<p class=\"mt-4 text-gray-300\">Show the minimal skeleton and teammates will extend it with their own routes and templates.</p>",
       "tags": [
         "Flask",
         "Project"
@@ -1169,7 +1169,7 @@
       "initialCode": "project = 'inventory_app'\n\n# Print export/set commands and flask run\n",
       "fullSolution": "project = 'inventory_app'\n\nprint(f'export FLASK_APP={project}.app')\nprint('export FLASK_ENV=development')\nprint('flask run')\n",
       "expectedOutput": "export FLASK_APP=inventory_app.app\nexport FLASK_ENV=development\nflask run",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Capturing the standard run commands helps teammates boot the app without hunting through docs.</p>",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Capturing the standard run commands helps teammates boot the app without hunting through docs.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">export FLASK_APP=inventory_app.app\nexport FLASK_ENV=development\nflask run</pre></div>\n<p class=\"mt-4 text-gray-300\">Document the environment exports alongside the run command to eliminate onboarding guesswork.</p>",
       "tags": [
         "Flask",
         "Tooling"
@@ -1183,7 +1183,7 @@
       "initialCode": "tasks = [\n    'git checkout main',\n    'git merge feature/inventory-table',\n    'git cherry-pick fix-hotkey',\n    'pytest',\n    'flask run'\n]\n\n# Print each task numbered starting from 1\n",
       "fullSolution": "tasks = [\n    'git checkout main',\n    'git merge feature/inventory-table',\n    'git cherry-pick fix-hotkey',\n    'pytest',\n    'flask run'\n]\n\nfor i, step in enumerate(tasks, start=1):\n    print(f\"{i}. {step}\")\n",
       "expectedOutput": "1. git checkout main\n2. git merge feature/inventory-table\n3. git cherry-pick fix-hotkey\n4. pytest\n5. flask run",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Capstones knit together the Git workflows and project scripts you just practiced. Turn them into a numbered checklist so handoffs stay organized.</p>",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Capstones knit together the Git workflows and project scripts you just practiced. Turn them into a numbered checklist so handoffs stay organized.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">1. git checkout main\n2. git merge feature/inventory-table\n3. git cherry-pick fix-hotkey\n4. pytest\n5. flask run</pre></div>\n<p class=\"mt-4 text-gray-300\">Keep the verb at the front of each line so ops can skim for the next action.</p>",
       "tags": [
         "Git",
         "Workflow",
@@ -1198,7 +1198,7 @@
       "initialCode": "project = 'inventory_app'\n\n# Print pip install, export FLASK_APP, then gunicorn command\n",
       "fullSolution": "project = 'inventory_app'\n\nprint('pip install gunicorn')\nprint(f\"export FLASK_APP={project}.app\")\nprint('gunicorn -w 4 -b 0.0.0.0:8000 app:app')\n",
       "expectedOutput": "pip install gunicorn\nexport FLASK_APP=inventory_app.app\ngunicorn -w 4 -b 0.0.0.0:8000 app:app",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Gunicorn is the go-to WSGI server for production Flask apps. Always pin the module path (app:app) and bind to the address your platform provides.</p>",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Gunicorn is the go-to WSGI server for production Flask apps. Always pin the module path (app:app) and bind to the address your platform provides.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">pip install gunicorn\nexport FLASK_APP=inventory_app.app\ngunicorn -w 4 -b 0.0.0.0:8000 app:app</pre></div>\n<p class=\"mt-4 text-gray-300\">Pair the install, config, and launch commands so the handoff reads like a miniature runbook.</p>",
       "tags": [
         "Flask",
         "Deployment"
@@ -1212,7 +1212,7 @@
       "initialCode": "commands = [\n    'export FLASK_APP=inventory_app.app',\n    'pytest tests/test_smoke.py',\n    'curl -f http://localhost:8000/health'\n]\n\n# Print commands in order\n",
       "fullSolution": "commands = [\n    'export FLASK_APP=inventory_app.app',\n    'pytest tests/test_smoke.py',\n    'curl -f http://localhost:8000/health'\n]\n\nfor cmd in commands:\n    print(cmd)\n",
       "expectedOutput": "export FLASK_APP=inventory_app.app\npytest tests/test_smoke.py\ncurl -f http://localhost:8000/health",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Always follow deployment with automated smoke tests and a quick HTTP probe. Fail fast if routes or environment variables are misconfigured.</p>",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Always follow deployment with automated smoke tests and a quick HTTP probe. Fail fast if routes or environment variables are misconfigured.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">export FLASK_APP=inventory_app.app\npytest tests/test_smoke.py\ncurl -f http://localhost:8000/health</pre></div>\n<p class=\"mt-4 text-gray-300\">These checks catch both Python exceptions and missing infra wiring before customers notice.</p>",
       "tags": [
         "Flask",
         "Testing",
@@ -2820,6 +2820,56 @@
       "expectedOutput": "Interview Prep Sprint\nDay 1: system design -> design global rate limiter\nDay 2: coding -> implement LRU cache in 30 min\nDay 3: behavioral -> lead incident retrospective story\nDay 4: architecture -> review service observability\nDay 5: negotiation -> target base + equity bands",
       "tutorial": "<p class=\"mb-4 text-gray-300\">Plan a focused prep sprint so you rotate through every interview discipline without last-minute panic.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Day 1: system design -> practice high-scale feeds\")</pre></div><p class=\"mt-4 text-gray-300\">Keep the schedule ordered so it doubles as a checklist during prep week.</p>",
       "language": "python"
+    },
+    {
+      "id": 276,
+      "title": "276. Error Budget Dashboard Row",
+      "language": "python",
+      "description": "Given counts and budget limits, compute the current error rate and how much budget remains, then print the report.",
+      "initialCode": "service = \"auth-api\"\ntotal_requests = 100000\nallowed_error_budget_pct = 2.0\nobserved_errors = 420\n\n# TODO: calculate the error rate and remaining budget, then print each line of the summary\n",
+      "fullSolution": "service = \"auth-api\"\ntotal_requests = 100000\nallowed_error_budget_pct = 2.0\nobserved_errors = 420\n\nerror_rate = (observed_errors / total_requests) * 100\nbudget_remaining = allowed_error_budget_pct - error_rate\n\nprint(f\"Service: {service}\")\nprint(f\"Requests: {total_requests}\")\nprint(f\"Errors: {observed_errors}\")\nprint(f\"Error Rate: {error_rate:.2f}%\")\nprint(f\"Budget Remaining: {budget_remaining:.2f}%\")\n",
+      "expectedOutput": "Service: auth-api\nRequests: 100000\nErrors: 420\nError Rate: 0.42%\nBudget Remaining: 1.58%",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">SLO dashboards track how quickly you burn through the allowed failure budget. Turn the counts into percentages so leadership can react before the budget hits zero.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">error_rate = (failures / requests) * 100\nprint(f\"Error Rate: {error_rate:.2f}%\")</pre></div><p class=\"mt-4 text-gray-300\">Format with two decimal places to match how SRE teams report weekly burn.</p>"
+    },
+    {
+      "id": 277,
+      "title": "277. Incident Timeline Reporter",
+      "language": "python",
+      "description": "Print a minute-by-minute incident log by iterating through the provided events.",
+      "initialCode": "events = [\n    (\"07:05\", \"PagerDuty triggered for elevated 5xx\"),\n    (\"07:09\", \"Incident commander assigned\"),\n    (\"07:14\", \"Rolled back payment service\"),\n    (\"07:21\", \"Error rates normalized\"),\n]\n\n# TODO: print the heading then each time and note, formatted with a dash\n",
+      "fullSolution": "events = [\n    (\"07:05\", \"PagerDuty triggered for elevated 5xx\"),\n    (\"07:09\", \"Incident commander assigned\"),\n    (\"07:14\", \"Rolled back payment service\"),\n    (\"07:21\", \"Error rates normalized\"),\n]\n\nprint(\"Incident Timeline\")\nfor timestamp, note in events:\n    print(f\"{timestamp} - {note}\")\n",
+      "expectedOutput": "Incident Timeline\n07:05 - PagerDuty triggered for elevated 5xx\n07:09 - Incident commander assigned\n07:14 - Rolled back payment service\n07:21 - Error rates normalized",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Operational reviews rely on clear timelines. Loop through each (time, note) pair and unpack it inside the for loop header.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">for time, message in updates:\n    print(f\"{time} - {message}\")</pre></div><p class=\"mt-4 text-gray-300\">A heading line makes it easy to paste into a post-incident document.</p>"
+    },
+    {
+      "id": 278,
+      "title": "278. Canary Analysis Summary",
+      "language": "python",
+      "description": "Compare baseline and canary metrics and print the delta for each signal to decide whether to promote the release.",
+      "initialCode": "metrics = {\n    \"latency_p95_ms\": {\"baseline\": 340, \"canary\": 360},\n    \"error_rate_pct\": {\"baseline\": 0.7, \"canary\": 0.9},\n    \"cpu_pct\": {\"baseline\": 52, \"canary\": 49},\n}\n\n# TODO: print a heading then each metric with baseline, canary, and the signed delta\n",
+      "fullSolution": "metrics = {\n    \"latency_p95_ms\": {\"baseline\": 340, \"canary\": 360},\n    \"error_rate_pct\": {\"baseline\": 0.7, \"canary\": 0.9},\n    \"cpu_pct\": {\"baseline\": 52, \"canary\": 49},\n}\n\nprint(\"Canary Analysis\")\nfor metric, values in metrics.items():\n    delta = values[\"canary\"] - values[\"baseline\"]\n    print(f\"{metric}: baseline={values['baseline']}, canary={values['canary']}, delta={delta:+.2f}\")\n",
+      "expectedOutput": "Canary Analysis\nlatency_p95_ms: baseline=340, canary=360, delta=+20.00\nerror_rate_pct: baseline=0.7, canary=0.9, delta=+0.20\ncpu_pct: baseline=52, canary=49, delta=-3.00",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Canary reports highlight how much the new version deviates from the last stable build. Calculating a signed delta quickly shows regressions.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">delta = values[\"canary\"] - values[\"baseline\"]\nprint(f\"delta={delta:+.2f}\")</pre></div><p class=\"mt-4 text-gray-300\">The <code>+</code> flag keeps the + or - sign so reviewers know the direction of change.</p>"
+    },
+    {
+      "id": 279,
+      "title": "279. Feature Flag Rollout Planner",
+      "language": "python",
+      "description": "Transform the staged rollout data into a readable execution checklist.",
+      "initialCode": "flag_name = \"checkout_redesign\"\npercentages = [5, 25, 50, 100]\nnotes = [\n    \"internal users only\",\n    \"beta cohort rollout\",\n    \"enable for all EU traffic\",\n    \"global enablement\",\n]\n\n# TODO: print the plan header, the flag name, then each stage with percentage and note\n",
+      "fullSolution": "flag_name = \"checkout_redesign\"\npercentages = [5, 25, 50, 100]\nnotes = [\n    \"internal users only\",\n    \"beta cohort rollout\",\n    \"enable for all EU traffic\",\n    \"global enablement\",\n]\n\nprint(\"Feature Flag Plan\")\nprint(f\"Flag: {flag_name}\")\nfor index, note in enumerate(notes):\n    rollout_pct = percentages[index]\n    print(f\"Stage {index + 1}: {rollout_pct}% - {note}\")\n",
+      "expectedOutput": "Feature Flag Plan\nFlag: checkout_redesign\nStage 1: 5% - internal users only\nStage 2: 25% - beta cohort rollout\nStage 3: 50% - enable for all EU traffic\nStage 4: 100% - global enablement",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Staged rollouts help you gate new experiences. Enumerate each step so on-call engineers know the precise order.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">for index, pct in enumerate(percentages):\n    print(f\"Stage {index + 1}: {pct}%\")</pre></div><p class=\"mt-4 text-gray-300\">Pair the percentage with the human-readable note to create a one-glance plan.</p>"
+    },
+    {
+      "id": 280,
+      "title": "280. Capacity Forecast Table",
+      "language": "python",
+      "description": "Project request-per-second capacity across the next three quarters using the provided growth rates.",
+      "initialCode": "current_rps = 1800\ngrowth_rates = [0.15, 0.22, 0.18]\nplanning_horizon = [\"Q1\", \"Q2\", \"Q3\"]\n\n# TODO: print a heading then loop through the horizon, compounding growth each step\n",
+      "fullSolution": "current_rps = 1800\ngrowth_rates = [0.15, 0.22, 0.18]\nplanning_horizon = [\"Q1\", \"Q2\", \"Q3\"]\n\nprint(\"Capacity Forecast\")\nprojected = current_rps\nfor period, rate in zip(planning_horizon, growth_rates):\n    projected *= 1 + rate\n    print(f\"{period}: {round(projected)} rps\")\n",
+      "expectedOutput": "Capacity Forecast\nQ1: 2070 rps\nQ2: 2525 rps\nQ3: 2980 rps",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Traffic rarely stays flat. Compound each growth rate so leadership can size hardware orders before you hit the wall.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">projected *= 1 + rate\nprint(round(projected))</pre></div><p class=\"mt-4 text-gray-300\">Use <code>zip()</code> to advance through periods and growth rates in lockstep.</p>"
     }
   ]
 }

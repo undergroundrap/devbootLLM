@@ -3010,6 +3010,26 @@
       "fullSolution": "import asyncio\nfrom contextlib import AsyncExitStack, asynccontextmanager\n\n@asynccontextmanager\nasync def connect(name):\n    await asyncio.sleep(0.01)\n    try:\n        yield name\n    finally:\n        await asyncio.sleep(0.01)\n\nasync def main():\n    async with AsyncExitStack() as stack:\n        primary = await stack.enter_async_context(connect(\"primary\"))\n        replica = await stack.enter_async_context(connect(\"replica\"))\n        print(f\"{primary},{replica}\")\n\nasyncio.run(main())\n",
       "expectedOutput": "primary,replica",
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>AsyncExitStack</code> lets you dynamically compose multiple async context managers while guaranteeing cleanup in reverse order.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from contextlib import AsyncExitStack\n\nasync with AsyncExitStack() as stack:\n    conn = await stack.enter_async_context(connect(\"primary\"))</pre></div>"
+    },
+    {
+      "id": 295,
+      "title": "295. asyncio.Condition queue",
+      "language": "python",
+      "description": "Coordinate a producer and consumer with asyncio.Condition and print items as they are consumed.",
+      "initialCode": "import asyncio\n\nasync def main():\n    cond = asyncio.Condition()\n    queue = []\n\n    async def producer():\n        for item in [1, 2, 3, None]:\n            async with cond:\n                queue.append(item)\n                cond.notify_all()\n            await asyncio.sleep(0.01)\n\n    async def consumer():\n        while True:\n            async with cond:\n                while not queue:\n                    await cond.wait()\n                item = queue.pop(0)\n            if item is None:\n                print(\"done\")\n                return\n            print(item)\n\n    # TODO: run producer and consumer and wait for them to finish\n    pass\n\nasyncio.run(main())\n",
+      "fullSolution": "import asyncio\n\nasync def main():\n    cond = asyncio.Condition()\n    queue = []\n\n    async def producer():\n        for item in [1, 2, 3, None]:\n            async with cond:\n                queue.append(item)\n                cond.notify_all()\n            await asyncio.sleep(0.01)\n\n    async def consumer():\n        while True:\n            async with cond:\n                while not queue:\n                    await cond.wait()\n                item = queue.pop(0)\n            if item is None:\n                print(\"done\")\n                return\n            print(item)\n\n    await asyncio.gather(producer(), consumer())\n\nasyncio.run(main())\n",
+      "expectedOutput": "1\n2\n3\ndone",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>asyncio.Condition</code> when you need both mutual exclusion and a notification channel. Producers append work, call <code>notify_all()</code>, and consumers loop until the shared predicate becomes true.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">async with cond:\n    while not ready:\n        await cond.wait()\n    process()</pre></div>"
+    },
+    {
+      "id": 296,
+      "title": "296. asyncio.to_thread offload",
+      "language": "python",
+      "description": "Offload a blocking function to a worker thread with asyncio.to_thread and print its result.",
+      "initialCode": "import asyncio\nimport time\n\ndef blocking():\n    time.sleep(0.05)\n    return \"OK\"\n\nasync def main():\n    # TODO: call blocking() without blocking the loop and print the result\n    pass\n\nasyncio.run(main())\n",
+      "fullSolution": "import asyncio\nimport time\n\ndef blocking():\n    time.sleep(0.05)\n    return \"OK\"\n\nasync def main():\n    result = await asyncio.to_thread(blocking)\n    print(result)\n\nasyncio.run(main())\n",
+      "expectedOutput": "OK",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>asyncio.to_thread</code> to run blocking callables in a thread pool without freezing the event loop.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">result = await asyncio.to_thread(open, \"data.txt\", \"r\")</pre></div>"
     }
   ]
 }

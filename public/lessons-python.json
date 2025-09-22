@@ -1509,7 +1509,7 @@
       "initialCode": "import sqlite3\n\n# Create an in-memory DB, a table nums(v INT), insert 1,2,3\n# Query SELECT SUM(v) and print the result\n\n",
       "fullSolution": "import sqlite3\n\ncon = sqlite3.connect(':memory:')\ncur = con.cursor()\ncur.execute('CREATE TABLE nums(v INT)')\ncur.executemany('INSERT INTO nums(v) VALUES (?)', [(1,),(2,),(3,)])\ncur.execute('SELECT SUM(v) FROM nums')\nprint(cur.fetchone()[0])\ncon.close()\n",
       "expectedOutput": "6",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Use SQLite for quick relational queries in-memory\u00e2\u20ac\u201dgreat for ETL-style tasks and prototypes.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import sqlite3\ncon = sqlite3.connect(':memory:')\ncon.execute('CREATE TABLE t(x)')\ncon.execute('INSERT INTO t VALUES (42)')\nprint(con.execute('SELECT x FROM t').fetchone()[0])</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use SQLite for quick relational queries in-memoryâ€”great for ETL-style tasks and prototypes.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import sqlite3\ncon = sqlite3.connect(':memory:')\ncon.execute('CREATE TABLE t(x)')\ncon.execute('INSERT INTO t VALUES (42)')\nprint(con.execute('SELECT x FROM t').fetchone()[0])</pre></div>"
     },
     {
       "id": 145,
@@ -1529,7 +1529,7 @@
       "initialCode": "import struct\n\n# Pack 258 (unsigned short) and 7 (unsigned byte) big-endian, then unpack and print each on its own line\n\n",
       "fullSolution": "import struct\n\ndata = struct.pack('>HB', 258, 7)\na, b = struct.unpack('>HB', data)\nprint(a)\nprint(b)\n",
       "expectedOutput": "258\n7",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">The <code>struct</code> module converts between Python values and C-struct binary data\u00e2\u20ac\u201duseful for protocols and file formats.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import struct\nprint(struct.unpack('&gt;I', b'\\x00\\x00\\x01\\x00')[0]) # 256</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">The <code>struct</code> module converts between Python values and C-struct binary dataâ€”useful for protocols and file formats.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import struct\nprint(struct.unpack('&gt;I', b'\\x00\\x00\\x01\\x00')[0]) # 256</pre></div>"
     },
     {
       "id": 147,
@@ -1559,7 +1559,7 @@
       "initialCode": "from functools import cached_property\n\n# Define a class with a cached_property that prints 'compute' once and returns 42\n# Access it twice and print the value both times\n\n",
       "fullSolution": "from functools import cached_property\n\nclass Expensive:\n    @cached_property\n    def value(self):\n        print('compute')\n        return 42\n\ne = Expensive()\nprint(e.value)\nprint(e.value)\n",
       "expectedOutput": "compute\n42\n42",
-      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>cached_property</code> computes once per instance and reuses the value\u00e2\u20ac\u201dhandy for memoizing I/O or heavy calculations.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from functools import cached_property\nclass C:\n  @cached_property\n  def cfg(self): return 123\nprint(C().cfg)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>cached_property</code> computes once per instance and reuses the valueâ€”handy for memoizing I/O or heavy calculations.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from functools import cached_property\nclass C:\n  @cached_property\n  def cfg(self): return 123\nprint(C().cfg)</pre></div>"
     },
     {
       "id": 150,
@@ -1569,7 +1569,7 @@
       "initialCode": "import heapq\n\n# Merge [1,3,5] and [2,4,6] and print each item on its own line\n\n",
       "fullSolution": "import heapq\nfor x in heapq.merge([1,3,5], [2,4,6]):\n    print(x)\n",
       "expectedOutput": "1\n2\n3\n4\n5\n6",
-      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>heapq.merge</code> lazily merges multiple sorted inputs\u00e2\u20ac\u201duseful for external sort or streaming merges.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import heapq\nprint(list(heapq.merge([1,4],[2,3])))</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>heapq.merge</code> lazily merges multiple sorted inputsâ€”useful for external sort or streaming merges.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import heapq\nprint(list(heapq.merge([1,4],[2,3])))</pre></div>"
     },
     {
       "id": 151,
@@ -3030,6 +3030,46 @@
       "fullSolution": "import asyncio\nimport time\n\ndef blocking():\n    time.sleep(0.05)\n    return \"OK\"\n\nasync def main():\n    result = await asyncio.to_thread(blocking)\n    print(result)\n\nasyncio.run(main())\n",
       "expectedOutput": "OK",
       "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>asyncio.to_thread</code> to run blocking callables in a thread pool without freezing the event loop.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">result = await asyncio.to_thread(open, \"data.txt\", \"r\")</pre></div>"
+    },
+    {
+      "id": 297,
+      "title": "297. asyncio.TaskGroup fan-in",
+      "language": "python",
+      "description": "Launch two coroutines inside asyncio.TaskGroup, collect their results, and print them joined by commas.",
+      "initialCode": "import asyncio\n\nasync def fetch(name, delay):\n    await asyncio.sleep(delay)\n    return name\n\nasync def main():\n    # TODO: launch fast and slow under asyncio.TaskGroup and print \"fast,slow\"\n    pass\n\nasyncio.run(main())\n",
+      "fullSolution": "import asyncio\n\nasync def fetch(name, delay):\n    await asyncio.sleep(delay)\n    return name\n\nasync def main():\n    async with asyncio.TaskGroup() as tg:\n        fast = tg.create_task(fetch(\"fast\", 0.05))\n        slow = tg.create_task(fetch(\"slow\", 0.1))\n    results = [fast.result(), slow.result()]\n    print(\",\".join(results))\n\nasyncio.run(main())\n",
+      "expectedOutput": "fast,slow",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">asyncio.TaskGroup brings structured concurrency to Python 3.11, letting you treat a cluster of tasks as one unit: if any member fails, the rest are cancelled.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">async with asyncio.TaskGroup() as tg:\n    worker = tg.create_task(fetch_user())\n</pre></div>\n<p class=\"mt-4 text-gray-300\">Collect task results after the context exits; TaskGroup waits for every member before handing back control.</p>"
+    },
+    {
+      "id": 298,
+      "title": "298. asyncio.timeout context",
+      "language": "python",
+      "description": "Guard a slow coroutine with asyncio.timeout and print \"timeout\" when it exceeds the limit.",
+      "initialCode": "import asyncio\n\nasync def slow():\n    await asyncio.sleep(0.2)\n\nasync def main():\n    # TODO: wrap slow() in asyncio.timeout(0.1) and print \"timeout\" when it expires\n    pass\n\nasyncio.run(main())\n",
+      "fullSolution": "import asyncio\n\nasync def slow():\n    await asyncio.sleep(0.2)\n\nasync def main():\n    try:\n        async with asyncio.timeout(0.1):\n            await slow()\n    except asyncio.TimeoutError:\n        print(\"timeout\")\n    else:\n        print(\"done\")\n\nasyncio.run(main())\n",
+      "expectedOutput": "timeout",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>asyncio.timeout</code> as an async context manager when you need to bound a sequence of awaits without manually juggling wait_for calls.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">try:\n    async with asyncio.timeout(0.5):\n        await op()\nexcept asyncio.TimeoutError:\n    handle_timeout()\n</pre></div>\n<p class=\"mt-4 text-gray-300\">The context automatically cancels the protected work and raises TimeoutError when the budget is exhausted.</p>"
+    },
+    {
+      "id": 299,
+      "title": "299. asyncio.Runner embed",
+      "language": "python",
+      "description": "Use asyncio.Runner to drive a coroutine from synchronous code and print its return value.",
+      "initialCode": "import asyncio\n\nasync def fetch():\n    await asyncio.sleep(0.01)\n    return \"ready\"\n\n# TODO: create an asyncio.Runner, run fetch(), and print the result\n",
+      "fullSolution": "import asyncio\n\nasync def fetch():\n    await asyncio.sleep(0.01)\n    return \"ready\"\n\nwith asyncio.Runner() as runner:\n    result = runner.run(fetch())\n    print(result)\n",
+      "expectedOutput": "ready",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>asyncio.Runner</code> when embedding asyncio inside synchronous entry points such as CLI tools or tests. The runner owns the loop lifecycle and cleans it up automatically.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">with asyncio.Runner() as runner:\n    result = runner.run(coro())\n</pre></div>\n<p class=\"mt-4 text-gray-300\">This pattern avoids creating global event loops while still giving you a single awaitable result.</p>"
+    },
+    {
+      "id": 300,
+      "title": "300. asyncio.TaskGroup failures",
+      "language": "python",
+      "description": "Handle an ExceptionGroup raised from asyncio.TaskGroup and print the underlying RuntimeError message.",
+      "initialCode": "import asyncio\n\nasync def backend(name, delay):\n    await asyncio.sleep(delay)\n    if name == \"api\":\n        raise RuntimeError(\"api down\")\n    return f\"{name} ok\"\n\nasync def main():\n    try:\n        async with asyncio.TaskGroup() as tg:\n            tg.create_task(backend(\"api\", 0.01))\n            tg.create_task(backend(\"cache\", 0.05))\n    except* RuntimeError as group:\n        # TODO: print the first error message from the exception group\n        pass\n\nasyncio.run(main())\n",
+      "fullSolution": "import asyncio\n\nasync def backend(name, delay):\n    await asyncio.sleep(delay)\n    if name == \"api\":\n        raise RuntimeError(\"api down\")\n    return f\"{name} ok\"\n\nasync def main():\n    try:\n        async with asyncio.TaskGroup() as tg:\n            tg.create_task(backend(\"api\", 0.01))\n            tg.create_task(backend(\"cache\", 0.05))\n    except* RuntimeError as group:\n        first = group.exceptions[0]\n        print(first.args[0])\n\nasyncio.run(main())\n",
+      "expectedOutput": "api down",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">When a <code>TaskGroup</code> member fails, Python raises an <code>ExceptionGroup</code>. Use <code>except*</code> to handle only the relevant exception types and introspect their messages.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">try:\n    async with asyncio.TaskGroup() as tg:\n        tg.create_task(do_work())\nexcept* ValueError as group:\n    for exc in group.exceptions:\n        log(exc)\n</pre></div>\n<p class=\"mt-4 text-gray-300\">This keeps error paths explicit while TaskGroup cancels any surviving coroutines for you.</p>"
     }
   ]
 }

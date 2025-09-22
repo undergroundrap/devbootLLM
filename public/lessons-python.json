@@ -2870,6 +2870,106 @@
       "fullSolution": "current_rps = 1800\ngrowth_rates = [0.15, 0.22, 0.18]\nplanning_horizon = [\"Q1\", \"Q2\", \"Q3\"]\n\nprint(\"Capacity Forecast\")\nprojected = current_rps\nfor period, rate in zip(planning_horizon, growth_rates):\n    projected *= 1 + rate\n    print(f\"{period}: {round(projected)} rps\")\n",
       "expectedOutput": "Capacity Forecast\nQ1: 2070 rps\nQ2: 2525 rps\nQ3: 2980 rps",
       "tutorial": "<p class=\"mb-4 text-gray-300\">Traffic rarely stays flat. Compound each growth rate so leadership can size hardware orders before you hit the wall.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">projected *= 1 + rate\nprint(round(projected))</pre></div><p class=\"mt-4 text-gray-300\">Use <code>zip()</code> to advance through periods and growth rates in lockstep.</p>"
+    },
+    {
+      "id": 281,
+      "title": "281. Service Dependency Matrix",
+      "language": "python",
+      "description": "Summarize each platform service with its owning team and downstream dependencies.",
+      "initialCode": "services = {\n    \"checkout\": [\"payments\", \"inventory\", \"notifications\"],\n    \"payments\": [\"risk\", \"ledger\"],\n    \"search\": []\n}\n\nowners = {\n    \"checkout\": \"Growth\",\n    \"payments\": \"Core Banking\",\n    \"search\": \"Discovery\"\n}\n\n# TODO: print a heading then each service with its team and dependency list (use \"none\" when empty)\n",
+      "fullSolution": "services = {\n    \"checkout\": [\"payments\", \"inventory\", \"notifications\"],\n    \"payments\": [\"risk\", \"ledger\"],\n    \"search\": []\n}\n\nowners = {\n    \"checkout\": \"Growth\",\n    \"payments\": \"Core Banking\",\n    \"search\": \"Discovery\"\n}\n\nprint(\"Service Dependencies\")\nfor service, deps in services.items():\n    team = owners[service]\n    dependency_list = \", \".join(deps) if deps else \"none\"\n    print(f\"{service} (team: {team}) -> {dependency_list}\")\n",
+      "expectedOutput": "Service Dependencies\ncheckout (team: Growth) -> payments, inventory, notifications\npayments (team: Core Banking) -> risk, ledger\nsearch (team: Discovery) -> none",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Platform maps often tie each service to an owning team and the dependencies they call. Iterate through the dictionary with items() so you have the service name plus its downstream list.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">for service, deps in services.items():\n    print(service, deps)</pre></div>\n<p class=\"mt-4 text-gray-300\">Swap in \"none\" when the dependency list is empty so runbooks do not leave gaps.</p>"
+    },
+    {
+      "id": 282,
+      "title": "282. Incident Action Agenda",
+      "language": "python",
+      "description": "Turn the post-incident actions into a one-glance checklist with owners and due dates.",
+      "initialCode": "actions = [\n    {\n        \"item\": \"Add circuit breaker to retries\",\n        \"owner\": \"SRE\",\n        \"due\": \"2024-08-01\"\n    },\n    {\n        \"item\": \"Publish synthetic monitor runbook\",\n        \"owner\": \"Platform\",\n        \"due\": \"2024-08-05\"\n    },\n    {\n        \"item\": \"Schedule chaos drill follow up\",\n        \"owner\": \"Incident Lead\",\n        \"due\": \"2024-08-12\"\n    }\n]\n\n# TODO: print a heading then each action as - Owner to task (due date)\n",
+      "fullSolution": "actions = [\n    {\n        \"item\": \"Add circuit breaker to retries\",\n        \"owner\": \"SRE\",\n        \"due\": \"2024-08-01\"\n    },\n    {\n        \"item\": \"Publish synthetic monitor runbook\",\n        \"owner\": \"Platform\",\n        \"due\": \"2024-08-05\"\n    },\n    {\n        \"item\": \"Schedule chaos drill follow up\",\n        \"owner\": \"Incident Lead\",\n        \"due\": \"2024-08-12\"\n    }\n]\n\nprint(\"Incident Action Items\")\nfor entry in actions:\n    print(f\"- {entry[\"owner\"]} to {entry[\"item\"]} (due {entry[\"due\"]})\")\n",
+      "expectedOutput": "Incident Action Items\n- SRE to Add circuit breaker to retries (due 2024-08-01)\n- Platform to Publish synthetic monitor runbook (due 2024-08-05)\n- Incident Lead to Schedule chaos drill follow up (due 2024-08-12)",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Retrospectives should end with clear owners and dates. Loop through the structured data so every line answers who does what by when.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">for entry in actions:\n    print(entry[\"owner\"], entry[\"due\"])</pre></div>\n<p class=\"mt-4 text-gray-300\">Formatting each bullet consistently helps the on-call lead copy it into the follow-up tracker.</p>"
+    },
+    {
+      "id": 283,
+      "title": "283. Architecture Trade-off Matrix",
+      "language": "python",
+      "description": "Compare platform options on latency, delivery time, and operational burden to justify a senior-level architecture review.",
+      "initialCode": "options = [\n    {\"name\": \"Monolith\", \"latency_ms\": 140, \"dev_weeks\": 4, \"ops_burden\": \"low\"},\n    {\"name\": \"Services\", \"latency_ms\": 95, \"dev_weeks\": 10, \"ops_burden\": \"high\"},\n    {\"name\": \"Event Hub\", \"latency_ms\": 120, \"dev_weeks\": 7, \"ops_burden\": \"medium\"},\n]\n\n# TODO: print \"Architecture Trade-offs\" then each option as:\n# Name - latency: Xms, build: Y weeks, ops: Z\n",
+      "fullSolution": "options = [\n    {\"name\": \"Monolith\", \"latency_ms\": 140, \"dev_weeks\": 4, \"ops_burden\": \"low\"},\n    {\"name\": \"Services\", \"latency_ms\": 95, \"dev_weeks\": 10, \"ops_burden\": \"high\"},\n    {\"name\": \"Event Hub\", \"latency_ms\": 120, \"dev_weeks\": 7, \"ops_burden\": \"medium\"},\n]\n\nprint(\"Architecture Trade-offs\")\nfor option in options:\n    print(\n        f\"{option['name']} - latency: {option['latency_ms']}ms, build: {option['dev_weeks']} weeks, ops: {option['ops_burden']}\"\n    )\n",
+      "expectedOutput": "Architecture Trade-offs\nMonolith - latency: 140ms, build: 4 weeks, ops: low\nServices - latency: 95ms, build: 10 weeks, ops: high\nEvent Hub - latency: 120ms, build: 7 weeks, ops: medium",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Senior engineers surface trade-offs explicitly so stakeholders see speed, performance, and operational cost in one view. Iterate the structured data rather than hard-coding each line.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">for option in options:\n    print(option[\"name\"], option[\"latency_ms\"])</pre></div>\n<p class=\"mt-4 text-gray-300\">Consistent formatting keeps the architecture conversation focused on evidence, not on deciphering the summary.</p>"
+    },
+    {
+      "id": 284,
+      "title": "284. Reliability Risk Register",
+      "language": "python",
+      "description": "Quantify incident risk by multiplying impact and likelihood for each major component.",
+      "initialCode": "risks = [\n    {\"component\": \"Checkout API\", \"impact\": 5, \"likelihood\": 3},\n    {\"component\": \"Worker Queue\", \"impact\": 4, \"likelihood\": 2},\n    {\"component\": \"Search Index\", \"impact\": 3, \"likelihood\": 4},\n]\n\n# TODO: print the heading then each item showing impact, likelihood, and severity (impact * likelihood)\n",
+      "fullSolution": "risks = [\n    {\"component\": \"Checkout API\", \"impact\": 5, \"likelihood\": 3},\n    {\"component\": \"Worker Queue\", \"impact\": 4, \"likelihood\": 2},\n    {\"component\": \"Search Index\", \"impact\": 3, \"likelihood\": 4},\n]\n\nprint(\"Reliability Risk Register\")\nfor entry in risks:\n    severity = entry[\"impact\"] * entry[\"likelihood\"]\n    print(\n        f\"{entry['component']} - impact: {entry['impact']}, likelihood: {entry['likelihood']}, severity: {severity}\"\n    )\n",
+      "expectedOutput": "Reliability Risk Register\nCheckout API - impact: 5, likelihood: 3, severity: 15\nWorker Queue - impact: 4, likelihood: 2, severity: 8\nSearch Index - impact: 3, likelihood: 4, severity: 12",
+      "tutorial": "      <p class=\"mb-4 text-gray-300\">Turning qualitative risk notes into severity scores helps prioritize mitigations. Multiply the integers directly in the loop.</p>\n      <h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n      <div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">severity = impact * likelihood\nprint(severity)</pre></div>\n      <p class=\"mt-4 text-gray-300\">Clear scoring lets product and SRE leaders agree on which fires to fight first.</p>"
+    },
+    {
+      "id": 285,
+      "title": "285. Migration Cutover Timeline",
+      "language": "python",
+      "description": "Lay out a time-ordered migration plan with owners so the cutover room stays coordinated.",
+      "initialCode": "steps = [\n    (\"T-24h\", \"freeze writes\", \"Platform\"),\n    (\"T-6h\", \"back up primary database\", \"DBA\"),\n    (\"T-0\", \"switch traffic to new cluster\", \"SRE\"),\n    (\"T+1h\", \"run smoke tests\", \"QA\"),\n]\n\n# TODO: print the heading then each step as Time: Owner -> Task\n",
+      "fullSolution": "steps = [\n    (\"T-24h\", \"freeze writes\", \"Platform\"),\n    (\"T-6h\", \"back up primary database\", \"DBA\"),\n    (\"T-0\", \"switch traffic to new cluster\", \"SRE\"),\n    (\"T+1h\", \"run smoke tests\", \"QA\"),\n]\n\nprint(\"Migration Cutover Timeline\")\nfor timestamp, task, owner in steps:\n    print(f\"{timestamp}: {owner} -> {task}\")\n",
+      "expectedOutput": "Migration Cutover Timeline\nT-24h: Platform -> freeze writes\nT-6h: DBA -> back up primary database\nT-0: SRE -> switch traffic to new cluster\nT+1h: QA -> run smoke tests",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Major migrations hinge on everyone knowing who owns each moment. Unpack the tuple directly in the loop so the output stays readable under pressure.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">for time, action, owner in steps:\n    print(time, owner, action)</pre></div>\n<p class=\"mt-4 text-gray-300\">Explicit owner cues prevent last-minute scrambling during cutover calls.</p>"
+    },
+    {
+      "id": 286,
+      "title": "286. Security Control Coverage",
+      "language": "python",
+      "description": "Summarize security initiatives by domain to show coverage heading into a compliance review.",
+      "initialCode": "domains = {\n    \"Authentication\": [\"MFA enforcement\", \"Session timeout review\"],\n    \"Data Protection\": [\"Rotate KMS keys\", \"Encrypt S3 buckets\"],\n    \"Observability\": [\"Audit log retention\", \"Alert on IAM anomalies\"],\n}\n\n# TODO: print a heading then each domain followed by its controls prefixed with \"- \"\n",
+      "fullSolution": "domains = {\n    \"Authentication\": [\"MFA enforcement\", \"Session timeout review\"],\n    \"Data Protection\": [\"Rotate KMS keys\", \"Encrypt S3 buckets\"],\n    \"Observability\": [\"Audit log retention\", \"Alert on IAM anomalies\"],\n}\n\nprint(\"Security Control Coverage\")\nfor domain, controls in domains.items():\n    print(f\"{domain}:\")\n    for control in controls:\n        print(f\"- {control}\")\n",
+      "expectedOutput": "Security Control Coverage\nAuthentication:\n- MFA enforcement\n- Session timeout review\nData Protection:\n- Rotate KMS keys\n- Encrypt S3 buckets\nObservability:\n- Audit log retention\n- Alert on IAM anomalies",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Audit prep demands a crisp accounting of safeguards by category. Nest one loop inside another to keep each domain grouped with its actions.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">for domain, controls in domains.items():\n    for control in controls:\n        print(control)</pre></div>\n<p class=\"mt-4 text-gray-300\">Well-structured coverage tables help security and engineering align on remaining gaps.</p>"
+    },
+    {
+      "id": 287,
+      "title": "287. Cost Efficiency Report",
+      "language": "python",
+      "description": "Quantify spend deltas and percentage change so finance partners see the impact of engineering optimizations.",
+      "initialCode": "services = [\n    {\"name\": \"api-gateway\", \"baseline\": 3200, \"current\": 2800},\n    {\"name\": \"batch-jobs\", \"baseline\": 4100, \"current\": 4800},\n    {\"name\": \"stream-processor\", \"baseline\": 2900, \"current\": 2550},\n]\n\n# TODO: print a heading then each service with baseline, current, dollar delta, and percentage change (one decimal, signed)\n",
+      "fullSolution": "services = [\n    {\"name\": \"api-gateway\", \"baseline\": 3200, \"current\": 2800},\n    {\"name\": \"batch-jobs\", \"baseline\": 4100, \"current\": 4800},\n    {\"name\": \"stream-processor\", \"baseline\": 2900, \"current\": 2550},\n]\n\nprint(\"Cost Efficiency Report\")\nfor service in services:\n    delta = service[\"current\"] - service[\"baseline\"]\n    change_pct = (delta / service[\"baseline\"]) * 100\n    print(\n        f\"{service['name']}: baseline=${service['baseline']}, current=${service['current']}, delta=${delta:+}, change={change_pct:+.1f}%\"\n    )\n",
+      "expectedOutput": "Cost Efficiency Report\napi-gateway: baseline=$3200, current=$2800, delta=$-400, change=-12.5%\nbatch-jobs: baseline=$4100, current=$4800, delta=$+700, change=+17.1%\nstream-processor: baseline=$2900, current=$2550, delta=$-350, change=-12.1%",
+      "tutorial": "      <p class=\"mb-4 text-gray-300\">Senior ICs translate optimizations into dollars. Use the <code>+\" format flag to always show direction on both raw and percentage deltas.</p>\n      <h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n      <div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(f\"delta={value:+}\")\nprint(f\"change={pct:+.1f}%\")</pre></div>\n      <p class=\"mt-4 text-gray-300\">That clarity helps finance and engineering track whether initiatives are paying off.</p>"
+    },
+    {
+      "id": 288,
+      "title": "288. Mentorship Pairing Planner",
+      "language": "python",
+      "description": "Outline mentor-mentee matches with focus goals to support org-level talent development.",
+      "initialCode": "pairings = [\n    (\"Alice\", \"Ravi\", \"modernize reporting ETL\"),\n    (\"Morgan\", \"Chen\", \"k8s deployment playbook\"),\n    (\"Jamie\", \"Inez\", \"observability dashboards\"),\n]\n\n# TODO: print the heading then each pairing as Mentor -> Mentee: focus area\n",
+      "fullSolution": "pairings = [\n    (\"Alice\", \"Ravi\", \"modernize reporting ETL\"),\n    (\"Morgan\", \"Chen\", \"k8s deployment playbook\"),\n    (\"Jamie\", \"Inez\", \"observability dashboards\"),\n]\n\nprint(\"Mentorship Pairings\")\nfor mentor, mentee, focus in pairings:\n    print(f\"{mentor} -> {mentee}: {focus}\")\n",
+      "expectedOutput": "Mentorship Pairings\nAlice -> Ravi: modernize reporting ETL\nMorgan -> Chen: k8s deployment playbook\nJamie -> Inez: observability dashboards",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Leadership readiness includes creating growth plans. Loop through the tuples and format each pairing consistently.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">for mentor, mentee, topic in pairings:\n    print(mentor, mentee, topic)</pre></div>\n<p class=\"mt-4 text-gray-300\">Clear articulation of focus areas keeps mentorship aligned with org objectives.</p>"
+    },
+    {
+      "id": 289,
+      "title": "289. Roadmap Pillar Summary",
+      "language": "python",
+      "description": "Group key initiatives under roadmap pillars so product, engineering, and execs stay aligned on strategy.",
+      "initialCode": "pillars = {\n    \"Reliability\": [\"Implement region failover\", \"Drop MTTR below 20m\"],\n    \"Product\": [\"Adaptive pricing\", \"Cross-store search\"],\n    \"Platform\": [\"Unified CI/CD pipeline\"],\n}\n\n# TODO: print \"Roadmap Pillars\" then each pillar and its initiatives prefixed with \"- \"\n",
+      "fullSolution": "pillars = {\n    \"Reliability\": [\"Implement region failover\", \"Drop MTTR below 20m\"],\n    \"Product\": [\"Adaptive pricing\", \"Cross-store search\"],\n    \"Platform\": [\"Unified CI/CD pipeline\"],\n}\n\nprint(\"Roadmap Pillars\")\nfor pillar, items in pillars.items():\n    print(f\"{pillar}:\")\n    for item in items:\n        print(f\"- {item}\")\n",
+      "expectedOutput": "Roadmap Pillars\nReliability:\n- Implement region failover\n- Drop MTTR below 20m\nProduct:\n- Adaptive pricing\n- Cross-store search\nPlatform:\n- Unified CI/CD pipeline",
+      "tutorial": "      <p class=\"mb-4 text-gray-300\">Senior ICs frequently narrate the strategy. Group initiatives under each pillar so stakeholders can skim the plan in one glance.</p>\n      <h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n      <div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">print(\"Platform:\")\nprint(\"- Unified CI/CD pipeline\")</pre></div>\n      <p class=\"mt-4 text-gray-300\">Readable pillar summaries simplify roadmap reviews with product and leadership.</p>"
+    },
+    {
+      "id": 290,
+      "title": "290. Experiment Result Synthesizer",
+      "language": "python",
+      "description": "Summarize experiment deltas and percentage lift to make promote-or-rollback calls easy during reviews.",
+      "initialCode": "experiments = [\n    {\"name\": \"Checkout copy\", \"metric\": \"conversion\", \"control\": 0.342, \"treatment\": 0.361},\n    {\"name\": \"Recommendation ranking\", \"metric\": \"session revenue\", \"control\": 7.80, \"treatment\": 8.05},\n]\n\n# TODO: print the heading then each experiment with signed delta (3 decimals) and percentage lift (2 decimals)\n",
+      "fullSolution": "experiments = [\n    {\"name\": \"Checkout copy\", \"metric\": \"conversion\", \"control\": 0.342, \"treatment\": 0.361},\n    {\"name\": \"Recommendation ranking\", \"metric\": \"session revenue\", \"control\": 7.80, \"treatment\": 8.05},\n]\n\nprint(\"Experiment Results\")\nfor exp in experiments:\n    delta = exp[\"treatment\"] - exp[\"control\"]\n    lift = 0.0 if exp[\"control\"] == 0 else (delta / exp[\"control\"]) * 100\n    print(\n        f\"{exp['name']} ({exp['metric']}): delta={delta:+.3f}, lift={lift:+.2f}%\"\n    )\n",
+      "expectedOutput": "Experiment Results\nCheckout copy (conversion): delta=+0.019, lift=+5.56%\nRecommendation ranking (session revenue): delta=+0.250, lift=+3.21%",
+      "tutorial": "      <p class=\"mb-4 text-gray-300\">Outcome reviews demand both absolute change and percentage lift. Use the <code>+\" flag to keep the sign and round to the precision analysts expect.</p>\n      <h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n      <div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">delta = treatment - control\nprint(f\"{delta:+.3f}\")</pre></div>\n      <p class=\"mt-4 text-gray-300\">Clear metrics help product and engineering align on launch decisions without re-running the math.</p>"
     }
   ]
 }

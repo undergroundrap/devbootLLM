@@ -1509,7 +1509,7 @@
       "initialCode": "import sqlite3\n\n# Create an in-memory DB, a table nums(v INT), insert 1,2,3\n# Query SELECT SUM(v) and print the result\n\n",
       "fullSolution": "import sqlite3\n\ncon = sqlite3.connect(':memory:')\ncur = con.cursor()\ncur.execute('CREATE TABLE nums(v INT)')\ncur.executemany('INSERT INTO nums(v) VALUES (?)', [(1,),(2,),(3,)])\ncur.execute('SELECT SUM(v) FROM nums')\nprint(cur.fetchone()[0])\ncon.close()\n",
       "expectedOutput": "6",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Use SQLite for quick relational queries in-memoryâ€”great for ETL-style tasks and prototypes.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import sqlite3\ncon = sqlite3.connect(':memory:')\ncon.execute('CREATE TABLE t(x)')\ncon.execute('INSERT INTO t VALUES (42)')\nprint(con.execute('SELECT x FROM t').fetchone()[0])</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use SQLite for quick relational queries in-memory\u00e2\u20ac\u201dgreat for ETL-style tasks and prototypes.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import sqlite3\ncon = sqlite3.connect(':memory:')\ncon.execute('CREATE TABLE t(x)')\ncon.execute('INSERT INTO t VALUES (42)')\nprint(con.execute('SELECT x FROM t').fetchone()[0])</pre></div>"
     },
     {
       "id": 145,
@@ -1529,7 +1529,7 @@
       "initialCode": "import struct\n\n# Pack 258 (unsigned short) and 7 (unsigned byte) big-endian, then unpack and print each on its own line\n\n",
       "fullSolution": "import struct\n\ndata = struct.pack('>HB', 258, 7)\na, b = struct.unpack('>HB', data)\nprint(a)\nprint(b)\n",
       "expectedOutput": "258\n7",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">The <code>struct</code> module converts between Python values and C-struct binary dataâ€”useful for protocols and file formats.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import struct\nprint(struct.unpack('&gt;I', b'\\x00\\x00\\x01\\x00')[0]) # 256</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">The <code>struct</code> module converts between Python values and C-struct binary data\u00e2\u20ac\u201duseful for protocols and file formats.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import struct\nprint(struct.unpack('&gt;I', b'\\x00\\x00\\x01\\x00')[0]) # 256</pre></div>"
     },
     {
       "id": 147,
@@ -1559,7 +1559,7 @@
       "initialCode": "from functools import cached_property\n\n# Define a class with a cached_property that prints 'compute' once and returns 42\n# Access it twice and print the value both times\n\n",
       "fullSolution": "from functools import cached_property\n\nclass Expensive:\n    @cached_property\n    def value(self):\n        print('compute')\n        return 42\n\ne = Expensive()\nprint(e.value)\nprint(e.value)\n",
       "expectedOutput": "compute\n42\n42",
-      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>cached_property</code> computes once per instance and reuses the valueâ€”handy for memoizing I/O or heavy calculations.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from functools import cached_property\nclass C:\n  @cached_property\n  def cfg(self): return 123\nprint(C().cfg)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>cached_property</code> computes once per instance and reuses the value\u00e2\u20ac\u201dhandy for memoizing I/O or heavy calculations.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from functools import cached_property\nclass C:\n  @cached_property\n  def cfg(self): return 123\nprint(C().cfg)</pre></div>"
     },
     {
       "id": 150,
@@ -1569,7 +1569,7 @@
       "initialCode": "import heapq\n\n# Merge [1,3,5] and [2,4,6] and print each item on its own line\n\n",
       "fullSolution": "import heapq\nfor x in heapq.merge([1,3,5], [2,4,6]):\n    print(x)\n",
       "expectedOutput": "1\n2\n3\n4\n5\n6",
-      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>heapq.merge</code> lazily merges multiple sorted inputsâ€”useful for external sort or streaming merges.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import heapq\nprint(list(heapq.merge([1,4],[2,3])))</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>heapq.merge</code> lazily merges multiple sorted inputs\u00e2\u20ac\u201duseful for external sort or streaming merges.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import heapq\nprint(list(heapq.merge([1,4],[2,3])))</pre></div>"
     },
     {
       "id": 151,
@@ -2970,6 +2970,46 @@
       "fullSolution": "experiments = [\n    {\"name\": \"Checkout copy\", \"metric\": \"conversion\", \"control\": 0.342, \"treatment\": 0.361},\n    {\"name\": \"Recommendation ranking\", \"metric\": \"session revenue\", \"control\": 7.80, \"treatment\": 8.05},\n]\n\nprint(\"Experiment Results\")\nfor exp in experiments:\n    delta = exp[\"treatment\"] - exp[\"control\"]\n    lift = 0.0 if exp[\"control\"] == 0 else (delta / exp[\"control\"]) * 100\n    print(\n        f\"{exp['name']} ({exp['metric']}): delta={delta:+.3f}, lift={lift:+.2f}%\"\n    )\n",
       "expectedOutput": "Experiment Results\nCheckout copy (conversion): delta=+0.019, lift=+5.56%\nRecommendation ranking (session revenue): delta=+0.250, lift=+3.21%",
       "tutorial": "      <p class=\"mb-4 text-gray-300\">Outcome reviews demand both absolute change and percentage lift. Use the <code>+\" flag to keep the sign and round to the precision analysts expect.</p>\n      <h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n      <div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">delta = treatment - control\nprint(f\"{delta:+.3f}\")</pre></div>\n      <p class=\"mt-4 text-gray-300\">Clear metrics help product and engineering align on launch decisions without re-running the math.</p>"
+    },
+    {
+      "id": 291,
+      "title": "291. asyncio.wait FIRST_COMPLETED",
+      "language": "python",
+      "description": "Race fast and slow tasks, cancel the slower one, and print the first result.",
+      "initialCode": "import asyncio\n\nasync def slow():\n    await asyncio.sleep(0.2)\n    return \"slow\"\n\nasync def fast():\n    await asyncio.sleep(0.05)\n    return \"fast\"\n\nasync def main():\n    # TODO: launch both tasks, wait for FIRST_COMPLETED, cancel the slower one, and print the first result\n    pass\n\nasyncio.run(main())\n",
+      "fullSolution": "import asyncio\n\nasync def slow():\n    await asyncio.sleep(0.2)\n    return \"slow\"\n\nasync def fast():\n    await asyncio.sleep(0.05)\n    return \"fast\"\n\nasync def main():\n    tasks = {asyncio.create_task(slow()), asyncio.create_task(fast())}\n    done, pending = await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)\n    for task in pending:\n        task.cancel()\n    if pending:\n        await asyncio.gather(*pending, return_exceptions=True)\n    first = next(iter(done))\n    print(first.result())\n\nasyncio.run(main())\n",
+      "expectedOutput": "fast",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>asyncio.wait</code> with <code>FIRST_COMPLETED</code> to respond to whichever coroutine finishes first. Cancel or clean up the slower tasks so they do not leak.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import asyncio\n\nasync def main():\n    done, pending = await asyncio.wait(\n        {asyncio.create_task(asyncio.sleep(0.1, result=\"fast\"))},\n        return_when=asyncio.FIRST_COMPLETED,\n    )\n    print(next(iter(done)).result())\n\nasyncio.run(main())</pre></div>"
+    },
+    {
+      "id": 292,
+      "title": "292. asyncio.Event broadcast",
+      "language": "python",
+      "description": "Coordinate workers with an Event so they start together and print their status once released.",
+      "initialCode": "import asyncio\n\nasync def worker(name, evt):\n    await evt.wait()\n    return f\"{name} started\"\n\nasync def main():\n    evt = asyncio.Event()\n    tasks = [\n        asyncio.create_task(worker(\"A\", evt)),\n        asyncio.create_task(worker(\"B\", evt)),\n    ]\n    # TODO: give the workers a moment, set the event, gather results, then print each line\n    pass\n\nasyncio.run(main())\n",
+      "fullSolution": "import asyncio\n\nasync def worker(name, evt):\n    await evt.wait()\n    return f\"{name} started\"\n\nasync def main():\n    evt = asyncio.Event()\n    tasks = [\n        asyncio.create_task(worker(\"A\", evt)),\n        asyncio.create_task(worker(\"B\", evt)),\n    ]\n    await asyncio.sleep(0.05)\n    evt.set()\n    results = await asyncio.gather(*tasks)\n    for item in results:\n        print(item)\n\nasyncio.run(main())\n",
+      "expectedOutput": "A started\nB started",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">An <code>Event</code> lets one task signal many waiters. Call <code>set()</code> when the shared condition is ready and every waiting coroutine resumes immediately.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import asyncio\n\nasync def wait_on(evt):\n    await evt.wait()\n    return \"go\"\n\nasync def main():\n    evt = asyncio.Event()\n    task = asyncio.create_task(wait_on(evt))\n    evt.set()\n    print(await task)\n\nasyncio.run(main())</pre></div>"
+    },
+    {
+      "id": 293,
+      "title": "293. asyncio.Lock critical section",
+      "language": "python",
+      "description": "Protect a shared counter with an asyncio.Lock so two workers increment safely and print 200.",
+      "initialCode": "import asyncio\n\nasync def main():\n    lock = asyncio.Lock()\n    counter = 0\n\n    async def worker():\n        nonlocal counter\n        for _ in range(100):\n            # TODO: acquire the lock before updating the counter\n            counter += 1\n\n    # TODO: run two workers concurrently and print the final counter\n    pass\n\nasyncio.run(main())\n",
+      "fullSolution": "import asyncio\n\nasync def main():\n    lock = asyncio.Lock()\n    counter = 0\n\n    async def worker():\n        nonlocal counter\n        for _ in range(100):\n            async with lock:\n                counter += 1\n\n    await asyncio.gather(worker(), worker())\n    print(counter)\n\nasyncio.run(main())\n",
+      "expectedOutput": "200",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>asyncio.Lock</code> to ensure only one coroutine changes shared state at a time. Wrap the mutation in <code>async with lock</code> just like a synchronous context manager.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import asyncio\n\nlock = asyncio.Lock()\n\nasync def bump():\n    async with lock:\n        ...</pre></div>"
+    },
+    {
+      "id": 294,
+      "title": "294. contextlib.AsyncExitStack",
+      "language": "python",
+      "description": "Use AsyncExitStack to manage two async resources and print their names joined by a comma.",
+      "initialCode": "import asyncio\nfrom contextlib import AsyncExitStack, asynccontextmanager\n\n@asynccontextmanager\nasync def connect(name):\n    await asyncio.sleep(0.01)\n    try:\n        yield name\n    finally:\n        await asyncio.sleep(0.01)\n\nasync def main():\n    # TODO: enter both connections with AsyncExitStack and print \"primary,replica\"\n    pass\n\nasyncio.run(main())\n",
+      "fullSolution": "import asyncio\nfrom contextlib import AsyncExitStack, asynccontextmanager\n\n@asynccontextmanager\nasync def connect(name):\n    await asyncio.sleep(0.01)\n    try:\n        yield name\n    finally:\n        await asyncio.sleep(0.01)\n\nasync def main():\n    async with AsyncExitStack() as stack:\n        primary = await stack.enter_async_context(connect(\"primary\"))\n        replica = await stack.enter_async_context(connect(\"replica\"))\n        print(f\"{primary},{replica}\")\n\nasyncio.run(main())\n",
+      "expectedOutput": "primary,replica",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>AsyncExitStack</code> lets you dynamically compose multiple async context managers while guaranteeing cleanup in reverse order.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from contextlib import AsyncExitStack\n\nasync with AsyncExitStack() as stack:\n    conn = await stack.enter_async_context(connect(\"primary\"))</pre></div>"
     }
   ]
 }

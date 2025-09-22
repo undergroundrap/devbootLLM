@@ -2948,10 +2948,40 @@
       "title": "288. CompletableFuture.handle",
       "language": "java",
       "description": "Recover from a failed async computation with handle and print a fallback value.",
-      "initialCode": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // TODO: create a future that throws, recover with handle, and print \"fallback\"\n    }\n}\n",
-      "fullSolution": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        CompletableFuture<String> result = CompletableFuture\n            .supplyAsync(() -> { throw new RuntimeException(\"fail\"); })\n            .handle((value, error) -> error == null ? value : \"fallback\");\n        System.out.println(result.join());\n    }\n}\n",
+      "initialCode": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // TODO: start from a failed future, recover with handle, and print \"fallback\"\n    }\n}\n",
+      "fullSolution": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        CompletableFuture<String> failed = CompletableFuture.failedFuture(new RuntimeException(\"boom\"));\n        CompletableFuture<String> recovered = failed.handle((value, error) -> error == null ? value : \"fallback\");\n        System.out.println(recovered.join());\n    }\n}\n",
       "expectedOutput": "fallback",
-      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>handle</code> lets you observe both results and exceptions, making it easy to provide fallbacks in async pipelines.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">CompletableFuture.supplyAsync(() -> { throw new RuntimeException(); })\n    .handle((v, ex) -> ex == null ? v : \"fallback\");</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>handle</code> sees both the value and the exception. Combine it with <code>failedFuture</code> to model failure and supply a fallback without branching helpers.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">CompletableFuture.failedFuture(new RuntimeException())\n    .handle((v, ex) -> ex == null ? v : \"fallback\");</pre></div>"
+    },
+    {
+      "id": 289,
+      "title": "289. CyclicBarrier rendezvous",
+      "language": "java",
+      "description": "Use a CyclicBarrier to pause two worker threads until the main thread reaches the barrier, then print release and done.",
+      "initialCode": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        CyclicBarrier barrier = new CyclicBarrier(3, () -> System.out.println(\"release\"));\n\n        Runnable worker = () -> {\n            try {\n                barrier.await();\n            } catch (InterruptedException | BrokenBarrierException e) {\n                throw new RuntimeException(e);\n            }\n        };\n\n        Thread a = new Thread(worker, \"A\");\n        Thread b = new Thread(worker, \"B\");\n        a.start();\n        b.start();\n\n        // TODO: print \"ready\", wait on the barrier, then print \"done\" after it trips\n    }\n}\n",
+      "fullSolution": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        CyclicBarrier barrier = new CyclicBarrier(3, () -> System.out.println(\"release\"));\n\n        Runnable worker = () -> {\n            try {\n                barrier.await();\n            } catch (InterruptedException | BrokenBarrierException e) {\n                throw new RuntimeException(e);\n            }\n        };\n\n        Thread a = new Thread(worker, \"A\");\n        Thread b = new Thread(worker, \"B\");\n        a.start();\n        b.start();\n\n        System.out.println(\"ready\");\n        barrier.await();\n        System.out.println(\"done\");\n\n        a.join();\n        b.join();\n    }\n}\n",
+      "expectedOutput": "ready\nrelease\ndone",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">A <code>CyclicBarrier</code> lets multiple threads rendezvous at the same point before proceeding. The optional barrier action runs once when the last party arrives.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">CyclicBarrier barrier = new CyclicBarrier(3, () -> System.out.println(\"trip\"));\nbarrier.await();</pre></div>"
+    },
+    {
+      "id": 290,
+      "title": "290. ExecutorCompletionService gather",
+      "language": "java",
+      "description": "Collect tasks as they finish using ExecutorCompletionService and print results in completion order.",
+      "initialCode": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        ExecutorService pool = Executors.newFixedThreadPool(2);\n        try {\n            CompletionService<String> service = new ExecutorCompletionService<>(pool);\n            service.submit(() -> { Thread.sleep(30); return \"slow\"; });\n            service.submit(() -> \"fast\");\n\n            // TODO: take completed futures and print their results as they finish\n        } finally {\n            pool.shutdown();\n        }\n    }\n}\n",
+      "fullSolution": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        ExecutorService pool = Executors.newFixedThreadPool(2);\n        try {\n            CompletionService<String> service = new ExecutorCompletionService<>(pool);\n            service.submit(() -> { Thread.sleep(30); return \"slow\"; });\n            service.submit(() -> \"fast\");\n\n            for (int i = 0; i < 2; i++) {\n                System.out.println(service.take().get());\n            }\n        } finally {\n            pool.shutdown();\n        }\n    }\n}\n",
+      "expectedOutput": "fast\nslow",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>ExecutorCompletionService</code> wraps a pool and yields completed tasks as they finish, so you can react in completion order without polling.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">CompletionService<String> cs = new ExecutorCompletionService<>(pool);\ncs.submit(callable);\nFuture<String> done = cs.take();</pre></div>"
+    },
+    {
+      "id": 291,
+      "title": "291. ConcurrentLinkedQueue audit",
+      "language": "java",
+      "description": "Add and remove items from a ConcurrentLinkedQueue and print the values observed.",
+      "initialCode": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        ConcurrentLinkedQueue<String> queue = new ConcurrentLinkedQueue<>();\n        // TODO: offer \"alpha\" and \"beta\", poll one, peek at the next, then print the size\n    }\n}\n",
+      "fullSolution": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        ConcurrentLinkedQueue<String> queue = new ConcurrentLinkedQueue<>();\n        queue.offer(\"alpha\");\n        queue.offer(\"beta\");\n        System.out.println(queue.poll());\n        System.out.println(queue.peek());\n        System.out.println(queue.size());\n    }\n}\n",
+      "expectedOutput": "alpha\nbeta\n1",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>ConcurrentLinkedQueue</code> for lock-free, thread-safe queues suited to producer/consumer patterns.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">ConcurrentLinkedQueue<String> q = new ConcurrentLinkedQueue<>();\nq.offer(\"event\");\nString item = q.poll();</pre></div>"
     }
   ]
 }

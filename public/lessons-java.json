@@ -3022,6 +3022,56 @@
       "fullSolution": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        SynchronousQueue<String> queue = new SynchronousQueue<>();\n\n        Thread producer = new Thread(() -> {\n            try {\n                queue.put(\"data\");\n            } catch (InterruptedException e) {\n                throw new RuntimeException(e);\n            }\n        });\n\n        producer.start();\n\n        System.out.println(queue.take());\n        producer.join();\n    }\n}\n",
       "expectedOutput": "data",
       "tutorial": "<p class=\"mb-4 text-gray-300\">A <code>SynchronousQueue</code> has no capacity: producers block until a consumer takes, and vice versa. It's ideal for direct handoffs.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">SynchronousQueue<String> q = new SynchronousQueue<>();\nnew Thread(() -> q.put(\"ready\")).start();\nSystem.out.println(q.take());\n</pre></div>\n<p class=\"mt-4 text-gray-300\">This pattern keeps pressure low when you only need to transfer ownership of a single item at a time.</p>"
+    },
+    {
+      "id": 296,
+      "title": "296. LongAccumulator max",
+      "language": "java",
+      "description": "Use a LongAccumulator with a max function to track the highest value submitted from multiple tasks and print 42.",
+      "initialCode": "import java.util.concurrent.*;\nimport java.util.concurrent.atomic.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        LongAccumulator max = new LongAccumulator(Long::max, Long.MIN_VALUE);\n        ExecutorService pool = Executors.newFixedThreadPool(3);\n        long[] values = {7, 42, 13};\n\n        // TODO: submit accumulation tasks for each value, wait for completion, then print the maximum\n    }\n}\n",
+      "fullSolution": "import java.util.concurrent.*;\nimport java.util.concurrent.atomic.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        LongAccumulator max = new LongAccumulator(Long::max, Long.MIN_VALUE);\n        ExecutorService pool = Executors.newFixedThreadPool(3);\n        long[] values = {7, 42, 13};\n\n        for (long value : values) {\n            pool.submit(() -> max.accumulate(value));\n        }\n\n        pool.shutdown();\n        pool.awaitTermination(1, TimeUnit.SECONDS);\n        System.out.println(max.get());\n    }\n}\n",
+      "expectedOutput": "42",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>LongAccumulator</code> to combine values across threads without explicit locking. Supply a function (max, sum, etc.) and an identity seed.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">LongAccumulator max = new LongAccumulator(Long::max, Long.MIN_VALUE);\nmax.accumulate(10);\nmax.accumulate(42);\nSystem.out.println(max.get()); // 42</pre></div>\n<p class=\"mt-4 text-gray-300\">Accumulators scale under contention better than synchronized counters.</p>"
+    },
+    {
+      "id": 297,
+      "title": "297. CompletableFuture.orTimeout fail fast",
+      "language": "java",
+      "description": "Trigger a timeout on a slow CompletableFuture using orTimeout and recover to print \"timeout\".",
+      "initialCode": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        CompletableFuture<String> slow = CompletableFuture.supplyAsync(() -> {\n            try {\n                Thread.sleep(50);\n            } catch (InterruptedException e) {\n                throw new RuntimeException(e);\n            }\n            return \"slow\";\n        });\n\n        // TODO: apply orTimeout with 10 milliseconds, recover with exceptionally, and print \"timeout\"\n    }\n}\n",
+      "fullSolution": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        CompletableFuture<String> slow = CompletableFuture.supplyAsync(() -> {\n            try {\n                Thread.sleep(50);\n            } catch (InterruptedException e) {\n                throw new RuntimeException(e);\n            }\n            return \"slow\";\n        });\n\n        String result = slow\n            .orTimeout(10, TimeUnit.MILLISECONDS)\n            .exceptionally(ex -> \"timeout\")\n            .join();\n        System.out.println(result);\n    }\n}\n",
+      "expectedOutput": "timeout",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>orTimeout</code> to automatically fail a slow stage instead of waiting indefinitely.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">CompletableFuture<String> slow = ...;\nslow.orTimeout(100, TimeUnit.MILLISECONDS)\n    .exceptionally(ex -> \"fallback\")\n    .join();</pre></div>\n<p class=\"mt-4 text-gray-300\">Timeouts keep latency budgets enforced without custom scheduling code.</p>"
+    },
+    {
+      "id": 298,
+      "title": "298. Stream.mapMulti flatten groups",
+      "language": "java",
+      "description": "Flatten nested lists with mapMulti and print \"1 2 3 4\".",
+      "initialCode": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<List<Integer>> groups = List.of(\n            List.of(1, 2),\n            List.of(3, 4)\n        );\n\n        // TODO: use mapMulti to flatten groups into a single stream and print \"1 2 3 4\"\n    }\n}\n",
+      "fullSolution": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<List<Integer>> groups = List.of(\n            List.of(1, 2),\n            List.of(3, 4)\n        );\n\n        String flattened = groups.stream()\n            .mapMulti((list, downstream) -> {\n                for (Integer value : list) {\n                    downstream.accept(value);\n                }\n            })\n            .map(String::valueOf)\n            .collect(Collectors.joining(\" \"));\n        System.out.println(flattened);\n    }\n}\n",
+      "expectedOutput": "1 2 3 4",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>mapMulti</code> lets you push zero, one, or many elements downstream without creating intermediate streams.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">stream.mapMulti((list, downstream) -> {\n    for (var item : list) {\n        downstream.accept(item);\n    }\n});</pre></div>\n<p class=\"mt-4 text-gray-300\">It avoids allocation compared to <code>flatMap</code> when you already have iterable data.</p>"
+    },
+    {
+      "id": 299,
+      "title": "299. Collectors.teeing min/max summary",
+      "language": "java",
+      "description": "Use Collectors.teeing to compute min and max from numbers and print \"min=2 max=11\".",
+      "initialCode": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Integer> numbers = List.of(7, 3, 11, 2, 9);\n\n        // TODO: collect with Collectors.teeing to produce \"min=2 max=11\" and print it\n    }\n}\n",
+      "fullSolution": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Integer> numbers = List.of(7, 3, 11, 2, 9);\n\n        String summary = numbers.stream()\n            .collect(Collectors.teeing(\n                Collectors.minBy(Integer::compareTo),\n                Collectors.maxBy(Integer::compareTo),\n                (min, max) -> \"min=\" + min.orElseThrow() + \" max=\" + max.orElseThrow()\n            ));\n        System.out.println(summary);\n    }\n}\n",
+      "expectedOutput": "min=2 max=11",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Combine two collectors in one pass with <code>Collectors.teeing</code> for efficient summaries.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">var summary = numbers.stream()\n    .collect(Collectors.teeing(\n        Collectors.counting(),\n        Collectors.averagingDouble(x -> x),\n        (count, avg) -> count + \"/\" + avg\n    ));</pre></div>\n<p class=\"mt-4 text-gray-300\">Great for stats that previously needed multiple passes or mutable holders.</p>"
+    },
+    {
+      "id": 300,
+      "title": "300. PriorityBlockingQueue ordering",
+      "language": "java",
+      "description": "Insert numbers into a PriorityBlockingQueue and poll them to print 1, 2, 3 each on a new line.",
+      "initialCode": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        PriorityBlockingQueue<Integer> queue = new PriorityBlockingQueue<>();\n\n        // TODO: add 3, 1, 2 into the queue, then take and print them in priority order\n    }\n}\n",
+      "fullSolution": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        PriorityBlockingQueue<Integer> queue = new PriorityBlockingQueue<>();\n\n        queue.put(3);\n        queue.put(1);\n        queue.put(2);\n\n        for (int i = 0; i < 3; i++) {\n            System.out.println(queue.take());\n        }\n    }\n}\n",
+      "expectedOutput": "1\n2\n3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">A <code>PriorityBlockingQueue</code> orders elements by priority while supporting blocking producers/consumers.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">PriorityBlockingQueue<Integer> q = new PriorityBlockingQueue<>();\nq.put(5);\nq.put(2);\nSystem.out.println(q.take()); // 2</pre></div>\n<p class=\"mt-4 text-gray-300\">Use it for work queues where higher-priority tasks must run first.</p>"
     }
   ]
 }

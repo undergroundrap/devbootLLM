@@ -3170,6 +3170,76 @@
       "fullSolution": "data = bytearray(b\"metrics:000\")\nview = memoryview(data)\n\nview[-3:] = b\"123\"\nprint(data.decode(\"ascii\"))\n",
       "expectedOutput": "metrics:123",
       "tutorial": "<p class=\"mb-4 text-gray-300\">memoryview lets you update binary data without copying; slices write directly into the original buffer.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">buf = bytearray(b'abc')\nview = memoryview(buf)\nview[0:2] = b'XY'</pre></div>"
+    },
+    {
+      "id": 311,
+      "title": "311. asyncio.start_server echo",
+      "language": "python",
+      "description": "Spin up an in-process TCP server that uppercases input, send a message, and print the response.",
+      "initialCode": "import asyncio\n\nasync def handle(reader, writer):\n    data = await reader.read(100)\n    # TODO: respond with the data uppercased, flush, then close the connection\n    pass\n\nasync def main():\n    server = await asyncio.start_server(handle, \"127.0.0.1\", 0)\n    addr = server.sockets[0].getsockname()\n    async with server:\n        reader, writer = await asyncio.open_connection(*addr)\n        writer.write(b\"devboot\")\n        await writer.drain()\n        data = await reader.read(100)\n        writer.close()\n        await writer.wait_closed()\n    print(data.decode())\n\nasyncio.run(main())\n",
+      "fullSolution": "import asyncio\n\nasync def handle(reader, writer):\n    data = await reader.read(100)\n    writer.write(data.upper())\n    await writer.drain()\n    writer.close()\n    await writer.wait_closed()\n\nasync def main():\n    server = await asyncio.start_server(handle, \"127.0.0.1\", 0)\n    addr = server.sockets[0].getsockname()\n    async with server:\n        reader, writer = await asyncio.open_connection(*addr)\n        writer.write(b\"devboot\")\n        await writer.drain()\n        data = await reader.read(100)\n        writer.close()\n        await writer.wait_closed()\n    print(data.decode())\n\nasyncio.run(main())\n",
+      "expectedOutput": "DEVBOOT",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>asyncio.start_server</code> to host lightweight TCP services inside tests. Pair it with <code>asyncio.open_connection</code> to exercise the handshake without leaving the event loop.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">server = await asyncio.start_server(handler, '127.0.0.1', 0)\nasync with server:\n    reader, writer = await asyncio.open_connection(*server.sockets[0].getsockname())</pre></div>"
+    },
+    {
+      "id": 312,
+      "title": "312. tomllib.loads config",
+      "language": "python",
+      "description": "Parse TOML text and report selected settings.",
+      "initialCode": "import tomllib\n\ntext = \"\"\"\n[tool.app]\ndebug = false\nworkers = 3\n\"\"\"\n\n# TODO: parse the TOML text and print workers:<value> then debug:<value>\n",
+      "fullSolution": "import tomllib\n\ntext = \"\"\"\n[tool.app]\ndebug = false\nworkers = 3\n\"\"\"\n\ndata = tomllib.loads(text)\napp = data['tool']['app']\nprint(f\"workers:{app['workers']}\")\nprint(f\"debug:{app['debug']}\")\n",
+      "expectedOutput": "workers:3\ndebug:False",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>tomllib</code> (Python 3.11+) parses pyproject-style TOML without third-party deps. Load once, then dig into nested tables just like dicts.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">config = tomllib.loads('[service]\nport = 8000')\nprint(config['service']['port'])</pre></div>"
+    },
+    {
+      "id": 313,
+      "title": "313. tarfile BytesIO archive",
+      "language": "python",
+      "description": "Package files into a tar archive in memory and list their names.",
+      "initialCode": "import io\nimport tarfile\n\nbuffer = io.BytesIO()\nwith tarfile.open(fileobj=buffer, mode=\"w\") as tar:\n    for name, content in [(\"a.txt\", \"A\"), (\"b.txt\", \"B\")]:\n        data = content.encode(\"utf-8\")\n        info = tarfile.TarInfo(name)\n        info.size = len(data)\n        # TODO: add the file with its bytes to the archive\n        pass\n\n# TODO: seek to the beginning, reopen for reading, gather names, and print them joined by commas\n",
+      "fullSolution": "import io\nimport tarfile\n\nbuffer = io.BytesIO()\nwith tarfile.open(fileobj=buffer, mode=\"w\") as tar:\n    for name, content in [(\"a.txt\", \"A\"), (\"b.txt\", \"B\")]:\n        data = content.encode(\"utf-8\")\n        info = tarfile.TarInfo(name)\n        info.size = len(data)\n        tar.addfile(info, io.BytesIO(data))\n\nbuffer.seek(0)\nwith tarfile.open(fileobj=buffer, mode=\"r\") as tar:\n    names = sorted(tar.getnames())\nprint(\",\".join(names))\n",
+      "expectedOutput": "a.txt,b.txt",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Combine <code>tarfile</code> with <code>io.BytesIO</code> to build release artifacts without touching disk. Always rewind the buffer before reopening.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">buf = io.BytesIO()\nwith tarfile.open(fileobj=buf, mode='w') as tar:\n    ...\nbuf.seek(0)</pre></div>"
+    },
+    {
+      "id": 314,
+      "title": "314. pickle round-trip",
+      "language": "python",
+      "description": "Serialize and deserialize a nested object with pickle.",
+      "initialCode": "import pickle\n\ndata = {\"name\": \"Ada\", \"skills\": [\"logic\", \"math\"]}\n\n# TODO: pickle the object to bytes, unpickle it, then print the second skill\n",
+      "fullSolution": "import pickle\n\ndata = {\"name\": \"Ada\", \"skills\": [\"logic\", \"math\"]}\n\npayload = pickle.dumps(data)\nrestored = pickle.loads(payload)\nprint(restored[\"skills\"][1])\n",
+      "expectedOutput": "math",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>pickle</code> turns Python objects into bytes for caching or IPC. Only load trusted data; pickle executes arbitrary code.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Snippet:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">payload = pickle.dumps(obj)\nobj = pickle.loads(payload)</pre></div>"
+    },
+    {
+      "id": 315,
+      "title": "315. importlib.resources.read",
+      "language": "python",
+      "description": "Load a packaged resource using importlib.resources.files.",
+      "initialCode": "import importlib.resources\nimport sys\nimport tempfile\nfrom pathlib import Path\n\nwith tempfile.TemporaryDirectory() as tmp:\n    root = Path(tmp)\n    pkg = root / \"assets\"\n    pkg.mkdir()\n    (pkg / \"__init__.py\").write_text(\"\")\n    (pkg / \"banner.txt\").write_text(\"Launch Ready\\n\", encoding=\"utf-8\")\n    sys.path.insert(0, str(root))\n    try:\n        # TODO: import the package and print banner.txt stripped via importlib.resources.files\n        pass\n    finally:\n        sys.path.remove(str(root))\n",
+      "fullSolution": "import importlib.resources\nimport sys\nimport tempfile\nfrom pathlib import Path\n\nwith tempfile.TemporaryDirectory() as tmp:\n    root = Path(tmp)\n    pkg = root / \"assets\"\n    pkg.mkdir()\n    (pkg / \"__init__.py\").write_text(\"\")\n    (pkg / \"banner.txt\").write_text(\"Launch Ready\\n\", encoding=\"utf-8\")\n    sys.path.insert(0, str(root))\n    try:\n        assets = __import__(\"assets\")\n        text = importlib.resources.files(assets).joinpath(\"banner.txt\").read_text(encoding=\"utf-8\").strip()\n        print(text)\n    finally:\n        sys.path.remove(str(root))\n",
+      "expectedOutput": "Launch Ready",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Ship templates or migrations alongside code and load them with <code>importlib.resources.files()</code>. Temporarily add the package to <code>sys.path</code> when synthesizing fixtures in tests.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">text = importlib.resources.files(pkg).joinpath('schema.sql').read_text()</pre></div>"
+    },
+    {
+      "id": 316,
+      "title": "316. collections.ChainMap overrides",
+      "language": "python",
+      "description": "Layer override settings on top of defaults with ChainMap.",
+      "initialCode": "from collections import ChainMap\n\ndefaults = {\"timeout\": 30, \"region\": \"us-east-1\"}\noverrides = {\"timeout\": 10}\n\n# TODO: combine the mappings so overrides win, then print timeout and region on separate lines\n",
+      "fullSolution": "from collections import ChainMap\n\ndefaults = {\"timeout\": 30, \"region\": \"us-east-1\"}\noverrides = {\"timeout\": 10}\n\nsettings = ChainMap(overrides, defaults)\nprint(settings[\"timeout\"])\nprint(settings[\"region\"])\n",
+      "expectedOutput": "10\nus-east-1",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>ChainMap</code> lets you layer configuration sources without copying dictionaries. Lookups walk each mapping until a key is found.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">config = ChainMap(env_overrides, defaults)\nprint(config['timeout'])</pre></div>"
+    },
+    {
+      "id": 317,
+      "title": "317. statistics.quantiles",
+      "language": "python",
+      "description": "Compute quartiles for latency data and report the 25th and 75th percentiles.",
+      "initialCode": "import statistics\n\ndata = [5, 2, 8, 4, 9, 1]\n\n# TODO: compute inclusive quartiles and print the first and third separated by a comma\n",
+      "fullSolution": "import statistics\n\ndata = [5, 2, 8, 4, 9, 1]\n\nq1, _, q3 = statistics.quantiles(data, n=4, method=\"inclusive\")\nprint(f\"{q1},{q3}\")\n",
+      "expectedOutput": "2.5,7.25",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Quartiles show distribution spread. Use <code>method=&quot;inclusive&quot;</code> to match Excel-style percentiles when sample sizes are small.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Snippet:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">q1, q2, q3 = statistics.quantiles(data, n=4, method='inclusive')</pre></div>"
     }
   ]
 }

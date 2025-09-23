@@ -3118,8 +3118,8 @@
       "title": "305. Virtual Thread Launch Plan",
       "language": "java",
       "description": "Capture the rollout steps for adopting virtual threads in a service.",
-      "initialCode": "String[] steps = {\n    \"Enable --enable-preview in staging\",\n    \"Switch ExecutorService to newVirtualThreadPerTaskExecutor\",\n    \"Load test with 10x concurrency\",\n    \"Roll forward to production\",\n};\n\n// TODO: print exactly:\n// Virtual Thread Launch Plan\n// 1. Enable --enable-preview in staging\n// 2. Switch ExecutorService to newVirtualThreadPerTaskExecutor\n// 3. Load test with 10x concurrency\n// 4. Roll forward to production\n",
-      "fullSolution": "String[] steps = {\n    \"Enable --enable-preview in staging\",\n    \"Switch ExecutorService to newVirtualThreadPerTaskExecutor\",\n    \"Load test with 10x concurrency\",\n    \"Roll forward to production\",\n};\n\nSystem.out.println(\"Virtual Thread Launch Plan\");\nfor (int i = 0; i < steps.length; i++) {\n  System.out.println((i + 1) + \". \" + steps[i]);\n}\n",
+      "initialCode": "public class Main {\n    public static void main(String[] args) {\n        String[] steps = {\n            \"Enable --enable-preview in staging\",\n            \"Switch ExecutorService to newVirtualThreadPerTaskExecutor\",\n            \"Load test with 10x concurrency\",\n            \"Roll forward to production\",\n        };\n\n        // TODO: print exactly:\n        // Virtual Thread Launch Plan\n        // 1. Enable --enable-preview in staging\n        // 2. Switch ExecutorService to newVirtualThreadPerTaskExecutor\n        // 3. Load test with 10x concurrency\n        // 4. Roll forward to production\n    }\n}\n",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        String[] steps = {\n            \"Enable --enable-preview in staging\",\n            \"Switch ExecutorService to newVirtualThreadPerTaskExecutor\",\n            \"Load test with 10x concurrency\",\n            \"Roll forward to production\",\n        };\n\n        System.out.println(\"Virtual Thread Launch Plan\");\n        for (int i = 0; i < steps.length; i++) {\n            System.out.println((i + 1) + \". \" + steps[i]);\n        }\n    }\n}\n",
       "expectedOutput": "Virtual Thread Launch Plan\n1. Enable --enable-preview in staging\n2. Switch ExecutorService to newVirtualThreadPerTaskExecutor\n3. Load test with 10x concurrency\n4. Roll forward to production",
       "tutorial": "<p class=\"mb-4 text-gray-300\">Document the preview flag and load-testing expectations so migrations stay controlled.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">for (int i = 0; i < steps.length; i++)</pre></div>"
     },
@@ -3128,10 +3128,40 @@
       "title": "306. jlink Image Checklist",
       "language": "java",
       "description": "Lay out the commands required to produce a trimmed runtime image with jlink.",
-      "initialCode": "String[][] checklist = {\n    {\"Prepare\", \"jdeps --multi-release 21 --print-module-deps --ignore-missing-deps app.jar\"},\n    {\"Assemble\", \"jlink --add-modules com.example.inventory,java.sql --output build/image\"},\n    {\"Verify\", \"build/image/bin/java -m com.example.inventory\"},\n};\n\n// TODO: print exactly:\n// jlink Image Checklist\n// 1. Prepare: jdeps --multi-release 21 --print-module-deps --ignore-missing-deps app.jar\n// 2. Assemble: jlink --add-modules com.example.inventory,java.sql --output build/image\n// 3. Verify: build/image/bin/java -m com.example.inventory\n",
-      "fullSolution": "String[][] checklist = {\n    {\"Prepare\", \"jdeps --multi-release 21 --print-module-deps --ignore-missing-deps app.jar\"},\n    {\"Assemble\", \"jlink --add-modules com.example.inventory,java.sql --output build/image\"},\n    {\"Verify\", \"build/image/bin/java -m com.example.inventory\"},\n};\n\nSystem.out.println(\"jlink Image Checklist\");\nfor (int i = 0; i < checklist.length; i++) {\n  System.out.println((i + 1) + \". \" + checklist[i][0] + \": \" + checklist[i][1]);\n}\n",
+      "initialCode": "public class Main {\n    public static void main(String[] args) {\n        String[][] checklist = {\n            {\"Prepare\", \"jdeps --multi-release 21 --print-module-deps --ignore-missing-deps app.jar\"},\n            {\"Assemble\", \"jlink --add-modules com.example.inventory,java.sql --output build/image\"},\n            {\"Verify\", \"build/image/bin/java -m com.example.inventory\"},\n        };\n\n        // TODO: print exactly:\n        // jlink Image Checklist\n        // 1. Prepare: jdeps --multi-release 21 --print-module-deps --ignore-missing-deps app.jar\n        // 2. Assemble: jlink --add-modules com.example.inventory,java.sql --output build/image\n        // 3. Verify: build/image/bin/java -m com.example.inventory\n    }\n}\n",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        String[][] checklist = {\n            {\"Prepare\", \"jdeps --multi-release 21 --print-module-deps --ignore-missing-deps app.jar\"},\n            {\"Assemble\", \"jlink --add-modules com.example.inventory,java.sql --output build/image\"},\n            {\"Verify\", \"build/image/bin/java -m com.example.inventory\"},\n        };\n\n        System.out.println(\"jlink Image Checklist\");\n        for (int i = 0; i < checklist.length; i++) {\n            System.out.println((i + 1) + \". \" + checklist[i][0] + \": \" + checklist[i][1]);\n        }\n    }\n}\n",
       "expectedOutput": "jlink Image Checklist\n1. Prepare: jdeps --multi-release 21 --print-module-deps --ignore-missing-deps app.jar\n2. Assemble: jlink --add-modules com.example.inventory,java.sql --output build/image\n3. Verify: build/image/bin/java -m com.example.inventory",
       "tutorial": "<p class=\"mb-4 text-gray-300\">Pair jdeps with jlink so runtime trimming stays reproducible from CI to prod.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Reminder:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">System.out.println(\"jlink Image Checklist\");</pre></div>"
+    },
+    {
+      "id": 307,
+      "title": "307. ArrayDeque descendingIterator",
+      "language": "java",
+      "description": "Use ArrayDeque.descendingIterator() to report steps from newest to oldest.",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Deque<String> steps = new ArrayDeque<>();\n        steps.addLast(\"init\");\n        steps.addLast(\"seed\");\n        steps.addLast(\"deploy\");\n\n        // TODO: walk steps in reverse order using descendingIterator and print \"deploy,seed,init\"\n    }\n}\n",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Deque<String> steps = new ArrayDeque<>();\n        steps.addLast(\"init\");\n        steps.addLast(\"seed\");\n        steps.addLast(\"deploy\");\n\n        Iterator<String> descending = steps.descendingIterator();\n        List<String> order = new ArrayList<>();\n        while (descending.hasNext()) {\n            order.add(descending.next());\n        }\n        System.out.println(String.join(\",\", order));\n    }\n}\n",
+      "expectedOutput": "deploy,seed,init",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">ArrayDeque keeps insertion order and exposes <code>descendingIterator()</code> so you can walk the tail-first view without copying.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Iterator<String> it = deque.descendingIterator();</pre></div>"
+    },
+    {
+      "id": 308,
+      "title": "308. RandomGeneratorFactory Seeded Rollup",
+      "language": "java",
+      "description": "Create a deterministic L64X128MixRandom sequence and print the sum of three draws.",
+      "initialCode": "import java.util.random.RandomGenerator;\nimport java.util.random.RandomGeneratorFactory;\n\npublic class Main {\n    public static void main(String[] args) {\n        // TODO: create an L64X128MixRandom with seed 42, draw three ints in [0,10), sum them, and print the total\n    }\n}\n",
+      "fullSolution": "import java.util.random.RandomGenerator;\nimport java.util.random.RandomGeneratorFactory;\n\npublic class Main {\n    public static void main(String[] args) {\n        RandomGeneratorFactory<? extends RandomGenerator> factory = RandomGeneratorFactory.of(\"L64X128MixRandom\");\n        RandomGenerator rng = factory.create(42L);\n        int total = rng.nextInt(10) + rng.nextInt(10) + rng.nextInt(10);\n        System.out.println(total);\n    }\n}\n",
+      "expectedOutput": "9",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">RandomGeneratorFactory lets you pick modern algorithms with explicit seeding for reproducible tests.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">var rng = RandomGeneratorFactory.of(\"L64X128MixRandom\").create(123);</pre></div>"
+    },
+    {
+      "id": 309,
+      "title": "309. CompletableFuture.delayedExecutor",
+      "language": "java",
+      "description": "Complete a CompletableFuture via delayedExecutor and print the result.",
+      "initialCode": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        CompletableFuture<String> status = new CompletableFuture<>();\n\n        // TODO: complete status using a delayed executor (25 milliseconds) with the value \"ready\"\n        // then print status.join()\n    }\n}\n",
+      "fullSolution": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        CompletableFuture<String> status = new CompletableFuture<>();\n        Executor executor = CompletableFuture.delayedExecutor(25, TimeUnit.MILLISECONDS);\n        executor.execute(() -> status.complete(\"ready\"));\n        System.out.println(status.join());\n    }\n}\n",
+      "expectedOutput": "ready",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use delayedExecutor to inject latency without managing your own scheduler; it runs on ForkJoinPool.commonPool() by default.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">CompletableFuture.delayedExecutor(50, TimeUnit.MILLISECONDS)</pre></div>"
     }
   ]
 }

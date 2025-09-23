@@ -3126,10 +3126,10 @@
       "title": "306. logging.dictConfig",
       "language": "python",
       "description": "Apply a dictConfig definition and emit a log line from the deploy logger.",
-      "initialCode": "import logging\nimport logging.config\n\nconfig = {\n    \"version\": 1,\n    \"disable_existing_loggers\": False,\n    \"formatters\": {\n        \"standard\": {\"format\": \"%(levelname)s:%(name)s:%(message)s\"}\n    },\n    \"handlers\": {\n        \"console\": {\n            \"class\": \"logging.StreamHandler\",\n            \"formatter\": \"standard\",\n            \"level\": \"INFO\",\n        }\n    },\n    \"loggers\": {\n        \"deploy\": {\n            \"handlers\": [\"console\"],\n            \"level\": \"INFO\",\n        }\n    },\n}\n\n# TODO: apply the config and log \"ready\" via the deploy logger\n",
-      "fullSolution": "import logging\nimport logging.config\n\nconfig = {\n    \"version\": 1,\n    \"disable_existing_loggers\": False,\n    \"formatters\": {\n        \"standard\": {\"format\": \"%(levelname)s:%(name)s:%(message)s\"}\n    },\n    \"handlers\": {\n        \"console\": {\n            \"class\": \"logging.StreamHandler\",\n            \"formatter\": \"standard\",\n            \"level\": \"INFO\",\n        }\n    },\n    \"loggers\": {\n        \"deploy\": {\n            \"handlers\": [\"console\"],\n            \"level\": \"INFO\",\n        }\n    },\n}\n\nlogging.config.dictConfig(config)\nlogger = logging.getLogger(\"deploy\")\nlogger.info(\"ready\")\n",
+      "initialCode": "import logging\nimport logging.config\n\nconfig = {\n    \"version\": 1,\n    \"disable_existing_loggers\": False,\n    \"formatters\": {\n        \"standard\": {\"format\": \"%(levelname)s:%(name)s:%(message)s\"}\n    },\n    \"handlers\": {\n        \"console\": {\n            \"class\": \"logging.StreamHandler\",\n            \"formatter\": \"standard\",\n            \"level\": \"INFO\",\n            \"stream\": \"ext://sys.stdout\",\n        }\n    },\n    \"loggers\": {\n        \"deploy\": {\n            \"handlers\": [\"console\"],\n            \"level\": \"INFO\",\n        }\n    },\n}\n\n# TODO: apply the config and log \"ready\" via the deploy logger\n",
+      "fullSolution": "import logging\nimport logging.config\n\nconfig = {\n    \"version\": 1,\n    \"disable_existing_loggers\": False,\n    \"formatters\": {\n        \"standard\": {\"format\": \"%(levelname)s:%(name)s:%(message)s\"}\n    },\n    \"handlers\": {\n        \"console\": {\n            \"class\": \"logging.StreamHandler\",\n            \"formatter\": \"standard\",\n            \"level\": \"INFO\",\n            \"stream\": \"ext://sys.stdout\",\n        }\n    },\n    \"loggers\": {\n        \"deploy\": {\n            \"handlers\": [\"console\"],\n            \"level\": \"INFO\",\n        }\n    },\n}\n\nlogging.config.dictConfig(config)\nlogger = logging.getLogger(\"deploy\")\nlogger.info(\"ready\")\n",
       "expectedOutput": "INFO:deploy:ready",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">dictConfig lets you ship logging policy as data so ops can override handlers without code edits.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Snippet:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">logging.config.dictConfig(config)</pre></div>"
+      "tutorial": "<p class=\"mb-4 text-gray-300\">dictConfig lets you ship logging policy as data so ops can override handlers without code edits. Route the stream handler to stdout via <code>ext://sys.stdout</code> so automated runners capture the output.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Snippet:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">logging.config.dictConfig(config)</pre></div>"
     },
     {
       "id": 307,
@@ -3140,6 +3140,36 @@
       "fullSolution": "from typing import Annotated, get_args, get_type_hints\n\n\ndef schedule(\n    hours: Annotated[int, \"per_week\"],\n    location: Annotated[str, \"timezone\"],\n) -> Annotated[str, \"label\"]:\n    return f\"{hours}h@{location}\"\n\n\ndef describe(name: str, annotated):\n    base, *meta = get_args(annotated)\n    print(f\"{name} -> {base.__name__} {meta}\")\n\nprint(\"Annotated Summary\")\nfor field in (\"hours\", \"location\", \"return\"):\n    describe(field, get_type_hints(schedule, include_extras=True)[field])\n",
       "expectedOutput": "Annotated Summary\nhours -> int ['per_week']\nlocation -> str ['timezone']\nreturn -> str ['label']",
       "tutorial": "<p class=\"mb-4 text-gray-300\">include_extras keeps the metadata attached to Annotated types, which is invaluable for validators and documentation generators.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">base, *meta = get_args(annotated)</pre></div>"
+    },
+    {
+      "id": 308,
+      "title": "308. typing.Self Fluent Builder",
+      "language": "python",
+      "description": "Use typing.Self to build a chainable QueryBuilder and print the combined clauses.",
+      "initialCode": "from typing import TypeVar, List\n\ntry:\n    from typing import Self\nexcept ImportError:  # Python < 3.11\n    Self = TypeVar(\"Self\")  # type: ignore[misc]\n\nclass QueryBuilder:\n    def __init__(self) -> None:\n        self.clauses: List[str] = []\n\n    def where(self, clause: str) -> Self:\n        # TODO: append clause and return self to enable fluent chaining\n        pass\n\n    def build(self) -> str:\n        return \" AND \".join(self.clauses)\n\nbuilder = QueryBuilder()\n# TODO: chain two where() calls (status and retries) and print builder.build()\n",
+      "fullSolution": "from typing import TypeVar, List\n\ntry:\n    from typing import Self\nexcept ImportError:  # Python < 3.11\n    Self = TypeVar(\"Self\")  # type: ignore[misc]\n\nclass QueryBuilder:\n    def __init__(self) -> None:\n        self.clauses: List[str] = []\n\n    def where(self, clause: str) -> Self:\n        self.clauses.append(clause)\n        return self\n\n    def build(self) -> str:\n        return \" AND \".join(self.clauses)\n\nbuilder = QueryBuilder()\nquery = builder.where(\"status = 'active'\").where(\"retries < 5\").build()\nprint(query)\n",
+      "expectedOutput": "status = 'active' AND retries < 5",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">typing.Self keeps fluent APIs type-safe (fall back to a TypeVar on Python &lt; 3.11). Each call returns the builder instance so chains preserve the concrete subtype.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">builder.where(...).where(...)</pre></div>"
+    },
+    {
+      "id": 309,
+      "title": "309. graphlib.TopologicalSorter Deployment",
+      "language": "python",
+      "description": "Resolve deployment dependencies with graphlib.TopologicalSorter and print the order.",
+      "initialCode": "from graphlib import TopologicalSorter\n\ndependencies = {\n    \"db\": set(),\n    \"migrate\": {\"db\"},\n    \"seed\": {\"migrate\"},\n    \"deploy\": {\"seed\"},\n    \"notify\": {\"deploy\"},\n}\n\n# TODO: compute the execution order with TopologicalSorter and print it joined by '->'\n",
+      "fullSolution": "from graphlib import TopologicalSorter\n\ndependencies = {\n    \"db\": set(),\n    \"migrate\": {\"db\"},\n    \"seed\": {\"migrate\"},\n    \"deploy\": {\"seed\"},\n    \"notify\": {\"deploy\"},\n}\n\norder = list(TopologicalSorter(dependencies).static_order())\nprint(\"->\".join(order))\n",
+      "expectedOutput": "db->migrate->seed->deploy->notify",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">TopologicalSorter turns dependency graphs into safe execution orders so migrations run before deploys.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">order = TopologicalSorter(graph).static_order()</pre></div>"
+    },
+    {
+      "id": 310,
+      "title": "310. memoryview Bytearray Update",
+      "language": "python",
+      "description": "Modify a bytearray in-place via memoryview and print the updated ASCII string.",
+      "initialCode": "data = bytearray(b\"metrics:000\")\nview = memoryview(data)\n\n# TODO: replace the last three bytes with b\"123\" using the memoryview and print data decoded as ASCII\n",
+      "fullSolution": "data = bytearray(b\"metrics:000\")\nview = memoryview(data)\n\nview[-3:] = b\"123\"\nprint(data.decode(\"ascii\"))\n",
+      "expectedOutput": "metrics:123",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">memoryview lets you update binary data without copying; slices write directly into the original buffer.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">buf = bytearray(b'abc')\nview = memoryview(buf)\nview[0:2] = b'XY'</pre></div>"
     }
   ]
 }

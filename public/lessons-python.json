@@ -5345,6 +5345,53 @@
         "Concurrency",
         "Async"
       ]
+    },
+    {
+      "id": 333,
+      "title": "333. asyncio.Condition broadcast",
+      "language": "python",
+      "description": "Use asyncio.Condition to block multiple waiters until a notifier releases them, printing the coordination steps.",
+      "initialCode": "import asyncio\n\nasync def worker(name, condition):\n    async with condition:\n        print(f\"{name} waiting\")\n        await condition.wait()\n        print(f\"{name} go\")\n\nasync def release(condition):\n    await asyncio.sleep(0.03)\n    async with condition:\n        print(\"notifying\")\n        condition.notify_all()\n\nasync def main():\n    condition = asyncio.Condition()\n    await asyncio.gather(\n        worker(\"alpha\", condition),\n        worker(\"beta\", condition),\n        release(condition),\n    )\n    print(\"all clear\")\n\nasyncio.run(main())\n",
+      "fullSolution": "import asyncio\n\nasync def worker(name, condition):\n    async with condition:\n        print(f\"{name} waiting\")\n        await condition.wait()\n        print(f\"{name} go\")\n\nasync def release(condition):\n    await asyncio.sleep(0.03)\n    async with condition:\n        print(\"notifying\")\n        condition.notify_all()\n\nasync def main():\n    condition = asyncio.Condition()\n    await asyncio.gather(\n        worker(\"alpha\", condition),\n        worker(\"beta\", condition),\n        release(condition),\n    )\n    print(\"all clear\")\n\nasyncio.run(main())\n",
+      "expectedOutput": "alpha waiting\nbeta waiting\nnotifying\nalpha go\nbeta go\nall clear",
+      "tutorial": "<p class=\\\"mb-4 text-gray-300\\\">An <code>asyncio.Condition</code> couples a lock with wait/notify semantics. Waiters call <code>wait()</code> inside the locked section; <code>notify_all()</code> wakes them so they can re-acquire the lock and continue.</p><h4 class=\\\"font-semibold text-gray-200 mb-2\\\">Pattern:</h4><div class=\\\"code-block-wrapper\\\"><pre class=\\\"tutorial-code-block\\\">async with condition:\n    await condition.wait()\n# ... later ...\nasync with condition:\n    condition.notify_all()</pre></div><p class=\\\"mt-4 text-gray-300\\\">Use conditions for producer/consumer gates or multi-step workflows where simple events are not enough.</p>",
+      "tags": [
+        "Advanced",
+        "Concurrency",
+        "Async"
+      ]
+    },
+    {
+      "id": 334,
+      "title": "334. functools.cache recursion",
+      "language": "python",
+      "description": "Memoize a recursive Fibonacci function with functools.cache and print fib(10).",
+      "initialCode": "from functools import cache\n\n# TODO: decorate fib with @cache so repeated calls reuse results\ndef fib(n):\n    if n < 2:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nprint(fib(10))\n",
+      "fullSolution": "from functools import cache\n\n@cache\ndef fib(n):\n    if n < 2:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nprint(fib(10))\n",
+      "expectedOutput": "55",
+      "tutorial": "<p class=\\\"mb-4 text-gray-300\\\"><code>@cache</code> memoizes calls so expensive recursion avoids recomputing overlapping subproblems. It builds the memo on demand and keeps it for the lifetime of the process.</p><h4 class=\\\"font-semibold text-gray-200 mb-2\\\">Pattern:</h4><div class=\\\"code-block-wrapper\\\"><pre class=\\\"tutorial-code-block\\\">from functools import cache\n\n@cache\ndef fib(n):\n    ...</pre></div><p class=\\\"mt-4 text-gray-300\\\">Pair caching with pure functions to safely trade memory for speed.</p>",
+      "tags": [
+        "Advanced",
+        "Algorithms",
+        "Performance",
+        "Functions"
+      ]
+    },
+    {
+      "id": 335,
+      "title": "335. pathlib glob filter",
+      "language": "python",
+      "description": "Use pathlib to list .py files under src/, excluding test modules, and print their names alphabetically.",
+      "initialCode": "from pathlib import Path\n\nroot = Path(\"src\")\n# TODO: collect *.py files recursively under src/ whose stem does not start with \"test_\"\n# Guard against missing directories before printing each relative path (forward slashes) sorted alphabetically\n",
+      "fullSolution": "from pathlib import Path\n\nroot = Path(\"src\")\nfiles = []\nif root.exists():\n    files = [\n        path.relative_to(root).as_posix()\n        for path in root.rglob('*.py')\n        if not path.stem.startswith('test_')\n    ]\nfor name in sorted(files):\n    print(name)\n",
+      "expectedOutput": "",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Path.rglob walks subdirectories using pathlib semantics. Check that the parent directory exists before traversing, filter by <code>stem</code> or <code>suffix</code>, then present results with <code>relative_to</code> and <code>as_posix()</code>.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">if root.exists():\n    for path in root.rglob('*.py'):\n        if not path.stem.startswith('test_'):\n            yield path.relative_to(root)</pre></div><p class=\"mt-4 text-gray-300\">Guarding the traversal keeps the script friendly in empty workspaces while still demonstrating pathlib's declarative filtering.</p>",
+      "tags": [
+        "Advanced",
+        "CLI",
+        "Workflow",
+        "Tooling"
+      ]
     }
   ]
 }

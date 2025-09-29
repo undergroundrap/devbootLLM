@@ -5513,6 +5513,54 @@
         "Control Flow",
         "OOP"
       ]
+    },
+    {
+      "id": 332,
+      "title": "332. CompletableFuture thenCompose chain",
+      "language": "java",
+      "description": "Compose two asynchronous stages so the second depends on the result of the first.",
+      "initialCode": "import java.util.concurrent.CompletableFuture;\nimport java.util.concurrent.TimeUnit;\n\npublic class Main {\n    static CompletableFuture<String> fetchUser() {\n        return CompletableFuture.supplyAsync(() -> {\n            sleep(20);\n            return \"alice\";\n        });\n    }\n\n    static CompletableFuture<String> loadProfile(String user) {\n        return CompletableFuture.supplyAsync(() -> {\n            sleep(20);\n            return user + \" profile\";\n        });\n    }\n\n    static void sleep(long millis) {\n        try {\n            TimeUnit.MILLISECONDS.sleep(millis);\n        } catch (InterruptedException e) {\n            Thread.currentThread().interrupt();\n            throw new RuntimeException(e);\n        }\n    }\n\n    public static void main(String[] args) {\n        // TODO: chain fetchUser() into loadProfile(...) with thenCompose and print the profile string\n    }\n}\n",
+      "fullSolution": "import java.util.concurrent.CompletableFuture;\nimport java.util.concurrent.TimeUnit;\n\npublic class Main {\n    static CompletableFuture<String> fetchUser() {\n        return CompletableFuture.supplyAsync(() -> {\n            sleep(20);\n            return \"alice\";\n        });\n    }\n\n    static CompletableFuture<String> loadProfile(String user) {\n        return CompletableFuture.supplyAsync(() -> {\n            sleep(20);\n            return user + \" profile\";\n        });\n    }\n\n    static void sleep(long millis) {\n        try {\n            TimeUnit.MILLISECONDS.sleep(millis);\n        } catch (InterruptedException e) {\n            Thread.currentThread().interrupt();\n            throw new RuntimeException(e);\n        }\n    }\n\n    public static void main(String[] args) {\n        String profile = fetchUser()\n                .thenCompose(Main::loadProfile)\n                .join();\n        System.out.println(profile);\n    }\n}\n",
+      "expectedOutput": "alice profile",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>thenCompose</code> when a stage returns another <code>CompletableFuture</code>. It flattens the futures so you can treat the downstream result as a single asynchronous pipeline.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">future.thenCompose(this::nextAsync)</pre></div><p class=\"mt-4 text-gray-300\">Compare with <code>thenApply</code>, which would leave you with a nested completion stage.</p>",
+      "tags": [
+        "Advanced",
+        "Concurrency",
+        "Async",
+        "Control Flow"
+      ]
+    },
+    {
+      "id": 333,
+      "title": "333. ScheduledExecutor fixed rate",
+      "language": "java",
+      "description": "Schedule a repeating heartbeat with ScheduledExecutorService.scheduleAtFixedRate and stop after three ticks.",
+      "initialCode": "import java.util.concurrent.ScheduledExecutorService;\nimport java.util.concurrent.Executors;\nimport java.util.concurrent.TimeUnit;\nimport java.util.concurrent.atomic.AtomicInteger;\n\npublic class Main {\n    public static void main(String[] args) throws InterruptedException {\n        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();\n        AtomicInteger count = new AtomicInteger();\n\n        // TODO: schedule a heartbeat that prints \"tick <n>\" every 40 ms\n        // After the third tick, shut down the scheduler\n    }\n}\n",
+      "fullSolution": "import java.util.concurrent.ScheduledExecutorService;\nimport java.util.concurrent.Executors;\nimport java.util.concurrent.TimeUnit;\nimport java.util.concurrent.atomic.AtomicInteger;\n\npublic class Main {\n    public static void main(String[] args) throws InterruptedException {\n        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();\n        AtomicInteger count = new AtomicInteger();\n\n        Runnable task = () -> {\n            int value = count.incrementAndGet();\n            System.out.println(\"tick \" + value);\n            if (value >= 3) {\n                scheduler.shutdown();\n            }\n        };\n\n        scheduler.scheduleAtFixedRate(task, 0, 40, TimeUnit.MILLISECONDS);\n        scheduler.awaitTermination(500, TimeUnit.MILLISECONDS);\n    }\n}\n",
+      "expectedOutput": "tick 1\ntick 2\ntick 3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">scheduleAtFixedRate launches tasks with a fixed period between start times. Use an AtomicInteger to count iterations and call <code>shutdown()</code> when done.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">scheduler.scheduleAtFixedRate(task, initialDelay, period, unit);</pre></div><p class=\"mt-4 text-gray-300\">Always shut down the scheduler to release the thread.</p>",
+      "tags": [
+        "Advanced",
+        "Concurrency",
+        "Control Flow",
+        "Workflow"
+      ]
+    },
+    {
+      "id": 334,
+      "title": "334. StampedLock optimistic read",
+      "language": "java",
+      "description": "Use StampedLock to take an optimistic read snapshot and fall back to the read lock if contention occurs.",
+      "initialCode": "import java.util.concurrent.TimeUnit;\nimport java.util.concurrent.locks.StampedLock;\n\npublic class Main {\n    public static void main(String[] args) throws InterruptedException {\n        StampedLock lock = new StampedLock();\n        int[] counter = {0};\n\n        Thread writer = new Thread(() -> {\n            long stamp = lock.writeLock();\n            try {\n                sleep(30);\n                counter[0] = 42;\n            } finally {\n                lock.unlockWrite(stamp);\n            }\n        });\n\n        writer.start();\n        sleep(5);\n\n        // TODO: read counter[0] using tryOptimisticRead, validating the stamp\n        // If validation fails, acquire a readLock to get a consistent value, then print it\n\n        writer.join();\n    }\n\n    static void sleep(long millis) {\n        try {\n            TimeUnit.MILLISECONDS.sleep(millis);\n        } catch (InterruptedException e) {\n            Thread.currentThread().interrupt();\n            throw new RuntimeException(e);\n        }\n    }\n}\n",
+      "fullSolution": "import java.util.concurrent.TimeUnit;\nimport java.util.concurrent.locks.StampedLock;\n\npublic class Main {\n    public static void main(String[] args) throws InterruptedException {\n        StampedLock lock = new StampedLock();\n        int[] counter = {0};\n\n        Thread writer = new Thread(() -> {\n            long stamp = lock.writeLock();\n            try {\n                sleep(30);\n                counter[0] = 42;\n            } finally {\n                lock.unlockWrite(stamp);\n            }\n        });\n\n        writer.start();\n        sleep(5);\n\n        long stamp = lock.tryOptimisticRead();\n        int snapshot = counter[0];\n        if (!lock.validate(stamp)) {\n            stamp = lock.readLock();\n            try {\n                snapshot = counter[0];\n            } finally {\n                lock.unlockRead(stamp);\n            }\n        }\n        System.out.println(\"value \" + snapshot);\n\n        writer.join();\n    }\n\n    static void sleep(long millis) {\n        try {\n            TimeUnit.MILLISECONDS.sleep(millis);\n        } catch (InterruptedException e) {\n            Thread.currentThread().interrupt();\n            throw new RuntimeException(e);\n        }\n    }\n}\n",
+      "expectedOutput": "value 42",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">StampedLock allows optimistic reads that avoid locking when no writer interferes. Validate the stamp; if it has been invalidated by a write, fall back to a read lock.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">long stamp = lock.tryOptimisticRead();\\nT value = snapshot();\\nif (!lock.validate(stamp)) {\\n    stamp = lock.readLock();\\n    try {\\n        value = snapshot();\\n    } finally {\\n        lock.unlockRead(stamp);\\n    }\\n}</pre></div><p class=\"mt-4 text-gray-300\">Optimistic reads shine when writers are rare and you want minimal reader contention.</p>",
+      "tags": [
+        "Advanced",
+        "Concurrency",
+        "Control Flow",
+        "OOP"
+      ]
     }
   ]
 }

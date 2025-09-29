@@ -5255,6 +5255,51 @@
         "Concurrency",
         "Async"
       ]
+    },
+    {
+      "id": 327,
+      "title": "327. asyncio.shield resilient result",
+      "language": "python",
+      "description": "Protect a long-running coroutine from cancellation using asyncio.shield inside a timeout and await its eventual result.",
+      "initialCode": "import asyncio\n\nasync def fetch():\n    await asyncio.sleep(0.1)\n    return \"report ready\"\n\nasync def main():\n    task = asyncio.create_task(fetch())\n    try:\n        # TODO: await the task with a 0.05 second timeout using asyncio.wait_for\n        # Wrap the task with asyncio.shield so it keeps running if the timeout expires\n        pass\n    except asyncio.TimeoutError:\n        # TODO: print \"timeout, waiting\" then await the task and print its result\n        pass\n\nasyncio.run(main())\n",
+      "fullSolution": "import asyncio\n\nasync def fetch():\n    await asyncio.sleep(0.1)\n    return \"report ready\"\n\nasync def main():\n    task = asyncio.create_task(fetch())\n    try:\n        await asyncio.wait_for(asyncio.shield(task), 0.05)\n    except asyncio.TimeoutError:\n        print(\"timeout, waiting\")\n        print(await task)\n\nasyncio.run(main())\n",
+      "expectedOutput": "timeout, waiting\nreport ready",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Wrap a task with <code>asyncio.shield()</code> before applying a timeout to keep the underlying coroutine alive. Even if <code>wait_for</code> times out, the shielded task continues and you can await it later for the real result.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">task = asyncio.create_task(work())\ntry:\n    await asyncio.wait_for(asyncio.shield(task), limit)\nexcept asyncio.TimeoutError:\n    result = await task</pre></div><p class=\"mt-4 text-gray-300\">This is handy for background retries or fallbacks where you still want the answer once it finally arrives.</p>",
+      "tags": [
+        "Advanced",
+        "Concurrency",
+        "Async"
+      ]
+    },
+    {
+      "id": 328,
+      "title": "328. asyncio.Event handoff",
+      "language": "python",
+      "description": "Coordinate a producer and consumer coroutine with asyncio.Event, printing progress as the signal changes.",
+      "initialCode": "import asyncio\n\nasync def consumer(signal):\n    print(\"waiting for release\")\n    await signal.wait()\n    print(\"released\")\n\nasync def producer(signal):\n    await asyncio.sleep(0.03)\n    print(\"event set\")\n    signal.set()\n\nasync def main():\n    signal = asyncio.Event()\n    # TODO: run consumer(signal) and producer(signal) concurrently and wait for both to finish\n    pass\n\nasyncio.run(main())\n",
+      "fullSolution": "import asyncio\n\nasync def consumer(signal):\n    print(\"waiting for release\")\n    await signal.wait()\n    print(\"released\")\n\nasync def producer(signal):\n    await asyncio.sleep(0.03)\n    print(\"event set\")\n    signal.set()\n\nasync def main():\n    signal = asyncio.Event()\n    await asyncio.gather(consumer(signal), producer(signal))\n\nasyncio.run(main())\n",
+      "expectedOutput": "waiting for release\nevent set\nreleased",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">An <code>asyncio.Event</code> starts cleared; <code>wait()</code> pauses until some other coroutine calls <code>set()</code>. Pair a waiting consumer with a producer that flips the latch to choreograph hand-offs.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">signal = asyncio.Event()\nawait asyncio.gather(consumer(signal), producer(signal))</pre></div><p class=\"mt-4 text-gray-300\">Reset with <code>clear()</code> if you need to reuse the event for multiple phases.</p>",
+      "tags": [
+        "Advanced",
+        "Concurrency",
+        "Async"
+      ]
+    },
+    {
+      "id": 329,
+      "title": "329. asyncio.to_thread offload",
+      "language": "python",
+      "description": "Offload a blocking function to a worker thread with asyncio.to_thread so the event loop stays responsive.",
+      "initialCode": "import asyncio\nimport time\n\ndef crunch():\n    time.sleep(0.05)\n    return \"report ready\"\n\nasync def main():\n    print(\"starting\")\n    # TODO: run crunch() without blocking the event loop and print its return value\n    pass\n\nasyncio.run(main())\n",
+      "fullSolution": "import asyncio\nimport time\n\ndef crunch():\n    time.sleep(0.05)\n    return \"report ready\"\n\nasync def main():\n    print(\"starting\")\n    result = await asyncio.to_thread(crunch)\n    print(result)\n\nasyncio.run(main())\n",
+      "expectedOutput": "starting\nreport ready",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>asyncio.to_thread()</code> when you need to call a blocking function from async code. The work runs in a separate thread but you await it like any coroutine.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">result = await asyncio.to_thread(blocking_call)</pre></div><p class=\"mt-4 text-gray-300\">This is ideal for CPU-light wrappers around legacy libraries that have not embraced asyncio yet.</p>",
+      "tags": [
+        "Advanced",
+        "Concurrency",
+        "Async"
+      ]
     }
   ]
 }

@@ -5417,6 +5417,54 @@
         "Control Flow",
         "OOP"
       ]
+    },
+    {
+      "id": 326,
+      "title": "326. CompletableFuture timeout fallback",
+      "language": "java",
+      "description": "Apply orTimeout to a supplyAsync task and provide a fallback when the operation takes too long.",
+      "initialCode": "import java.util.concurrent.CompletableFuture;\nimport java.util.concurrent.TimeUnit;\n\npublic class Main {\n    static String fetch(String name, long delayMillis) {\n        try {\n            Thread.sleep(delayMillis);\n        } catch (InterruptedException e) {\n            Thread.currentThread().interrupt();\n            throw new RuntimeException(e);\n        }\n        return name + \" ready\";\n    }\n\n    public static void main(String[] args) {\n        // TODO: run fetch(\"report\", 80) via supplyAsync\n        // Add orTimeout with 40 milliseconds and map timeouts to \"fallback\"\n        // Print the resulting value\n    }\n}\n",
+      "fullSolution": "import java.util.concurrent.CompletableFuture;\nimport java.util.concurrent.TimeUnit;\n\npublic class Main {\n    static String fetch(String name, long delayMillis) {\n        try {\n            Thread.sleep(delayMillis);\n        } catch (InterruptedException e) {\n            Thread.currentThread().interrupt();\n            throw new RuntimeException(e);\n        }\n        return name + \" ready\";\n    }\n\n    public static void main(String[] args) {\n        CompletableFuture<String> result = CompletableFuture\n                .supplyAsync(() -> fetch(\"report\", 80))\n                .orTimeout(40, TimeUnit.MILLISECONDS)\n                .exceptionally(ex -> \"fallback\");\n\n        System.out.println(result.join());\n    }\n}\n",
+      "expectedOutput": "fallback",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">orTimeout injects a deadline into a CompletableFuture, completing it exceptionally with TimeoutException if it runs too long. Chain <code>exceptionally</code> to turn that failure into a clean fallback value.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">CompletableFuture<T> guarded = work\n    .orTimeout(limit, unit)\n    .exceptionally(ex -> fallback);</pre></div><p class=\"mt-4 text-gray-300\">Pair this with retry loops or cached responses to keep latency predictable.</p>",
+      "tags": [
+        "Advanced",
+        "Concurrency",
+        "Async",
+        "Control Flow"
+      ]
+    },
+    {
+      "id": 327,
+      "title": "327. CountDownLatch service rendezvous",
+      "language": "java",
+      "description": "Wait for several services to signal readiness with CountDownLatch before announcing that all are primed.",
+      "initialCode": "import java.util.List;\nimport java.util.Map;\nimport java.util.concurrent.ConcurrentHashMap;\nimport java.util.concurrent.CountDownLatch;\nimport java.util.concurrent.ExecutorService;\nimport java.util.concurrent.Executors;\nimport java.util.concurrent.TimeUnit;\n\npublic class Main {\n    public static void main(String[] args) throws InterruptedException {\n        List<String> services = List.of(\"inventory\", \"pricing\", \"shipping\");\n        CountDownLatch latch = new CountDownLatch(services.size());\n        Map<String, String> ready = new ConcurrentHashMap<>();\n        ExecutorService executor = Executors.newFixedThreadPool(services.size());\n\n        // TODO: submit a worker per service that sleeps service.length()*10 ms,\n        // stores \"<service> primed\" in the map, and counts down the latch\n        // Wait on the latch, print the messages in list order, then print \"all services go\"\n        // Finally, shut down the executor\n    }\n}\n",
+      "fullSolution": "import java.util.List;\nimport java.util.Map;\nimport java.util.concurrent.ConcurrentHashMap;\nimport java.util.concurrent.CountDownLatch;\nimport java.util.concurrent.ExecutorService;\nimport java.util.concurrent.Executors;\nimport java.util.concurrent.TimeUnit;\n\npublic class Main {\n    public static void main(String[] args) throws InterruptedException {\n        List<String> services = List.of(\"inventory\", \"pricing\", \"shipping\");\n        CountDownLatch latch = new CountDownLatch(services.size());\n        Map<String, String> ready = new ConcurrentHashMap<>();\n        ExecutorService executor = Executors.newFixedThreadPool(services.size());\n\n        try {\n            for (String service : services) {\n                executor.submit(() -> {\n                    try {\n                        TimeUnit.MILLISECONDS.sleep(service.length() * 10L);\n                        ready.put(service, service + \" primed\");\n                    } catch (InterruptedException e) {\n                        Thread.currentThread().interrupt();\n                    } finally {\n                        latch.countDown();\n                    }\n                });\n            }\n\n            latch.await();\n            for (String service : services) {\n                System.out.println(ready.get(service));\n            }\n            System.out.println(\"all services go\");\n        } finally {\n            executor.shutdownNow();\n        }\n    }\n}\n",
+      "expectedOutput": "inventory primed\npricing primed\nshipping primed\nall services go",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">CountDownLatch lets you wait until a fixed number of signals arrive. Each worker decrements the latch, and the main thread blocks in <code>await()</code> until everyone checks in.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">CountDownLatch latch = new CountDownLatch(n);\nexecutor.submit(() -> {\n    work();\n    latch.countDown();\n});\nlatch.await();</pre></div><p class=\"mt-4 text-gray-300\">Use this for startup barriers or coordinated shutdown sequences.</p>",
+      "tags": [
+        "Advanced",
+        "Concurrency",
+        "Control Flow",
+        "OOP"
+      ]
+    },
+    {
+      "id": 328,
+      "title": "328. Semaphore concurrency gate",
+      "language": "java",
+      "description": "Cap parallel tasks with a Semaphore while gathering results in submission order.",
+      "initialCode": "import java.util.List;\nimport java.util.concurrent.Callable;\nimport java.util.concurrent.ExecutionException;\nimport java.util.concurrent.ExecutorService;\nimport java.util.concurrent.Executors;\nimport java.util.concurrent.Future;\nimport java.util.concurrent.Semaphore;\nimport java.util.concurrent.TimeUnit;\n\npublic class Main {\n    public static void main(String[] args) throws InterruptedException, ExecutionException {\n        List<String> jobs = List.of(\"alpha\", \"beta\", \"gamma\");\n        Semaphore limiter = new Semaphore(2);\n        ExecutorService executor = Executors.newFixedThreadPool(jobs.size());\n\n        // TODO: create a Callable per job that acquires the semaphore, sleeps based on the job name,\n        // returns \"<job> done\", and releases the permit in a finally block\n        // invokeAll the callables and print each result in submission order\n        // shut down the executor afterward\n    }\n}\n",
+      "fullSolution": "import java.util.List;\nimport java.util.concurrent.Callable;\nimport java.util.concurrent.ExecutionException;\nimport java.util.concurrent.ExecutorService;\nimport java.util.concurrent.Executors;\nimport java.util.concurrent.Future;\nimport java.util.concurrent.Semaphore;\nimport java.util.concurrent.TimeUnit;\n\npublic class Main {\n    public static void main(String[] args) throws InterruptedException, ExecutionException {\n        List<String> jobs = List.of(\"alpha\", \"beta\", \"gamma\");\n        Semaphore limiter = new Semaphore(2);\n        ExecutorService executor = Executors.newFixedThreadPool(jobs.size());\n\n        try {\n            List<Callable<String>> tasks = jobs.stream()\n                    .<Callable<String>>map(job -> () -> {\n                        limiter.acquire();\n                        try {\n                            long delay = switch (job) {\n                                case \"alpha\" -> 50L;\n                                case \"beta\" -> 80L;\n                                default -> 20L;\n                            };\n                            TimeUnit.MILLISECONDS.sleep(delay);\n                            return job + \" done\";\n                        } finally {\n                            limiter.release();\n                        }\n                    })\n                    .toList();\n\n            List<Future<String>> results = executor.invokeAll(tasks);\n            for (Future<String> future : results) {\n                System.out.println(future.get());\n            }\n        } finally {\n            executor.shutdown();\n        }\n    }\n}\n",
+      "expectedOutput": "alpha done\nbeta done\ngamma done",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Semaphores bound the number of concurrent entrants to a critical section. Acquire before starting work, release in a finally block, and everyone else waits their turn.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">limiter.acquire();\ntry {\n    doWork();\n} finally {\n    limiter.release();\n}</pre></div><p class=\"mt-4 text-gray-300\">Combine with invokeAll to preserve submission order while still limiting resource pressure.</p>",
+      "tags": [
+        "Advanced",
+        "Concurrency",
+        "Control Flow",
+        "OOP"
+      ]
     }
   ]
 }

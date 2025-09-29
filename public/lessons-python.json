@@ -2325,7 +2325,7 @@
       "initialCode": "import sqlite3\n\n# Create an in-memory DB, a table nums(v INT), insert 1,2,3\n# Query SELECT SUM(v) and print the result\n\n",
       "fullSolution": "import sqlite3\n\ncon = sqlite3.connect(':memory:')\ncur = con.cursor()\ncur.execute('CREATE TABLE nums(v INT)')\ncur.executemany('INSERT INTO nums(v) VALUES (?)', [(1,),(2,),(3,)])\ncur.execute('SELECT SUM(v) FROM nums')\nprint(cur.fetchone()[0])\ncon.close()\n",
       "expectedOutput": "6",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Use SQLite for quick relational queries in-memoryâ€”great for ETL-style tasks and prototypes.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import sqlite3\ncon = sqlite3.connect(':memory:')\ncon.execute('CREATE TABLE t(x)')\ncon.execute('INSERT INTO t VALUES (42)')\nprint(con.execute('SELECT x FROM t').fetchone()[0])</pre></div>",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use SQLite for quick relational queries in-memory\u00e2\u20ac\u201dgreat for ETL-style tasks and prototypes.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import sqlite3\ncon = sqlite3.connect(':memory:')\ncon.execute('CREATE TABLE t(x)')\ncon.execute('INSERT INTO t VALUES (42)')\nprint(con.execute('SELECT x FROM t').fetchone()[0])</pre></div>",
       "tags": [
         "Intermediate",
         "Control Flow",
@@ -2355,7 +2355,7 @@
       "initialCode": "import struct\n\n# Pack 258 (unsigned short) and 7 (unsigned byte) big-endian, then unpack and print each on its own line\n\n",
       "fullSolution": "import struct\n\ndata = struct.pack('>HB', 258, 7)\na, b = struct.unpack('>HB', data)\nprint(a)\nprint(b)\n",
       "expectedOutput": "258\n7",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">The <code>struct</code> module converts between Python values and C-struct binary dataâ€”useful for protocols and file formats.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import struct\nprint(struct.unpack('&gt;I', b'\\x00\\x00\\x01\\x00')[0]) # 256</pre></div>",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">The <code>struct</code> module converts between Python values and C-struct binary data\u00e2\u20ac\u201duseful for protocols and file formats.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import struct\nprint(struct.unpack('&gt;I', b'\\x00\\x00\\x01\\x00')[0]) # 256</pre></div>",
       "tags": [
         "Intermediate",
         "Control Flow",
@@ -2400,7 +2400,7 @@
       "initialCode": "from functools import cached_property\n\n# Define a class with a cached_property that prints 'compute' once and returns 42\n# Access it twice and print the value both times\n\n",
       "fullSolution": "from functools import cached_property\n\nclass Expensive:\n    @cached_property\n    def value(self):\n        print('compute')\n        return 42\n\ne = Expensive()\nprint(e.value)\nprint(e.value)\n",
       "expectedOutput": "compute\n42\n42",
-      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>cached_property</code> computes once per instance and reuses the valueâ€”handy for memoizing I/O or heavy calculations.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from functools import cached_property\nclass C:\n  @cached_property\n  def cfg(self): return 123\nprint(C().cfg)</pre></div>",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>cached_property</code> computes once per instance and reuses the value\u00e2\u20ac\u201dhandy for memoizing I/O or heavy calculations.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from functools import cached_property\nclass C:\n  @cached_property\n  def cfg(self): return 123\nprint(C().cfg)</pre></div>",
       "tags": [
         "Intermediate",
         "Control Flow",
@@ -2417,7 +2417,7 @@
       "initialCode": "import heapq\n\n# Merge [1,3,5] and [2,4,6] and print each item on its own line\n\n",
       "fullSolution": "import heapq\nfor x in heapq.merge([1,3,5], [2,4,6]):\n    print(x)\n",
       "expectedOutput": "1\n2\n3\n4\n5\n6",
-      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>heapq.merge</code> lazily merges multiple sorted inputsâ€”useful for external sort or streaming merges.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import heapq\nprint(list(heapq.merge([1,4],[2,3])))</pre></div>",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>heapq.merge</code> lazily merges multiple sorted inputs\u00e2\u20ac\u201duseful for external sort or streaming merges.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import heapq\nprint(list(heapq.merge([1,4],[2,3])))</pre></div>",
       "tags": [
         "Intermediate",
         "Control Flow",
@@ -5164,6 +5164,36 @@
         "Advanced",
         "Control Flow",
         "Collections"
+      ]
+    },
+    {
+      "id": 321,
+      "title": "321. match message router",
+      "language": "python",
+      "description": "Use structural pattern matching to route tuple-based messages and handle retries differently for server errors.",
+      "initialCode": "def handle(message):\n    # TODO: pattern-match on (kind, payload) tuples\n    pass\n\nmessages = [\n    (\"ok\", 200),\n    (\"error\", {\"code\": 404}),\n    (\"error\", {\"code\": 503, \"retry\": True}),\n]\n\nfor message in messages:\n    print(handle(message))\n",
+      "fullSolution": "def handle(message):\n    match message:\n        case (\"ok\", value):\n            return f\"OK:{value}\"\n        case (\"error\", {\"code\": code}) if code >= 500:\n            return f\"CRITICAL:{code}\"\n        case (\"error\", {\"code\": code}):\n            return f\"ERROR:{code}\"\n        case _:\n            return \"UNKNOWN\"\n\nmessages = [\n    (\"ok\", 200),\n    (\"error\", {\"code\": 404}),\n    (\"error\", {\"code\": 503, \"retry\": True}),\n]\n\nfor message in messages:\n    print(handle(message))\n",
+      "expectedOutput": "OK:200\nERROR:404\nCRITICAL:503",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Structural pattern matching describes the shape of data directly. Match tuples, mappings, and even enforce extra conditions with guards.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">match message:\n    case (\"error\", {\"code\": code}) if code &gt;= 500:\n        alert(code)</pre></div>",
+      "tags": [
+        "Intermediate",
+        "Control Flow",
+        "Type System"
+      ]
+    },
+    {
+      "id": 322,
+      "title": "322. match class patterns",
+      "language": "python",
+      "description": "Dispatch dataclass command objects with class patterns and guards, emitting an audit line for each event.",
+      "initialCode": "from dataclasses import dataclass\n\n@dataclass\nclass CreateUser:\n    name: str\n    role: str\n\n@dataclass\nclass DeleteUser:\n    id: int\n\n# TODO: implement audit(event) using match/case\n# Create events and print audit(event) for each\n",
+      "fullSolution": "from dataclasses import dataclass\n\n@dataclass\nclass CreateUser:\n    name: str\n    role: str\n\n@dataclass\nclass DeleteUser:\n    id: int\n\ndef audit(event):\n    match event:\n        case CreateUser(name=name, role=\"admin\"):\n            return f\"flag admin signup: {name}\"\n        case CreateUser(name=name, role=role):\n            return f\"create {role}: {name}\"\n        case DeleteUser(id=ident):\n            return f\"delete {ident}\"\n        case _:\n            return \"ignore\"\n\nfor evt in [\n    CreateUser(\"Ada\", \"admin\"),\n    CreateUser(\"Bob\", \"guest\"),\n    DeleteUser(42),\n]:\n    print(audit(evt))\n",
+      "expectedOutput": "flag admin signup: Ada\ncreate guest: Bob\ndelete 42",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Class patterns bind attributes directly, keeping dispatch code declarative. Use guards to single out sensitive combinations.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">match event:\n    case CreateUser(role=\"admin\") as create:\n        log(create.name)</pre></div>",
+      "tags": [
+        "Advanced",
+        "Control Flow",
+        "OOP"
       ]
     }
   ]

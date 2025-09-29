@@ -5300,6 +5300,51 @@
         "Concurrency",
         "Async"
       ]
+    },
+    {
+      "id": 330,
+      "title": "330. asyncio.wait first completed",
+      "language": "python",
+      "description": "Race primary and replica coroutines with asyncio.wait and cancel the loser once the first result arrives.",
+      "initialCode": "import asyncio\n\nasync def fetch(name, delay):\n    await asyncio.sleep(delay)\n    return f\"{name} ready\"\n\nasync def main():\n    tasks = {\n        asyncio.create_task(fetch(\"primary\", 0.08)),\n        asyncio.create_task(fetch(\"replica\", 0.02)),\n    }\n    # TODO: wait for the first task to finish using asyncio.wait with FIRST_COMPLETED\n    # Print the winning result, cancel the remaining tasks, and wait for their cancellation to settle.\n    pass\n\nasyncio.run(main())\n",
+      "fullSolution": "import asyncio\n\nasync def fetch(name, delay):\n    await asyncio.sleep(delay)\n    return f\"{name} ready\"\n\nasync def main():\n    tasks = {\n        asyncio.create_task(fetch(\"primary\", 0.08)),\n        asyncio.create_task(fetch(\"replica\", 0.02)),\n    }\n    done, pending = await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)\n    winner = done.pop()\n    print(await winner)\n    for task in pending:\n        task.cancel()\n    await asyncio.gather(*pending, return_exceptions=True)\n\nasyncio.run(main())\n",
+      "expectedOutput": "replica ready",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>asyncio.wait(..., return_when=FIRST_COMPLETED)</code> to watch a set of tasks and act as soon as one produces a result. Cancel any unfinished tasks and await them with <code>gather</code> so cancellation errors do not leak.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">done, pending = await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)\nresult = await done.pop()\nfor task in pending:\n    task.cancel()\nawait asyncio.gather(*pending, return_exceptions=True)</pre></div>",
+      "tags": [
+        "Advanced",
+        "Concurrency",
+        "Async"
+      ]
+    },
+    {
+      "id": 331,
+      "title": "331. asyncio.Lock critical section",
+      "language": "python",
+      "description": "Serialize balance updates with asyncio.Lock so concurrent tasks modify shared state safely.",
+      "initialCode": "import asyncio\n\nasync def apply(name, delta, delay, lock, balance):\n    await asyncio.sleep(delay)\n    # TODO: use the lock to ensure only one coroutine updates balance[\"value\"] at a time\n    # After applying the delta, print \"{name} applied, balance=<value>\"\n\nasync def main():\n    lock = asyncio.Lock()\n    balance = {\"value\": 0}\n    await asyncio.gather(\n        apply(\"fee\", -5, 0.00, lock, balance),\n        apply(\"bonus\", 25, 0.01, lock, balance),\n        apply(\"deposit\", 30, 0.02, lock, balance),\n    )\n    print(f\"balance: {balance['value']}\")\n\nasyncio.run(main())\n",
+      "fullSolution": "import asyncio\n\nasync def apply(name, delta, delay, lock, balance):\n    await asyncio.sleep(delay)\n    async with lock:\n        balance[\"value\"] += delta\n        print(f\"{name} applied, balance={balance['value']}\")\n\nasync def main():\n    lock = asyncio.Lock()\n    balance = {\"value\": 0}\n    await asyncio.gather(\n        apply(\"fee\", -5, 0.00, lock, balance),\n        apply(\"bonus\", 25, 0.01, lock, balance),\n        apply(\"deposit\", 30, 0.02, lock, balance),\n    )\n    print(f\"balance: {balance['value']}\")\n\nasyncio.run(main())\n",
+      "expectedOutput": "fee applied, balance=-5\nbonus applied, balance=20\ndeposit applied, balance=50\nbalance: 50",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Wrap shared state mutations in <code>async with lock</code> to keep coroutines from interleaving critical sections. Locks ensure intermediate values stay consistent even when tasks run concurrently.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">lock = asyncio.Lock()\nasync with lock:\n    mutate()</pre></div><p class=\"mt-4 text-gray-300\">Pair locks with small critical sections so cooperative multitasking stays responsive.</p>",
+      "tags": [
+        "Advanced",
+        "Concurrency",
+        "Async"
+      ]
+    },
+    {
+      "id": 332,
+      "title": "332. asyncio.Queue fan-in",
+      "language": "python",
+      "description": "Collect messages from multiple producers through an asyncio.Queue and emit them in the order they arrive.",
+      "initialCode": "import asyncio\n\nasync def producer(name, delays, queue):\n    for message, delay in delays:\n        await asyncio.sleep(delay)\n        await queue.put(f\"{name}:{message}\")\n    await queue.put(None)\n\nasync def consumer(queue, producers):\n    # TODO: read from the queue until all producers send None\n    # Print each non-None payload as it arrives\n\nasync def main():\n    queue = asyncio.Queue()\n    await asyncio.gather(\n        producer(\"alpha\", [(\"ping\", 0.01), (\"done\", 0.03)], queue),\n        producer(\"beta\", [(\"sync\", 0.02)], queue),\n        consumer(queue, 2),\n    )\n\nasyncio.run(main())\n",
+      "fullSolution": "import asyncio\n\nasync def producer(name, delays, queue):\n    for message, delay in delays:\n        await asyncio.sleep(delay)\n        await queue.put(f\"{name}:{message}\")\n    await queue.put(None)\n\nasync def consumer(queue, producers):\n    finished = 0\n    while finished < producers:\n        item = await queue.get()\n        if item is None:\n            finished += 1\n        else:\n            print(item)\n\nasync def main():\n    queue = asyncio.Queue()\n    await asyncio.gather(\n        producer(\"alpha\", [(\"ping\", 0.01), (\"done\", 0.03)], queue),\n        producer(\"beta\", [(\"sync\", 0.02)], queue),\n        consumer(queue, 2),\n    )\n\nasyncio.run(main())\n",
+      "expectedOutput": "alpha:ping\nbeta:sync\nalpha:done",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Queues let you decouple producers from consumers. Each producer drops messages with <code>await queue.put()</code>, and the consumer drains them until it sees sentinel values.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">while finished < producers:\n    item = await queue.get()\n    if item is None:\n        finished += 1\n    else:\n        handle(item)</pre></div><p class=\"mt-4 text-gray-300\">Sentinels keep the consumer simple without additional synchronization primitives.</p>",
+      "tags": [
+        "Advanced",
+        "Concurrency",
+        "Async"
+      ]
     }
   ]
 }

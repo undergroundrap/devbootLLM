@@ -5465,6 +5465,54 @@
         "Control Flow",
         "OOP"
       ]
+    },
+    {
+      "id": 329,
+      "title": "329. CompletableFuture handle outcome",
+      "language": "java",
+      "description": "Use CompletableFuture.handle to turn either a successful value or an exception into a status string.",
+      "initialCode": "import java.util.concurrent.CompletableFuture;\n\npublic class Main {\n    static String fetch(boolean fail) {\n        if (fail) {\n            throw new IllegalStateException(\"analytics offline\");\n        }\n        return \"analytics ok\";\n    }\n\n    public static void main(String[] args) {\n        // TODO: run fetch(true) asynchronously and use handle to map:\n        // success -> \"OK: <value>\"\n        // failure -> \"FAIL: <message>\"\n        // Print the mapped result.\n    }\n}\n",
+      "fullSolution": "import java.util.concurrent.CompletableFuture;\n\npublic class Main {\n    static String fetch(boolean fail) {\n        if (fail) {\n            throw new IllegalStateException(\"analytics offline\");\n        }\n        return \"analytics ok\";\n    }\n\n    public static void main(String[] args) {\n        String status = CompletableFuture\n                .supplyAsync(() -> fetch(true))\n                .handle((value, ex) -> {\n                    if (ex == null) {\n                        return \"OK: \" + value;\n                    }\n                    Throwable cause = ex instanceof java.util.concurrent.CompletionException ce ? ce.getCause() : ex;\n                    return \"FAIL: \" + cause.getMessage();\n                })\n                .join();\n        System.out.println(status);\n    }\n}\n",
+      "expectedOutput": "FAIL: analytics offline",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>handle</code> receives both the value and the exception (if any) from the upstream stage, letting you fold everything into a single continuation.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">future.handle((value, ex) -> ex == null ? success(value) : recover(ex))</pre></div><p class=\"mt-4 text-gray-300\">Remember to unwrap <code>CompletionException</code> when mapping failures from asynchronous stages.</p>",
+      "tags": [
+        "Advanced",
+        "Concurrency",
+        "Async",
+        "Control Flow"
+      ]
+    },
+    {
+      "id": 330,
+      "title": "330. Phaser barrier release",
+      "language": "java",
+      "description": "Coordinate multiple services through Phaser so they all wait for a gate to open before proceeding.",
+      "initialCode": "import java.util.List;\nimport java.util.concurrent.ExecutorService;\nimport java.util.concurrent.Executors;\nimport java.util.concurrent.Phaser;\nimport java.util.concurrent.TimeUnit;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        List<String> services = List.of(\"inventory\", \"pricing\", \"shipping\");\n        Phaser phaser = new Phaser(1); // main thread\n        ExecutorService executor = Executors.newFixedThreadPool(services.size());\n\n        // TODO: register each service with the phaser, print \"<service> prepped\" before arriveAndAwaitAdvance,\n        // then after the barrier print \"<service> go\".\n        // Once all workers are registered, arrive and await in main, print \"gate open\", then deregister.\n        // Finally, shut down the executor.\n    }\n}\n",
+      "fullSolution": "import java.util.List;\nimport java.util.concurrent.ExecutorService;\nimport java.util.concurrent.Executors;\nimport java.util.concurrent.Phaser;\nimport java.util.concurrent.TimeUnit;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        List<String> services = List.of(\"inventory\", \"pricing\", \"shipping\");\n        Phaser phaser = new Phaser(1); // register main\n        ExecutorService executor = Executors.newFixedThreadPool(services.size());\n\n        try {\n            for (String service : services) {\n                phaser.register();\n                executor.submit(() -> {\n                    try {\n                        TimeUnit.MILLISECONDS.sleep(service.length() * 5L);\n                        System.out.println(service + \" prepped\");\n                        phaser.arriveAndAwaitAdvance();\n                        TimeUnit.MILLISECONDS.sleep(service.length() * 2L);\n                        System.out.println(service + \" go\");\n                    } catch (InterruptedException e) {\n                        Thread.currentThread().interrupt();\n                    } finally {\n                        phaser.arriveAndDeregister();\n                    }\n                });\n            }\n\n            phaser.arriveAndAwaitAdvance();\n            System.out.println(\"gate open\");\n        } finally {\n            phaser.arriveAndDeregister();\n            executor.shutdown();\n        }\n    }\n}\n",
+      "expectedOutput": "pricing prepped\nshipping prepped\ninventory prepped\ngate open\npricing go\nshipping go\ninventory go",
+      "tutorial": "<p class=\\\"mb-4 text-gray-300\\\">Phaser coordinates batches of parties across phases. Register each participant, let them \"arrive\" when they finish pre-work, and wait for the phase to advance before continuing.</p><h4 class=\\\"font-semibold text-gray-200 mb-2\\\">Pattern:</h4><div class=\\\"code-block-wrapper\\\"><pre class=\\\"tutorial-code-block\\\">phaser.register();\n// prep work\nphaser.arriveAndAwaitAdvance();\n// synchronized release\nphaser.arriveAndDeregister();</pre></div><p class=\\\"mt-4 text-gray-300\\\">Choose delays or additional coordination if you need deterministic post-barrier ordering for demonstrations.</p>",
+      "tags": [
+        "Advanced",
+        "Concurrency",
+        "Control Flow",
+        "OOP"
+      ]
+    },
+    {
+      "id": 331,
+      "title": "331. ReentrantReadWriteLock snapshot",
+      "language": "java",
+      "description": "Guard configuration updates with a ReentrantReadWriteLock so readers see the latest snapshot once the writer commits.",
+      "initialCode": "import java.util.HashMap;\nimport java.util.List;\nimport java.util.Map;\nimport java.util.concurrent.CountDownLatch;\nimport java.util.concurrent.ExecutionException;\nimport java.util.concurrent.ExecutorService;\nimport java.util.concurrent.Executors;\nimport java.util.concurrent.Future;\nimport java.util.concurrent.TimeUnit;\nimport java.util.concurrent.locks.ReentrantReadWriteLock;\n\npublic class Main {\n    public static void main(String[] args) throws InterruptedException, ExecutionException {\n        Map<String, String> config = new HashMap<>();\n        ReentrantReadWriteLock lock = new ReentrantReadWriteLock();\n        CountDownLatch writerHolding = new CountDownLatch(1);\n        ExecutorService executor = Executors.newFixedThreadPool(3);\n\n        // TODO: submit a writer that acquires the write lock, signals writerHolding, sleeps 20 ms, writes feature=enabled, then unlocks.\n        // After waiting for writerHolding, submit two readers that acquire the read lock after small delays and return messages about feature.\n        // Print each reader's message once futures complete, then shut down the executor.\n    }\n}\n",
+      "fullSolution": "import java.util.HashMap;\nimport java.util.List;\nimport java.util.Map;\nimport java.util.concurrent.CountDownLatch;\nimport java.util.concurrent.ExecutionException;\nimport java.util.concurrent.ExecutorService;\nimport java.util.concurrent.Executors;\nimport java.util.concurrent.Future;\nimport java.util.concurrent.TimeUnit;\nimport java.util.concurrent.locks.ReentrantReadWriteLock;\n\npublic class Main {\n    public static void main(String[] args) throws InterruptedException, ExecutionException {\n        Map<String, String> config = new HashMap<>();\n        ReentrantReadWriteLock lock = new ReentrantReadWriteLock();\n        CountDownLatch writerHolding = new CountDownLatch(1);\n        ExecutorService executor = Executors.newFixedThreadPool(3);\n\n        try {\n            Future<?> writer = executor.submit(() -> {\n                lock.writeLock().lock();\n                try {\n                    writerHolding.countDown();\n                    TimeUnit.MILLISECONDS.sleep(20);\n                    config.put(\"feature\", \"enabled\");\n                } catch (InterruptedException e) {\n                    Thread.currentThread().interrupt();\n                } finally {\n                    lock.writeLock().unlock();\n                }\n            });\n\n            writerHolding.await();\n\n            List<Future<String>> readers = List.of(\n                executor.submit(() -> {\n                    TimeUnit.MILLISECONDS.sleep(5);\n                    lock.readLock().lock();\n                    try {\n                        return \"alpha reads \" + config.getOrDefault(\"feature\", \"missing\");\n                    } finally {\n                        lock.readLock().unlock();\n                    }\n                }),\n                executor.submit(() -> {\n                    TimeUnit.MILLISECONDS.sleep(10);\n                    lock.readLock().lock();\n                    try {\n                        return \"beta reads \" + config.getOrDefault(\"feature\", \"missing\");\n                    } finally {\n                        lock.readLock().unlock();\n                    }\n                })\n            );\n\n            writer.get();\n            for (Future<String> reader : readers) {\n                System.out.println(reader.get());\n            }\n        } finally {\n            executor.shutdown();\n        }\n    }\n}\n",
+      "expectedOutput": "alpha reads enabled\nbeta reads enabled",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Writers take the exclusive lock while readers share the read lock. By waiting for the writer to hold the lock before launching readers, you ensure they block until the update is committed and then observe the fresh snapshot.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">lock.writeLock().lock();\ntry {\n    update();\n} finally {\n    lock.writeLock().unlock();\n}\n\nlock.readLock().lock();\ntry {\n    use();\n} finally {\n    lock.readLock().unlock();\n}</pre></div>",
+      "tags": [
+        "Advanced",
+        "Concurrency",
+        "Control Flow",
+        "OOP"
+      ]
     }
   ]
 }

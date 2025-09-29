@@ -5195,6 +5195,66 @@
         "Control Flow",
         "OOP"
       ]
+    },
+    {
+      "id": 323,
+      "title": "323. asyncio timeout guard",
+      "language": "python",
+      "description": "Use asyncio.timeout to cancel a slow coroutine after 50 milliseconds and print a fallback.",
+      "initialCode": "import asyncio\n\nasync def fetch(delay):\n    await asyncio.sleep(delay)\n    return f\"fetched in {delay:.2f}s\"\n\nasync def main():\n    # TODO: run fetch(0.1) inside a 0.05s timeout\n    # Print the result if it finishes, otherwise print \"timed out\"\n    pass\n\nasyncio.run(main())\n",
+      "fullSolution": "import asyncio\n\nasync def fetch(delay):\n    await asyncio.sleep(delay)\n    return f\"fetched in {delay:.2f}s\"\n\nasync def main():\n    try:\n        async with asyncio.timeout(0.05):\n            result = await fetch(0.1)\n            print(result)\n    except TimeoutError:\n        print(\"timed out\")\n\nasyncio.run(main())\n",
+      "expectedOutput": "timed out",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">asyncio.timeout(seconds) warps the enclosed awaited code with a deadline. When the budget expires it raises TimeoutError, so you can recover with retries or fallbacks.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">async with asyncio.timeout(0.05):\n    await work()\n</pre></div><p class=\"mt-4 text-gray-300\">Combine this with TaskGroup or gather to keep cascaded calls from hanging an entire request.</p>",
+      "tags": [
+        "Advanced",
+        "Concurrency",
+        "Async"
+      ]
+    },
+    {
+      "id": 324,
+      "title": "324. asyncio TaskGroup fan-out",
+      "language": "python",
+      "description": "Use asyncio.TaskGroup to fetch primary and replica concurrently, printing their results once both finish.",
+      "initialCode": "import asyncio\n\nasync def fetch(name, delay):\n    await asyncio.sleep(delay)\n    return f\"{name} in {delay:.2f}s\"\n\nasync def main():\n    # TODO: launch fetch(\"primary\", 0.08) and fetch(\"replica\", 0.02) inside a TaskGroup\n    # After the group completes, print the primary result then the replica result.\n    pass\n\nasyncio.run(main())\n",
+      "fullSolution": "import asyncio\n\nasync def fetch(name, delay):\n    await asyncio.sleep(delay)\n    return f\"{name} in {delay:.2f}s\"\n\nasync def main():\n    async with asyncio.TaskGroup() as tg:\n        primary = tg.create_task(fetch(\"primary\", 0.08))\n        replica = tg.create_task(fetch(\"replica\", 0.02))\n    print(primary.result())\n    print(replica.result())\n\nasyncio.run(main())\n",
+      "expectedOutput": "primary in 0.08s\nreplica in 0.02s",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">TaskGroup waits for every child coroutine and cancels siblings if any fail. Create tasks inside the context and read their results once the block exits.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">async with asyncio.TaskGroup() as tg:\n    task = tg.create_task(work())\nprint(task.result())</pre></div><p class=\"mt-4 text-gray-300\">This keeps concurrent branches tidy without manual bookkeeping or cancellation code.</p>",
+      "tags": [
+        "Advanced",
+        "Concurrency",
+        "Async"
+      ]
+    },
+    {
+      "id": 325,
+      "title": "325. asyncio Semaphore concurrency cap",
+      "language": "python",
+      "description": "Limit concurrent crawlers with asyncio.Semaphore and report each completion as soon as it happens.",
+      "initialCode": "import asyncio\n\nasync def crawl(name, delay, limiter):\n    async with limiter:\n        await asyncio.sleep(delay)\n        return f\"{name} done after {delay:.2f}s\"\n\nasync def main():\n    limiter = asyncio.Semaphore(2)\n    jobs = [\n        (\"alpha\", 0.05),\n        (\"beta\", 0.10),\n        (\"gamma\", 0.02),\n    ]\n    # TODO: schedule crawls for each job while respecting the semaphore limit\n    # Print each result as soon as its task finishes.\n    pass\n\nasyncio.run(main())\n",
+      "fullSolution": "import asyncio\n\nasync def crawl(name, delay, limiter):\n    async with limiter:\n        await asyncio.sleep(delay)\n        return f\"{name} done after {delay:.2f}s\"\n\nasync def main():\n    limiter = asyncio.Semaphore(2)\n    jobs = [\n        (\"alpha\", 0.05),\n        (\"beta\", 0.10),\n        (\"gamma\", 0.02),\n    ]\n    tasks = [\n        asyncio.create_task(crawl(name, delay, limiter))\n        for name, delay in jobs\n    ]\n    for task in asyncio.as_completed(tasks):\n        print(await task)\n\nasyncio.run(main())\n",
+      "expectedOutput": "alpha done after 0.05s\ngamma done after 0.02s\nbeta done after 0.10s",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Semaphores bound how many coroutines may enter a critical section at once. Because only two crawlers run concurrently here, the shorter gamma crawl waits its turn.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">limiter = asyncio.Semaphore(permits)\ntasks = [asyncio.create_task(job(limiter)) for job in jobs]\nfor task in asyncio.as_completed(tasks):\n    print(await task)</pre></div><p class=\"mt-4 text-gray-300\">This pattern keeps upstream services safe while still keeping the event loop busy.</p>",
+      "tags": [
+        "Advanced",
+        "Concurrency",
+        "Async"
+      ]
+    },
+    {
+      "id": 326,
+      "title": "326. contextvars request propagation",
+      "language": "python",
+      "description": "Propagate a request id through asyncio tasks using contextvars and print each worker's view.",
+      "initialCode": "import asyncio\nimport contextvars\n\nrequest_id = contextvars.ContextVar(\"request_id\")\n\nasync def handle(name, delay):\n    await asyncio.sleep(delay)\n    return f\"{name} -> {request_id.get()}\"\n\nasync def main():\n    request_id.set(\"req-42\")\n    specs = [\n        (\"worker-1\", 0.03),\n        (\"worker-2\", 0.01),\n        (\"worker-3\", 0.05),\n    ]\n    # TODO: create tasks so each coroutine sees the same request id\n    # Print each result in completion order.\n    pass\n\nasyncio.run(main())\n",
+      "fullSolution": "import asyncio\nimport contextvars\n\nrequest_id = contextvars.ContextVar(\"request_id\")\n\nasync def handle(name, delay):\n    await asyncio.sleep(delay)\n    return f\"{name} -> {request_id.get()}\"\n\nasync def main():\n    request_id.set(\"req-42\")\n    specs = [\n        (\"worker-1\", 0.03),\n        (\"worker-2\", 0.01),\n        (\"worker-3\", 0.05),\n    ]\n    tasks = [\n        asyncio.create_task(handle(name, delay))\n        for name, delay in specs\n    ]\n    for task in asyncio.as_completed(tasks):\n        print(await task)\n\nasyncio.run(main())\n",
+      "expectedOutput": "worker-2 -> req-42\nworker-1 -> req-42\nworker-3 -> req-42",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">contextvars store request-scoped state that automatically flows into new asyncio tasks. Set the value before you schedule work, then read it inside each coroutine.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">token = var.set(value)\ntry:\n    await work()\nfinally:\n    var.reset(token)</pre></div><p class=\"mt-4 text-gray-300\">Reset with the token when leaving the scope if you need to restore the previous value.</p>",
+      "tags": [
+        "Advanced",
+        "Concurrency",
+        "Async"
+      ]
     }
   ]
 }

@@ -5353,6 +5353,70 @@
         "Control Flow",
         "OOP"
       ]
+    },
+    {
+      "id": 322,
+      "title": "322. ExecutorCompletionService first success",
+      "language": "java",
+      "description": "Race primary and replica callables using ExecutorCompletionService and print the first response.",
+      "initialCode": "import java.util.List;\nimport java.util.concurrent.Callable;\nimport java.util.concurrent.ExecutionException;\nimport java.util.concurrent.ExecutorCompletionService;\nimport java.util.concurrent.ExecutorService;\nimport java.util.concurrent.Executors;\n\npublic class Main {\n    static String probe(String name, long delayMillis) throws InterruptedException {\n        Thread.sleep(delayMillis);\n        return name + \" ready\";\n    }\n\n    public static void main(String[] args) throws InterruptedException, ExecutionException {\n        List<Callable<String>> tasks = List.of(\n                () -> probe(\"primary\", 50),\n                () -> probe(\"replica\", 10)\n        );\n\n        // TODO: create an ExecutorCompletionService backed by a fixed thread pool\n        // submit both tasks, take the first completed future, print its result,\n        // then shut down the executor.\n    }\n}\n",
+      "fullSolution": "import java.util.List;\nimport java.util.concurrent.Callable;\nimport java.util.concurrent.ExecutionException;\nimport java.util.concurrent.ExecutorCompletionService;\nimport java.util.concurrent.ExecutorService;\nimport java.util.concurrent.Executors;\nimport java.util.concurrent.Future;\n\npublic class Main {\n    static String probe(String name, long delayMillis) throws InterruptedException {\n        Thread.sleep(delayMillis);\n        return name + \" ready\";\n    }\n\n    public static void main(String[] args) throws InterruptedException, ExecutionException {\n        List<Callable<String>> tasks = List.of(\n                () -> probe(\"primary\", 50),\n                () -> probe(\"replica\", 10)\n        );\n\n        ExecutorService executor = Executors.newFixedThreadPool(tasks.size());\n        ExecutorCompletionService<String> completion = new ExecutorCompletionService<>(executor);\n        try {\n            for (Callable<String> task : tasks) {\n                completion.submit(task);\n            }\n            Future<String> winner = completion.take();\n            System.out.println(winner.get());\n        } finally {\n            executor.shutdownNow();\n        }\n    }\n}\n",
+      "expectedOutput": "replica ready",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">ExecutorCompletionService wraps an ExecutorService and hands you completed futures\n in finishing order. Submit work with submit() and pull the earliest outcome with take().</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">ExecutorCompletionService<T> ecs = new ExecutorCompletionService<>(executor);\necs.submit(task);\nFuture<T> winner = ecs.take();</pre></div><p class=\"mt-4 text-gray-300\">Use this when you need first-completer semantics but also want direct access to the returned Future.</p>",
+      "tags": [
+        "Advanced",
+        "Concurrency",
+        "Control Flow",
+        "OOP"
+      ]
+    },
+    {
+      "id": 323,
+      "title": "323. CompletableFuture failure guard",
+      "language": "java",
+      "description": "Run inventory and analytics via CompletableFuture.allOf, printing a failure message when any task errors.",
+      "initialCode": "import java.util.concurrent.CompletableFuture;\nimport java.util.concurrent.CompletionException;\n\npublic class Main {\n    static String fetch(String name, long delayMillis) {\n        try {\n            Thread.sleep(delayMillis);\n        } catch (InterruptedException e) {\n            Thread.currentThread().interrupt();\n            throw new RuntimeException(e);\n        }\n        if (\"analytics\".equals(name)) {\n            throw new IllegalStateException(\"analytics offline\");\n        }\n        return name + \" ready\";\n    }\n\n    public static void main(String[] args) {\n        CompletableFuture<String> inventory = CompletableFuture.supplyAsync(() -> fetch(\"inventory\", 40));\n        CompletableFuture<String> analytics = CompletableFuture.supplyAsync(() -> fetch(\"analytics\", 20));\n        // TODO: wait for both futures.\n        // If either fails, catch the CompletionException and print \"FAIL: <message>\".\n        // Otherwise print the inventory result, then the analytics result.\n    }\n}\n",
+      "fullSolution": "import java.util.concurrent.CompletableFuture;\nimport java.util.concurrent.CompletionException;\n\npublic class Main {\n    static String fetch(String name, long delayMillis) {\n        try {\n            Thread.sleep(delayMillis);\n        } catch (InterruptedException e) {\n            Thread.currentThread().interrupt();\n            throw new RuntimeException(e);\n        }\n        if (\"analytics\".equals(name)) {\n            throw new IllegalStateException(\"analytics offline\");\n        }\n        return name + \" ready\";\n    }\n\n    public static void main(String[] args) {\n        CompletableFuture<String> inventory = CompletableFuture.supplyAsync(() -> fetch(\"inventory\", 40));\n        CompletableFuture<String> analytics = CompletableFuture.supplyAsync(() -> fetch(\"analytics\", 20));\n\n        try {\n            CompletableFuture.allOf(inventory, analytics).join();\n            System.out.println(inventory.join());\n            System.out.println(analytics.join());\n        } catch (CompletionException ex) {\n            Throwable cause = ex.getCause();\n            String message = cause != null ? cause.getMessage() : ex.getMessage();\n            System.out.println(\"FAIL: \" + message);\n        }\n    }\n}\n",
+      "expectedOutput": "FAIL: analytics offline",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">CompletableFuture.allOf propagates the first failure by wrapping it in a CompletionException. Surround the join with a try/catch to surface the underlying cause.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">try {\n    CompletableFuture.allOf(futures...).join();\n} catch (CompletionException ex) {\n    handle(ex.getCause());\n}</pre></div><p class=\"mt-4 text-gray-300\">After the join succeeds you can safely call join() on each individual future without re-checking for errors.</p>",
+      "tags": [
+        "Advanced",
+        "Concurrency",
+        "Async",
+        "Control Flow"
+      ]
+    },
+    {
+      "id": 324,
+      "title": "324. CompletableFuture winner",
+      "language": "java",
+      "description": "Race two CompletableFutures and cancel the loser after retrieving the first result.",
+      "initialCode": "import java.util.concurrent.CompletableFuture;\nimport java.util.concurrent.ExecutionException;\n\npublic class Main {\n    static String slow(String name, long delayMillis) {\n        try {\n            Thread.sleep(delayMillis);\n        } catch (InterruptedException e) {\n            Thread.currentThread().interrupt();\n            throw new RuntimeException(e);\n        }\n        return name + \" ready\";\n    }\n\n    public static void main(String[] args) throws ExecutionException, InterruptedException {\n        CompletableFuture<String> primary = CompletableFuture.supplyAsync(() -> slow(\"primary\", 80));\n        CompletableFuture<String> backup = CompletableFuture.supplyAsync(() -> slow(\"backup\", 20));\n        // TODO: wait for whichever future completes first and print the result\n        // Then cancel the other future to free resources.\n    }\n}\n",
+      "fullSolution": "import java.util.concurrent.CompletableFuture;\nimport java.util.concurrent.ExecutionException;\n\npublic class Main {\n    static String slow(String name, long delayMillis) {\n        try {\n            Thread.sleep(delayMillis);\n        } catch (InterruptedException e) {\n            Thread.currentThread().interrupt();\n            throw new RuntimeException(e);\n        }\n        return name + \" ready\";\n    }\n\n    public static void main(String[] args) throws ExecutionException, InterruptedException {\n        CompletableFuture<String> primary = CompletableFuture.supplyAsync(() -> slow(\"primary\", 80));\n        CompletableFuture<String> backup = CompletableFuture.supplyAsync(() -> slow(\"backup\", 20));\n        CompletableFuture<Object> winner = CompletableFuture.anyOf(primary, backup);\n        String result = (String) winner.get();\n        System.out.println(result);\n        primary.cancel(true);\n        backup.cancel(true);\n    }\n}\n",
+      "expectedOutput": "backup ready",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">anyOf returns the first completed future without waiting for the rest, making it ideal for fallback strategies. Cast the Object back to the expected type when your futures share the same result type.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">CompletableFuture<Object> winner = CompletableFuture.anyOf(primary, replica);\nT value = (T) winner.get();\nloser.cancel(true);</pre></div><p class=\"mt-4 text-gray-300\">Remember to cancel losers so thread pools or upstream calls can short-circuit.</p>",
+      "tags": [
+        "Advanced",
+        "Concurrency",
+        "Async",
+        "Control Flow"
+      ]
+    },
+    {
+      "id": 325,
+      "title": "325. Work-stealing invokeAll batch",
+      "language": "java",
+      "description": "Run blocking service calls on a work-stealing pool and print their results in submission order.",
+      "initialCode": "import java.util.ArrayList;\nimport java.util.List;\nimport java.util.concurrent.Callable;\nimport java.util.concurrent.ExecutionException;\nimport java.util.concurrent.ExecutorService;\nimport java.util.concurrent.Executors;\nimport java.util.concurrent.Future;\nimport java.util.concurrent.TimeUnit;\n\npublic class Main {\n    public static void main(String[] args) throws InterruptedException, ExecutionException {\n        List<String> services = List.of(\"inventory\", \"pricing\", \"shipping\");\n        // TODO: build a work-stealing pool, create callables that sleep 20ms and return \"<service> done\",\n        // invokeAll the tasks, print each result in the original order, then shut down the pool.\n    }\n}\n",
+      "fullSolution": "import java.util.ArrayList;\nimport java.util.List;\nimport java.util.concurrent.Callable;\nimport java.util.concurrent.ExecutionException;\nimport java.util.concurrent.ExecutorService;\nimport java.util.concurrent.Executors;\nimport java.util.concurrent.Future;\nimport java.util.concurrent.TimeUnit;\n\npublic class Main {\n    public static void main(String[] args) throws InterruptedException, ExecutionException {\n        List<String> services = List.of(\"inventory\", \"pricing\", \"shipping\");\n        ExecutorService executor = Executors.newWorkStealingPool();\n        try {\n            List<Callable<String>> tasks = new ArrayList<>();\n            for (String service : services) {\n                tasks.add(() -> {\n                    TimeUnit.MILLISECONDS.sleep(20);\n                    return service + \" done\";\n                });\n            }\n            List<Future<String>> futures = executor.invokeAll(tasks);\n            for (Future<String> future : futures) {\n                System.out.println(future.get());\n            }\n        } finally {\n            executor.shutdown();\n        }\n    }\n}\n",
+      "expectedOutput": "inventory done\npricing done\nshipping done",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Executors.newWorkStealingPool() creates a ForkJoinPool that dynamically balances blocking tasks across threads. invokeAll retains submission order even though work may hop between workers.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">ExecutorService pool = Executors.newWorkStealingPool();\ntry {\n    List<Future<T>> futures = pool.invokeAll(tasks);\n    for (Future<T> future : futures) {\n        use(future.get());\n    }\n} finally {\n    pool.shutdown();\n}</pre></div><p class=\"mt-4 text-gray-300\">Work-stealing keeps CPUs busy without manually sizing thread pools for mixed workloads.</p>",
+      "tags": [
+        "Advanced",
+        "Concurrency",
+        "Control Flow",
+        "OOP"
+      ]
     }
   ]
 }

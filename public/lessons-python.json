@@ -5423,6 +5423,36 @@
         "Workflow",
         "Tooling"
       ]
+    },
+    {
+      "id": 338,
+      "title": "338. itertools.pairwise trend deltas",
+      "language": "python",
+      "description": "Use itertools.pairwise to report the signed change between consecutive readings.",
+      "initialCode": "try:\n    from itertools import pairwise\nexcept ImportError:\n    from itertools import tee\n\n    def pairwise(iterable):\n        first, second = tee(iterable)\n        next(second, None)\n        return zip(first, second)\n\nreadings = [72, 74, 71, 70, 68]\n\n# TODO: iterate over pairwise(readings) and print each transition\n# Format exactly as \"<prev>-><curr> (<signed delta>)\"\n",
+      "fullSolution": "try:\n    from itertools import pairwise\nexcept ImportError:\n    from itertools import tee\n\n    def pairwise(iterable):\n        first, second = tee(iterable)\n        next(second, None)\n        return zip(first, second)\n\nreadings = [72, 74, 71, 70, 68]\n\nfor prev_value, curr_value in pairwise(readings):\n    delta = curr_value - prev_value\n    sign = f\"{delta:+d}\"\n    print(f\"{prev_value}->{curr_value} ({sign})\")\n",
+      "expectedOutput": "72->74 (+2)\n74->71 (-3)\n71->70 (-1)\n70->68 (-2)",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">itertools.pairwise(iterable) (Python 3.10+) yields consecutive element pairs so you can focus on transitions. The fallback replicates pairwise with itertools.tee for interpreters that lack it.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">for left, right in pairwise(values):\n    analyze(left, right)</pre></div><p class=\"mt-4 text-gray-300\">Combine pairwise with arithmetic to spot trends, velocity, or deltas in time-series data.</p>",
+      "tags": [
+        "Intermediate",
+        "Collections",
+        "Algorithms"
+      ]
+    },
+    {
+      "id": 339,
+      "title": "339. statistics.fmean response time",
+      "language": "python",
+      "description": "Calculate the average duration of several runs with statistics.fmean and format the result.",
+      "initialCode": "try:\n    from statistics import fmean\nexcept ImportError:\n    def fmean(data):\n        items = list(data)\n        if not items:\n            raise ValueError('fmean requires at least one value')\n        return sum(items) / len(items)\n\ndurations = [215.0, 198.5, 202.4, 211.2]\n\n# TODO: compute the average duration with fmean\n# Print \"Average: <value>s\" rounded to one decimal place\n",
+      "fullSolution": "try:\n    from statistics import fmean\nexcept ImportError:\n    def fmean(data):\n        items = list(data)\n        if not items:\n            raise ValueError('fmean requires at least one value')\n        return sum(items) / len(items)\n\ndurations = [215.0, 198.5, 202.4, 211.2]\n\navg = fmean(durations)\nprint(f\"Average: {avg:.1f}s\")\n",
+      "expectedOutput": "Average: 206.8s",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">statistics.fmean keeps the calculation in floating point, so you avoid integer truncation when averaging response times or metrics.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">avg = fmean(samples)\nprint(f\"Average: {avg:.1f}\")</pre></div><p class=\"mt-4 text-gray-300\">Fallback logic mirrors fmean so the lesson still runs on older runtimes that only ship statistics.mean.</p>",
+      "tags": [
+        "Intermediate",
+        "Math and Stats",
+        "Data Processing"
+      ]
     }
   ]
 }

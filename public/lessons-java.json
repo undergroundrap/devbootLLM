@@ -5591,6 +5591,37 @@
         "Date/Time",
         "Workflow"
       ]
+    },
+    {
+      "id": 337,
+      "title": "337. Stream.takeWhile latency window",
+      "language": "java",
+      "description": "Use Stream.takeWhile to keep low-latency samples and print them as a comma-separated list.",
+      "initialCode": "import java.util.List;\nimport java.util.stream.Collectors;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Integer> latencies = List.of(120, 140, 180, 250, 900, 200);\n\n        // TODO: stream the list, take values under 300 until the first slow request,\n        // and print them joined by ', ' on one line.\n    }\n}\n",
+      "fullSolution": "import java.util.List;\nimport java.util.stream.Collectors;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Integer> latencies = List.of(120, 140, 180, 250, 900, 200);\n\n        String output = latencies.stream()\n                .takeWhile(ms -> ms < 300)\n                .map(String::valueOf)\n                .collect(Collectors.joining(\", \"));\n        System.out.println(output);\n    }\n}\n",
+      "expectedOutput": "120, 140, 180, 250",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Stream.takeWhile keeps consuming elements while the predicate holds, stopping as soon as the first failure appears. This is perfect for sorted metrics where everything after the first slow value is suspect.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">stream.takeWhile(predicate).map(...).collect(joining(\", \"))</pre></div><p class=\"mt-4 text-gray-300\">Because the stream short-circuits, you avoid scanning the rest of the data once a threshold is breached.</p>",
+      "tags": [
+        "Intermediate",
+        "Streams",
+        "Control Flow"
+      ]
+    },
+    {
+      "id": 338,
+      "title": "338. Files.mismatch diff peek",
+      "language": "java",
+      "description": "Detect the first differing byte between two build artifacts with Files.mismatch.",
+      "initialCode": "import java.nio.file.Files;\nimport java.nio.file.Path;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        Path dir = Files.createTempDirectory(\"artifacts\");\n        Path buildA = dir.resolve(\"build-A.txt\");\n        Path buildB = dir.resolve(\"build-B.txt\");\n        Files.writeString(buildA, \"version=1.2.3\\nstatus=ready\\n\");\n        Files.writeString(buildB, \"version=1.2.4\\nstatus=ready\\n\");\n\n        // TODO: use Files.mismatch to find the first differing byte\n        // Print \"Mismatch at byte <index>\" when they differ or \"Files match\" when it returns -1\n\n        // Clean up the temp directory (delete files and the directory)\n    }\n}\n",
+      "fullSolution": "import java.nio.file.Files;\nimport java.nio.file.Path;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        Path dir = Files.createTempDirectory(\"artifacts\");\n        Path buildA = dir.resolve(\"build-A.txt\");\n        Path buildB = dir.resolve(\"build-B.txt\");\n        Files.writeString(buildA, \"version=1.2.3\\nstatus=ready\\n\");\n        Files.writeString(buildB, \"version=1.2.4\\nstatus=ready\\n\");\n\n        try {\n            long position = Files.mismatch(buildA, buildB);\n            if (position == -1L) {\n                System.out.println(\"Files match\");\n            } else {\n                System.out.println(\"Mismatch at byte \" + position);\n            }\n        } finally {\n            Files.deleteIfExists(buildA);\n            Files.deleteIfExists(buildB);\n            Files.deleteIfExists(dir);\n        }\n    }\n}\n",
+      "expectedOutput": "Mismatch at byte 12",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Files.mismatch(Path, Path) (Java 12+) returns the first differing byte position or -1 when files are identical, giving you a fast health check for generated artifacts.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">long diff = Files.mismatch(a, b);\nif (diff == -1) {\n    System.out.println(\"match\");\n}</pre></div><p class=\"mt-4 text-gray-300\">Wrap comparisons in try/finally so temporary fixtures are cleaned even if the comparison raises.</p>",
+      "tags": [
+        "Intermediate",
+        "IO",
+        "Testing",
+        "Workflow"
+      ]
     }
   ]
 }

@@ -5561,6 +5561,36 @@
         "Control Flow",
         "OOP"
       ]
+    },
+    {
+      "id": 335,
+      "title": "335. Collectors.filtering critical services",
+      "description": "Group services by audience and use Collectors.filtering to keep only critical names per bucket.",
+      "initialCode": "import java.util.*;\nimport java.util.stream.*;\n\nrecord Service(String name, List<String> tags) {}\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Service> services = List.of(\n            new Service(\"auth\", List.of(\"critical\", \"customer-facing\")),\n            new Service(\"billing\", List.of(\"customer-facing\")),\n            new Service(\"docs\", List.of(\"internal\"))\n        );\n\n        // TODO: group services by whether they are customer-facing or internal\n        // Use Collectors.filtering to retain only critical service names in each group\n        // Print the groups in this order:\n        // customer-facing -> [auth]\n        // internal -> []\n    }\n}\n",
+      "fullSolution": "import java.util.*;\nimport java.util.stream.*;\n\nrecord Service(String name, List<String> tags) {}\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Service> services = List.of(\n            new Service(\"auth\", List.of(\"critical\", \"customer-facing\")),\n            new Service(\"billing\", List.of(\"customer-facing\")),\n            new Service(\"docs\", List.of(\"internal\"))\n        );\n\n        Map<String, List<String>> criticalByAudience = services.stream()\n            .collect(Collectors.groupingBy(\n                service -> service.tags().contains(\"customer-facing\") ? \"customer-facing\" : \"internal\",\n                Collectors.filtering(\n                    service -> service.tags().contains(\"critical\"),\n                    Collectors.mapping(Service::name, Collectors.toList())\n                )\n            ));\n\n        for (String audience : List.of(\"customer-facing\", \"internal\")) {\n            List<String> names = criticalByAudience.getOrDefault(audience, List.of());\n            System.out.println(audience + \" -> \" + names);\n        }\n    }\n}\n",
+      "expectedOutput": "customer-facing -> [auth]\ninternal -> []",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Collectors.filtering lets you drop elements inside a downstream collector without rewriting the surrounding pipeline. Pair it with groupingBy to keep each segment focused.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Map<K, V> view = items.stream()\n    .collect(Collectors.groupingBy(keyFn,\n        Collectors.filtering(predicate, downstream)));</pre></div><p class=\"mt-4 text-gray-300\">Filter inside the collector when you still need the original element for other aggregations.</p>",
+      "language": "java",
+      "tags": [
+        "Intermediate",
+        "Streams",
+        "Collections"
+      ]
+    },
+    {
+      "id": 336,
+      "title": "336. TemporalAdjusters sprint milestones",
+      "description": "Use TemporalAdjusters to snap a date to the sprint start, find the next Friday retro, and the month-end release.",
+      "initialCode": "import java.time.DayOfWeek;\nimport java.time.LocalDate;\nimport java.time.temporal.TemporalAdjusters;\n\npublic class Main {\n    public static void main(String[] args) {\n        LocalDate kickoff = LocalDate.of(2024, 4, 3);\n\n        // TODO: compute the sprint start by moving to the previous or same Monday\n        // Compute the retro two weeks later on the next Friday\n        // Compute the release as the last day of the month\n        // Print the three dates exactly as:\n        // Sprint start: 2024-04-01\n        // Retro: 2024-04-19\n        // Release: 2024-04-30\n    }\n}\n",
+      "fullSolution": "import java.time.DayOfWeek;\nimport java.time.LocalDate;\nimport java.time.temporal.TemporalAdjusters;\n\npublic class Main {\n    public static void main(String[] args) {\n        LocalDate kickoff = LocalDate.of(2024, 4, 3);\n\n        LocalDate sprintStart = kickoff.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));\n        LocalDate retro = sprintStart.plusWeeks(2).with(TemporalAdjusters.next(DayOfWeek.FRIDAY));\n        LocalDate release = kickoff.with(TemporalAdjusters.lastDayOfMonth());\n\n        System.out.println(\"Sprint start: \" + sprintStart);\n        System.out.println(\"Retro: \" + retro);\n        System.out.println(\"Release: \" + release);\n    }\n}\n",
+      "expectedOutput": "Sprint start: 2024-04-01\nRetro: 2024-04-19\nRelease: 2024-04-30",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">TemporalAdjusters snap a LocalDate to calendar boundaries such as first/last days or relative weekdays.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">LocalDate start = date.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));\nLocalDate retro = start.plusWeeks(2).with(TemporalAdjusters.next(DayOfWeek.FRIDAY));</pre></div><p class=\"mt-4 text-gray-300\">Mix adjusters to build sprint schedules, billing cycles, or reporting windows without manual arithmetic.</p>",
+      "language": "java",
+      "tags": [
+        "Intermediate",
+        "Date/Time",
+        "Workflow"
+      ]
     }
   ]
 }

@@ -5392,6 +5392,37 @@
         "Workflow",
         "Tooling"
       ]
+    },
+    {
+      "id": 336,
+      "title": "336. itertools.batched capacity planning",
+      "language": "python",
+      "description": "Group a range of numbers into fixed-size batches with itertools.batched and label each batch.",
+      "initialCode": "try:\n    from itertools import batched\nexcept ImportError:  # Python < 3.12 fallback\n    from itertools import islice\n\n    def batched(iterable, size):\n        iterator = iter(iterable)\n        while True:\n            batch = tuple(islice(iterator, size))\n            if not batch:\n                break\n            yield batch\n\nnumbers = range(1, 11)\n\n# TODO: iterate numbers in batches of 4 using batched\n# Print each batch as \"batch <index>: <comma-delimited numbers>\"\n",
+      "fullSolution": "try:\n    from itertools import batched\nexcept ImportError:  # Python < 3.12 fallback\n    from itertools import islice\n\n    def batched(iterable, size):\n        iterator = iter(iterable)\n        while True:\n            batch = tuple(islice(iterator, size))\n            if not batch:\n                break\n            yield batch\n\nnumbers = range(1, 11)\n\nfor index, group in enumerate(batched(numbers, 4), start=1):\n    values = ','.join(str(n) for n in group)\n    print(f\"batch {index}: {values}\")\n",
+      "expectedOutput": "batch 1: 1,2,3,4\nbatch 2: 5,6,7,8\nbatch 3: 9,10",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">itertools.batched(iterable, size) (Python 3.12+) yields tuples of up to <code>size</code> items without materializing the whole stream. The fallback shows how to build the same helper on earlier versions.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">for i, group in enumerate(batched(items, size), start=1):\n    ...</pre></div><p class=\"mt-4 text-gray-300\">Label batches with enumerate and remember that the last chunk may be shorter than the requested size.</p>",
+      "tags": [
+        "Intermediate",
+        "Collections",
+        "Algorithms"
+      ]
+    },
+    {
+      "id": 337,
+      "title": "337. pathlib.Path.walk inventory",
+      "language": "python",
+      "description": "Traverse a directory tree with Path.walk(), collect discovered files, and print their relative paths alphabetically.",
+      "initialCode": "from pathlib import Path\nimport tempfile\nimport os\n\nwith tempfile.TemporaryDirectory() as tmp:\n    root = Path(tmp)\n    (root / 'logs').mkdir()\n    (root / 'logs' / 'app.log').write_text('ok')\n    (root / 'logs' / 'api.log').write_text('ok')\n    (root / 'tmp').mkdir()\n    (root / 'tmp' / 'scratch.txt').write_text('tmp')\n    (root / 'README.md').write_text('notes')\n\n    # TODO: walk the tree starting from root\n    # Collect file paths relative to root and print them alphabetically using forward slashes\n",
+      "fullSolution": "from pathlib import Path\nimport tempfile\nimport os\n\nwith tempfile.TemporaryDirectory() as tmp:\n    root = Path(tmp)\n    (root / 'logs').mkdir()\n    (root / 'logs' / 'app.log').write_text('ok')\n    (root / 'logs' / 'api.log').write_text('ok')\n    (root / 'tmp').mkdir()\n    (root / 'tmp' / 'scratch.txt').write_text('tmp')\n    (root / 'README.md').write_text('notes')\n\n    files = []\n    walker = getattr(root, 'walk', None)\n    if walker is None:  # Python < 3.12 fallback\n        iterator = ((Path(current), dirs, filenames) for current, dirs, filenames in os.walk(root))\n    else:\n        iterator = walker()\n    for current, _dirs, filenames in iterator:\n        current_path = Path(current)\n        for name in filenames:\n            rel = (current_path / name).relative_to(root).as_posix()\n            files.append(rel)\n    for path in sorted(files):\n        print(path)\n",
+      "expectedOutput": "README.md\nlogs/api.log\nlogs/app.log\ntmp/scratch.txt",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Path.walk() (Python 3.12+) mirrors os.walk while keeping everything in the pathlib world. The fallback demonstrates how to adapt the snippet for older interpreters.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">for current, dirs, files in root.walk():\n    for name in files:\n        yield current / name</pre></div><p class=\"mt-4 text-gray-300\">Convert discovered paths to POSIX style with <code>as_posix()</code> so results remain stable across platforms.</p>",
+      "tags": [
+        "Intermediate",
+        "CLI",
+        "Workflow",
+        "Tooling"
+      ]
     }
   ]
 }

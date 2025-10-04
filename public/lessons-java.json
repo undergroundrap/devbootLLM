@@ -5622,6 +5622,66 @@
         "Testing",
         "Workflow"
       ]
+    },
+    {
+      "id": 339,
+      "title": "339. Stream.dropWhile incident tail",
+      "language": "java",
+      "description": "Use Stream.dropWhile to skip healthy entries and print the remaining alerts.",
+      "initialCode": "import java.util.List;\nimport java.util.stream.Collectors;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> statuses = List.of(\"OK\", \"OK\", \"WARN\", \"FAIL\", \"OK\");\n\n        // TODO: drop leading \"OK\" entries, keep the rest, and print them joined by ', ' on one line\n    }\n}\n",
+      "fullSolution": "import java.util.List;\nimport java.util.stream.Collectors;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> statuses = List.of(\"OK\", \"OK\", \"WARN\", \"FAIL\", \"OK\");\n\n        String tail = statuses.stream()\n                .dropWhile(\"OK\"::equals)\n                .collect(Collectors.joining(\", \"));\n        System.out.println(tail);\n    }\n}\n",
+      "expectedOutput": "WARN, FAIL, OK",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Stream.dropWhile continues removing elements while the predicate is true, then yields the rest unchanged. Pair it with dropWhile to ignore the calm before the incident and focus on the tail of warnings.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">var tail = list.stream().dropWhile(predicate).collect(joining(\", \"));</pre></div><p class=\"mt-4 text-gray-300\">Unlike filter, dropWhile only trims the front of the stream, preserving later entries even if they match the predicate.</p>",
+      "tags": [
+        "Intermediate",
+        "Streams",
+        "Control Flow"
+      ]
+    },
+    {
+      "id": 340,
+      "title": "340. Map.copyOf defensive snapshot",
+      "language": "java",
+      "description": "Create an unmodifiable copy of configuration overrides with Map.copyOf and confirm it is immutable.",
+      "initialCode": "import java.util.HashMap;\nimport java.util.Map;\n\npublic class Main {\n    public static void main(String[] args) {\n        Map<String, String> overrides = new HashMap<>();\n        overrides.put(\"region\", \"us-west-2\");\n        overrides.put(\"tier\", \"gold\");\n\n        // TODO: take an immutable snapshot with Map.copyOf\n        // Mutate overrides afterwards (change tier to 'silver')\n        // Print the snapshot tier value, then attempt to put a new entry\n        // Catch UnsupportedOperationException and print \"immutable\"\n    }\n}\n",
+      "fullSolution": "import java.util.HashMap;\nimport java.util.Map;\n\npublic class Main {\n    public static void main(String[] args) {\n        Map<String, String> overrides = new HashMap<>();\n        overrides.put(\"region\", \"us-west-2\");\n        overrides.put(\"tier\", \"gold\");\n\n        Map<String, String> snapshot = Map.copyOf(overrides);\n        overrides.put(\"tier\", \"silver\");\n\n        System.out.println(snapshot.get(\"tier\"));\n        try {\n            snapshot.put(\"status\", \"locked\");\n        } catch (UnsupportedOperationException ex) {\n            System.out.println(\"immutable\");\n        }\n    }\n}\n",
+      "expectedOutput": "gold\nimmutable",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Map.copyOf creates an unmodifiable snapshot of the input map, ideal for freezing configuration before handing it to other threads.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Map<String, String> snapshot = Map.copyOf(source);</pre></div><p class=\"mt-4 text-gray-300\">Subsequent mutations to the original map do not affect the snapshot, and write attempts on the snapshot raise UnsupportedOperationException.</p>",
+      "tags": [
+        "Intermediate",
+        "Collections",
+        "OOP"
+      ]
+    },
+    {
+      "id": 341,
+      "title": "341. Stream.iterate capacity ramp",
+      "language": "java",
+      "description": "Generate doubling capacity steps with the three-argument Stream.iterate overload and print them in order.",
+      "initialCode": "import java.util.stream.Collectors;\nimport java.util.stream.Stream;\n\npublic class Main {\n    public static void main(String[] args) {\n        // TODO: use Stream.iterate(seed, predicate, step) starting at 1\n        // Keep doubling while the value is less than 70\n        // Collect the numbers into a string joined by ' -> ' and print it\n    }\n}\n",
+      "fullSolution": "import java.util.stream.Collectors;\nimport java.util.stream.Stream;\n\npublic class Main {\n    public static void main(String[] args) {\n        String steps = Stream.iterate(1, value -> value < 70, value -> value * 2)\n                .map(String::valueOf)\n                .collect(Collectors.joining(\" -> \"));\n        System.out.println(steps);\n    }\n}\n",
+      "expectedOutput": "1 -> 2 -> 4 -> 8 -> 16 -> 32 -> 64",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">The Java 9 Stream.iterate(seed, predicate, next) overload generates finite sequences without extra takeWhile/filter calls. Here we double capacity until hitting the threshold.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Stream.iterate(seed, predicate, next)</pre></div><p class=\"mt-4 text-gray-300\">Use this form whenever you have a deterministic termination condition to keep streams declarative.</p>",
+      "tags": [
+        "Intermediate",
+        "Streams",
+        "Math and Stats"
+      ]
+    },
+    {
+      "id": 342,
+      "title": "342. LocalDate.datesUntil sprint cadence",
+      "language": "java",
+      "description": "List weekly sprint review dates using LocalDate.datesUntil with a Period step.",
+      "initialCode": "import java.time.LocalDate;\nimport java.time.Period;\nimport java.util.stream.Collectors;\n\npublic class Main {\n    public static void main(String[] args) {\n        LocalDate kickoff = LocalDate.of(2024, 4, 1);\n        LocalDate endExclusive = kickoff.plusWeeks(6);\n\n        // TODO: use datesUntil with a weekly Period to collect all review dates\n        // Print them joined by ', ' in ISO format\n    }\n}\n",
+      "fullSolution": "import java.time.LocalDate;\nimport java.time.Period;\nimport java.util.stream.Collectors;\n\npublic class Main {\n    public static void main(String[] args) {\n        LocalDate kickoff = LocalDate.of(2024, 4, 1);\n        LocalDate endExclusive = kickoff.plusWeeks(6);\n\n        String reviews = kickoff.datesUntil(endExclusive, Period.ofWeeks(1))\n                .map(LocalDate::toString)\n                .collect(Collectors.joining(\", \"));\n        System.out.println(reviews);\n    }\n}\n",
+      "expectedOutput": "2024-04-01, 2024-04-08, 2024-04-15, 2024-04-22, 2024-04-29, 2024-05-06",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">LocalDate.datesUntil(endExclusive, step) walks a range of dates with the granularity you choose. Stepping by a weekly Period keeps recurring ceremonies aligned.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">start.datesUntil(end, Period.ofWeeks(1))</pre></div><p class=\"mt-4 text-gray-300\">Choose endExclusive as the first date you want to exclude so the range remains intuitive.</p>",
+      "tags": [
+        "Intermediate",
+        "Date/Time",
+        "Workflow"
+      ]
     }
   ]
 }

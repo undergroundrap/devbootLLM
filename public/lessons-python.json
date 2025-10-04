@@ -5453,6 +5453,66 @@
         "Math and Stats",
         "Data Processing"
       ]
+    },
+    {
+      "id": 340,
+      "title": "340. math.prod capacity multiplier",
+      "language": "python",
+      "description": "Multiply capacity factors with math.prod to forecast total throughput.",
+      "initialCode": "try:\n    from math import prod\nexcept ImportError:\n    from functools import reduce\n    import operator\n\n    def prod(values):\n        return reduce(operator.mul, values, 1)\n\nfactors = [3, 2, 4]\n\n# TODO: compute the product of factors with prod and print \"Capacity: <value>x\"\n",
+      "fullSolution": "try:\n    from math import prod\nexcept ImportError:\n    from functools import reduce\n    import operator\n\n    def prod(values):\n        return reduce(operator.mul, values, 1)\n\nfactors = [3, 2, 4]\n\ncapacity = prod(factors)\nprint(f\"Capacity: {capacity}x\")\n",
+      "expectedOutput": "Capacity: 24x",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">math.prod(iterable) multiplies a series of factors without the boilerplate of reduce. The fallback uses functools.reduce so learners on older interpreters can still run the snippet.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">total = prod(values)</pre></div><p class=\"mt-4 text-gray-300\">Use prod to combine scaling multipliers like replicas, shards, or batch sizes into a single throughput estimate.</p>",
+      "tags": [
+        "Beginner",
+        "Math and Stats",
+        "Data Processing"
+      ]
+    },
+    {
+      "id": 341,
+      "title": "341. contextlib.nullcontext optional lock",
+      "language": "python",
+      "description": "Guard an optional critical section with contextlib.nullcontext so the same code path works with or without a lock.",
+      "initialCode": "import threading\n\ntry:\n    from contextlib import nullcontext\nexcept ImportError:\n    from contextlib import contextmanager\n\n    @contextmanager\n    def nullcontext(enter_result=None):\n        yield enter_result\n\ndef process(lock):\n    # TODO: choose the lock if provided, otherwise use nullcontext()\n    # Inside the context, print \"with lock\" when a lock was supplied, else \"no lock\"\n\nprocess(threading.Lock())\nprocess(None)\n",
+      "fullSolution": "import threading\n\ntry:\n    from contextlib import nullcontext\nexcept ImportError:\n    from contextlib import contextmanager\n\n    @contextmanager\n    def nullcontext(enter_result=None):\n        yield enter_result\n\ndef process(lock):\n    ctx = lock if lock is not None else nullcontext()\n    with ctx:\n        if lock is not None:\n            print(\"with lock\")\n        else:\n            print(\"no lock\")\n\nprocess(threading.Lock())\nprocess(None)\n",
+      "expectedOutput": "with lock\nno lock",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">contextlib.nullcontext() returns a do-nothing context manager so you can avoid duplicate code when a resource is optional. The fallback shows how to recreate it for older versions of Python.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">ctx = resource or nullcontext()\nwith ctx:\n    work()</pre></div><p class=\"mt-4 text-gray-300\">This is especially handy for optional locks, tracing files, or feature-flagged context managers.</p>",
+      "tags": [
+        "Intermediate",
+        "Concurrency",
+        "Workflow"
+      ]
+    },
+    {
+      "id": 342,
+      "title": "342. math.comb reviewer pairs",
+      "language": "python",
+      "description": "Calculate the number of unique reviewer pairs using math.comb and format the result.",
+      "initialCode": "try:\n    from math import comb\nexcept AttributeError:\n    from math import factorial\n\n    def comb(n, k):\n        if not 0 <= k <= n:\n            raise ValueError('k must be between 0 and n')\n        return factorial(n) // (factorial(k) * factorial(n - k))\n\nreviewers = ['Ada', 'Bob', 'Chen', 'Divya', 'Eve', 'Fiona']\n\n# TODO: compute the number of unique 2-person review pairs\n# Print \"Review pairs: <count>\"\n",
+      "fullSolution": "try:\n    from math import comb\nexcept AttributeError:\n    from math import factorial\n\n    def comb(n, k):\n        if not 0 <= k <= n:\n            raise ValueError('k must be between 0 and n')\n        return factorial(n) // (factorial(k) * factorial(n - k))\n\nreviewers = ['Ada', 'Bob', 'Chen', 'Divya', 'Eve', 'Fiona']\n\ncount = comb(len(reviewers), 2)\nprint(f\"Review pairs: {count}\")\n",
+      "expectedOutput": "Review pairs: 15",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">math.comb(n, k) returns the number of ways to choose k items from n without repetition. The fallback computes the same result with factorials so you can run the lesson on Python &lt; 3.8.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">comb(len(team), 2)</pre></div><p class=\"mt-4 text-gray-300\">Use combinations to estimate review coverage or capacity when pairing people across a team.</p>",
+      "tags": [
+        "Beginner",
+        "Math and Stats",
+        "Workflow"
+      ]
+    },
+    {
+      "id": 343,
+      "title": "343. enum.StrEnum alert levels",
+      "language": "python",
+      "description": "Model string-based alert levels with enum.StrEnum so comparisons stay type-safe while preserving string semantics.",
+      "initialCode": "import enum\n\ntry:\n    from enum import StrEnum\nexcept ImportError:\n    class StrEnum(str, enum.Enum):\n        pass\n\n# TODO: define an AlertLevel StrEnum with INFO='INFO', WARN='WARN', CRITICAL='CRITICAL'\n# Iterate over the enum members and print '<name>:<value>'\n# Finally, compare AlertLevel.CRITICAL to the string 'CRITICAL' and print the boolean result\n",
+      "fullSolution": "import enum\n\ntry:\n    from enum import StrEnum\nexcept ImportError:\n    class StrEnum(str, enum.Enum):\n        pass\n\nclass AlertLevel(StrEnum):\n    INFO = 'INFO'\n    WARN = 'WARN'\n    CRITICAL = 'CRITICAL'\n\nfor level in AlertLevel:\n    print(f\"{level.name}:{level.value}\")\n\nprint(AlertLevel.CRITICAL == 'CRITICAL')\n",
+      "expectedOutput": "INFO:INFO\nWARN:WARN\nCRITICAL:CRITICAL\nTrue",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">StrEnum (Python 3.11+) mixes Enum with str so members behave like strings while still carrying enum semantics. The fallback recreates StrEnum for earlier versions.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class Status(StrEnum):\n    OPEN = \"OPEN\"</pre></div><p class=\"mt-4 text-gray-300\">Use StrEnum for config keys, alert levels, or protocol identifiers that you want to compare to plain strings without losing type checking.</p>",
+      "tags": [
+        "Intermediate",
+        "Enums",
+        "Workflow"
+      ]
     }
   ]
 }

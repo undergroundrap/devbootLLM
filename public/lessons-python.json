@@ -5665,6 +5665,51 @@
         "Concurrency"
       ],
       "id": 353
+    },
+    {
+      "title": "354. typing.TypeGuard filter",
+      "language": "python",
+      "description": "Use typing.TypeGuard to filter non-empty strings from a heterogeneous list and print them joined by commas.",
+      "initialCode": "from typing import TypeGuard\n\nValue = str | int\n\ndef is_non_empty_str(value: Value) -> TypeGuard[str]:\n    # TODO: return True only for non-empty strings\n    return False\n\nvalues: list[Value] = [\"alpha\", \"\", 3, \"beta\"]\nselected: list[str] = []\n\nfor item in values:\n    if is_non_empty_str(item):\n        selected.append(item)\n\nprint(\",\".join(selected))\n",
+      "fullSolution": "from typing import TypeGuard\n\nValue = str | int\n\ndef is_non_empty_str(value: Value) -> TypeGuard[str]:\n    return isinstance(value, str) and value != \"\"\n\nvalues: list[Value] = [\"alpha\", \"\", 3, \"beta\"]\nselected: list[str] = []\n\nfor item in values:\n    if is_non_empty_str(item):\n        selected.append(item)\n\nprint(\",\".join(selected))\n",
+      "expectedOutput": "alpha,beta",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>TypeGuard</code> helpers to narrow unions after a boolean check so callers regain the precise type.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">def is_widget(value: object) -> TypeGuard[Widget]:\n    return isinstance(value, Widget)</pre></div><p class=\"mt-4 text-gray-300\">Returning True tells static analyzers that the argument is now a Widget, enabling attribute access without casts.</p>",
+      "tags": [
+        "Advanced",
+        "Typing",
+        "Control Flow"
+      ],
+      "id": 354
+    },
+    {
+      "title": "355. TypedDict Required/NotRequired",
+      "language": "python",
+      "description": "Define a TypedDict with Required and NotRequired fields, fill in defaults, and print the resolved service URL.",
+      "initialCode": "from typing import NotRequired, Required, TypedDict\n\nclass ServiceConfig(TypedDict):\n    # TODO: declare host as Required[str], port as NotRequired[int], secure as NotRequired[bool]\n    ...\n\nconfig: ServiceConfig = {\"host\": \"api.local\"}\nconfig[\"secure\"] = False\nconfig[\"port\"] = 8080\n\ndef format_url(cfg: ServiceConfig) -> str:\n    port = cfg.get(\"port\", 80)\n    scheme = \"https\" if cfg.get(\"secure\", False) else \"http\"\n    return f\"{scheme}://{cfg['host']}:{port}\"\n\nprint(format_url(config))\n",
+      "fullSolution": "from typing import NotRequired, Required, TypedDict\n\nclass ServiceConfig(TypedDict):\n    host: Required[str]\n    port: NotRequired[int]\n    secure: NotRequired[bool]\n\nconfig: ServiceConfig = {\"host\": \"api.local\"}\nconfig[\"secure\"] = False\nconfig[\"port\"] = 8080\n\ndef format_url(cfg: ServiceConfig) -> str:\n    port = cfg.get(\"port\", 80)\n    scheme = \"https\" if cfg.get(\"secure\", False) else \"http\"\n    return f\"{scheme}://{cfg['host']}:{port}\"\n\nprint(format_url(config))\n",
+      "expectedOutput": "http://api.local:8080",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Mix <code>Required</code> and <code>NotRequired</code> annotations on <code>TypedDict</code> fields to model optional keys without losing static guarantees.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from typing import NotRequired, Required, TypedDict\n\nclass Settings(TypedDict):\n    name: Required[str]\n    timeout: NotRequired[int]</pre></div><p class=\"mt-4 text-gray-300\">Type checkers enforce the required keys, while callers may omit the NotRequired entries and rely on sane defaults.</p>",
+      "tags": [
+        "Advanced",
+        "Typing",
+        "Data Structures"
+      ],
+      "id": 355
+    },
+    {
+      "title": "356. dataclass kw_only slots",
+      "language": "python",
+      "description": "Create a dataclass with kw_only=True and slots=True, populate it via keyword arguments, and print the resulting summary.",
+      "initialCode": "from dataclasses import dataclass, field\n\n# TODO: define Task with @dataclass(kw_only=True, slots=True)\n# Fields: name:str, priority:int=1, tags:list[str]=field(default_factory=list)\n# Create Task(name=\"deploy\", priority=2), append \"blue\" to tags, then print \"deploy:2:blue\"\n",
+      "fullSolution": "from dataclasses import dataclass, field\n\n@dataclass(kw_only=True, slots=True)\nclass Task:\n    name: str\n    priority: int = 1\n    tags: list[str] = field(default_factory=list)\n\njob = Task(name=\"deploy\", priority=2)\njob.tags.append(\"blue\")\nprint(f\"{job.name}:{job.priority}:{job.tags[0]}\")\n",
+      "expectedOutput": "deploy:2:blue",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>@dataclass(kw_only=True, slots=True)</code> forces callers to use keyword arguments while storing fields in slots for lean instances.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from dataclasses import dataclass, field\n\n@dataclass(kw_only=True, slots=True)\nclass Job:\n    name: str\n    retries: int = 0\n    tags: list[str] = field(default_factory=list)</pre></div><p class=\"mt-4 text-gray-300\">Combine keyword-only constructors with <code>field(default_factory=...)</code> to keep APIs explicit and avoid shared mutable defaults.</p>",
+      "tags": [
+        "Advanced",
+        "Dataclasses",
+        "OOP"
+      ],
+      "id": 356
     }
   ]
 }

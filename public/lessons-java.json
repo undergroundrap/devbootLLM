@@ -5864,51 +5864,6 @@
         "Queues"
       ],
       "id": 354
-    },
-    {
-      "title": "355. StructuredTaskScope fan-in",
-      "language": "java",
-      "description": "Use StructuredTaskScope.ShutdownOnFailure to join two subtasks and print each result once the scope completes.",
-      "initialCode": "import java.util.concurrent.StructuredTaskScope;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        // TODO: fork two subtasks inside StructuredTaskScope.ShutdownOnFailure.\n        // The first should sleep ~30ms then return \"primary ok\".\n        // The second should sleep ~10ms then return \"replica ok\".\n        // Join the scope, throw on failure, then print each result on its own line.\n    }\n}\n",
-      "fullSolution": "import java.util.concurrent.StructuredTaskScope;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {\n            var primary = scope.fork(() -> {\n                Thread.sleep(30);\n                return \"primary ok\";\n            });\n            var replica = scope.fork(() -> {\n                Thread.sleep(10);\n                return \"replica ok\";\n            });\n            scope.join();\n            scope.throwIfFailed();\n            System.out.println(primary.get());\n            System.out.println(replica.get());\n        }\n    }\n}\n",
-      "expectedOutput": "primary ok\nreplica ok",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Structured concurrency scopes fan-out work and guarantee that every forked task finishes before you leave the block.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {\n    var task = scope.fork(this::fetch);\n    scope.join();\n    scope.throwIfFailed();\n    return task.get();\n}</pre></div><p class=\"mt-4 text-gray-300\">If any subtask fails, <code>ShutdownOnFailure</code> cancels the rest and rethrows, keeping error handling centralized.</p>",
-      "tags": [
-        "Advanced",
-        "Concurrency",
-        "Structured Concurrency"
-      ],
-      "id": 355
-    },
-    {
-      "title": "356. ScopedValue propagation",
-      "language": "java",
-      "description": "Bind a ScopedValue for the lifetime of a request, spin a virtual thread inside it, and show both stages reading the same value.",
-      "initialCode": "import java.lang.ScopedValue;\n\npublic class Main {\n    static final ScopedValue<String> REQUEST_ID = ScopedValue.newInstance();\n\n    static void log(String stage) {\n        System.out.println(stage + \" -> \" + REQUEST_ID.get());\n    }\n\n    public static void main(String[] args) throws Exception {\n        // TODO: bind REQUEST_ID to \"req-9\" with ScopedValue.runWhere.\n        // Inside the scope, log(\"handler\"), start a virtual thread that logs(\"worker\"), and join it.\n    }\n}\n",
-      "fullSolution": "import java.lang.ScopedValue;\n\npublic class Main {\n    static final ScopedValue<String> REQUEST_ID = ScopedValue.newInstance();\n\n    static void log(String stage) {\n        System.out.println(stage + \" -> \" + REQUEST_ID.get());\n    }\n\n    public static void main(String[] args) throws Exception {\n        ScopedValue.runWhere(REQUEST_ID, \"req-9\", () -> {\n            log(\"handler\");\n            Thread worker = Thread.ofVirtual().start(() -> log(\"worker\"));\n            try {\n                worker.join();\n            } catch (InterruptedException ex) {\n                Thread.currentThread().interrupt();\n            }\n        });\n    }\n}\n",
-      "expectedOutput": "handler -> req-9\nworker -> req-9",
-      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>ScopedValue</code> binds contextual data for the dynamic extent of a block, flowing safely into threads you launch inside it.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">ScopedValue.runWhere(CONTEXT, value, () -> {\n    // work that reads CONTEXT.get()\n});</pre></div><p class=\"mt-4 text-gray-300\">Unlike <code>ThreadLocal</code>, bindings disappear automatically when the scope ends, avoiding leaks between requests.</p>",
-      "tags": [
-        "Advanced",
-        "Concurrency",
-        "Context"
-      ],
-      "id": 356
-    },
-    {
-      "title": "357. SequencedCollection operations",
-      "language": "java",
-      "description": "Use the new SequencedCollection APIs on a LinkedHashSet to manage elements from both ends and print the first and last entries.",
-      "initialCode": "import java.util.LinkedHashSet;\nimport java.util.SequencedSet;\n\npublic class Main {\n    public static void main(String[] args) {\n        // TODO: create a SequencedSet<String> backed by LinkedHashSet.\n        // Add \"plan\" and \"migrate\" at the tail, then add \"bootstrap\" at the head.\n        // Finally, print the first element then the last element, each on its own line.\n    }\n}\n",
-      "fullSolution": "import java.util.LinkedHashSet;\nimport java.util.SequencedSet;\n\npublic class Main {\n    public static void main(String[] args) {\n        SequencedSet<String> steps = new LinkedHashSet<>();\n        steps.addLast(\"plan\");\n        steps.addLast(\"migrate\");\n        steps.addFirst(\"bootstrap\");\n        System.out.println(steps.getFirst());\n        System.out.println(steps.getLast());\n    }\n}\n",
-      "expectedOutput": "bootstrap\nmigrate",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Java 21 retrofits ordered collections with <code>SequencedCollection</code>, giving you symmetric head/tail operations.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">SequencedSet<String> backlog = new LinkedHashSet<>();\nbacklog.addFirst(\"urgent\");\nbacklog.addLast(\"later\");\nSystem.out.println(backlog.getLast());</pre></div><p class=\"mt-4 text-gray-300\">Use the new API to prepend work, peek at both ends, or reverse iteration without converting to a list.</p>",
-      "tags": [
-        "Advanced",
-        "Collections",
-        "Java 21"
-      ],
-      "id": 357
     }
   ]
 }

@@ -5682,6 +5682,128 @@
         "Date/Time",
         "Workflow"
       ]
+    },
+    {
+      "id": 343,
+      "title": "343. Median latency snapshot",
+      "description": "Sort latency samples and compute the median as a double, then print it.",
+      "initialCode": "import java.util.ArrayList;\nimport java.util.Collections;\nimport java.util.List;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Integer> latencies = new ArrayList<>(List.of(210, 190, 240, 180, 195, 205));\n\n        // TODO: compute the median latency as a double\n        // Print \"Median latency: <value>\"\n    }\n}\n",
+      "fullSolution": "import java.util.ArrayList;\nimport java.util.Collections;\nimport java.util.List;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Integer> latencies = new ArrayList<>(List.of(210, 190, 240, 180, 195, 205));\n\n        Collections.sort(latencies);\n        int size = latencies.size();\n        double median;\n        if (size % 2 == 1) {\n            median = latencies.get(size / 2);\n        } else {\n            int right = size / 2;\n            int left = right - 1;\n            median = (latencies.get(left) + latencies.get(right)) / 2.0;\n        }\n        System.out.println(\"Median latency: \" + median);\n    }\n}\n",
+      "expectedOutput": "Median latency: 200.0",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Clone the data into a mutable list, sort it, and average the middle values when the count is even.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Collections.sort(samples);\nint left = count / 2 - 1;\ndouble median = (samples.get(left) + samples.get(left + 1)) / 2.0;</pre></div><p class=\"mt-4 text-gray-300\">Use medians to report typical latency when outliers make the mean jump around.</p>",
+      "language": "java",
+      "tags": [
+        "Intermediate",
+        "Data Processing",
+        "Math and Stats"
+      ]
+    },
+    {
+      "id": 344,
+      "title": "344. Linear regression forecast",
+      "description": "Run a least-squares linear regression on quarterly signups and project the next quarter.",
+      "initialCode": "import java.util.Arrays;\n\npublic class Main {\n    public static void main(String[] args) {\n        double[] quarters = {1, 2, 3, 4};\n        double[] signups = {120, 150, 170, 210};\n\n        // TODO: compute the slope and intercept using least squares\n        // Print slope:<value> and intercept:<value> with two decimals\n        // Project quarter 5 and print q5:<value> with two decimals\n    }\n}\n",
+      "fullSolution": "import java.util.Arrays;\n\npublic class Main {\n    public static void main(String[] args) {\n        double[] quarters = {1, 2, 3, 4};\n        double[] signups = {120, 150, 170, 210};\n\n        int n = quarters.length;\n        double meanX = Arrays.stream(quarters).average().orElseThrow();\n        double meanY = Arrays.stream(signups).average().orElseThrow();\n\n        double numerator = 0.0;\n        double denominator = 0.0;\n        for (int i = 0; i < n; i++) {\n            double dx = quarters[i] - meanX;\n            double dy = signups[i] - meanY;\n            numerator += dx * dy;\n            denominator += dx * dx;\n        }\n\n        double slope = numerator / denominator;\n        double intercept = meanY - slope * meanX;\n        double projection = slope * 5 + intercept;\n\n        System.out.printf(\"slope:%.2f%n\", slope);\n        System.out.printf(\"intercept:%.2f%n\", intercept);\n        System.out.printf(\"q5:%.2f%n\", projection);\n    }\n}\n",
+      "expectedOutput": "slope:29.00\nintercept:90.00\nq5:235.00",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Compute the mean of x and y, sum (x-meanX)*(y-meanY), and divide by the sum of squared x deltas to get the slope.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">double slope = num / den;\ndouble intercept = meanY - slope * meanX;</pre></div><p class=\"mt-4 text-gray-300\">With slope and intercept, you can forecast workloads or revenue by plugging in the next index.</p>",
+      "language": "java",
+      "tags": [
+        "Advanced",
+        "Data Processing",
+        "Math and Stats"
+      ]
+    },
+    {
+      "id": 345,
+      "title": "345. Jar deployment bundle",
+      "description": "Assemble a tiny deployment jar with a manifest and resource file, then inspect its entries.",
+      "initialCode": "import java.nio.charset.StandardCharsets;\nimport java.nio.file.FileSystem;\nimport java.nio.file.FileSystems;\nimport java.nio.file.Files;\nimport java.nio.file.Path;\nimport java.nio.file.Paths;\nimport java.util.Collections;\nimport java.util.List;\nimport java.util.stream.Collectors;\nimport java.util.stream.Stream;\nimport java.util.jar.Attributes;\nimport java.util.jar.JarEntry;\nimport java.util.jar.JarOutputStream;\nimport java.util.jar.Manifest;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        Path runRoot = Paths.get(System.getenv(\"RUN_TMP_DIR\") != null\n                ? System.getenv(\"RUN_TMP_DIR\")\n                : System.getProperty(\"java.io.tmpdir\"));\n        Path jarPath = runRoot.resolve(\"deploy-app.jar\");\n\n        // TODO: delete any existing jar at jarPath\n        // Create a manifest with version 1.0 and Main-Class hello.App\n        // Write hello/version.txt with the value 1.0.0 into the jar\n        // Reopen the jar with FileSystems.newFileSystem and collect regular file entries\n        // Print \"Created deploy-app.jar\" and then \"Entries: <comma separated list>\"\n    }\n}\n",
+      "fullSolution": "import java.nio.charset.StandardCharsets;\nimport java.nio.file.FileSystem;\nimport java.nio.file.FileSystems;\nimport java.nio.file.Files;\nimport java.nio.file.Path;\nimport java.nio.file.Paths;\nimport java.util.Collections;\nimport java.util.List;\nimport java.util.stream.Collectors;\nimport java.util.stream.Stream;\nimport java.util.jar.Attributes;\nimport java.util.jar.JarEntry;\nimport java.util.jar.JarOutputStream;\nimport java.util.jar.Manifest;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        Path runRoot = Paths.get(System.getenv(\"RUN_TMP_DIR\") != null\n                ? System.getenv(\"RUN_TMP_DIR\")\n                : System.getProperty(\"java.io.tmpdir\"));\n        Path jarPath = runRoot.resolve(\"deploy-app.jar\");\n\n        Files.deleteIfExists(jarPath);\n\n        Manifest manifest = new Manifest();\n        Attributes attributes = manifest.getMainAttributes();\n        attributes.put(Attributes.Name.MANIFEST_VERSION, \"1.0\");\n        attributes.put(Attributes.Name.MAIN_CLASS, \"hello.App\");\n\n        try (JarOutputStream jar = new JarOutputStream(Files.newOutputStream(jarPath), manifest)) {\n            JarEntry entry = new JarEntry(\"hello/version.txt\");\n            jar.putNextEntry(entry);\n            jar.write(\"1.0.0\\n\".getBytes(StandardCharsets.UTF_8));\n            jar.closeEntry();\n        }\n\n        System.out.println(\"Created \" + jarPath.getFileName());\n\n        try (FileSystem fs = FileSystems.newFileSystem(jarPath, Collections.emptyMap());\n             Stream<Path> stream = Files.walk(fs.getPath(\"/\"))) {\n            List<String> entries = stream\n                    .filter(Files::isRegularFile)\n                    .map(path -> {\n                        String name = path.toString();\n                        return name.startsWith(\"/\") ? name.substring(1) : name;\n                    })\n                    .sorted()\n                    .collect(Collectors.toList());\n            System.out.println(\"Entries: \" + String.join(\", \", entries));\n        }\n    }\n}\n",
+      "expectedOutput": "Created deploy-app.jar\nEntries: META-INF/MANIFEST.MF, hello/version.txt",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">JarOutputStream writes the manifest and entries into a standard zip archive that the JVM understands.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">new JarOutputStream(Files.newOutputStream(path), manifest)</pre></div><p class=\"mt-4 text-gray-300\">Reopen the jar with FileSystems.newFileSystem to spot-check contents during packaging steps or CI checks.</p>",
+      "language": "java",
+      "tags": [
+        "Advanced",
+        "Deployment",
+        "Packaging",
+        "Tooling"
+      ]
+    },
+    {
+      "id": 346,
+      "title": "346. DoubleSummaryStatistics throughput",
+      "description": "Gather count, min, average, and max latency using DoubleSummaryStatistics and print a formatted summary.",
+      "language": "java",
+      "initialCode": "import java.util.DoubleSummaryStatistics;\nimport java.util.List;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Double> latencies = List.of(215.0, 198.5, 202.4, 211.2);\n\n        // TODO: create DoubleSummaryStatistics from latencies (use stream().mapToDouble().summaryStatistics())\n        // Print count, min, avg, max on separate lines using the format:\n        // count:<value>\n        // min:<value>\n        // avg:<value>\n        // max:<value>\n        // avg should be rounded to one decimal place\n    }\n}\n",
+      "fullSolution": "import java.util.DoubleSummaryStatistics;\nimport java.util.List;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Double> latencies = List.of(215.0, 198.5, 202.4, 211.2);\n\n        DoubleSummaryStatistics stats = latencies.stream()\n                .mapToDouble(Double::doubleValue)\n                .summaryStatistics();\n\n        System.out.printf(\"count:%d%n\", stats.getCount());\n        System.out.printf(\"min:%.1f%n\", stats.getMin());\n        System.out.printf(\"avg:%.1f%n\", stats.getAverage());\n        System.out.printf(\"max:%.1f%n\", stats.getMax());\n    }\n}\n",
+      "expectedOutput": "count:4\nmin:198.5\navg:206.8\nmax:215.0",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">DoubleSummaryStatistics collects count, min, max, sum, and average in a single pass, perfect for latency or throughput dashboards.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">DoubleSummaryStatistics stats = values.stream()\\n    .mapToDouble(Double::doubleValue)\\n    .summaryStatistics();</pre></div><p class=\"mt-4 text-gray-300\">Format the numbers to the precision your SLO dashboards expect before printing.</p>",
+      "tags": [
+        "Intermediate",
+        "Data Processing",
+        "Math and Stats"
+      ]
+    },
+    {
+      "id": 347,
+      "title": "347. Reflection deprecated audit",
+      "description": "Use reflection to list methods annotated with @Deprecated and report their version metadata.",
+      "language": "java",
+      "initialCode": "import java.lang.reflect.Method;\nimport java.util.Arrays;\nimport java.util.Comparator;\n\nclass Scheduler {\n    @Deprecated(since = \"1.2\", forRemoval = false)\n    public void processLegacyQueue() {}\n\n    public void runHealthCheck() {}\n\n    @Deprecated(since = \"2.0\", forRemoval = true)\n    public void flushOldJobs() {}\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        // TODO: inspect Scheduler.class.getDeclaredMethods()\n        // Filter methods annotated with @Deprecated\n        // Sort them by method name\n        // Print lines formatted as \"<methodName> -> since <value> (forRemoval=<flag>)\"\n    }\n}\n",
+      "fullSolution": "import java.lang.reflect.Method;\nimport java.util.Arrays;\nimport java.util.Comparator;\n\nclass Scheduler {\n    @Deprecated(since = \"1.2\", forRemoval = false)\n    public void processLegacyQueue() {}\n\n    public void runHealthCheck() {}\n\n    @Deprecated(since = \"2.0\", forRemoval = true)\n    public void flushOldJobs() {}\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Method[] methods = Scheduler.class.getDeclaredMethods();\n        Arrays.stream(methods)\n                .filter(method -> method.isAnnotationPresent(Deprecated.class))\n                .sorted(Comparator.comparing(Method::getName))\n                .forEach(method -> {\n                    Deprecated deprecated = method.getAnnotation(Deprecated.class);\n                    System.out.printf(\"%s -> since %s (forRemoval=%s)%n\",\n                            method.getName(),\n                            deprecated.since(),\n                            deprecated.forRemoval());\n                });\n    }\n}\n",
+      "expectedOutput": "flushOldJobs -> since 2.0 (forRemoval=true)\nprocessLegacyQueue -> since 1.2 (forRemoval=false)",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Reflection lets you turn annotations into runtime metadata so you can build audits and tooling without hand-maintaining allowlists.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Arrays.stream(type.getDeclaredMethods())\\n    .filter(m -> m.isAnnotationPresent(Deprecated.class))</pre></div><p class=\"mt-4 text-gray-300\">Sort the results for deterministic output, especially when feeding reports into CI pipelines.</p>",
+      "tags": [
+        "Advanced",
+        "Metaprogramming",
+        "Tooling"
+      ]
+    },
+    {
+      "id": 348,
+      "title": "348. ZipOutputStream static bundle",
+      "description": "Package a static site directory into a zip archive with ZipOutputStream and list its entries.",
+      "language": "java",
+      "initialCode": "import java.io.IOException;\nimport java.nio.charset.StandardCharsets;\nimport java.nio.file.Files;\nimport java.nio.file.Path;\nimport java.nio.file.Paths;\nimport java.util.Comparator;\nimport java.util.List;\nimport java.util.zip.ZipEntry;\nimport java.util.zip.ZipFile;\nimport java.util.zip.ZipOutputStream;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        Path runRoot = Paths.get(System.getenv(\"RUN_TMP_DIR\") != null\n                ? System.getenv(\"RUN_TMP_DIR\")\n                : System.getProperty(\"java.io.tmpdir\"));\n        Path siteDir = runRoot.resolve(\"static-site\");\n        Path zipPath = runRoot.resolve(\"static-site.zip\");\n\n        // TODO: delete existing directory and zip if they exist\n        // Recreate static-site with index.html and assets/style.css\n        // Write simple contents to each file\n        // Use ZipOutputStream to add both files to the archive (strip the siteDir prefix for entry names)\n        // Print \"Created static-site.zip\" then \"Entries: <comma-separated sorted names>\" (skip directory entries)\n    }\n}\n",
+      "fullSolution": "import java.io.IOException;\nimport java.nio.charset.StandardCharsets;\nimport java.nio.file.Files;\nimport java.nio.file.Path;\nimport java.nio.file.Paths;\nimport java.util.Comparator;\nimport java.util.List;\nimport java.util.stream.Collectors;\nimport java.util.zip.ZipEntry;\nimport java.util.zip.ZipFile;\nimport java.util.zip.ZipOutputStream;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        Path runRoot = Paths.get(System.getenv(\"RUN_TMP_DIR\") != null\n                ? System.getenv(\"RUN_TMP_DIR\")\n                : System.getProperty(\"java.io.tmpdir\"));\n        Path siteDir = runRoot.resolve(\"static-site\");\n        Path zipPath = runRoot.resolve(\"static-site.zip\");\n\n        if (Files.exists(siteDir)) {\n            Files.walk(siteDir)\n                    .sorted(Comparator.reverseOrder())\n                    .forEach(path -> {\n                        try {\n                            Files.delete(path);\n                        } catch (IOException ex) {\n                            throw new RuntimeException(ex);\n                        }\n                    });\n        }\n        Files.deleteIfExists(zipPath);\n\n        Files.createDirectories(siteDir.resolve(\"assets\"));\n        Files.writeString(siteDir.resolve(\"index.html\"), \"<h1>Launch</h1>\\n\", StandardCharsets.UTF_8);\n        Files.writeString(siteDir.resolve(\"assets\").resolve(\"style.css\"), \"body { font-family: sans-serif; }\\n\", StandardCharsets.UTF_8);\n\n        try (ZipOutputStream zip = new ZipOutputStream(Files.newOutputStream(zipPath))) {\n            Files.walk(siteDir)\n                    .filter(Files::isRegularFile)\n                    .forEach(path -> {\n                        Path relative = siteDir.relativize(path);\n                        ZipEntry entry = new ZipEntry(relative.toString().replace('\\\\', '/'));\n                        try {\n                            zip.putNextEntry(entry);\n                            zip.write(Files.readAllBytes(path));\n                            zip.closeEntry();\n                        } catch (IOException ex) {\n                            throw new RuntimeException(ex);\n                        }\n                    });\n        }\n\n        System.out.println(\"Created static-site.zip\");\n        try (ZipFile zipFile = new ZipFile(zipPath.toFile())) {\n            List<String> names = zipFile.stream()\n                    .map(ZipEntry::getName)\n                    .filter(name -> !name.endsWith(\"/\"))\n                    .sorted()\n                    .collect(Collectors.toList());\n            System.out.println(\"Entries: \" + String.join(\", \", names));\n        }\n    }\n}\n",
+      "expectedOutput": "Created static-site.zip\nEntries: assets/style.css, index.html",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">ZipOutputStream lets you build deployment bundles without calling external tools, keeping CI steps portable.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">try (ZipOutputStream zip = new ZipOutputStream(out)) {\\n    Files.walk(root)\\n        .filter(Files::isRegularFile)\\n        .forEach(path -> zip.putNextEntry(new ZipEntry(...)));\\n}</pre></div><p class=\"mt-4 text-gray-300\">Normalize separators to '/' so archives look the same on every platform.</p>",
+      "tags": [
+        "Advanced",
+        "Deployment",
+        "Packaging",
+        "Tooling"
+      ]
+    },
+    {
+      "id": 349,
+      "title": "349. Class-based router",
+      "description": "Route payloads by their runtime class using a handler map and print formatted messages.",
+      "language": "java",
+      "initialCode": "import java.util.ArrayList;\nimport java.util.HashMap;\nimport java.util.List;\nimport java.util.Map;\nimport java.util.Map.Entry;\nimport java.util.function.Consumer;\n\nclass AuditRouter {\n    private final Map<Class<?>, Consumer<Object>> handlers = new HashMap<>();\n    private final List<String> emitted = new ArrayList<>();\n\n    public AuditRouter() {\n        // TODO: register handlers for Map.class, String.class, and Integer.class\n        // Map handler should append and print \"map:<status>\" using map.get(\"status\")\n        // String handler should uppercase the payload before printing with prefix \"str:\"\n        // Integer handler should print with prefix \"int:\"\n    }\n\n    public void emit(Object payload) {\n        Consumer<Object> handler = handlers.entrySet().stream()\n                .filter(entry -> entry.getKey().isInstance(payload))\n                .map(Entry::getValue)\n                .findFirst()\n                .orElseThrow(() -> new IllegalArgumentException(\n                        \"Unsupported type: \" + payload.getClass().getSimpleName()\n                ));\n        handler.accept(payload);\n    }\n\n    public List<String> getEmitted() {\n        return emitted;\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        AuditRouter router = new AuditRouter();\n        List<Object> records = List.of(\n                Map.of(\"status\", \"ok\"),\n                \"retry later\",\n                Map.of(\"status\", \"error\"),\n                2\n        );\n\n        // TODO: call emit for each record\n    }\n}\n",
+      "fullSolution": "import java.util.ArrayList;\nimport java.util.HashMap;\nimport java.util.List;\nimport java.util.Map;\nimport java.util.Map.Entry;\nimport java.util.function.Consumer;\n\nclass AuditRouter {\n    private final Map<Class<?>, Consumer<Object>> handlers = new HashMap<>();\n    private final List<String> emitted = new ArrayList<>();\n\n    public AuditRouter() {\n        handlers.put(Map.class, payload -> {\n            @SuppressWarnings(\"unchecked\")\n            Map<String, String> record = (Map<String, String>) payload;\n            String message = \"map:\" + record.get(\"status\");\n            emitted.add(message);\n            System.out.println(message);\n        });\n        handlers.put(String.class, payload -> {\n            String message = \"str:\" + ((String) payload).toUpperCase();\n            emitted.add(message);\n            System.out.println(message);\n        });\n        handlers.put(Integer.class, payload -> {\n            String message = \"int:\" + payload;\n            emitted.add(message);\n            System.out.println(message);\n        });\n    }\n\n    public void emit(Object payload) {\n        Consumer<Object> handler = handlers.entrySet().stream()\n                .filter(entry -> entry.getKey().isInstance(payload))\n                .map(Entry::getValue)\n                .findFirst()\n                .orElseThrow(() -> new IllegalArgumentException(\n                        \"Unsupported type: \" + payload.getClass().getSimpleName()\n                ));\n        handler.accept(payload);\n    }\n\n    public List<String> getEmitted() {\n        return emitted;\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        AuditRouter router = new AuditRouter();\n        List<Object> records = List.of(\n                Map.of(\"status\", \"ok\"),\n                \"retry later\",\n                Map.of(\"status\", \"error\"),\n                2\n        );\n\n        records.forEach(router::emit);\n    }\n}\n",
+      "expectedOutput": "map:ok\nstr:RETRY LATER\nmap:error\nint:2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Mapping runtime classes to handlers mirrors Python's singledispatchmethod: one entry point, multiple type-aware implementations.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">handlers.put(Type.class, payload -> { /* format and emit */ });</pre></div><p class=\"mt-4 text-gray-300\">Throw on unsupported types so missing registrations fail loudly during tests.</p>",
+      "tags": [
+        "Advanced",
+        "OOP",
+        "Workflow"
+      ]
+    },
+    {
+      "id": 350,
+      "title": "350. Geometric mean growth",
+      "description": "Compute the geometric mean of growth factors with streams and report the compounded percentage.",
+      "language": "java",
+      "initialCode": "import java.util.Arrays;\n\npublic class Main {\n    public static void main(String[] args) {\n        double[] growthRates = {1.05, 1.08, 0.97, 1.12};\n\n        // TODO: compute the geometric mean of growthRates using Arrays.stream\n        // Convert it to a percentage over baseline (subtract 1, then multiply by 100)\n        // Print \"Geometric mean: <value>%\" with two decimals\n    }\n}\n",
+      "fullSolution": "import java.util.Arrays;\n\npublic class Main {\n    public static void main(String[] args) {\n        double[] growthRates = {1.05, 1.08, 0.97, 1.12};\n\n        double product = Arrays.stream(growthRates)\n                .reduce(1.0, (a, b) -> a * b);\n        double mean = Math.pow(product, 1.0 / growthRates.length);\n        double percent = (mean - 1.0) * 100;\n\n        System.out.printf(\"Geometric mean: %.2f%%%n\", percent);\n    }\n}\n",
+      "expectedOutput": "Geometric mean: 5.35%",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Reduce the factors into a product, then raise it to 1/n to capture compounded growth without letting outliers dominate.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">double product = stream.reduce(1.0, (a, b) -> a * b);\ndouble mean = Math.pow(product, 1.0 / n);</pre></div><p class=\"mt-4 text-gray-300\">Translate the multiplier back to a percentage so stakeholders can read the result at a glance.</p>",
+      "tags": [
+        "Intermediate",
+        "Data Processing",
+        "Math and Stats"
+      ]
     }
   ]
 }

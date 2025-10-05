@@ -5513,6 +5513,98 @@
         "Enums",
         "Workflow"
       ]
+    },
+    {
+      "id": 344,
+      "title": "344. statistics.median service latency",
+      "language": "python",
+      "description": "Use statistics.median to find the median latency and report it.",
+      "initialCode": "import statistics\n\nlatencies = [210, 190, 240, 180, 195, 205]\n\n# TODO: compute the median latency using statistics.median\n# Print \"Median latency: <value>\" including the numeric result\n",
+      "fullSolution": "import statistics\n\nlatencies = [210, 190, 240, 180, 195, 205]\n\nmedian_latency = statistics.median(latencies)\nprint(f\"Median latency: {median_latency}\")\n",
+      "expectedOutput": "Median latency: 200.0",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">statistics.median returns the middle value of the data and averages the two middle points when the sample size is even.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">median = statistics.median(values)</pre></div><p class=\"mt-4 text-gray-300\">Median handles outliers better than the mean, so use it for latency, spend, or other heavy-tailed data.</p>",
+      "tags": [
+        "Intermediate",
+        "Data Processing",
+        "Math and Stats"
+      ]
+    },
+    {
+      "id": 345,
+      "title": "345. statistics.linear_regression trend",
+      "language": "python",
+      "description": "Fit a simple linear regression to quarterly signups and project next quarter.",
+      "initialCode": "try:\n    from statistics import linear_regression\nexcept ImportError:\n    from collections import namedtuple\n\n    def linear_regression(xs, ys):\n        n = len(xs)\n        mean_x = sum(xs) / n\n        mean_y = sum(ys) / n\n        num = sum((x - mean_x) * (y - mean_y) for x, y in zip(xs, ys))\n        den = sum((x - mean_x) ** 2 for x in xs)\n        slope = num / den\n        intercept = mean_y - slope * mean_x\n        Regression = namedtuple('LinearRegression', 'slope intercept')\n        return Regression(slope, intercept)\n\nquarters = [1, 2, 3, 4]\nsignups = [120, 150, 170, 210]\n\n# TODO: call linear_regression to get slope and intercept\n# Print slope and intercept with two decimals as slope:<value> and intercept:<value>\n# Compute quarter 5 projection and print q5:<value> with two decimals\n",
+      "fullSolution": "try:\n    from statistics import linear_regression\nexcept ImportError:\n    from collections import namedtuple\n\n    def linear_regression(xs, ys):\n        n = len(xs)\n        mean_x = sum(xs) / n\n        mean_y = sum(ys) / n\n        num = sum((x - mean_x) * (y - mean_y) for x, y in zip(xs, ys))\n        den = sum((x - mean_x) ** 2 for x in xs)\n        slope = num / den\n        intercept = mean_y - slope * mean_x\n        Regression = namedtuple('LinearRegression', 'slope intercept')\n        return Regression(slope, intercept)\n\nquarters = [1, 2, 3, 4]\nsignups = [120, 150, 170, 210]\n\ntrend = linear_regression(quarters, signups)\nprint(f\"slope:{trend.slope:.2f}\")\nprint(f\"intercept:{trend.intercept:.2f}\")\nprojection = trend.slope * 5 + trend.intercept\nprint(f\"q5:{projection:.2f}\")\n",
+      "expectedOutput": "slope:29.00\nintercept:90.00\nq5:235.00",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">statistics.linear_regression(xs, ys) fits a least-squares line and returns a named tuple with slope and intercept.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">trend = statistics.linear_regression(xs, ys)\nforecast = trend.slope * target_x + trend.intercept</pre></div><p class=\"mt-4 text-gray-300\">Pair numeric indices with measurements to project the next sprint, release, or traffic value.</p>",
+      "tags": [
+        "Advanced",
+        "Data Processing",
+        "Math and Stats"
+      ]
+    },
+    {
+      "id": 346,
+      "title": "346. zipapp deployment bundle",
+      "language": "python",
+      "description": "Package a tiny CLI into a .pyz with zipapp and verify it runs.",
+      "initialCode": "import os\nimport subprocess\nimport sys\nimport zipapp\nfrom pathlib import Path\nimport tempfile\n\nrun_root = Path(os.environ.get('RUN_TMP_DIR') or tempfile.gettempdir())\napp_dir = run_root / 'deploy_app'\narchive_path = run_root / 'deploy_app.pyz'\n\n# TODO: ensure app_dir/__main__.py prints \"Hello from pyz\"\n# Build the archive with zipapp.create_archive\n# Run the archive with subprocess.run([sys.executable, str(archive_path)]) capturing stdout\n# Print \"Created deploy_app.pyz\" and then \"Run output: <captured output>\"\n",
+      "fullSolution": "import os\nimport subprocess\nimport sys\nimport zipapp\nfrom pathlib import Path\nimport tempfile\n\nrun_root = Path(os.environ.get('RUN_TMP_DIR') or tempfile.gettempdir())\napp_dir = run_root / 'deploy_app'\narchive_path = run_root / 'deploy_app.pyz'\n\napp_dir.mkdir(parents=True, exist_ok=True)\n(app_dir / '__main__.py').write_text(\"print('Hello from pyz')\\n\", encoding='utf-8')\ntry:\n    archive_path.unlink()\nexcept FileNotFoundError:\n    pass\n\nzipapp.create_archive(app_dir, archive_path)\nprint(f\"Created {archive_path.name}\")\nresult = subprocess.run([sys.executable, str(archive_path)], check=True, capture_output=True, text=True)\nprint(f\"Run output: {result.stdout.strip()}\")\n",
+      "expectedOutput": "Created deploy_app.pyz\nRun output: Hello from pyz",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">zipapp.create_archive(source, target) builds a runnable .pyz that the Python interpreter can execute directly.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">zipapp.create_archive(app_dir, \"app.pyz\")\nsubprocess.run([sys.executable, \"app.pyz\"], check=True)</pre></div><p class=\"mt-4 text-gray-300\">Combine this with a tmp directory (like RUN_TMP_DIR) to generate throwaway bundles during CI or deployment packaging checks.</p>",
+      "tags": [
+        "Advanced",
+        "Deployment",
+        "Packaging",
+        "Tooling"
+      ]
+    },
+    {
+      "id": 347,
+      "title": "347. functools.singledispatchmethod router",
+      "language": "python",
+      "description": "Route different payload types through a singledispatchmethod and format each line of output.",
+      "initialCode": "try:\n    from functools import singledispatchmethod\nexcept ImportError:\n    from functools import singledispatch, update_wrapper\n\n    class singledispatchmethod:\n        def __init__(self, func):\n            self.dispatcher = singledispatch(func)\n            update_wrapper(self, func)\n\n        def register(self, cls, method=None):\n            return self.dispatcher.register(cls, method)\n\n        def __get__(self, obj, cls=None):\n            dispatcher = self.dispatcher\n            if obj is None:\n                return self\n\n            def method(*args, **kwargs):\n                impl = dispatcher.dispatch(type(args[0]))\n                return impl(obj, *args, **kwargs)\n\n            method.register = dispatcher.register\n            update_wrapper(method, dispatcher.dispatch(object))\n            return method\n\nclass AuditRouter:\n    def __init__(self):\n        self.emitted = []\n\n    @singledispatchmethod\n    def emit(self, record):\n        # TODO: raise a TypeError mentioning the unsupported type name\n        pass\n\n    # TODO: register emit handlers for dict, str, and int\n    # dict handler should append and print f\"dict:{record['status']}\"\n    # str handler should uppercase the message before printing\n    # int handler should print the integer prefixed with \"int:\"\n\nrouter = AuditRouter()\nrecords = [{\"status\": \"ok\"}, \"retry later\", {\"status\": \"error\"}, 2]\nfor item in records:\n    router.emit(item)\n",
+      "fullSolution": "try:\n    from functools import singledispatchmethod\nexcept ImportError:\n    from functools import singledispatch, update_wrapper\n\n    class singledispatchmethod:\n        def __init__(self, func):\n            self.dispatcher = singledispatch(func)\n            update_wrapper(self, func)\n\n        def register(self, cls, method=None):\n            return self.dispatcher.register(cls, method)\n\n        def __get__(self, obj, cls=None):\n            dispatcher = self.dispatcher\n            if obj is None:\n                return self\n\n            def method(*args, **kwargs):\n                impl = dispatcher.dispatch(type(args[0]))\n                return impl(obj, *args, **kwargs)\n\n            method.register = dispatcher.register\n            update_wrapper(method, dispatcher.dispatch(object))\n            return method\n\nclass AuditRouter:\n    def __init__(self):\n        self.emitted = []\n\n    @singledispatchmethod\n    def emit(self, record):\n        raise TypeError(f\"Unsupported record type: {type(record).__name__}\")\n\n    @emit.register\n    def _(self, record: dict):\n        message = f\"dict:{record['status']}\"\n        self.emitted.append(message)\n        print(message)\n\n    @emit.register\n    def _(self, record: str):\n        message = f\"str:{record.upper()}\"\n        self.emitted.append(message)\n        print(message)\n\n    @emit.register\n    def _(self, record: int):\n        message = f\"int:{record}\"\n        self.emitted.append(message)\n        print(message)\n\nrouter = AuditRouter()\nrecords = [{\"status\": \"ok\"}, \"retry later\", {\"status\": \"error\"}, 2]\nfor item in records:\n    router.emit(item)\n",
+      "expectedOutput": "dict:ok\nstr:RETRY LATER\ndict:error\nint:2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">functools.singledispatchmethod lets you route on the type of the first argument after <code>self</code>, so class-based routers stay tidy.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class Handler:\n    @singledispatchmethod\n    def handle(self, payload):\n        ...\n\n    @handle.register\n    def _(self, payload: dict):\n        ...</pre></div><p class=\"mt-4 text-gray-300\">Keep a default implementation that raises for unknown types so regressions surface quickly.</p>",
+      "tags": [
+        "Advanced",
+        "OOP",
+        "Metaprogramming"
+      ]
+    },
+    {
+      "id": 348,
+      "title": "348. statistics.geometric_mean growth",
+      "language": "python",
+      "description": "Use statistics.geometric_mean to summarize compounded growth and express it as a percentage.",
+      "initialCode": "try:\n    from statistics import geometric_mean\nexcept ImportError:\n    def geometric_mean(values):\n        items = list(values)\n        if not items:\n            raise ValueError('geometric_mean requires at least one value')\n        product = 1.0\n        for value in items:\n            product *= value\n        return product ** (1.0 / len(items))\n\ngrowth_rates = [1.05, 1.08, 0.97, 1.12]\n\n# TODO: compute the geometric mean of growth_rates\n# Convert it to a percentage over baseline (subtract 1)\n# Print \"Geometric mean: <value>%\" with two decimals\n",
+      "fullSolution": "try:\n    from statistics import geometric_mean\nexcept ImportError:\n    def geometric_mean(values):\n        items = list(values)\n        if not items:\n            raise ValueError('geometric_mean requires at least one value')\n        product = 1.0\n        for value in items:\n            product *= value\n        return product ** (1.0 / len(items))\n\ngrowth_rates = [1.05, 1.08, 0.97, 1.12]\n\nmean_growth = geometric_mean(growth_rates)\npercent = (mean_growth - 1.0) * 100\nprint(f\"Geometric mean: {percent:.2f}%\")\n",
+      "expectedOutput": "Geometric mean: 5.35%",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">The geometric mean captures the typical multiplier when results compound over time, keeping outliers from dominating.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">growth = geometric_mean(factors) - 1</pre></div><p class=\"mt-4 text-gray-300\">Use it for retention, growth, or efficiency metrics that multiply across periods.</p>",
+      "tags": [
+        "Intermediate",
+        "Data Processing",
+        "Math and Stats"
+      ]
+    },
+    {
+      "id": 349,
+      "title": "349. shutil.make_archive static bundle",
+      "language": "python",
+      "description": "Package a small static site into a zip archive with shutil.make_archive and list the entries.",
+      "initialCode": "import os\nimport shutil\nimport tempfile\nfrom pathlib import Path\nimport zipfile\n\nrun_root = Path(os.environ.get('RUN_TMP_DIR') or tempfile.gettempdir())\nsite_dir = run_root / 'static_site'\narchive_base = run_root / 'static_site'\narchive_path = archive_base.with_suffix('.zip')\n\n# TODO: clean up any previous site directory and archive\n# Recreate site_dir with index.html and assets/style.css (fill with simple text)\n# Use shutil.make_archive to build static_site.zip from site_dir\n# Open the archive with zipfile.ZipFile and print \"Created static_site.zip\"\n# Then print \"Entries: <comma-separated sorted names>\" (only include files, not directories)\n",
+      "fullSolution": "import os\nimport shutil\nimport tempfile\nfrom pathlib import Path\nimport zipfile\n\nrun_root = Path(os.environ.get('RUN_TMP_DIR') or tempfile.gettempdir())\nsite_dir = run_root / 'static_site'\narchive_base = run_root / 'static_site'\narchive_path = archive_base.with_suffix('.zip')\n\nif site_dir.exists():\n    shutil.rmtree(site_dir)\nif archive_path.exists():\n    archive_path.unlink()\n\n(site_dir / 'assets').mkdir(parents=True, exist_ok=True)\n(site_dir / 'index.html').write_text('<h1>Launch</h1>\\n', encoding='utf-8')\n(site_dir / 'assets' / 'style.css').write_text('body { font-family: sans-serif; }\\n', encoding='utf-8')\n\nshutil.make_archive(str(archive_base), 'zip', root_dir=site_dir)\n\nprint('Created static_site.zip')\nwith zipfile.ZipFile(archive_path) as zf:\n    file_names = sorted(name for name in zf.namelist() if not name.endswith('/'))\n    print('Entries: ' + ', '.join(file_names))\n",
+      "expectedOutput": "Created static_site.zip\nEntries: assets/style.css, index.html",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">shutil.make_archive builds deployable zips without shelling out, making it perfect for bundling static assets or lambda payloads.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">shutil.make_archive(base_name, \"zip\", root_dir=payload_dir)</pre></div><p class=\"mt-4 text-gray-300\">Pair it with RUN_TMP_DIR or a temp directory so build artifacts stay isolated.</p>",
+      "tags": [
+        "Advanced",
+        "Deployment",
+        "Packaging",
+        "Tooling"
+      ]
     }
   ]
 }

@@ -5384,7 +5384,7 @@
       "description": "Use pathlib to list .py files under src/, excluding test modules, and print their names alphabetically.",
       "initialCode": "from pathlib import Path\n\nroot = Path(\"src\")\n# TODO: collect *.py files recursively under src/ whose stem does not start with \"test_\"\n# Guard against missing directories before printing each relative path (forward slashes) sorted alphabetically\n",
       "fullSolution": "from pathlib import Path\n\nroot = Path(\"src\")\nfiles = []\nif root.exists():\n    files = [\n        path.relative_to(root).as_posix()\n        for path in root.rglob('*.py')\n        if not path.stem.startswith('test_')\n    ]\nfor name in sorted(files):\n    print(name)\n",
-      "expectedOutput": "",
+      "expectedOutput": "app/config.py\napp/models.py\nservices/cleanup.py",
       "tutorial": "<p class=\"mb-4 text-gray-300\">Path.rglob walks subdirectories using pathlib semantics. Check that the parent directory exists before traversing, filter by <code>stem</code> or <code>suffix</code>, then present results with <code>relative_to</code> and <code>as_posix()</code>.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">if root.exists():\n    for path in root.rglob('*.py'):\n        if not path.stem.startswith('test_'):\n            yield path.relative_to(root)</pre></div><p class=\"mt-4 text-gray-300\">Guarding the traversal keeps the script friendly in empty workspaces while still demonstrating pathlib's declarative filtering.</p>",
       "tags": [
         "Advanced",
@@ -5710,6 +5710,51 @@
         "OOP"
       ],
       "id": 356
+    },
+    {
+      "title": "357. decimal localcontext precision",
+      "language": "python",
+      "description": "Use decimal.localcontext to tweak precision for a single calculation and print the rounded result.",
+      "initialCode": "from decimal import Decimal, localcontext\n\n# TODO: open a localcontext, set precision to 4,\n# divide Decimal(\"1\") by Decimal(\"3\"), and print the result\n",
+      "fullSolution": "from decimal import Decimal, localcontext\n\nwith localcontext() as ctx:\n    ctx.prec = 4\n    result = Decimal(\"1\") / Decimal(\"3\")\n    print(result)\n",
+      "expectedOutput": "0.3333",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>decimal.localcontext()</code> when you need a temporary precision override without mutating the global context.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">with localcontext() as ctx:\n    ctx.prec = 4\n    value = Decimal(\"1\") / Decimal(\"3\")</pre></div><p class=\"mt-4 text-gray-300\">Keep high precision defaults for finance, then dial it down for human-friendly displays.</p>",
+      "tags": [
+        "Intermediate",
+        "Numerics",
+        "Precision"
+      ],
+      "id": 357
+    },
+    {
+      "title": "358. contextlib.chdir temporary cwd",
+      "language": "python",
+      "description": "Temporarily change the working directory with contextlib.chdir to read a file by relative path.",
+      "initialCode": "import tempfile\nfrom pathlib import Path\n\ntry:\n    from contextlib import chdir\nexcept ImportError:\n    from contextlib import contextmanager\n    import os\n\n    @contextmanager\n    def chdir(path):\n        previous = os.getcwd()\n        os.chdir(path)\n        try:\n            yield\n        finally:\n            os.chdir(previous)\n\nwith tempfile.TemporaryDirectory() as tmp:\n    root = Path(tmp)\n    reports = root / \"reports\"\n    reports.mkdir()\n    summary = reports / \"summary.txt\"\n    summary.write_text(\"ready\\n\", encoding=\"utf-8\")\n\n    print(\"outside\")\n    # TODO: enter reports with chdir and print \"inside: <line>\" from summary.txt\n    print(\"outside\")\n",
+      "fullSolution": "import tempfile\nfrom pathlib import Path\n\ntry:\n    from contextlib import chdir\nexcept ImportError:\n    from contextlib import contextmanager\n    import os\n\n    @contextmanager\n    def chdir(path):\n        previous = os.getcwd()\n        os.chdir(path)\n        try:\n            yield\n        finally:\n            os.chdir(previous)\n\nwith tempfile.TemporaryDirectory() as tmp:\n    root = Path(tmp)\n    reports = root / \"reports\"\n    reports.mkdir()\n    summary = reports / \"summary.txt\"\n    summary.write_text(\"ready\\n\", encoding=\"utf-8\")\n\n    print(\"outside\")\n    with chdir(reports):\n        line = Path(\"summary.txt\").read_text(encoding=\"utf-8\").strip()\n        print(f\"inside: {line}\")\n    print(\"outside\")\n",
+      "expectedOutput": "outside\ninside: ready\noutside",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">contextlib.chdir (Python 3.11+) temporarily switches the working directory and restores it automatically, making relative file access safer.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">with chdir(path):\n    data = Path(\"file.txt\").read_text()</pre></div><p class=\"mt-4 text-gray-300\">Provide a fallback for older runtimes so the lesson still works everywhere.</p>",
+      "tags": [
+        "Intermediate",
+        "File System",
+        "Context Managers"
+      ],
+      "id": 358
+    },
+    {
+      "title": "359. asyncio timeout_at deadline",
+      "language": "python",
+      "description": "Enforce an absolute asyncio deadline with timeout_at and print when the operation expires.",
+      "initialCode": "import asyncio\n\nasync def fetch(delay):\n    await asyncio.sleep(delay)\n    return f\"done in {delay:.2f}s\"\n\nasync def main():\n    loop = asyncio.get_running_loop()\n    deadline = loop.time() + 0.05\n\n    try:\n        # TODO: wrap fetch(0.1) with asyncio.timeout_at (or a fallback)\n        # so the await times out before it completes\n        pass\n    except TimeoutError:\n        print(\"expired\")\n\nasyncio.run(main())\n",
+      "fullSolution": "import asyncio\n\nasync def fetch(delay):\n    await asyncio.sleep(delay)\n    return f\"done in {delay:.2f}s\"\n\ntry:\n    timeout_at = asyncio.timeout_at\nexcept AttributeError:\n    def timeout_at(deadline):\n        loop = asyncio.get_running_loop()\n        delay = max(0.0, deadline - loop.time())\n        return asyncio.timeout(delay)\n\nasync def main():\n    loop = asyncio.get_running_loop()\n    deadline = loop.time() + 0.05\n\n    try:\n        async with timeout_at(deadline):\n            await fetch(0.1)\n    except TimeoutError:\n        print(\"expired\")\n\nasyncio.run(main())\n",
+      "expectedOutput": "expired",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">timeout_at works with absolute loop times, so you can align deadlines across tasks without recalculating offsets.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">deadline = loop.time() + 0.05\nasync with asyncio.timeout_at(deadline):\n    await work()</pre></div><p class=\"mt-4 text-gray-300\">Provide a compatibility shim with asyncio.timeout for environments earlier than 3.11.</p>",
+      "tags": [
+        "Advanced",
+        "AsyncIO",
+        "Timeouts"
+      ],
+      "id": 359
     }
   ]
 }

@@ -5864,6 +5864,51 @@
         "Queues"
       ],
       "id": 354
+    },
+    {
+      "title": "355. StackWalker method trace",
+      "language": "java",
+      "description": "Use StackWalker to capture the top of the call stack and print the method chain.",
+      "initialCode": "import java.util.stream.Collectors;\nimport java.lang.StackWalker;\n\npublic class Main {\n    static final StackWalker WALKER = StackWalker.getInstance();\n\n    public static void main(String[] args) {\n        helper();\n    }\n\n    static void helper() {\n        deeper();\n    }\n\n    static void deeper() {\n        // TODO: walk the stack, take the first three method names,\n        // join them with \"->\" and print the result\n    }\n}\n",
+      "fullSolution": "import java.util.stream.Collectors;\nimport java.lang.StackWalker;\n\npublic class Main {\n    static final StackWalker WALKER = StackWalker.getInstance();\n\n    public static void main(String[] args) {\n        helper();\n    }\n\n    static void helper() {\n        deeper();\n    }\n\n    static void deeper() {\n        String trace = WALKER.walk(frames -> frames\n                .map(StackWalker.StackFrame::getMethodName)\n                .limit(3)\n                .collect(Collectors.joining(\"->\")));\n        System.out.println(trace);\n    }\n}\n",
+      "expectedOutput": "deeper->helper->main",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">StackWalker gives you structured access to stack frames without parsing exception text. Limit the walk to just the frames you care about.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">String trace = StackWalker.getInstance().walk(frames -&gt; frames\n    .map(StackWalker.StackFrame::getMethodName)\n    .limit(3)\n    .collect(Collectors.joining(\"-&gt;\")));\nSystem.out.println(trace);</pre></div><p class=\"mt-4 text-gray-300\">Use it for diagnostics or structured logging instead of brittle stack trace strings.</p>",
+      "tags": [
+        "Advanced",
+        "Diagnostics",
+        "Stack"
+      ],
+      "id": 355
+    },
+    {
+      "title": "356. WatchService create event",
+      "language": "java",
+      "description": "Watch a temporary directory for file creation and print the resulting event.",
+      "initialCode": "import java.nio.file.FileSystems;\nimport java.nio.file.Files;\nimport java.nio.file.Path;\nimport java.nio.file.StandardWatchEventKinds;\nimport java.nio.file.WatchEvent;\nimport java.nio.file.WatchKey;\nimport java.nio.file.WatchService;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        Path dir = Files.createTempDirectory(\"watch-demo\");\n\n        // TODO: open a WatchService, register dir for ENTRY_CREATE,\n        // create \"notes.txt\", take the watch key, print \"<kind>:<file>\",\n        // then clean up the file and directory.\n    }\n}\n",
+      "fullSolution": "import java.nio.file.FileSystems;\nimport java.nio.file.Files;\nimport java.nio.file.Path;\nimport java.nio.file.StandardWatchEventKinds;\nimport java.nio.file.WatchEvent;\nimport java.nio.file.WatchKey;\nimport java.nio.file.WatchService;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        Path dir = Files.createTempDirectory(\"watch-demo\");\n        Path file = dir.resolve(\"notes.txt\");\n\n        try (WatchService watch = FileSystems.getDefault().newWatchService()) {\n            dir.register(watch, StandardWatchEventKinds.ENTRY_CREATE);\n            Files.writeString(file, \"draft\n\");\n\n            WatchKey key = watch.take();\n            for (WatchEvent<?> event : key.pollEvents()) {\n                if (event.kind() == StandardWatchEventKinds.OVERFLOW) {\n                    continue;\n                }\n                Path name = (Path) event.context();\n                System.out.println(event.kind().name() + \":\" + name);\n            }\n            key.reset();\n        } finally {\n            Files.deleteIfExists(file);\n            Files.deleteIfExists(dir);\n        }\n    }\n}\n",
+      "expectedOutput": "ENTRY_CREATE:notes.txt",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">WatchService lets you react to filesystem changes without polling. Register the directory once, then block on <code>watch.take()</code> for incoming events.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">dir.register(watch, StandardWatchEventKinds.ENTRY_CREATE);\nFiles.writeString(file, \"data\");\nWatchKey key = watch.take();\nfor (WatchEvent&lt;?&gt; event : key.pollEvents()) {\n    Path name = (Path) event.context();\n}</pre></div><p class=\"mt-4 text-gray-300\">Always delete temporary fixtures and ignore OVERFLOW signals so bursts of activity do not break your pipeline.</p>",
+      "tags": [
+        "Advanced",
+        "File I/O",
+        "WatchService"
+      ],
+      "id": 356
+    },
+    {
+      "title": "357. MethodHandle private invocation",
+      "language": "java",
+      "description": "Invoke a private instance method via MethodHandle and print the greeting.",
+      "initialCode": "import java.lang.invoke.MethodHandle;\nimport java.lang.invoke.MethodHandles;\nimport java.lang.invoke.MethodType;\n\npublic class Main {\n    static final class Greeter {\n        private String greet(String name) {\n            return \"Hello \" + name;\n        }\n    }\n\n    public static void main(String[] args) throws Throwable {\n        Greeter greeter = new Greeter();\n        // TODO: find a MethodHandle for Greeter.greet(String),\n        // invoke it with \"team\", and print the result\n    }\n}\n",
+      "fullSolution": "import java.lang.invoke.MethodHandle;\nimport java.lang.invoke.MethodHandles;\nimport java.lang.invoke.MethodType;\n\npublic class Main {\n    static final class Greeter {\n        private String greet(String name) {\n            return \"Hello \" + name;\n        }\n    }\n\n    public static void main(String[] args) throws Throwable {\n        Greeter greeter = new Greeter();\n        MethodHandles.Lookup lookup = MethodHandles.lookup();\n        MethodHandle handle = lookup.findVirtual(\n                Greeter.class,\n                \"greet\",\n                MethodType.methodType(String.class, String.class)\n        );\n        String message = (String) handle.invokeExact(greeter, \"team\");\n        System.out.println(message);\n    }\n}\n",
+      "expectedOutput": "Hello team",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Method handles are typed, directly executable references to class members. Resolve them once, then invoke without reflection strings.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">MethodHandle mh = MethodHandles.lookup().findVirtual(\n    Greeter.class,\n    \"greet\",\n    MethodType.methodType(String.class, String.class)\n);\nString msg = (String) mh.invokeExact(instance, \"team\");</pre></div><p class=\"mt-4 text-gray-300\">They underpin lambdas and give you faster, safer reflective access compared to Method.invoke.</p>",
+      "tags": [
+        "Advanced",
+        "Reflection",
+        "MethodHandles"
+      ],
+      "id": 357
     }
   ]
 }

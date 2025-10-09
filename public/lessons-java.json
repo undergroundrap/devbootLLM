@@ -6239,6 +6239,51 @@
         "java.time"
       ],
       "id": 379
+    },
+    {
+      "title": "380. ExecutorCompletionService ordering",
+      "language": "java",
+      "description": "Submit tasks with different durations to an ExecutorCompletionService, print results as soon as each completes, then shut down the executor.",
+      "initialCode": "import java.util.List;\nimport java.util.concurrent.Callable;\nimport java.util.concurrent.CompletionService;\nimport java.util.concurrent.ExecutorCompletionService;\nimport java.util.concurrent.ExecutorService;\nimport java.util.concurrent.Executors;\nimport java.util.concurrent.TimeUnit;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        ExecutorService executor = Executors.newFixedThreadPool(3);\n        CompletionService<String> completion = new ExecutorCompletionService<>(executor);\n\n        List<Callable<String>> tasks = List.of(\n                () -> {\n                    TimeUnit.MILLISECONDS.sleep(25);\n                    return \"slow\";\n                },\n                () -> {\n                    TimeUnit.MILLISECONDS.sleep(15);\n                    return \"steady\";\n                },\n                () -> {\n                    TimeUnit.MILLISECONDS.sleep(5);\n                    return \"fast\";\n                }\n        );\n\n        // TODO: submit each task, then take results from the completion service and print them immediately\n        // Finally, shut down the executor\n    }\n}\n",
+      "fullSolution": "import java.util.List;\nimport java.util.concurrent.Callable;\nimport java.util.concurrent.CompletionService;\nimport java.util.concurrent.ExecutorCompletionService;\nimport java.util.concurrent.ExecutorService;\nimport java.util.concurrent.Executors;\nimport java.util.concurrent.TimeUnit;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        ExecutorService executor = Executors.newFixedThreadPool(3);\n        CompletionService<String> completion = new ExecutorCompletionService<>(executor);\n\n        try {\n            List<Callable<String>> tasks = List.of(\n                    () -> {\n                        TimeUnit.MILLISECONDS.sleep(25);\n                        return \"slow\";\n                    },\n                    () -> {\n                        TimeUnit.MILLISECONDS.sleep(15);\n                        return \"steady\";\n                    },\n                    () -> {\n                        TimeUnit.MILLISECONDS.sleep(5);\n                        return \"fast\";\n                    }\n            );\n\n            tasks.forEach(completion::submit);\n            for (int i = 0; i < tasks.size(); i++) {\n                System.out.println(completion.take().get());\n            }\n        } finally {\n            executor.shutdown();\n        }\n    }\n}\n",
+      "expectedOutput": "fast\nsteady\nslow",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">ExecutorCompletionService hands back futures in completion order, so faster tasks surface first even if they were submitted later.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">CompletionService<String> service = new ExecutorCompletionService<>(executor);\ntasks.forEach(service::submit);\nfor (int i = 0; i < tasks.size(); i++) {\n    System.out.println(service.take().get());\n}</pre></div><p class=\"mt-4 text-gray-300\">Always shut down the executor in a finally block so threads exit once work is finished.</p>",
+      "tags": [
+        "Advanced",
+        "Concurrency",
+        "ExecutorService"
+      ],
+      "id": 380
+    },
+    {
+      "title": "381. Matcher replaceAll lambda",
+      "language": "java",
+      "description": "Use Matcher.replaceAll with a MatchResult lambda to transform word-number pairs like \"alpha-1\" into uppercase words followed by the number.",
+      "initialCode": "import java.util.regex.MatchResult;\nimport java.util.regex.Matcher;\nimport java.util.regex.Pattern;\n\npublic class Main {\n    public static void main(String[] args) {\n        Pattern pattern = Pattern.compile(\"(\\\\w+)-(\\\\d+)\");\n        Matcher matcher = pattern.matcher(\"alpha-1 beta-2 gamma-3\");\n\n        // TODO: use matcher.replaceAll with a lambda to transform each match into WORD+number\n        // Print the transformed string\n    }\n}\n",
+      "fullSolution": "import java.util.regex.MatchResult;\nimport java.util.regex.Matcher;\nimport java.util.regex.Pattern;\n\npublic class Main {\n    public static void main(String[] args) {\n        Pattern pattern = Pattern.compile(\"(\\\\w+)-(\\\\d+)\");\n        Matcher matcher = pattern.matcher(\"alpha-1 beta-2 gamma-3\");\n        String result = matcher.replaceAll((MatchResult match) ->\n                match.group(1).toUpperCase() + match.group(2)\n        );\n        System.out.println(result);\n    }\n}\n",
+      "expectedOutput": "ALPHA1 BETA2 GAMMA3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Since Java 9, <code>Matcher.replaceAll</code> accepts a lambda so you can compute context-aware replacements without loops.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">String replaced = matcher.replaceAll(match ->\n    match.group(1).toUpperCase() + match.group(2));</pre></div><p class=\"mt-4 text-gray-300\">Access capture groups inside the lambda for flexible rewrites while keeping the regex pipeline compact.</p>",
+      "tags": [
+        "Intermediate",
+        "Regex",
+        "Strings"
+      ],
+      "id": 381
+    },
+    {
+      "title": "382. partitioningBy even odd",
+      "language": "java",
+      "description": "Partition integers into even and odd groups with Collectors.partitioningBy and print each group as a comma-separated list.",
+      "initialCode": "import java.util.List;\nimport java.util.Map;\nimport java.util.stream.Collectors;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Integer> numbers = List.of(1, 2, 3, 4, 5);\n        // TODO: partition numbers into evens and odds using Collectors.partitioningBy\n        // Print \"evens=...\" and \"odds=...\" with comma-joined values\n    }\n}\n",
+      "fullSolution": "import java.util.List;\nimport java.util.Map;\nimport java.util.stream.Collectors;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Integer> numbers = List.of(1, 2, 3, 4, 5);\n        Map<Boolean, List<Integer>> partitioned = numbers.stream()\n                .collect(Collectors.partitioningBy(n -> n % 2 == 0));\n\n        String evens = partitioned.get(true).stream()\n                .map(String::valueOf)\n                .collect(Collectors.joining(\",\"));\n        String odds = partitioned.get(false).stream()\n                .map(String::valueOf)\n                .collect(Collectors.joining(\",\"));\n\n        System.out.println(\"evens=\" + evens);\n        System.out.println(\"odds=\" + odds);\n    }\n}\n",
+      "expectedOutput": "evens=2,4\nodds=1,3,5",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Collectors.partitioningBy</code> splits a stream into two buckets keyed by a boolean predicate—perfect for even/odd checks or pass/fail filters.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Map<Boolean, List<T>> groups = items.stream()\n    .collect(Collectors.partitioningBy(predicate));</pre></div><p class=\"mt-4 text-gray-300\">The resulting map always has keys for <code>true</code> and <code>false</code>, so you can safely fetch both sides without guards.</p>",
+      "tags": [
+        "Intermediate",
+        "Streams",
+        "Collections"
+      ],
+      "id": 382
     }
   ]
 }

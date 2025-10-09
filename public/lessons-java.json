@@ -5939,6 +5939,36 @@
         "Unicode"
       ],
       "id": 359
+    },
+    {
+      "title": "360. ConcurrentSkipListMap priority queue",
+      "language": "java",
+      "description": "Use ConcurrentSkipListMap to maintain a sorted backlog, remove the highest-priority item, and print the remaining order.",
+      "initialCode": "import java.util.concurrent.ConcurrentSkipListMap;\n\npublic class Main {\n    public static void main(String[] args) {\n        ConcurrentSkipListMap<Integer, String> backlog = new ConcurrentSkipListMap<>();\n        backlog.put(30, \"metrics\");\n        backlog.put(10, \"ingest\");\n        backlog.put(20, \"billing\");\n\n        // TODO: remove the smallest key entry and print its value\n        // Then print the remaining values joined by commas in key order\n    }\n}\n",
+      "fullSolution": "import java.util.concurrent.ConcurrentSkipListMap;\nimport java.util.stream.Collectors;\n\npublic class Main {\n    public static void main(String[] args) {\n        ConcurrentSkipListMap<Integer, String> backlog = new ConcurrentSkipListMap<>();\n        backlog.put(30, \"metrics\");\n        backlog.put(10, \"ingest\");\n        backlog.put(20, \"billing\");\n\n        String next = backlog.pollFirstEntry().getValue();\n        System.out.println(next);\n        String remaining = backlog.values().stream().collect(Collectors.joining(\",\"));\n        System.out.println(remaining);\n    }\n}\n",
+      "expectedOutput": "ingest\nbilling,metrics",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">ConcurrentSkipListMap keeps keys in sorted order while remaining thread-safe, so you can treat it like a concurrent priority queue keyed by integers.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">ConcurrentSkipListMap<Integer, Task> queue = new ConcurrentSkipListMap<>();\nqueue.put(priority, task);\nvar head = queue.pollFirstEntry();\nprocess(head.getValue());</pre></div><p class=\"mt-4 text-gray-300\">Its lock-free skip list keeps reads fast even when multiple producers are adding work.</p>",
+      "tags": [
+        "Advanced",
+        "Concurrent Collections",
+        "Sorting"
+      ],
+      "id": 360
+    },
+    {
+      "title": "361. RecordComponent introspection",
+      "language": "java",
+      "description": "Reflect over a record's components and print their names with simple types.",
+      "initialCode": "import java.lang.reflect.RecordComponent;\n\npublic class Main {\n    record Event(String name, int slots) {}\n\n    public static void main(String[] args) {\n        // TODO: get the record components of Event and print their count\n        // Then print each component as \"<name>:<type>\" using simple type names\n    }\n}\n",
+      "fullSolution": "import java.lang.reflect.RecordComponent;\nimport java.util.Arrays;\n\npublic class Main {\n    record Event(String name, int slots) {}\n\n    public static void main(String[] args) {\n        RecordComponent[] components = Event.class.getRecordComponents();\n        System.out.println(components.length);\n        Arrays.stream(components)\n                .forEach(component -> System.out.println(component.getName() + \":\" + component.getType().getSimpleName()));\n    }\n}\n",
+      "expectedOutput": "2\nname:String\nslots:int",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Records expose their components via reflection, so you can build serializers or inspectors without hand-maintaining field lists.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">RecordComponent[] components = recordType.getRecordComponents();\nfor (RecordComponent rc : components) {\n    System.out.println(rc.getName());\n}</pre></div><p class=\"mt-4 text-gray-300\">Each component exposes the accessor method, type, and annotations, making runtime tooling ergonomic.</p>",
+      "tags": [
+        "Advanced",
+        "Reflection",
+        "Records"
+      ],
+      "id": 361
     }
   ]
 }

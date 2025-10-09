@@ -5785,6 +5785,36 @@
         "Decorators"
       ],
       "id": 361
+    },
+    {
+      "title": "362. contextlib.aclosing cleanup",
+      "language": "python",
+      "description": "Guarantee an async generator closes even when the consumer breaks early by wrapping it with contextlib.aclosing.",
+      "initialCode": "import asyncio\nfrom contextlib import aclosing\n\nasync def ticker():\n    try:\n        for item in [\"alpha\", \"beta\", \"gamma\"]:\n            await asyncio.sleep(0.01)\n            yield item\n    finally:\n        print(\"cleanup\")\n\nasync def main():\n    collected: list[str] = []\n    # TODO: wrap ticker() with aclosing, take the first two items, then exit the loop\n    # After the context exits, print the collected items joined by commas\n\nasyncio.run(main())\n",
+      "fullSolution": "import asyncio\nfrom contextlib import aclosing\n\nasync def ticker():\n    try:\n        for item in [\"alpha\", \"beta\", \"gamma\"]:\n            await asyncio.sleep(0.01)\n            yield item\n    finally:\n        print(\"cleanup\")\n\nasync def main():\n    collected: list[str] = []\n    async with aclosing(ticker()) as stream:\n        async for item in stream:\n            collected.append(item)\n            if len(collected) == 2:\n                break\n    print(\",\".join(collected))\n\nasyncio.run(main())\n",
+      "expectedOutput": "cleanup\nalpha,beta",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>aclosing()</code> when you need <code>async for</code> loops to close generators reliably, even if you break early.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">async with aclosing(stream()):\n    async for item in stream:\n        if should_stop(item):\n            break</pre></div><p class=\"mt-4 text-gray-300\">It mirrors <code>contextlib.closing</code> for async iterables and ensures their <code>aclose()</code> gets called on exit.</p>",
+      "tags": [
+        "Intermediate",
+        "AsyncIO",
+        "Context Managers"
+      ],
+      "id": 362
+    },
+    {
+      "title": "363. zipfile.Path inspection",
+      "language": "python",
+      "description": "Create a ZIP archive in memory, use zipfile.Path to inspect its directories, and read an entry without extracting it.",
+      "initialCode": "import tempfile\nimport zipfile\nfrom pathlib import Path\n\nwith tempfile.TemporaryDirectory() as tmp:\n    root = Path(tmp)\n    archive = root / \"logs.zip\"\n    with zipfile.ZipFile(archive, \"w\") as zf:\n        zf.writestr(\"logs/\", \"\")\n        zf.writestr(\"logs/app.log\", \"ready\\n\")\n        zf.writestr(\"logs/error.log\", \"failed\\n\")\n\n    # TODO: reopen the archive, wrap the \"logs\" directory with zipfile.Path,\n    # print its child names joined by commas, then read logs/app.log without extracting\n",
+      "fullSolution": "import tempfile\nimport zipfile\nfrom pathlib import Path\n\nwith tempfile.TemporaryDirectory() as tmp:\n    root = Path(tmp)\n    archive = root / \"logs.zip\"\n    with zipfile.ZipFile(archive, \"w\") as zf:\n        zf.writestr(\"logs/\", \"\")\n        zf.writestr(\"logs/app.log\", \"ready\\n\")\n        zf.writestr(\"logs/error.log\", \"failed\\n\")\n\n    with zipfile.ZipFile(archive) as zf:\n        root_path = zipfile.Path(zf)\n        logs = root_path / \"logs\"\n        names = sorted(child.name for child in logs.iterdir())\n        print(\",\".join(names))\n\n        app_log = logs / \"app.log\"\n        with app_log.open(\"r\", encoding=\"utf-8\") as handle:\n            print(handle.read().strip())\n",
+      "expectedOutput": "app.log,error.log\nready",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>zipfile.Path</code> gives you a pathlib-style interface over archives so you can explore them like real directories.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">arc = zipfile.Path(archive)\nfor child in arc.iterdir():\n    ...\nwith zipfile.Path(archive, \"path/in.zip\").open() as fh:\n    data = fh.read()</pre></div><p class=\"mt-4 text-gray-300\">It's handy for quick inspections or tests where extracting to disk would add noise.</p>",
+      "tags": [
+        "Intermediate",
+        "File System",
+        "Standard Library"
+      ],
+      "id": 363
     }
   ]
 }

@@ -5965,6 +5965,51 @@
         "Standard Library"
       ],
       "id": 373
+    },
+    {
+      "title": "374. datetime duration in milliseconds",
+      "language": "python",
+      "description": "Parse two ISO 8601 timestamps, compute the elapsed milliseconds, and print the result.",
+      "initialCode": "from datetime import datetime\n\nstart = \"2024-01-01T00:00:00+00:00\"\nend = \"2024-01-01T00:01:30+00:00\"\n\n# TODO: parse both timestamps, compute the delta in milliseconds, and print it as an integer\n\n",
+      "fullSolution": "from datetime import datetime\n\nstart = \"2024-01-01T00:00:00+00:00\"\nend = \"2024-01-01T00:01:30+00:00\"\n\nstart_dt = datetime.fromisoformat(start)\nend_dt = datetime.fromisoformat(end)\nmillis = int((end_dt - start_dt).total_seconds() * 1000)\nprint(millis)\n",
+      "expectedOutput": "90000",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>datetime.fromisoformat()</code> parses RFC 3339/ISO 8601 strings. Convert the <code>timedelta</code> to milliseconds by multiplying seconds.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">delta = end - start\nmillis = int(delta.total_seconds() * 1000)\nprint(millis)</pre></div><p class=\"mt-4 text-gray-300\">Keep timezone info on the objects so arithmetic stays correct across offsets.</p>",
+      "tags": [
+        "Intermediate",
+        "Date/Time",
+        "datetime"
+      ],
+      "id": 374
+    },
+    {
+      "title": "375. dict word merge counts",
+      "language": "python",
+      "description": "Count word occurrences using dict.setdefault or dict.get, then print them in insertion order.",
+      "initialCode": "words = [\"loom\", \"panama\", \"loom\", \"loom\", \"valhalla\", \"panama\"]\ncounts: dict[str, int] = {}\n\n# TODO: populate counts so each word maps to its frequency, preserving insertion order\n# Print each entry as \"word=count\" on its own line\n\n",
+      "fullSolution": "words = [\"loom\", \"panama\", \"loom\", \"loom\", \"valhalla\", \"panama\"]\ncounts: dict[str, int] = {}\n\nfor word in words:\n    counts[word] = counts.get(word, 0) + 1\n\nfor word, count in counts.items():\n    print(f\"{word}={count}\")\n",
+      "expectedOutput": "loom=3\npanama=2\nvalhalla=1",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>dict.get()</code> or <code>setdefault()</code> to avoid manual membership checks when tallying counts. Python dicts preserve insertion order, matching the first occurrence of each key.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">counts[word] = counts.get(word, 0) + 1</pre></div><p class=\"mt-4 text-gray-300\">For larger jobs, collections.Counter does the same thing in one call, but rolling your own removes another import.</p>",
+      "tags": [
+        "Intermediate",
+        "Collections",
+        "dict"
+      ],
+      "id": 375
+    },
+    {
+      "title": "376. urllib request builder",
+      "language": "python",
+      "description": "Build a GET request with query parameters and headers, then print the request URL, method, and Accept header.",
+      "initialCode": "from urllib.parse import urlencode\nfrom urllib.request import Request\n\nbase_url = \"https://status.example/api/health\"\nparams = {\"region\": \"eu-west\", \"verbose\": \"true\"}\n\n# TODO: build the URL with query params, create a Request with Accept: application/json,\n# set method to GET, and print url, method, and the Accept header on separate lines\n\n",
+      "fullSolution": "from urllib.parse import urlencode\nfrom urllib.request import Request\n\nbase_url = \"https://status.example/api/health\"\nparams = {\"region\": \"eu-west\", \"verbose\": \"true\"}\n\nurl = f\"{base_url}?{urlencode(params)}\"\nrequest = Request(url, method=\"GET\", headers={\"Accept\": \"application/json\"})\nprint(request.full_url)\nprint(request.get_method())\nprint(request.headers.get(\"Accept\"))\n",
+      "expectedOutput": "https://status.example/api/health?region=eu-west&verbose=true\nGET\napplication/json",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Compose query strings with <code>urlencode</code> to avoid manual concatenation mistakes. Attach headers directly to the Request before sending.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">url = f\"{base}?{urlencode(params)}\"\nreq = Request(url, method=\"GET\", headers={\"Accept\": \"application/json\"})</pre></div><p class=\"mt-4 text-gray-300\">Even if you never send the request, logging its properties helps you verify integrations quickly.</p>",
+      "tags": [
+        "Intermediate",
+        "HTTP Client",
+        "Networking"
+      ],
+      "id": 376
     }
   ]
 }

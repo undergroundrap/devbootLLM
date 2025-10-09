@@ -5815,6 +5815,66 @@
         "Standard Library"
       ],
       "id": 363
+    },
+    {
+      "title": "364. asyncio.TaskGroup coordination",
+      "language": "python",
+      "description": "Launch two coroutines inside an asyncio.TaskGroup, wait for them to finish, and print their combined result.",
+      "initialCode": "import asyncio\n\nasync def fetch_user():\n    await asyncio.sleep(0.01)\n    return \"alex\"\n\nasync def fetch_account():\n    await asyncio.sleep(0.02)\n    return \"pro\"\n\nasync def main():\n    # TODO: create a TaskGroup, start both coroutines, await completion,\n    # and print \"alex-pro\"\n    pass\n\nasyncio.run(main())\n",
+      "fullSolution": "import asyncio\n\nasync def fetch_user():\n    await asyncio.sleep(0.01)\n    return \"alex\"\n\nasync def fetch_account():\n    await asyncio.sleep(0.02)\n    return \"pro\"\n\nasync def main():\n    async with asyncio.TaskGroup() as tg:\n        user_task = tg.create_task(fetch_user())\n        account_task = tg.create_task(fetch_account())\n    combined = f\"{user_task.result()}-{account_task.result()}\"\n    print(combined)\n\nasyncio.run(main())\n",
+      "expectedOutput": "alex-pro",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Task groups give asyncio a structured concurrency story. The context manager waits for every child task and propagates errors before resuming.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">async with asyncio.TaskGroup() as tg:\n    a = tg.create_task(fetch_a())\n    b = tg.create_task(fetch_b())\nresult = (await a), (await b)</pre></div><p class=\"mt-4 text-gray-300\">Spawning tasks inside the group keeps their lifetimes tied to the surrounding scope, so cleanup happens even when one task fails.</p>",
+      "tags": [
+        "Advanced",
+        "AsyncIO",
+        "Structured Concurrency"
+      ],
+      "id": 364
+    },
+    {
+      "title": "365. deque tail rotation",
+      "language": "python",
+      "description": "Rotate a deque so the last element moves to the front, then print the new order as a comma-separated string.",
+      "initialCode": "from collections import deque\n\nfeatures = deque([\"loom\", \"panama\", \"valhalla\"])\n\n# TODO: move the last element to the front and print the deque joined by commas\n\n",
+      "fullSolution": "from collections import deque\n\nfeatures = deque([\"loom\", \"panama\", \"valhalla\"])\n\nfeatures.rotate(1)\nprint(\",\".join(features))\n",
+      "expectedOutput": "valhalla,loom,panama",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">deques are sequenced collections with efficient operations at both ends. <code>rotate()</code> shifts items without rebuilding the container.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">items = deque([\"A\", \"B\", \"C\"])\nitems.rotate(1)   # bring the tail to the head\nprint(list(items))</pre></div><p class=\"mt-4 text-gray-300\">Use positive values to rotate right and negative values to rotate left. It's perfect for round-robin scheduling or buffer juggling.</p>",
+      "tags": [
+        "Intermediate",
+        "Collections",
+        "deque"
+      ],
+      "id": 365
+    },
+    {
+      "title": "366. functools.reduce summary",
+      "language": "python",
+      "description": "Use functools.reduce to track total, count, and max in one pass, then print the average and maximum score.",
+      "initialCode": "from functools import reduce\n\nscores = [10, 20, 30, 40]\n\n# TODO: use reduce with an accumulator of (total, count, max)\n# and print \"avg=25.0,max=40\"\n\n",
+      "fullSolution": "from functools import reduce\n\nscores = [10, 20, 30, 40]\n\ndef step(acc, value):\n    total, count, maximum = acc\n    maximum = value if maximum is None else max(maximum, value)\n    return total + value, count + 1, maximum\n\ntotal, count, maximum = reduce(step, scores, (0, 0, None))\naverage = total / count if count else 0.0\nprint(f\"avg={average:.1f},max={maximum}\")\n",
+      "expectedOutput": "avg=25.0,max=40",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">With <code>reduce()</code> you can fold a sequence into any shape you need. Track multiple aggregates in a tuple so you only traverse the data once.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">def step(acc, value):\n    total, count, maximum = acc\n    return total + value, count + 1, max(maximum, value)\n\ntotal, count, maximum = reduce(step, data, (0, 0, float('-inf')))</pre></div><p class=\"mt-4 text-gray-300\">When you return a new accumulator each time, reduce threads that state through every element without mutating global variables.</p>",
+      "tags": [
+        "Intermediate",
+        "Functional Programming",
+        "Data Processing"
+      ],
+      "id": 366
+    },
+    {
+      "title": "367. multiprocessing.Value atomic update",
+      "language": "python",
+      "description": "Use a multiprocessing.Value and its lock to perform an atomic add, emulating a compare-and-set loop.",
+      "initialCode": "from multiprocessing import Value\n\ncounter = Value('i', 3)\n\ndef atomic_add(amount: int) -> int:\n    # TODO: grab the Value's lock, read the current value,\n    # write back the incremented value, and return it\n    raise NotImplementedError\n\nprint(atomic_add(4))\n",
+      "fullSolution": "from multiprocessing import Value\n\ncounter = Value('i', 3)\n\ndef atomic_add(amount: int) -> int:\n    while True:\n        with counter.get_lock():\n            current = counter.value\n            new_value = current + amount\n            counter.value = new_value\n            return new_value\n\nprint(atomic_add(4))\n",
+      "expectedOutput": "7",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>multiprocessing.Value</code> wraps shared memory and exposes a lock so you can protect updates. Pattern it like a compare-and-set: read, compute, write while holding the lock.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">with shared.get_lock():\n    current = shared.value\n    shared.value = current + delta</pre></div><p class=\"mt-4 text-gray-300\">Holding the lock keeps other processes from observing stale values, giving you a safe atomic increment without third-party libraries.</p>",
+      "tags": [
+        "Advanced",
+        "Concurrency",
+        "Multiprocessing"
+      ],
+      "id": 367
     }
   ]
 }

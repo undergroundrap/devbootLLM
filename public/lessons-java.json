@@ -5969,6 +5969,96 @@
         "Records"
       ],
       "id": 361
+    },
+    {
+      "title": "362. Switch pattern matching guards",
+      "language": "java",
+      "description": "Use a switch expression with pattern matching and guards to format different payload variants.",
+      "initialCode": "public class Main {\n    sealed interface Payload permits TextPayload, NumberPayload, FlagPayload {}\n    record TextPayload(String text) {}\n    record NumberPayload(int value) {}\n    record FlagPayload(boolean enabled) {}\n\n    static String format(Payload payload) {\n        // TODO: use a switch expression with record patterns and guards to format the payload:\n        // - TextPayload -> uppercase text\n        // - NumberPayload with value > 99 -> \"triple-digit\"\n        // - NumberPayload otherwise -> prefix with \"num:\"\n        // - FlagPayload(true) -> \"enabled\"\n        // - FlagPayload(false) -> \"disabled\"\n        return \"\";\n    }\n\n    public static void main(String[] args) {\n        System.out.println(format(new TextPayload(\"hello\")));\n        System.out.println(format(new NumberPayload(150)));\n        System.out.println(format(new NumberPayload(7)));\n        System.out.println(format(new FlagPayload(true)));\n    }\n}\n",
+      "fullSolution": "public class Main {\n    sealed interface Payload permits TextPayload, NumberPayload, FlagPayload {}\n    record TextPayload(String text) {}\n    record NumberPayload(int value) {}\n    record FlagPayload(boolean enabled) {}\n\n    static String format(Payload payload) {\n        return switch (payload) {\n            case TextPayload(var text) -> text.toUpperCase();\n            case NumberPayload(int value) when value > 99 -> \"triple-digit\";\n            case NumberPayload(int value) -> \"num:\" + value;\n            case FlagPayload(boolean enabled) -> enabled ? \"enabled\" : \"disabled\";\n        };\n    }\n\n    public static void main(String[] args) {\n        System.out.println(format(new TextPayload(\"hello\")));\n        System.out.println(format(new NumberPayload(150)));\n        System.out.println(format(new NumberPayload(7)));\n        System.out.println(format(new FlagPayload(true)));\n    }\n}\n",
+      "expectedOutput": "HELLO\ntriple-digit\nnum:7\nenabled",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Switch expressions can destructure records and add guard clauses. Use <code>when</code> to refine a matched pattern without another case.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">return switch (payload) {\n    case NumberPayload(int value) when value > 99 -> \"large\";\n    case NumberPayload(int value) -> \"small:\" + value;\n    case FlagPayload(boolean enabled) -> enabled ? \"on\" : \"off\";\n};</pre></div><p class=\"mt-4 text-gray-300\">Remember to cover every sealed subtype or provide a default branch so the compiler sees an exhaustive switch.</p>",
+      "tags": [
+        "Advanced",
+        "Pattern Matching",
+        "Switch"
+      ],
+      "id": 362
+    },
+    {
+      "title": "363. Virtual thread executor fan-out",
+      "language": "java",
+      "description": "Fan out work onto a virtual-thread-backed executor, await the futures in submission order, and print their results as a single line.",
+      "initialCode": "import java.util.List;\nimport java.util.concurrent.ExecutorService;\nimport java.util.concurrent.Executors;\nimport java.util.concurrent.Future;\nimport java.util.concurrent.TimeUnit;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        try (ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor()) {\n            // TODO: submit three tasks that sleep for different durations and return strings\n            // Collect the futures in submission order and print their results joined by commas\n        }\n    }\n}\n",
+      "fullSolution": "import java.util.List;\nimport java.util.concurrent.ExecutorService;\nimport java.util.concurrent.Executors;\nimport java.util.concurrent.Future;\nimport java.util.concurrent.TimeUnit;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        try (ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor()) {\n            List<Future<String>> futures = List.of(\n                    executor.submit(() -> {\n                        TimeUnit.MILLISECONDS.sleep(20);\n                        return \"alpha\";\n                    }),\n                    executor.submit(() -> {\n                        TimeUnit.MILLISECONDS.sleep(10);\n                        return \"beta\";\n                    }),\n                    executor.submit(() -> {\n                        TimeUnit.MILLISECONDS.sleep(5);\n                        return \"gamma\";\n                    })\n            );\n            String result = String.join(\",\",\n                    futures.get(0).get(),\n                    futures.get(1).get(),\n                    futures.get(2).get()\n            );\n            System.out.println(result);\n        }\n    }\n}\n",
+      "expectedOutput": "alpha,beta,gamma",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Virtual threads let you schedule thousands of blocking tasks without the overhead of platform threads. The new-per-task executor wires each task to its own virtual thread.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">try (ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor()) {\n    Future<String> future = executor.submit(() -> {\n        TimeUnit.MILLISECONDS.sleep(10);\n        return \"ready\";\n    });\n    System.out.println(future.get());\n}</pre></div><p class=\"mt-4 text-gray-300\">Gathering futures in submission order makes it easy to preserve deterministic output even though the tasks complete out of order.</p>",
+      "tags": [
+        "Advanced",
+        "Concurrency",
+        "Virtual Threads"
+      ],
+      "id": 363
+    },
+    {
+      "title": "364. VarHandle compare-and-set loop",
+      "language": "java",
+      "description": "Acquire a VarHandle for an int array element, atomically add to it with a compare-and-set loop, and print the updated value.",
+      "initialCode": "import java.lang.invoke.MethodHandles;\nimport java.lang.invoke.VarHandle;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        int[] counters = {3};\n        // TODO: obtain an array element VarHandle and atomically add 4 to counters[0]\n        // Use a compare-and-set loop and print the new value\n    }\n}\n",
+      "fullSolution": "import java.lang.invoke.MethodHandles;\nimport java.lang.invoke.VarHandle;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        int[] counters = {3};\n        VarHandle handle = MethodHandles.arrayElementVarHandle(int[].class);\n        int current;\n        do {\n            current = (int) handle.getVolatile(counters, 0);\n        } while (!handle.compareAndSet(counters, 0, current, current + 4));\n        System.out.println(handle.getVolatile(counters, 0));\n    }\n}\n",
+      "expectedOutput": "7",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">VarHandle gives you low-level atomic operations without dropping into unsafe APIs. Loop on <code>compareAndSet</code> until you win the race, then read the updated value.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">VarHandle handle = MethodHandles.arrayElementVarHandle(int[].class);\nint value;\ndo {\n    value = (int) handle.getVolatile(array, index);\n} while (!handle.compareAndSet(array, index, value, value + delta));\n</pre></div><p class=\"mt-4 text-gray-300\">The volatile access keeps other threads from caching stale values, making this a safe lock-free increment.</p>",
+      "tags": [
+        "Advanced",
+        "VarHandle",
+        "Concurrency"
+      ],
+      "id": 364
+    },
+    {
+      "title": "365. StructuredTaskScope coordination",
+      "language": "java",
+      "description": "Run two blocking operations inside a StructuredTaskScope, wait for completion, and print their combined result.",
+      "initialCode": "import java.util.concurrent.StructuredTaskScope;\n\npublic class Main {\n    static String fetchUser() throws InterruptedException {\n        Thread.sleep(10);\n        return \"alex\";\n    }\n\n    static String fetchAccount() throws InterruptedException {\n        Thread.sleep(15);\n        return \"pro\";\n    }\n\n    public static void main(String[] args) throws Exception {\n        // TODO: fork both tasks in a ShutdownOnFailure scope\n        // Join the scope, assert success, and print \"alex-pro\"\n    }\n}\n",
+      "fullSolution": "import java.util.concurrent.StructuredTaskScope;\n\npublic class Main {\n    static String fetchUser() throws InterruptedException {\n        Thread.sleep(10);\n        return \"alex\";\n    }\n\n    static String fetchAccount() throws InterruptedException {\n        Thread.sleep(15);\n        return \"pro\";\n    }\n\n    public static void main(String[] args) throws Exception {\n        try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {\n            var userTask = scope.fork(Main::fetchUser);\n            var accountTask = scope.fork(Main::fetchAccount);\n\n            scope.join();\n            scope.throwIfFailed();\n\n            String combined = userTask.get() + \"-\" + accountTask.get();\n            System.out.println(combined);\n        }\n    }\n}\n",
+      "expectedOutput": "alex-pro",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Structured concurrency scopes let you launch related subtasks and coordinate their lifetime. ShutdownOnFailure cancels sibling work if any fork fails.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {\n    var a = scope.fork(this::loadA);\n    var b = scope.fork(this::loadB);\n    scope.join();\n    scope.throwIfFailed();\n    return combine(a.get(), b.get());\n}</pre></div><p class=\"mt-4 text-gray-300\">Always call <code>join()</code> followed by <code>throwIfFailed()</code> so exceptions surface before you use the subtasks' results.</p>",
+      "tags": [
+        "Advanced",
+        "Concurrency",
+        "Structured Concurrency"
+      ],
+      "id": 365
+    },
+    {
+      "title": "366. SequencedSet rotation",
+      "language": "java",
+      "description": "Take advantage of SequencedSet methods to move the last element to the front and print the new ordering.",
+      "initialCode": "import java.util.LinkedHashSet;\nimport java.util.SequencedSet;\n\npublic class Main {\n    public static void main(String[] args) {\n        SequencedSet<String> features = new LinkedHashSet<>();\n        features.add(\"loom\");\n        features.add(\"panama\");\n        features.add(\"valhalla\");\n\n        // TODO: remove the last element, add it back to the front, and print the set joined by commas\n    }\n}\n",
+      "fullSolution": "import java.util.LinkedHashSet;\nimport java.util.SequencedSet;\n\npublic class Main {\n    public static void main(String[] args) {\n        SequencedSet<String> features = new LinkedHashSet<>();\n        features.add(\"loom\");\n        features.add(\"panama\");\n        features.add(\"valhalla\");\n\n        String tail = features.removeLast();\n        features.addFirst(tail);\n        String joined = String.join(\",\", features);\n        System.out.println(joined);\n    }\n}\n",
+      "expectedOutput": "valhalla,loom,panama",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Sequenced collections expose first/last operations directly, removing the need to bounce through iterators when you want to rotate data.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">SequencedSet<String> set = new LinkedHashSet<>(List.of(\"a\", \"b\", \"c\"));\nString tail = set.removeLast();\nset.addFirst(tail);\nSystem.out.println(String.join(\",\", set));</pre></div><p class=\"mt-4 text-gray-300\">LinkedHashSet already preserves insertion order, and with SequencedSet you can manipulate both ends in O(1).</p>",
+      "tags": [
+        "Advanced",
+        "Collections",
+        "Sequenced Collections"
+      ],
+      "id": 366
+    },
+    {
+      "title": "367. Collectors teeing summary",
+      "language": "java",
+      "description": "Use Collectors.teeing to compute both the average and maximum score in a single terminal operation.",
+      "initialCode": "import java.util.List;\nimport java.util.stream.Collectors;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Integer> scores = List.of(10, 20, 30, 40);\n\n        // TODO: collect with Collectors.teeing to produce \"avg=25.0,max=40\" and print it\n    }\n}\n",
+      "fullSolution": "import java.util.List;\nimport java.util.stream.Collectors;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Integer> scores = List.of(10, 20, 30, 40);\n\n        String summary = scores.stream().collect(Collectors.teeing(\n                Collectors.averagingInt(Integer::intValue),\n                Collectors.maxBy(Integer::compareTo),\n                (avg, maxOpt) -> String.format(\"avg=%.1f,max=%d\", avg, maxOpt.orElse(0))\n        ));\n        System.out.println(summary);\n    }\n}\n",
+      "expectedOutput": "avg=25.0,max=40",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Collectors.teeing lets you fan out a stream into two downstream collectors and merge their results in one pass, saving extra traversals.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">String report = data.stream().collect(Collectors.teeing(\n    Collectors.counting(),\n    Collectors.maxBy(Comparator.naturalOrder()),\n    (count, max) -> \"count=\" + count + \",max=\" + max.orElse(0)\n));</pre></div><p class=\"mt-4 text-gray-300\">Combine averaging, counting, or grouping collectors to build rich summaries without intermediate collections.</p>",
+      "tags": [
+        "Intermediate",
+        "Streams",
+        "Collectors"
+      ],
+      "id": 367
     }
   ]
 }

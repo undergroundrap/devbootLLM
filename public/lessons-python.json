@@ -5875,6 +5875,51 @@
         "Multiprocessing"
       ],
       "id": 367
+    },
+    {
+      "title": "368. asyncio.wait race",
+      "language": "python",
+      "description": "Race two coroutines, print whichever finishes first with asyncio.wait, then print both results.",
+      "initialCode": "import asyncio\n\nasync def slow():\n    await asyncio.sleep(0.04)\n    return \"slow\"\n\nasync def fast():\n    await asyncio.sleep(0.01)\n    return \"fast\"\n\nasync def main():\n    # TODO: start slow() and fast() as tasks, wait until one finishes,\n    # print its result, then print the results of the slow and fast tasks in that order\n    pass\n\nasyncio.run(main())\n",
+      "fullSolution": "import asyncio\n\nasync def slow():\n    await asyncio.sleep(0.04)\n    return \"slow\"\n\nasync def fast():\n    await asyncio.sleep(0.01)\n    return \"fast\"\n\nasync def main():\n    slow_task = asyncio.create_task(slow())\n    fast_task = asyncio.create_task(fast())\n\n    done, pending = await asyncio.wait({slow_task, fast_task}, return_when=asyncio.FIRST_COMPLETED)\n    winner_task = done.pop()\n    print(winner_task.result())\n    print(await slow_task)\n    print(await fast_task)\n\nasyncio.run(main())\n",
+      "expectedOutput": "fast\nslow\nfast",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>asyncio.wait(..., return_when=FIRST_COMPLETED)</code> to race coroutines and resume as soon as one finishes. The remaining tasks keep running until you await them.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">done, pending = await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)\nwinner = done.pop()\nprint(winner.result())</pre></div><p class=\"mt-4 text-gray-300\">Remember to await (or cancel) the other tasks afterward so you don't leak background work.</p>",
+      "tags": [
+        "Advanced",
+        "AsyncIO",
+        "Concurrency"
+      ],
+      "id": 368
+    },
+    {
+      "title": "369. pathlib log size",
+      "language": "python",
+      "description": "Create a temporary directory tree, sum the sizes of *.log files with pathlib, print the total, and clean up automatically.",
+      "initialCode": "import tempfile\nfrom pathlib import Path\n\nwith tempfile.TemporaryDirectory() as tmp:\n    root = Path(tmp)\n    (root / \"app.log\").write_text(\"ready\\n\", encoding=\"utf-8\")\n    (root / \"error.log\").write_text(\"failed\\n\", encoding=\"utf-8\")\n    (root / \"trace.bin\").write_bytes(b\"0000\")\n\n    # TODO: use rglob or similar to sum the sizes of *.log files and print the total\n\n",
+      "fullSolution": "import tempfile\nfrom pathlib import Path\n\nwith tempfile.TemporaryDirectory() as tmp:\n    root = Path(tmp)\n    (root / \"app.log\").write_text(\"ready\\n\", encoding=\"utf-8\")\n    (root / \"error.log\").write_text(\"failed\\n\", encoding=\"utf-8\")\n    (root / \"trace.bin\").write_bytes(b\"0000\")\n\n    total = sum(path.stat().st_size for path in root.rglob(\"*.log\"))\n    print(total)\n",
+      "expectedOutput": "13",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Combine <code>TemporaryDirectory</code> with <code>pathlib.Path</code> to set up sandboxed fixtures. Pattern match files by suffix and use <code>Path.stat()</code> to retrieve sizes.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">total = sum(p.stat().st_size for p in root.rglob(\"*.log\"))\nprint(total)</pre></div><p class=\"mt-4 text-gray-300\">TemporaryDirectory cleans up automatically, so you can focus on the traversal logic without manual deletion.</p>",
+      "tags": [
+        "Intermediate",
+        "File System",
+        "pathlib"
+      ],
+      "id": 369
+    },
+    {
+      "title": "370. base64 round-trip",
+      "language": "python",
+      "description": "Encode a string to Base64 and decode it back, printing both versions.",
+      "initialCode": "import base64\n\ntext = \"compute\"\n# TODO: encode text as Base64 (UTF-8), print the encoded string,\n# then decode it back and print the original text\n\n",
+      "fullSolution": "import base64\n\ntext = \"compute\"\nencoded = base64.b64encode(text.encode(\"utf-8\")).decode(\"ascii\")\nprint(encoded)\ndecoded = base64.b64decode(encoded).decode(\"utf-8\")\nprint(decoded)\n",
+      "expectedOutput": "Y29tcHV0ZQ==\ncompute",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Base64 turns arbitrary bytes into ASCII so you can embed them in JSON, URLs, or configs. Use UTF-8 when turning strings into bytes for predictable results.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">encoded = base64.b64encode(data).decode(\"ascii\")\ndecoded = base64.b64decode(encoded)</pre></div><p class=\"mt-4 text-gray-300\">Decode back to a string with the same charset to prove you preserved the data losslessly.</p>",
+      "tags": [
+        "Intermediate",
+        "Encoding",
+        "Standard Library"
+      ],
+      "id": 370
     }
   ]
 }

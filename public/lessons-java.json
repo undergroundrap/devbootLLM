@@ -6059,6 +6059,51 @@
         "Collectors"
       ],
       "id": 367
+    },
+    {
+      "title": "368. CompletableFuture anyOf race",
+      "language": "java",
+      "description": "Start two asynchronous tasks, print whichever completes first with CompletableFuture.anyOf, then print both results.",
+      "initialCode": "import java.util.concurrent.CompletableFuture;\nimport java.util.concurrent.TimeUnit;\n\npublic class Main {\n    private static String sleepAndReturn(long millis, String label) {\n        try {\n            TimeUnit.MILLISECONDS.sleep(millis);\n        } catch (InterruptedException e) {\n            throw new RuntimeException(e);\n        }\n        return label;\n    }\n\n    public static void main(String[] args) {\n        CompletableFuture<String> slow = CompletableFuture.supplyAsync(() -> sleepAndReturn(40, \"slow\"));\n        CompletableFuture<String> fast = CompletableFuture.supplyAsync(() -> sleepAndReturn(10, \"fast\"));\n\n        // TODO: use CompletableFuture.anyOf to await the first completed future and print its value\n        // Then print the results of slow and fast (in that order) using join()\n    }\n}\n",
+      "fullSolution": "import java.util.concurrent.CompletableFuture;\nimport java.util.concurrent.TimeUnit;\n\npublic class Main {\n    private static String sleepAndReturn(long millis, String label) {\n        try {\n            TimeUnit.MILLISECONDS.sleep(millis);\n        } catch (InterruptedException e) {\n            throw new RuntimeException(e);\n        }\n        return label;\n    }\n\n    public static void main(String[] args) {\n        CompletableFuture<String> slow = CompletableFuture.supplyAsync(() -> sleepAndReturn(40, \"slow\"));\n        CompletableFuture<String> fast = CompletableFuture.supplyAsync(() -> sleepAndReturn(10, \"fast\"));\n\n        String winner = (String) CompletableFuture.anyOf(slow, fast).join();\n        System.out.println(winner);\n        System.out.println(slow.join());\n        System.out.println(fast.join());\n    }\n}\n",
+      "expectedOutput": "fast\nslow\nfast",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>CompletableFuture.anyOf</code> when you only need the first result from a set of asynchronous computations. The returned future completes as soon as any input does.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">CompletableFuture&lt;?&gt; first = CompletableFuture.anyOf(a, b, c);\nObject value = first.join();</pre></div><p class=\"mt-4 text-gray-300\">You can still use the original futures afterward—here we join them explicitly to force completion and reuse their values.</p>",
+      "tags": [
+        "Advanced",
+        "Concurrency",
+        "CompletableFuture"
+      ],
+      "id": 368
+    },
+    {
+      "title": "369. Files.walk log size",
+      "language": "java",
+      "description": "Create a temporary tree of log files, sum the sizes of all .log entries with Files.walk, print the total, and clean up the directory.",
+      "initialCode": "import java.io.IOException;\nimport java.nio.file.Files;\nimport java.nio.file.Path;\n\npublic class Main {\n    public static void main(String[] args) throws IOException {\n        Path root = Files.createTempDirectory(\"logs\");\n        Files.writeString(root.resolve(\"app.log\"), \"ready\\n\");\n        Files.writeString(root.resolve(\"error.log\"), \"failed\\n\");\n        Files.writeString(root.resolve(\"trace.bin\"), \"0000\");\n\n        // TODO: use Files.walk to sum the sizes of *.log files below root and print the total\n        // Then delete the directory tree to avoid leaving temporary files on disk\n    }\n}\n",
+      "fullSolution": "import java.io.IOException;\nimport java.nio.file.Files;\nimport java.nio.file.Path;\nimport java.util.Comparator;\nimport java.util.stream.Stream;\n\npublic class Main {\n    private static long size(Path path) {\n        try {\n            return Files.size(path);\n        } catch (IOException e) {\n            throw new RuntimeException(e);\n        }\n    }\n\n    private static void deleteTree(Path root) throws IOException {\n        try (Stream<Path> walk = Files.walk(root)) {\n            walk.sorted(Comparator.reverseOrder())\n                    .forEach(path -> {\n                        try {\n                            Files.deleteIfExists(path);\n                        } catch (IOException e) {\n                            throw new RuntimeException(e);\n                        }\n                    });\n        }\n    }\n\n    public static void main(String[] args) throws IOException {\n        Path root = Files.createTempDirectory(\"logs\");\n        Files.writeString(root.resolve(\"app.log\"), \"ready\\n\");\n        Files.writeString(root.resolve(\"error.log\"), \"failed\\n\");\n        Files.writeString(root.resolve(\"trace.bin\"), \"0000\");\n\n        long total;\n        try (Stream<Path> stream = Files.walk(root)) {\n            total = stream\n                    .filter(Files::isRegularFile)\n                    .filter(path -> path.getFileName().toString().endsWith(\".log\"))\n                    .mapToLong(Main::size)\n                    .sum();\n        }\n        System.out.println(total);\n\n        deleteTree(root);\n    }\n}\n",
+      "expectedOutput": "13",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Files.walk</code> streams every path under a directory. Filter to the files you care about, then map to their sizes for aggregation.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">try (Stream&lt;Path&gt; paths = Files.walk(root)) {\n    long bytes = paths\n        .filter(Files::isRegularFile)\n        .filter(p -&gt; p.toString().endsWith(\".log\"))\n        .mapToLong(Main::size)\n        .sum();\n}</pre></div><p class=\"mt-4 text-gray-300\">Always remember to clean up temporary trees—sorting the walk in reverse order lets you delete children before parents.</p>",
+      "tags": [
+        "Advanced",
+        "File I/O",
+        "Streams"
+      ],
+      "id": 369
+    },
+    {
+      "title": "370. Base64 round-trip",
+      "language": "java",
+      "description": "Encode text to Base64 and decode it back using java.util.Base64, printing both forms.",
+      "initialCode": "import java.nio.charset.StandardCharsets;\nimport java.util.Base64;\n\npublic class Main {\n    public static void main(String[] args) {\n        String text = \"compute\";\n        // TODO: encode text to Base64, print the encoded string,\n        // then decode it back to the original text and print it\n    }\n}\n",
+      "fullSolution": "import java.nio.charset.StandardCharsets;\nimport java.util.Base64;\n\npublic class Main {\n    public static void main(String[] args) {\n        String text = \"compute\";\n        String encoded = Base64.getEncoder().encodeToString(text.getBytes(StandardCharsets.UTF_8));\n        System.out.println(encoded);\n        byte[] decodedBytes = Base64.getDecoder().decode(encoded);\n        String decoded = new String(decodedBytes, StandardCharsets.UTF_8);\n        System.out.println(decoded);\n    }\n}\n",
+      "expectedOutput": "Y29tcHV0ZQ==\ncompute",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Base64 lets you ship binary data over text protocols. Java exposes encoders and decoders directly on <code>Base64</code>.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">String encoded = Base64.getEncoder().encodeToString(bytes);\nbyte[] decoded = Base64.getDecoder().decode(encoded);</pre></div><p class=\"mt-4 text-gray-300\">Always specify the charset when turning strings into bytes so you get a stable round-trip across platforms.</p>",
+      "tags": [
+        "Intermediate",
+        "Encoding",
+        "Standard Library"
+      ],
+      "id": 370
     }
   ]
 }

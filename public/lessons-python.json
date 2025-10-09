@@ -5920,6 +5920,51 @@
         "Standard Library"
       ],
       "id": 370
+    },
+    {
+      "title": "371. struct little-endian decode",
+      "language": "python",
+      "description": "Interpret a little-endian byte sequence as two unsigned 32-bit integers and print them.",
+      "initialCode": "import struct\n\ndata = bytes([0x10, 0x00, 0x00, 0x00, 0x2A, 0x00, 0x00, 0x00])\n\n# TODO: unpack two little-endian unsigned ints from data and print each on its own line\n\n",
+      "fullSolution": "import struct\n\ndata = bytes([0x10, 0x00, 0x00, 0x00, 0x2A, 0x00, 0x00, 0x00])\n\nfirst, second = struct.unpack('<II', data)\nprint(first)\nprint(second)\n",
+      "expectedOutput": "16\n42",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>struct</code> format prefixes like <code>&lt;</code> to switch to little-endian decoding. Each unpack advances through the buffer in order.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">first, second = struct.unpack('<II', payload)\nprint(first, second)</pre></div><p class=\"mt-4 text-gray-300\">The width specifiers (<code>I</code> for 32-bit unsigned) keep your parsing explicit and portable across platforms.</p>",
+      "tags": [
+        "Intermediate",
+        "Binary Data",
+        "struct"
+      ],
+      "id": 371
+    },
+    {
+      "title": "372. HMAC-SHA256 signature",
+      "language": "python",
+      "description": "Compute an HMAC-SHA256 signature for a message, print the full hex digest, then print the first 12 characters.",
+      "initialCode": "import hashlib\nimport hmac\n\nkey = b\"deploy-key\"\nmessage = b\"status=ready\"\n\n# TODO: compute the HMAC-SHA256 digest, print the hex string,\n# then print the first 12 characters\n\n",
+      "fullSolution": "import hashlib\nimport hmac\n\nkey = b\"deploy-key\"\nmessage = b\"status=ready\"\n\nhex_digest = hmac.new(key, message, hashlib.sha256).hexdigest()\nprint(hex_digest)\nprint(hex_digest[:12])\n",
+      "expectedOutput": "44fc64932af52a8ae33ed81c22edb97c992f8873b94b807cf04ce87a86b12ac1\n44fc64932af5",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>hmac.new()</code> wraps hashing algorithms with a secret key to verify data integrity. Stick to bytes for both the key and the message.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">sig = hmac.new(key, payload, hashlib.sha256).hexdigest()</pre></div><p class=\"mt-4 text-gray-300\">Truncate the digest when you need human-friendly fingerprints, but keep the full value for verification.</p>",
+      "tags": [
+        "Advanced",
+        "Security",
+        "Cryptography"
+      ],
+      "id": 372
+    },
+    {
+      "title": "373. gzip compress round-trip",
+      "language": "python",
+      "description": "Gzip-compress a string into memory, print the compressed length, then decompress and print the original text.",
+      "initialCode": "import gzip\n\ntext = \"alpha-beta-alpha-beta\"\n\n# TODO: compress text, print len(compressed), then decompress and print the string again\n\n",
+      "fullSolution": "import gzip\n\ntext = \"alpha-beta-alpha-beta\"\n\ncompressed = gzip.compress(text.encode(\"utf-8\"))\nprint(len(compressed))\nrestored = gzip.decompress(compressed).decode(\"utf-8\")\nprint(restored)\n",
+      "expectedOutput": "33\nalpha-beta-alpha-beta",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>gzip.compress()</code> and <code>gzip.decompress()</code> make round-tripping small blobs trivial. Encode strings to bytes before compressing.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">compressed = gzip.compress(data)\nprint(len(compressed))\nprint(gzip.decompress(compressed))</pre></div><p class=\"mt-4 text-gray-300\">Compression shrinks repetitive data; measuring the byte length shows how effective it was.</p>",
+      "tags": [
+        "Intermediate",
+        "Compression",
+        "Standard Library"
+      ],
+      "id": 373
     }
   ]
 }

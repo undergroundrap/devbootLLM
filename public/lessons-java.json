@@ -6104,6 +6104,51 @@
         "Standard Library"
       ],
       "id": 370
+    },
+    {
+      "title": "371. ByteBuffer little-endian decode",
+      "language": "java",
+      "description": "Interpret a little-endian byte buffer as two 32-bit integers and print them.",
+      "initialCode": "import java.nio.ByteBuffer;\nimport java.nio.ByteOrder;\n\npublic class Main {\n    public static void main(String[] args) {\n        byte[] data = new byte[] { 0x10, 0x00, 0x00, 0x00, 0x2A, 0x00, 0x00, 0x00 };\n        // TODO: wrap the array in a ByteBuffer, set little-endian order,\n        // read two ints, and print each on its own line\n    }\n}\n",
+      "fullSolution": "import java.nio.ByteBuffer;\nimport java.nio.ByteOrder;\n\npublic class Main {\n    public static void main(String[] args) {\n        byte[] data = new byte[] { 0x10, 0x00, 0x00, 0x00, 0x2A, 0x00, 0x00, 0x00 };\n        ByteBuffer buffer = ByteBuffer.wrap(data).order(ByteOrder.LITTLE_ENDIAN);\n        int first = buffer.getInt();\n        int second = buffer.getInt();\n        System.out.println(first);\n        System.out.println(second);\n    }\n}\n",
+      "expectedOutput": "16\n42",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">ByteBuffer defaults to big-endian. Switch to little-endian before reading if the source data uses reverse byte order.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">ByteBuffer buffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN);\nint value = buffer.getInt();</pre></div><p class=\"mt-4 text-gray-300\">Once you read an int, the buffer position advances, so sequential <code>getInt()</code> calls walk the structure field by field.</p>",
+      "tags": [
+        "Intermediate",
+        "Binary Data",
+        "NIO"
+      ],
+      "id": 371
+    },
+    {
+      "title": "372. HmacSHA256 signature",
+      "language": "java",
+      "description": "Compute an HMAC-SHA256 signature for a message, print the full hex digest, then print the first 12 characters.",
+      "initialCode": "import java.nio.charset.StandardCharsets;\nimport java.util.HexFormat;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        String key = \"deploy-key\";\n        String message = \"status=ready\";\n        // TODO: initialize an HmacSHA256 Mac with the key, compute the signature,\n        // print the lowercase hex digest, then print its first 12 characters\n    }\n}\n",
+      "fullSolution": "import java.nio.charset.StandardCharsets;\nimport java.util.HexFormat;\nimport javax.crypto.Mac;\nimport javax.crypto.spec.SecretKeySpec;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        String key = \"deploy-key\";\n        String message = \"status=ready\";\n        Mac mac = Mac.getInstance(\"HmacSHA256\");\n        mac.init(new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), \"HmacSHA256\"));\n        byte[] signature = mac.doFinal(message.getBytes(StandardCharsets.UTF_8));\n        String hex = HexFormat.of().formatHex(signature);\n        System.out.println(hex);\n        System.out.println(hex.substring(0, 12));\n    }\n}\n",
+      "expectedOutput": "44fc64932af52a8ae33ed81c22edb97c992f8873b94b807cf04ce87a86b12ac1\n44fc64932af5",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">HMAC provides integrity for messages using a shared secret. Initialize <code>Mac</code> with a <code>SecretKeySpec</code> and feed it the payload bytes.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Mac mac = Mac.getInstance(\"HmacSHA256\");\nmac.init(new SecretKeySpec(keyBytes, \"HmacSHA256\"));\nbyte[] digest = mac.doFinal(messageBytes);</pre></div><p class=\"mt-4 text-gray-300\">Use <code>HexFormat</code> to render the signature without manual byte formatting.</p>",
+      "tags": [
+        "Advanced",
+        "Security",
+        "Cryptography"
+      ],
+      "id": 372
+    },
+    {
+      "title": "373. GZIP compress round-trip",
+      "language": "java",
+      "description": "GZIP-compress a string into memory, print the compressed byte length, then decompress and print the original text.",
+      "initialCode": "import java.io.ByteArrayInputStream;\nimport java.io.ByteArrayOutputStream;\nimport java.nio.charset.StandardCharsets;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        String text = \"alpha-beta-alpha-beta\";\n        // TODO: compress text with GZIPOutputStream into a byte array\n        // print the compressed length, then decompress and print the original text\n    }\n}\n",
+      "fullSolution": "import java.io.ByteArrayInputStream;\nimport java.io.ByteArrayOutputStream;\nimport java.nio.charset.StandardCharsets;\nimport java.util.zip.GZIPInputStream;\nimport java.util.zip.GZIPOutputStream;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        String text = \"alpha-beta-alpha-beta\";\n        byte[] compressed;\n        try (ByteArrayOutputStream buffer = new ByteArrayOutputStream();\n             GZIPOutputStream gzip = new GZIPOutputStream(buffer)) {\n            gzip.write(text.getBytes(StandardCharsets.UTF_8));\n            gzip.finish();\n            compressed = buffer.toByteArray();\n        }\n        System.out.println(compressed.length);\n        try (GZIPInputStream gzipIn = new GZIPInputStream(new ByteArrayInputStream(compressed))) {\n            String decompressed = new String(gzipIn.readAllBytes(), StandardCharsets.UTF_8);\n            System.out.println(decompressed);\n        }\n    }\n}\n",
+      "expectedOutput": "33\nalpha-beta-alpha-beta",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Wrap byte streams with <code>GZIPOutputStream</code> and <code>GZIPInputStream</code> to compress data in-memory. Call <code>finish()</code> before grabbing the bytes so the footer is flushed.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">try (GZIPOutputStream gzip = new GZIPOutputStream(out)) {\n    gzip.write(bytes);\n}\ntry (GZIPInputStream gin = new GZIPInputStream(new ByteArrayInputStream(out.toByteArray()))) {\n    gin.readAllBytes();\n}</pre></div><p class=\"mt-4 text-gray-300\">This mirrors how you would stage responses before uploading them to object storage or sending over the network.</p>",
+      "tags": [
+        "Intermediate",
+        "Compression",
+        "I/O"
+      ],
+      "id": 373
     }
   ]
 }

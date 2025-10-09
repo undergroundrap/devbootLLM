@@ -5909,6 +5909,36 @@
         "MethodHandles"
       ],
       "id": 357
+    },
+    {
+      "title": "358. FileChannel transferTo stream",
+      "language": "java",
+      "description": "Copy a file into memory using FileChannel.transferTo and print the captured text.",
+      "initialCode": "import java.io.ByteArrayOutputStream;\nimport java.nio.channels.Channels;\nimport java.nio.channels.FileChannel;\nimport java.nio.channels.WritableByteChannel;\nimport java.nio.charset.StandardCharsets;\nimport java.nio.file.Files;\nimport java.nio.file.Path;\nimport java.nio.file.StandardOpenOption;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        Path source = Files.createTempFile(\"report\", \".txt\");\n        Files.writeString(source, \"alpha-beta\");\n\n        // TODO: open a FileChannel for reading,\n        // stream its content into a ByteArrayOutputStream via transferTo,\n        // print the captured text, and delete the temporary file.\n    }\n}\n",
+      "fullSolution": "import java.io.ByteArrayOutputStream;\nimport java.nio.channels.Channels;\nimport java.nio.channels.FileChannel;\nimport java.nio.channels.WritableByteChannel;\nimport java.nio.charset.StandardCharsets;\nimport java.nio.file.Files;\nimport java.nio.file.Path;\nimport java.nio.file.StandardOpenOption;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        Path source = Files.createTempFile(\"report\", \".txt\");\n        Files.writeString(source, \"alpha-beta\");\n\n        ByteArrayOutputStream buffer = new ByteArrayOutputStream();\n        try {\n            try (FileChannel channel = FileChannel.open(source, StandardOpenOption.READ);\n                 WritableByteChannel sink = Channels.newChannel(buffer)) {\n                long position = 0L;\n                long size = channel.size();\n                while (position < size) {\n                    position += channel.transferTo(position, size - position, sink);\n                }\n            }\n            String text = new String(buffer.toByteArray(), StandardCharsets.UTF_8);\n            System.out.println(text);\n        } finally {\n            Files.deleteIfExists(source);\n        }\n    }\n}\n",
+      "expectedOutput": "alpha-beta",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">FileChannel.transferTo streams bytes directly between channels, avoiding manual ByteBuffer loops.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">long position = 0;\nlong size = channel.size();\nwhile (position < size) {\n    position += channel.transferTo(position, size - position, sink);\n}</pre></div><p class=\"mt-4 text-gray-300\">Always wrap temp files with try/finally so you clean them even if copying fails.</p>",
+      "tags": [
+        "Advanced",
+        "NIO",
+        "File I/O"
+      ],
+      "id": 358
+    },
+    {
+      "title": "359. Normalizer accent stripping",
+      "language": "java",
+      "description": "Normalize an accented label to ASCII by removing combining marks and building a lowercase slug.",
+      "initialCode": "import java.text.Normalizer;\nimport java.util.Locale;\n\npublic class Main {\n    public static void main(String[] args) {\n        String raw = \"Syst\\u00E9m Caf\\u00E9\";\n        // TODO: normalize to NFD, drop combining marks, replace spaces with '-', lower-case, and print the slug\n    }\n}\n",
+      "fullSolution": "import java.text.Normalizer;\nimport java.util.Locale;\n\npublic class Main {\n    public static void main(String[] args) {\n        String raw = \"Syst\\u00E9m Caf\\u00E9\";\n        String decomposed = Normalizer.normalize(raw, Normalizer.Form.NFD);\n        StringBuilder ascii = new StringBuilder();\n        decomposed.codePoints()\n                .filter(cp -> Character.getType(cp) != Character.NON_SPACING_MARK)\n                .forEach(ascii::appendCodePoint);\n        String slug = ascii.toString()\n                .toLowerCase(Locale.ROOT)\n                .replace(\" \", \"-\");\n        System.out.println(slug);\n    }\n}\n",
+      "expectedOutput": "system-cafe",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Normalizer.Form.NFD splits characters into base letters plus combining marks. Filter out the non-spacing marks to collapse accents before lowercasing.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">String clean = Normalizer.normalize(text, Normalizer.Form.NFD)\n    .codePoints()\n    .filter(cp -> Character.getType(cp) != Character.NON_SPACING_MARK)\n    .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)\n    .toString();</pre></div><p class=\"mt-4 text-gray-300\">This is a lightweight way to generate ASCII slugs without external libraries.</p>",
+      "tags": [
+        "Advanced",
+        "Strings",
+        "Unicode"
+      ],
+      "id": 359
     }
   ]
 }

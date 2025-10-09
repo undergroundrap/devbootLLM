@@ -5755,6 +5755,36 @@
         "Timeouts"
       ],
       "id": 359
+    },
+    {
+      "title": "360. MappingProxyType read-only view",
+      "language": "python",
+      "description": "Create a read-only MappingProxyType view, show that mutations via the original dict still reflect, and prove direct assignment raises a TypeError.",
+      "initialCode": "from types import MappingProxyType\n\nsettings = {\"env\": \"prod\", \"region\": \"us-east\"}\n\n# TODO: wrap settings in MappingProxyType as view\n# Attempt to write view[\"env\"] = \"stage\" and on TypeError print \"cannot modify view\"\n# Add settings[\"version\"] = \"1\" after the attempt\n# Finally, print view[\"env\"] and whether \"version\" is present in the view\n",
+      "fullSolution": "from types import MappingProxyType\n\nsettings = {\"env\": \"prod\", \"region\": \"us-east\"}\n\nview = MappingProxyType(settings)\ntry:\n    view[\"env\"] = \"stage\"\nexcept TypeError:\n    print(\"cannot modify view\")\nsettings[\"version\"] = \"1\"\nprint(view[\"env\"])\nprint(\"version\" in view)\n",
+      "expectedOutput": "cannot modify view\nprod\nTrue",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">MappingProxyType exposes a read-only wrapper over a mutable dict. Attempts to mutate the proxy raise immediately, while changes to the underlying mapping remain visible.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from types import MappingProxyType\ncfg = {\"region\": \"us\"}\nview = MappingProxyType(cfg)\ncfg[\"region\"] = \"eu\"  # view reflects updates</pre></div><p class=\"mt-4 text-gray-300\">Use it when callers must observe updates but you want to stop accidental writes.</p>",
+      "tags": [
+        "Intermediate",
+        "Collections",
+        "Immutability"
+      ],
+      "id": 360
+    },
+    {
+      "title": "361. functools.partialmethod shortcuts",
+      "language": "python",
+      "description": "Expose convenience logging helpers by building partialmethod wrappers around a shared log() implementation.",
+      "initialCode": "from functools import partialmethod\n\nclass Logger:\n    def log(self, level: str, message: str) -> None:\n        print(f\"[{level}] {message}\")\n\n    # TODO: create info() and error() partialmethods calling log with \"INFO\" and \"ERROR\"\n\nlogger = Logger()\nlogger.info(\"system ready\")\nlogger.error(\"disk full\")\n",
+      "fullSolution": "from functools import partialmethod\n\nclass Logger:\n    def log(self, level: str, message: str) -> None:\n        print(f\"[{level}] {message}\")\n\n    info = partialmethod(log, \"INFO\")\n    error = partialmethod(log, \"ERROR\")\n\nlogger = Logger()\nlogger.info(\"system ready\")\nlogger.error(\"disk full\")\n",
+      "expectedOutput": "[INFO] system ready\n[ERROR] disk full",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">partialmethod pre-binds positional arguments on instance methods, saving you from tiny forwarding wrappers.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class Logger:\n    def log(self, level, msg):\n        ...\n    info = partialmethod(log, \"INFO\")</pre></div><p class=\"mt-4 text-gray-300\">You keep one implementation while exposing ergonomic entrypoints for common levels.</p>",
+      "tags": [
+        "Intermediate",
+        "OOP",
+        "Decorators"
+      ],
+      "id": 361
     }
   ]
 }

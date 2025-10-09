@@ -82,8 +82,14 @@ function createLessonTest(lang, id, lessons) {
 const pythonLessons = loadLessons(path.join('public', 'lessons-python.json'));
 const javaLessons = loadLessons(path.join('public', 'lessons-java.json'));
 
-const pythonLessonIds = Array.from({ length: 30 }, (_, index) => 330 + index);
-const javaLessonIds = Array.from({ length: 18 }, (_, index) => 340 + index);
+function collectLessonIds(threshold, lessons) {
+  return Array.from(lessons.keys())
+    .filter((id) => typeof id === 'number' && id >= threshold)
+    .sort((a, b) => a - b);
+}
+
+const pythonLessonIds = collectLessonIds(330, pythonLessons);
+const javaLessonIds = collectLessonIds(340, javaLessons);
 
 const tests = [
   ...pythonLessonIds.map((id) => createLessonTest('python', id, pythonLessons)),

@@ -6149,6 +6149,51 @@
         "I/O"
       ],
       "id": 373
+    },
+    {
+      "title": "374. Duration between Instants",
+      "language": "java",
+      "description": "Parse two ISO-8601 timestamps, compute the duration between them, and print the milliseconds.",
+      "initialCode": "import java.time.Duration;\nimport java.time.Instant;\n\npublic class Main {\n    public static void main(String[] args) {\n        String start = \"2024-01-01T00:00:00Z\";\n        String end = \"2024-01-01T00:01:30Z\";\n        // TODO: parse both strings as Instants, compute the duration in milliseconds, and print it\n    }\n}\n",
+      "fullSolution": "import java.time.Duration;\nimport java.time.Instant;\n\npublic class Main {\n    public static void main(String[] args) {\n        String start = \"2024-01-01T00:00:00Z\";\n        String end = \"2024-01-01T00:01:30Z\";\n        Instant a = Instant.parse(start);\n        Instant b = Instant.parse(end);\n        long millis = Duration.between(a, b).toMillis();\n        System.out.println(millis);\n    }\n}\n",
+      "expectedOutput": "90000",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Instant.parse handles RFC 3339 timestamps. Duration.between gives you the elapsed time, which you can convert to milliseconds for logging or metrics.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Instant start = Instant.parse(startIso);\nInstant end = Instant.parse(endIso);\nlong millis = Duration.between(start, end).toMillis();</pre></div><p class=\"mt-4 text-gray-300\">Always watch out for timezone offsets—Instants stay in UTC so math stays straightforward.</p>",
+      "tags": [
+        "Intermediate",
+        "Date/Time",
+        "java.time"
+      ],
+      "id": 374
+    },
+    {
+      "title": "375. Map.merge word counts",
+      "language": "java",
+      "description": "Use Map.merge to count word occurrences from an array and print the counts in insertion order.",
+      "initialCode": "import java.util.LinkedHashMap;\nimport java.util.Map;\n\npublic class Main {\n    public static void main(String[] args) {\n        String[] words = {\"loom\", \"panama\", \"loom\", \"loom\", \"valhalla\", \"panama\"};\n        Map<String, Integer> counts = new LinkedHashMap<>();\n        // TODO: populate counts using Map.merge, then print each entry as \"word=count\" on its own line\n    }\n}\n",
+      "fullSolution": "import java.util.LinkedHashMap;\nimport java.util.Map;\n\npublic class Main {\n    public static void main(String[] args) {\n        String[] words = {\"loom\", \"panama\", \"loom\", \"loom\", \"valhalla\", \"panama\"};\n        Map<String, Integer> counts = new LinkedHashMap<>();\n        for (String word : words) {\n            counts.merge(word, 1, Integer::sum);\n        }\n        counts.forEach((word, count) -> System.out.println(word + \"=\" + count));\n    }\n}\n",
+      "expectedOutput": "loom=3\npanama=2\nvalhalla=1",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Map.merge inserts a value when missing or combines with the existing entry via a remapping function. Use it to avoid explicit containsKey checks.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">counts.merge(word, 1, Integer::sum);</pre></div><p class=\"mt-4 text-gray-300\">A LinkedHashMap keeps insertion order, so you can replay the tallied counts in the order words first appeared.</p>",
+      "tags": [
+        "Intermediate",
+        "Collections",
+        "Streams"
+      ],
+      "id": 375
+    },
+    {
+      "title": "376. HttpRequest builder with timeout and headers",
+      "language": "java",
+      "description": "Build an HttpRequest with query parameters, a timeout, and headers, then print its details.",
+      "initialCode": "import java.net.URI;\nimport java.net.http.HttpClient;\nimport java.net.http.HttpRequest;\nimport java.time.Duration;\n\npublic class Main {\n    public static void main(String[] args) {\n        HttpClient client = HttpClient.newBuilder()\n                .connectTimeout(Duration.ofSeconds(5))\n                .build();\n\n        // TODO: build a GET request to https://status.example/api/health with query params region=eu-west and verbose=true\n        // Add header Accept: application/json and set a 2-second timeout\n        // Print the request URI, method, and Accept header on separate lines\n    }\n}\n",
+      "fullSolution": "import java.net.URI;\nimport java.net.http.HttpClient;\nimport java.net.http.HttpRequest;\nimport java.time.Duration;\n\npublic class Main {\n    public static void main(String[] args) {\n        HttpClient client = HttpClient.newBuilder()\n                .connectTimeout(Duration.ofSeconds(5))\n                .build();\n\n        HttpRequest request = HttpRequest.newBuilder()\n                .uri(URI.create(\"https://status.example/api/health?region=eu-west&verbose=true\"))\n                .timeout(Duration.ofSeconds(2))\n                .header(\"Accept\", \"application/json\")\n                .GET()\n                .build();\n\n        System.out.println(request.uri());\n        System.out.println(request.method());\n        System.out.println(request.headers().firstValue(\"Accept\").orElse(\"missing\"));\n    }\n}\n",
+      "expectedOutput": "https://status.example/api/health?region=eu-west&verbose=true\nGET\napplication/json",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Pattern-build requests: set the target URI, configure timeouts, and attach headers before calling <code>build()</code>. HttpRequest instances are immutable, so you can reuse them safely.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">HttpRequest.newBuilder()\n    .uri(URI.create(url))\n    .timeout(Duration.ofSeconds(2))\n    .header(\"Accept\", \"application/json\")\n    .GET()\n    .build();</pre></div><p class=\"mt-4 text-gray-300\">Query parameters belong in the URI; using String.format or URI builders helps avoid typo-prone concatenation in real projects.</p>",
+      "tags": [
+        "Intermediate",
+        "HTTP Client",
+        "Networking"
+      ],
+      "id": 376
     }
   ]
 }

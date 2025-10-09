@@ -121,9 +121,9 @@ You should see `storage` equal to `sqlite`.
   node scripts/add-lessons.mjs public/lessons-python.json scripts/new-lessons-python.mjs
   node scripts/add-lessons.mjs public/lessons-java.json scripts/new-lessons-java.mjs
 
-- Fill a specific missing id (e.g., insert Java lesson id 160):
+- Fill a specific missing id (point to a module that exports `{ lesson }`):
 
-  node scripts/insert-lesson.mjs public/lessons-java.json 160 scripts/java-lesson-160.mjs
+  node scripts/insert-lesson.mjs public/lessons-java.json 160 path/to/custom-lesson.mjs
 
 - Tips for consistency:
   - Include: id, title, description, initialCode, fullSolution, expectedOutput, tutorial.

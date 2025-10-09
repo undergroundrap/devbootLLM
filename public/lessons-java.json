@@ -6194,6 +6194,51 @@
         "Networking"
       ],
       "id": 376
+    },
+    {
+      "title": "377. FileVisitor directory count",
+      "language": "java",
+      "description": "Walk a temporary directory tree with FileVisitor, count every directory visited, print the total, then clean up the tree.",
+      "initialCode": "import java.io.IOException;\nimport java.nio.file.FileVisitResult;\nimport java.nio.file.Files;\nimport java.nio.file.Path;\nimport java.nio.file.SimpleFileVisitor;\nimport java.nio.file.attribute.BasicFileAttributes;\nimport java.util.Comparator;\nimport java.util.concurrent.atomic.AtomicInteger;\nimport java.util.stream.Stream;\n\npublic class Main {\n    private static void deleteTree(Path root) throws IOException {\n        try (Stream<Path> walk = Files.walk(root)) {\n            walk.sorted(Comparator.reverseOrder())\n                    .forEach(path -> {\n                        try {\n                            Files.deleteIfExists(path);\n                        } catch (IOException e) {\n                            throw new RuntimeException(e);\n                        }\n                    });\n        }\n    }\n\n    public static void main(String[] args) throws IOException {\n        Path root = Files.createTempDirectory(\"layout\");\n        Files.createDirectories(root.resolve(\"logs/archive\"));\n        Files.createDirectories(root.resolve(\"config\"));\n        AtomicInteger directories = new AtomicInteger();\n\n        try {\n            Files.walkFileTree(root, new SimpleFileVisitor<>() {\n                @Override\n                public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {\n                    directories.incrementAndGet();\n                    return FileVisitResult.CONTINUE;\n                }\n            });\n            System.out.println(directories.get());\n        } finally {\n            deleteTree(root);\n        }\n    }\n}\n",
+      "fullSolution": "import java.io.IOException;\nimport java.nio.file.FileVisitResult;\nimport java.nio.file.Files;\nimport java.nio.file.Path;\nimport java.nio.file.SimpleFileVisitor;\nimport java.nio.file.attribute.BasicFileAttributes;\nimport java.util.Comparator;\nimport java.util.concurrent.atomic.AtomicInteger;\nimport java.util.stream.Stream;\n\npublic class Main {\n    private static void deleteTree(Path root) throws IOException {\n        try (Stream<Path> walk = Files.walk(root)) {\n            walk.sorted(Comparator.reverseOrder())\n                    .forEach(path -> {\n                        try {\n                            Files.deleteIfExists(path);\n                        } catch (IOException e) {\n                            throw new RuntimeException(e);\n                        }\n                    });\n        }\n    }\n\n    public static void main(String[] args) throws IOException {\n        Path root = Files.createTempDirectory(\"layout\");\n        Files.createDirectories(root.resolve(\"logs/archive\"));\n        Files.createDirectories(root.resolve(\"config\"));\n        AtomicInteger directories = new AtomicInteger();\n\n        try {\n            Files.walkFileTree(root, new SimpleFileVisitor<>() {\n                @Override\n                public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {\n                    directories.incrementAndGet();\n                    return FileVisitResult.CONTINUE;\n                }\n            });\n            System.out.println(directories.get());\n        } finally {\n            deleteTree(root);\n        }\n    }\n}\n",
+      "expectedOutput": "4",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">FileVisitor gives you fine-grained control over directory traversal. Override <code>preVisitDirectory</code> to act on each folder before its contents are explored.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Files.walkFileTree(root, new SimpleFileVisitor&lt;&gt;() {\n    @Override\n    public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {\n        directories.incrementAndGet();\n        return FileVisitResult.CONTINUE;\n    }\n});</pre></div><p class=\"mt-4 text-gray-300\">Sort the cleanup walk in reverse so children are removed before parents; otherwise directories refuse to delete.</p>",
+      "tags": [
+        "Advanced",
+        "File I/O",
+        "NIO"
+      ],
+      "id": 377
+    },
+    {
+      "title": "378. SecureRandom seeded token",
+      "language": "java",
+      "description": "Use SecureRandom with a fixed seed to generate reproducible test bytes, render them as hex, and print the token.",
+      "initialCode": "import java.security.SecureRandom;\nimport java.util.HexFormat;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        // TODO: obtain the \"SHA1PRNG\" SecureRandom instance, seed it with 12345L,\n        // generate 8 bytes, convert them to lowercase hex, and print the string\n    }\n}\n",
+      "fullSolution": "import java.security.SecureRandom;\nimport java.util.HexFormat;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        SecureRandom random = SecureRandom.getInstance(\"SHA1PRNG\");\n        random.setSeed(12345L);\n        byte[] buffer = new byte[8];\n        random.nextBytes(buffer);\n        String hex = HexFormat.of().formatHex(buffer);\n        System.out.println(hex);\n    }\n}\n",
+      "expectedOutput": "507551526d92154e",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">When you need deterministic fixtures, seed a named SecureRandom instance. The \"SHA1PRNG\" algorithm is available on the default JDK provider and produces repeatable output after seeding.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">SecureRandom rng = SecureRandom.getInstance(\"SHA1PRNG\");\nrng.setSeed(seedBytes);\nbyte[] bytes = new byte[8];\nrng.nextBytes(bytes);\nString hex = HexFormat.of().formatHex(bytes);</pre></div><p class=\"mt-4 text-gray-300\">Keep seeded generators in test-only paths; in production rely on the default constructor so the seed remains unpredictable.</p>",
+      "tags": [
+        "Advanced",
+        "Security",
+        "Testing"
+      ],
+      "id": 378
+    },
+    {
+      "title": "379. ZonedDateTime conversions",
+      "language": "java",
+      "description": "Convert an instant to multiple time zones, format each as a readable timestamp, and print both representations.",
+      "initialCode": "import java.time.Instant;\nimport java.time.ZoneId;\nimport java.time.ZonedDateTime;\nimport java.time.format.DateTimeFormatter;\n\npublic class Main {\n    public static void main(String[] args) {\n        Instant instant = Instant.parse(\"2024-05-25T12:30:00Z\");\n        // TODO: format this instant in Asia/Seoul and America/New_York using pattern \"yyyy-MM-dd HH:mm XXX\"\n        // Print the Seoul time first, then New York\n    }\n}\n",
+      "fullSolution": "import java.time.Instant;\nimport java.time.ZoneId;\nimport java.time.ZonedDateTime;\nimport java.time.format.DateTimeFormatter;\n\npublic class Main {\n    public static void main(String[] args) {\n        Instant instant = Instant.parse(\"2024-05-25T12:30:00Z\");\n        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(\"yyyy-MM-dd HH:mm XXX\");\n\n        ZonedDateTime seoul = instant.atZone(ZoneId.of(\"Asia/Seoul\"));\n        ZonedDateTime newYork = seoul.withZoneSameInstant(ZoneId.of(\"America/New_York\"));\n\n        System.out.println(formatter.format(seoul));\n        System.out.println(formatter.format(newYork));\n    }\n}\n",
+      "expectedOutput": "2024-05-25 21:30 +09:00\n2024-05-25 08:30 -04:00",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Convert once to a <code>ZonedDateTime</code>, then project that instant into other zones with <code>withZoneSameInstant</code>. Formatting with <code>XXX</code> inserts a colon in the offset for readability.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">ZonedDateTime base = instant.atZone(ZoneId.of(\"Asia/Seoul\"));\nZonedDateTime other = base.withZoneSameInstant(ZoneId.of(\"America/New_York\"));\nSystem.out.println(formatter.format(base));\nSystem.out.println(formatter.format(other));</pre></div><p class=\"mt-4 text-gray-300\">Always anchor math in UTC instants to avoid DST arithmetic mistakes.</p>",
+      "tags": [
+        "Intermediate",
+        "Date/Time",
+        "java.time"
+      ],
+      "id": 379
     }
   ]
 }

@@ -6010,6 +6010,51 @@
         "Networking"
       ],
       "id": 376
+    },
+    {
+      "title": "377. os.walk directory count",
+      "language": "python",
+      "description": "Create a temporary directory tree, walk it with os.walk to count every directory visited, print the total, and rely on the context manager for cleanup.",
+      "initialCode": "import os\nimport tempfile\nfrom pathlib import Path\n\nwith tempfile.TemporaryDirectory() as tmp:\n    root = Path(tmp)\n    (root / \"logs\" / \"archive\").mkdir(parents=True)\n    (root / \"config\").mkdir()\n\n    # TODO: count how many directories os.walk visits starting at root and print the number\n\n",
+      "fullSolution": "import os\nimport tempfile\nfrom pathlib import Path\n\nwith tempfile.TemporaryDirectory() as tmp:\n    root = Path(tmp)\n    (root / \"logs\" / \"archive\").mkdir(parents=True)\n    (root / \"config\").mkdir()\n\n    total = sum(1 for _ in os.walk(root))\n    print(total)\n",
+      "expectedOutput": "4",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>os.walk()</code> yields once per directory it visits. Wrapping the work in <code>TemporaryDirectory()</code> keeps the filesystem tidy even if errors occur.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">with TemporaryDirectory() as tmp:\n    root = Path(tmp)\n    ...\n    count = sum(1 for _ in os.walk(root))\n    print(count)</pre></div><p class=\"mt-4 text-gray-300\">Walk order is depth-first by default, but when you only need counts you can just sum the number of yielded directories.</p>",
+      "tags": [
+        "Intermediate",
+        "File System",
+        "os"
+      ],
+      "id": 377
+    },
+    {
+      "title": "378. Seeded byte token",
+      "language": "python",
+      "description": "Seed random.Random for reproducible test bytes, generate eight bytes, convert them to lowercase hex, and print the token.",
+      "initialCode": "import binascii\nimport random\n\n# TODO: create Random(12345), generate 8 bytes, hex-encode them, and print the string\n\n",
+      "fullSolution": "import binascii\nimport random\n\nrng = random.Random(12345)\nblob = rng.randbytes(8)\nprint(binascii.hexlify(blob).decode(\"ascii\"))\n",
+      "expectedOutput": "8799a76a3a4391bb",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Seeding <code>random.Random</code> gives deterministic byte streams—handy for fixtures or golden tests. Use <code>randbytes()</code> to grab raw bytes and <code>binascii.hexlify()</code> for a printable form.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">rng = random.Random(seed)\nblob = rng.randbytes(8)\nprint(binascii.hexlify(blob).decode())</pre></div><p class=\"mt-4 text-gray-300\">Keep this to tests; in production prefer <code>secrets.token_hex()</code> so tokens stay unpredictable.</p>",
+      "tags": [
+        "Intermediate",
+        "Testing",
+        "Randomness"
+      ],
+      "id": 378
+    },
+    {
+      "title": "379. zoneinfo time conversions",
+      "language": "python",
+      "description": "Convert an instant to multiple time zones with zoneinfo and print formatted timestamps.",
+      "initialCode": "from datetime import datetime\nfrom zoneinfo import ZoneInfo\n\ninstant = datetime.fromisoformat(\"2024-05-25T12:30:00+00:00\")\n\n# TODO: show this instant in Asia/Seoul and America/New_York using \"YYYY-MM-DD HH:MM ±HH:MM\"\n# Print the Seoul time first, then New York\n\n",
+      "fullSolution": "from datetime import datetime\nfrom zoneinfo import ZoneInfo\n\ninstant = datetime.fromisoformat(\"2024-05-25T12:30:00+00:00\")\nseoul = instant.astimezone(ZoneInfo(\"Asia/Seoul\"))\nnew_york = seoul.astimezone(ZoneInfo(\"America/New_York\"))\n\ndef fmt(dt: datetime) -> str:\n    offset = dt.strftime(\"%z\")\n    offset = f\"{offset[:3]}:{offset[3:]}\"\n    return f\"{dt.strftime('%Y-%m-%d %H:%M')} {offset}\"\n\nprint(fmt(seoul))\nprint(fmt(new_york))\n",
+      "expectedOutput": "2024-05-25 21:30 +09:00\n2024-05-25 08:30 -04:00",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>zoneinfo.ZoneInfo</code> to project a UTC timestamp into regional clocks. <code>astimezone()</code> keeps the same instant while changing the zone.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">instant = datetime.fromisoformat(\"...\")\nlocal = instant.astimezone(ZoneInfo(\"Asia/Seoul\"))\nprint(local.strftime(\"%Y-%m-%d %H:%M\"), local.utcoffset())</pre></div><p class=\"mt-4 text-gray-300\">Format offsets manually when you want a colon; <code>%z</code> omits it by default.</p>",
+      "tags": [
+        "Intermediate",
+        "Date/Time",
+        "zoneinfo"
+      ],
+      "id": 379
     }
   ]
 }

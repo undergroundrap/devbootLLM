@@ -6100,6 +6100,51 @@
         "Control Flow"
       ],
       "id": 382
+    },
+    {
+      "title": "383. subprocess capture output",
+      "language": "python",
+      "description": "Run a subprocess that prints a line, capture stdout, strip it, and display the text.",
+      "initialCode": "import subprocess\n\n# TODO: run `python -c \"print('ready')\"`, capture stdout, strip it, and print the line\n\n",
+      "fullSolution": "import subprocess\n\nresult = subprocess.run([\n    \"python\",\n    \"-c\",\n    \"print('ready')\",\n], capture_output=True, text=True, check=True)\nprint(result.stdout.strip())\n",
+      "expectedOutput": "ready",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>subprocess.run(..., capture_output=True)</code> collects stdout and stderr for you. Combine it with <code>check=True</code> to raise when the process exits non-zero.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">completed = subprocess.run(cmd, capture_output=True, text=True, check=True)\nprint(completed.stdout.strip())</pre></div><p class=\"mt-4 text-gray-300\">Stripping removes the trailing newline so your logs stay tidy.</p>",
+      "tags": [
+        "Intermediate",
+        "Processes",
+        "I/O"
+      ],
+      "id": 383
+    },
+    {
+      "title": "384. ContextVar with context manager",
+      "language": "python",
+      "description": "Manage a ContextVar using a context manager so values restore automatically after nested scopes.",
+      "initialCode": "from contextlib import contextmanager\nfrom contextvars import ContextVar\n\ncurrent_user: ContextVar[str] = ContextVar(\"current_user\", default=\"guest\")\n\n@contextmanager\ndef user(name: str):\n    # TODO: set the context var, yield control, then restore the previous value\n    yield\n\nprint(f\"outer={current_user.get()}\")\nwith user(\"alex\"):\n    print(f\"inside={current_user.get()}\")\n    with user(\"jamie\"):\n        print(f\"nested={current_user.get()}\")\n    print(f\"after nested={current_user.get()}\")\nprint(f\"after outer={current_user.get()}\")\n",
+      "fullSolution": "from contextlib import contextmanager\nfrom contextvars import ContextVar\n\ncurrent_user: ContextVar[str] = ContextVar(\"current_user\", default=\"guest\")\n\n@contextmanager\ndef user(name: str):\n    token = current_user.set(name)\n    try:\n        yield\n    finally:\n        current_user.reset(token)\n\nprint(f\"outer={current_user.get()}\")\nwith user(\"alex\"):\n    print(f\"inside={current_user.get()}\")\n    with user(\"jamie\"):\n        print(f\"nested={current_user.get()}\")\n    print(f\"after nested={current_user.get()}\")\nprint(f\"after outer={current_user.get()}\")\n",
+      "expectedOutput": "outer=guest\ninside=alex\nnested=jamie\nafter nested=alex\nafter outer=guest",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Context variables behave like async-friendly thread locals. Capture the previous value with <code>set()</code>'s token and restore it in a <code>finally</code> block.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">token = var.set(value)\ntry:\n    ...\nfinally:\n    var.reset(token)</pre></div><p class=\"mt-4 text-gray-300\">Wrapping the pattern in a context manager keeps nested overrides tidy—perfect for request/user tracking.</p>",
+      "tags": [
+        "Advanced",
+        "Concurrency",
+        "ContextVars"
+      ],
+      "id": 384
+    },
+    {
+      "title": "385. asyncio HTTP status",
+      "language": "python",
+      "description": "Fetch example.com using asyncio sockets, parse the HTTP status code, and print it when complete.",
+      "initialCode": "import asyncio\n\nasync def fetch_status(host: str, path: str = \"/\") -> int:\n    reader, writer = await asyncio.open_connection(host, 80)\n    request = f\"GET {path} HTTP/1.1\\r\\nHost: {host}\\r\\nConnection: close\\r\\n\\r\\n\"\n    writer.write(request.encode(\"ascii\"))\n    await writer.drain()\n    status_line = await reader.readline()\n    # TODO: close the writer, wait for it to finish, parse the status code from the status line, and return it\n    return 0\n\nasync def main():\n    status = await fetch_status(\"example.com\")\n    print(status)\n\nasyncio.run(main())\n",
+      "fullSolution": "import asyncio\n\nasync def fetch_status(host: str, path: str = \"/\") -> int:\n    reader, writer = await asyncio.open_connection(host, 80)\n    request = f\"GET {path} HTTP/1.1\\r\\nHost: {host}\\r\\nConnection: close\\r\\n\\r\\n\"\n    writer.write(request.encode(\"ascii\"))\n    await writer.drain()\n    status_line = await reader.readline()\n    writer.close()\n    await writer.wait_closed()\n    parts = status_line.decode(\"ascii\").split()\n    return int(parts[1])\n\nasync def main():\n    status = await fetch_status(\"example.com\")\n    print(status)\n\nasyncio.run(main())\n",
+      "expectedOutput": "200",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>asyncio.open_connection</code> gives you raw reader/writer streams. Send an HTTP request, await the response line, and close the connection with <code>writer.close()</code> and <code>await writer.wait_closed()</code>.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">reader, writer = await asyncio.open_connection(host, 80)\nwriter.write(request)\nawait writer.drain()\nstatus_line = await reader.readline()\nwriter.close()\nawait writer.wait_closed()</pre></div><p class=\"mt-4 text-gray-300\">Parsing the status code is as simple as splitting the HTTP status line: <code>HTTP/1.1 200 OK</code>.</p>",
+      "tags": [
+        "Advanced",
+        "AsyncIO",
+        "Networking"
+      ],
+      "id": 385
     }
   ]
 }

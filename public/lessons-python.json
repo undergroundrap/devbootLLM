@@ -6105,8 +6105,8 @@
       "title": "383. subprocess capture output",
       "language": "python",
       "description": "Run a subprocess that prints a line, capture stdout, strip it, and display the text.",
-      "initialCode": "import subprocess\n\n# TODO: run `python -c \"print('ready')\"`, capture stdout, strip it, and print the line\n\n",
-      "fullSolution": "import subprocess\n\nresult = subprocess.run([\n    \"python\",\n    \"-c\",\n    \"print('ready')\",\n], capture_output=True, text=True, check=True)\nprint(result.stdout.strip())\n",
+      "initialCode": "import subprocess\nimport sys\n\n# TODO: run `echo ready` via the shell, capture stdout, strip it, and print the line\n\n",
+      "fullSolution": "import subprocess\nimport sys\n\nshell_cmd = \"echo ready\" if sys.platform != \"win32\" else \"echo ready\"\nresult = subprocess.run(\n    shell_cmd,\n    shell=True,\n    capture_output=True,\n    text=True,\n    check=True\n)\nprint(result.stdout.strip())\n",
       "expectedOutput": "ready",
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>subprocess.run(..., capture_output=True)</code> collects stdout and stderr for you. Combine it with <code>check=True</code> to raise when the process exits non-zero.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">completed = subprocess.run(cmd, capture_output=True, text=True, check=True)\nprint(completed.stdout.strip())</pre></div><p class=\"mt-4 text-gray-300\">Stripping removes the trailing newline so your logs stay tidy.</p>",
       "tags": [

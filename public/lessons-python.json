@@ -2695,16 +2695,17 @@
     },
     {
       "id": 167,
-      "title": "167. pathlib read/write",
+      "title": "167. pathlib glob patterns",
       "language": "python",
-      "description": "Write then read a small text file using pathlib.",
-      "initialCode": "from pathlib import Path\n\n# Write 'ok' to note.txt then read it back and print\n\n",
-      "fullSolution": "from pathlib import Path\nPath('note.txt').write_text('ok')\nprint(Path('note.txt').read_text())\n",
-      "expectedOutput": "ok",
-      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Path.write_text</code> and <code>Path.read_text</code> are convenient wrappers around opening files with the correct encoding.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from pathlib import Path\nPath('file.txt').write_text('hello')\nprint(Path('file.txt').read_text())</pre></div>",
+      "description": "Use pathlib's glob method to find all Python files in the current directory and subdirectories.",
+      "initialCode": "from pathlib import Path\nimport tempfile\nimport os\n\n# Create temp directory with structure:\n# temp/\n#   main.py\n#   lib/\n#     helper.py\n#   data.txt\n\ntmp = Path(tempfile.mkdtemp())\n(tmp / \"main.py\").touch()\n(tmp / \"lib\").mkdir()\n(tmp / \"lib\" / \"helper.py\").touch()\n(tmp / \"data.txt\").touch()\n\n# TODO: use glob to find all .py files recursively, print count\n\n",
+      "fullSolution": "from pathlib import Path\nimport tempfile\nimport os\n\ntmp = Path(tempfile.mkdtemp())\n(tmp / \"main.py\").touch()\n(tmp / \"lib\").mkdir()\n(tmp / \"lib\" / \"helper.py\").touch()\n(tmp / \"data.txt\").touch()\n\npy_files = list(tmp.glob(\"**/*.py\"))\nprint(len(py_files))\n",
+      "expectedOutput": "2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Path.glob()</code> supports patterns like <code>*.txt</code> for single directory or <code>**/*.py</code> for recursive matching. Returns an iterator of matching paths.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from pathlib import Path\n\n# Find all Python files recursively\npy_files = Path('.').glob('**/*.py')\n\n# Find all txt files in current dir only\ntxt_files = Path('.').glob('*.txt')</pre></div><p class=\"mt-4 text-gray-300\">Use <code>rglob(pattern)</code> as shorthand for <code>glob('**/' + pattern)</code> for recursive searches.</p>",
       "tags": [
         "Intermediate",
-        "I/O"
+        "I/O",
+        "Files"
       ]
     },
     {
@@ -2995,16 +2996,15 @@
     },
     {
       "id": 186,
-      "title": "186. dataclasses.default_factory",
+      "title": "186. dataclass __post_init__",
       "language": "python",
-      "description": "Use field(default_factory=list) to avoid shared mutable defaults.",
-      "initialCode": "from dataclasses import dataclass, field\n\n# Define Bag with items: list[str] = field(default_factory=list)\n# Append 'x' to items and print its length (1)\n\n",
-      "fullSolution": "from dataclasses import dataclass, field\n\n@dataclass\nclass Bag:\n    items: list[str] = field(default_factory=list)\n\nb = Bag()\nb.items.append('x')\nprint(len(b.items))\n",
-      "expectedOutput": "1",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>default_factory</code> to create a new default object per-instance and avoid shared mutable defaults.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from dataclasses import dataclass, field\n@dataclass\nclass C: xs: list[int] = field(default_factory=list)\nprint(C().xs)</pre></div>",
+      "description": "Use __post_init__ to compute derived fields after dataclass initialization.",
+      "initialCode": "from dataclasses import dataclass\n\n@dataclass\nclass Rectangle:\n    width: float\n    height: float\n    area: float = 0.0\n    \n    # TODO: add __post_init__ to compute area = width * height\n\nrect = Rectangle(3.0, 4.0)\nprint(rect.area)\n",
+      "fullSolution": "from dataclasses import dataclass\n\n@dataclass\nclass Rectangle:\n    width: float\n    height: float\n    area: float = 0.0\n    \n    def __post_init__(self):\n        self.area = self.width * self.height\n\nrect = Rectangle(3.0, 4.0)\nprint(rect.area)\n",
+      "expectedOutput": "12.0",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>__post_init__</code> runs after the generated <code>__init__</code>, perfect for computing derived attributes or validation logic.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from dataclasses import dataclass\n\n@dataclass\nclass Point:\n    x: float\n    y: float\n    distance: float = 0.0\n    \n    def __post_init__(self):\n        self.distance = (self.x**2 + self.y**2)**0.5</pre></div><p class=\"mt-4 text-gray-300\">Use this for validation, normalization, or computing fields that depend on other fields.</p>",
       "tags": [
         "Intermediate",
-        "Collections",
         "OOP",
         "Decorators"
       ]
@@ -6145,6 +6145,409 @@
         "Networking"
       ],
       "id": 385
+    },
+    {
+      "title": "386. Parse nested JSON",
+      "language": "python",
+      "description": "Parse a JSON string containing nested objects, extract a specific nested value, and print it.",
+      "initialCode": "import json\n\njson_str = '{\"user\":{\"name\":\"Alice\",\"age\":30}}'\n\n# TODO: parse the JSON, navigate to user.name, and print it\n\n",
+      "fullSolution": "import json\n\njson_str = '{\"user\":{\"name\":\"Alice\",\"age\":30}}'\ndata = json.loads(json_str)\nname = data[\"user\"][\"name\"]\nprint(name)\n",
+      "expectedOutput": "Alice",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>json.loads()</code> parses a JSON string into Python dictionaries and lists. Navigate nested objects by chaining dictionary access.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">data = json.loads(json_string)\nvalue = data[\"parent\"][\"child\"]</pre></div><p class=\"mt-4 text-gray-300\">Python's native dict syntax makes JSON traversal intuitive and concise compared to many other languages.</p>",
+      "tags": [
+        "Intermediate",
+        "JSON",
+        "Serialization"
+      ],
+      "id": 386
+    },
+    {
+      "title": "387. Base64 encode and decode",
+      "language": "python",
+      "description": "Encode a string to Base64, then decode it back and print the original text.",
+      "initialCode": "import base64\n\noriginal = \"secret message\"\n\n# TODO: encode the string to Base64, decode it back, and print the result\n\n",
+      "fullSolution": "import base64\n\noriginal = \"secret message\"\nencoded = base64.b64encode(original.encode(\"utf-8\"))\ndecoded = base64.b64decode(encoded).decode(\"utf-8\")\nprint(decoded)\n",
+      "expectedOutput": "secret message",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">The <code>base64</code> module provides <code>b64encode()</code> and <code>b64decode()</code>. Always encode strings to bytes with UTF-8 before Base64 encoding.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">encoded = base64.b64encode(text.encode(\"utf-8\"))\ndecoded = base64.b64decode(encoded).decode(\"utf-8\")</pre></div><p class=\"mt-4 text-gray-300\">Base64 is essential for embedding binary data in text formats like JSON, XML, or email.</p>",
+      "tags": [
+        "Intermediate",
+        "Encoding",
+        "Strings"
+      ],
+      "id": 387
+    },
+    {
+      "title": "388. Compare file timestamps",
+      "language": "python",
+      "description": "Check if one file is newer than another by comparing their last modified timestamps.",
+      "initialCode": "import tempfile\nimport os\nimport time\n\nwith tempfile.NamedTemporaryFile(delete=False) as f1:\n    file1 = f1.name\ntime.sleep(0.01)\nwith tempfile.NamedTemporaryFile(delete=False) as f2:\n    file2 = f2.name\n\n# TODO: get last modified times, compare them, and print \"newer\" or \"older\"\n# (file2 compared to file1)\n\n",
+      "fullSolution": "import tempfile\nimport os\nimport time\n\nwith tempfile.NamedTemporaryFile(delete=False) as f1:\n    file1 = f1.name\ntime.sleep(0.01)\nwith tempfile.NamedTemporaryFile(delete=False) as f2:\n    file2 = f2.name\n\ntime1 = os.path.getmtime(file1)\ntime2 = os.path.getmtime(file2)\n\nresult = \"newer\" if time2 > time1 else \"older\"\nprint(result)\n",
+      "expectedOutput": "newer",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>os.path.getmtime()</code> returns the last modification time as a Unix timestamp (float). Compare timestamps directly with standard comparison operators.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">t1 = os.path.getmtime(path1)\nt2 = os.path.getmtime(path2)\nis_newer = t2 > t1</pre></div><p class=\"mt-4 text-gray-300\">This pattern is crucial for build systems, file sync utilities, and cache management where staleness matters.</p>",
+      "tags": [
+        "Intermediate",
+        "Files",
+        "I/O"
+      ],
+      "id": 388
+    },
+    {
+      "title": "389. String padding",
+      "language": "python",
+      "description": "Pad a string to a fixed width with leading zeros and print the result.",
+      "initialCode": "number = \"42\"\nwidth = 5\n\n# TODO: pad the string with leading zeros to the specified width and print it\n\n",
+      "fullSolution": "number = \"42\"\nwidth = 5\npadded = number.zfill(width)\nprint(padded)\n",
+      "expectedOutput": "00042",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">The <code>zfill()</code> method pads numeric strings with leading zeros to reach the specified width. It's shorthand for <code>str.rjust(width, '0')</code>.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">padded = \"42\".zfill(5)  # \"00042\"\nleft_pad = \"hi\".rjust(5)  # \"   hi\"</pre></div><p class=\"mt-4 text-gray-300\">Use this for consistent ID formatting, file naming, or aligning output in tables and reports.</p>",
+      "tags": [
+        "Beginner",
+        "Strings",
+        "Formatting"
+      ],
+      "id": 389
+    },
+    {
+      "title": "390. Title case conversion",
+      "language": "python",
+      "description": "Convert a sentence to title case where each word starts with a capital letter.",
+      "initialCode": "text = \"hello world from python\"\n\n# TODO: convert to title case and print the result\n\n",
+      "fullSolution": "text = \"hello world from python\"\ntitle_case = text.title()\nprint(title_case)\n",
+      "expectedOutput": "Hello World From Python",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">The <code>title()</code> method capitalizes the first letter of each word. Python makes this transformation trivial with a built-in method.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">result = text.title()\n# Or manually:\nresult = ' '.join(w.capitalize() for w in text.split())</pre></div><p class=\"mt-4 text-gray-300\">Use <code>title()</code> for simple cases; for complex title-casing rules (like ignoring \"the\", \"and\"), write custom logic.</p>",
+      "tags": [
+        "Beginner",
+        "Strings"
+      ],
+      "id": 390
+    },
+    {
+      "title": "391. Remove duplicate characters",
+      "language": "python",
+      "description": "Remove consecutive duplicate characters from a string while preserving order.",
+      "initialCode": "text = \"bookkeeper\"\n\n# TODO: remove consecutive duplicate characters and print the result\n\n",
+      "fullSolution": "text = \"bookkeeper\"\nresult = []\nprev = None\nfor char in text:\n    if char != prev:\n        result.append(char)\n        prev = char\nprint(''.join(result))\n",
+      "expectedOutput": "bokeper",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Track the previous character and only append when it differs. Build the result as a list for efficiency, then join at the end.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">result = []\nprev = None\nfor char in text:\n    if char != prev:\n        result.append(char)\n        prev = char\noutput = ''.join(result)</pre></div><p class=\"mt-4 text-gray-300\">This deduplication technique is common in data cleaning and log processing.</p>",
+      "tags": [
+        "Intermediate",
+        "Strings",
+        "Algorithms"
+      ],
+      "id": 391
+    },
+    {
+      "title": "392. dict.fromkeys preserves insertion order",
+      "language": "python",
+      "description": "Use dict.fromkeys to remove duplicates from a list while maintaining insertion order.",
+      "initialCode": "items = [\"apple\", \"banana\", \"apple\", \"cherry\", \"banana\"]\n\n# TODO: remove duplicates while preserving order and print as comma-separated values\n\n",
+      "fullSolution": "items = [\"apple\", \"banana\", \"apple\", \"cherry\", \"banana\"]\nunique = list(dict.fromkeys(items))\nprint(','.join(unique))\n",
+      "expectedOutput": "apple,banana,cherry",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>dict.fromkeys()</code> creates a dict with items as keys. Since Python 3.7+, dicts preserve insertion order, making this a concise deduplication idiom.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">unique = list(dict.fromkeys(items))\n# Or use set if order doesn't matter:\nunique = list(set(items))</pre></div><p class=\"mt-4 text-gray-300\">This pattern is faster than manually tracking seen items with a set and list.</p>",
+      "tags": [
+        "Intermediate",
+        "Collections",
+        "Data Structures"
+      ],
+      "id": 392
+    },
+    {
+      "title": "393. heapq for min heap",
+      "language": "python",
+      "description": "Use heapq to find the three smallest numbers from a list.",
+      "initialCode": "import heapq\n\nnumbers = [15, 3, 9, 1, 22, 7, 12]\n\n# TODO: use heapq to extract the 3 smallest numbers and print them space-separated\n\n",
+      "fullSolution": "import heapq\n\nnumbers = [15, 3, 9, 1, 22, 7, 12]\nsmallest = heapq.nsmallest(3, numbers)\nprint(' '.join(map(str, smallest)))\n",
+      "expectedOutput": "1 3 7",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>heapq.nsmallest()</code> efficiently finds the k smallest elements using a heap. For large datasets, this is faster than sorting.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import heapq\nsmallest = heapq.nsmallest(k, items)\nlargest = heapq.nlargest(k, items)</pre></div><p class=\"mt-4 text-gray-300\">Use <code>heapify()</code> and <code>heappop()</code> for manual heap operations when building priority queues.</p>",
+      "tags": [
+        "Intermediate",
+        "Collections",
+        "Heap"
+      ],
+      "id": 393
+    },
+    {
+      "title": "394. List as stack",
+      "language": "python",
+      "description": "Use a list as a stack to reverse a string.",
+      "initialCode": "text = \"hello\"\n\n# TODO: use a list as a stack to reverse the string and print it\n\n",
+      "fullSolution": "text = \"hello\"\nstack = []\nfor char in text:\n    stack.append(char)\nreversed_text = ''.join(stack.pop() for _ in range(len(stack)))\nprint(reversed_text)\n",
+      "expectedOutput": "olleh",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Python lists support stack operations with <code>append()</code> and <code>pop()</code>. No special stack class needed for LIFO semantics.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">stack = []\nstack.append(item)  # push\ntop = stack.pop()   # pop</pre></div><p class=\"mt-4 text-gray-300\">For queue (FIFO) behavior, use <code>collections.deque</code> with <code>append()</code> and <code>popleft()</code>.</p>",
+      "tags": [
+        "Beginner",
+        "Collections",
+        "Stack"
+      ],
+      "id": 394
+    },
+    {
+      "title": "395. Try-except with specific exception",
+      "language": "python",
+      "description": "Parse an integer from a string and catch ValueError to print a friendly error message.",
+      "initialCode": "input_str = \"not-a-number\"\n\n# TODO: try to parse the input as an integer, catch ValueError,\n# and print \"invalid\" if it fails\n\n",
+      "fullSolution": "input_str = \"not-a-number\"\ntry:\n    number = int(input_str)\n    print(number)\nexcept ValueError:\n    print(\"invalid\")\n",
+      "expectedOutput": "invalid",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Catch specific exceptions to handle different failure modes. <code>ValueError</code> is raised when <code>int()</code> receives invalid input.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">try:\n    num = int(string)\nexcept ValueError:\n    # Handle invalid format\nexcept TypeError:\n    # Handle wrong type</pre></div><p class=\"mt-4 text-gray-300\">Always catch the most specific exception first to avoid hiding real errors with broad <code>except Exception</code>.</p>",
+      "tags": [
+        "Beginner",
+        "Error Handling",
+        "Exceptions"
+      ],
+      "id": 395
+    },
+    {
+      "title": "396. Or operator for default values",
+      "language": "python",
+      "description": "Use the or operator to provide a default value when a variable is None.",
+      "initialCode": "name = None\n\n# TODO: use or to provide \"guest\" as default, then print the result\n\n",
+      "fullSolution": "name = None\nresult = name or \"guest\"\nprint(result)\n",
+      "expectedOutput": "guest",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">The <code>or</code> operator returns the first truthy value. Use it for simple default fallbacks when dealing with <code>None</code> or empty values.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">value = nullable or \"default\"\n# Beware: this also triggers on 0, False, [], etc.\n# For strict None checks, use:\nvalue = \"default\" if nullable is None else nullable</pre></div><p class=\"mt-4 text-gray-300\">This idiom keeps code concise but be mindful of falsy values beyond <code>None</code>.</p>",
+      "tags": [
+        "Beginner",
+        "Error Handling"
+      ],
+      "id": 396
+    },
+    {
+      "title": "397. Validate input range",
+      "language": "python",
+      "description": "Check if a number is within a valid range and raise ValueError if not.",
+      "initialCode": "age = 150\n\n# TODO: validate age is between 0 and 120 (inclusive), raise ValueError with message \"invalid age\" if not,\n# otherwise print \"valid\"\n\n",
+      "fullSolution": "age = 150\nif not (0 <= age <= 120):\n    raise ValueError(\"invalid age\")\nprint(\"valid\")\n",
+      "expectedOutput": "Traceback (most recent call last):\n  File \"<string>\", line 2, in <module>\nValueError: invalid age",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>raise ValueError</code> for invalid input. Python's chained comparisons make range checks concise: <code>0 <= age <= 120</code>.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">if not (min_val <= value <= max_val):\n    raise ValueError(\"out of range\")</pre></div><p class=\"mt-4 text-gray-300\">Fail fast with clear exceptions to prevent invalid state from propagating through your application.</p>",
+      "tags": [
+        "Intermediate",
+        "Validation",
+        "Error Handling"
+      ],
+      "id": 397
+    },
+    {
+      "title": "398. Write and read config file",
+      "language": "python",
+      "description": "Write key-value pairs to an INI config file using configparser, then read them back and print a specific value.",
+      "initialCode": "import configparser\nimport tempfile\nimport os\n\nfilename = os.path.join(tempfile.gettempdir(), \"app.ini\")\n\n# TODO: create ConfigParser, add section \"settings\" with \"user\"=\"alice\" and \"role\"=\"admin\",\n# write to file, read back, and print the \"user\" value\n\n",
+      "fullSolution": "import configparser\nimport tempfile\nimport os\n\nfilename = os.path.join(tempfile.gettempdir(), \"app.ini\")\nconfig = configparser.ConfigParser()\nconfig[\"settings\"] = {\"user\": \"alice\", \"role\": \"admin\"}\n\nwith open(filename, \"w\") as f:\n    config.write(f)\n\nloaded = configparser.ConfigParser()\nloaded.read(filename)\nprint(loaded[\"settings\"][\"user\"])\n",
+      "expectedOutput": "alice",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>configparser</code> handles INI-style config files with sections and key-value pairs. Perfect for app settings that humans might edit.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">config = configparser.ConfigParser()\nconfig[\"section\"] = {\"key\": \"value\"}\nconfig.write(file)\nconfig.read(filename)</pre></div><p class=\"mt-4 text-gray-300\">Use JSON for complex nested config; use INI for simple hierarchical settings.</p>",
+      "tags": [
+        "Intermediate",
+        "I/O",
+        "Serialization"
+      ],
+      "id": 398
+    },
+    {
+      "title": "399. Serialize object to JSON",
+      "language": "python",
+      "description": "Serialize a simple object to JSON string using json.dumps and print it.",
+      "initialCode": "import json\n\nuser = {\"name\": \"Bob\", \"age\": 25}\n\n# TODO: serialize user to JSON string and print it\n\n",
+      "fullSolution": "import json\n\nuser = {\"name\": \"Bob\", \"age\": 25}\njson_str = json.dumps(user)\nprint(json_str)\n",
+      "expectedOutput": "{\"name\": \"Bob\", \"age\": 25}",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>json.dumps()</code> serializes Python dicts, lists, and primitives to JSON strings. Use <code>json.dump()</code> to write directly to a file.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">json_str = json.dumps(obj)\n# Or write to file:\nwith open(\"data.json\", \"w\") as f:\n    json.dump(obj, f)</pre></div><p class=\"mt-4 text-gray-300\">For custom objects, implement <code>__dict__</code> or pass a custom encoder to <code>json.dumps()</code>.</p>",
+      "tags": [
+        "Intermediate",
+        "JSON",
+        "Serialization"
+      ],
+      "id": 399
+    },
+    {
+      "title": "400. Deserialize JSON to object",
+      "language": "python",
+      "description": "Deserialize a JSON string to a dictionary using json.loads and print a field value.",
+      "initialCode": "import json\n\njson_str = '{\"name\":\"Laptop\",\"price\":999.99}'\n\n# TODO: deserialize JSON to dict and print the name field\n\n",
+      "fullSolution": "import json\n\njson_str = '{\"name\":\"Laptop\",\"price\":999.99}'\nproduct = json.loads(json_str)\nprint(product[\"name\"])\n",
+      "expectedOutput": "Laptop",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>json.loads()</code> parses JSON strings into Python objects (dicts, lists, primitives). Use <code>json.load()</code> to read from a file.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">obj = json.loads(json_string)\n# Or read from file:\nwith open(\"data.json\") as f:\n    obj = json.load(f)</pre></div><p class=\"mt-4 text-gray-300\">Access nested data naturally: <code>obj[\"parent\"][\"child\"]</code>. No class mapping required unlike Java.</p>",
+      "tags": [
+        "Intermediate",
+        "JSON",
+        "Serialization"
+      ],
+      "id": 400
+    },
+    {
+      "title": "401. OrderedDict sorted keys",
+      "language": "python",
+      "description": "Use OrderedDict with sorted keys to maintain insertion order.",
+      "initialCode": "from collections import OrderedDict\n\nscores = {\"charlie\": 85, \"alice\": 92, \"bob\": 78}\n\n# TODO: create OrderedDict from sorted items, print keys in order: alice, bob, charlie\n\n",
+      "fullSolution": "from collections import OrderedDict\n\nscores = {\"charlie\": 85, \"alice\": 92, \"bob\": 78}\nordered = OrderedDict(sorted(scores.items()))\n\nfor key in ordered.keys():\n    print(key)\n",
+      "expectedOutput": "alice\nbob\ncharlie",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>OrderedDict</code> preserves insertion order. While regular dicts are ordered in Python 3.7+, OrderedDict has additional methods like <code>move_to_end()</code>.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from collections import OrderedDict\nordered = OrderedDict(sorted(items))\n# Or move items:\nordered.move_to_end('key')</pre></div><p class=\"mt-4 text-gray-300\">For most cases, regular dicts suffice. Use OrderedDict when you need explicit ordering operations.</p>",
+      "tags": [
+        "Intermediate",
+        "Collections",
+        "Data Structures"
+      ],
+      "id": 401
+    },
+    {
+      "title": "402. Enum for flag combinations",
+      "language": "python",
+      "description": "Use Enum to define named constants and check membership.",
+      "initialCode": "from enum import Enum\n\nclass Permission(Enum):\n    READ = 1\n    WRITE = 2\n    EXECUTE = 3\n\n# TODO: create set with READ and WRITE, check if WRITE is in it, print True\n\n",
+      "fullSolution": "from enum import Enum\n\nclass Permission(Enum):\n    READ = 1\n    WRITE = 2\n    EXECUTE = 3\n\nperms = {Permission.READ, Permission.WRITE}\nprint(Permission.WRITE in perms)\n",
+      "expectedOutput": "True",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Enum</code> creates named constants. Use sets of enum members for flag combinations. For bit flags, use <code>IntFlag</code> or <code>Flag</code>.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from enum import Enum\n\nclass Status(Enum):\n    PENDING = 1\n    ACTIVE = 2\n    \nstatus = Status.ACTIVE</pre></div><p class=\"mt-4 text-gray-300\">Enums prevent typos, improve IDE autocomplete, and make code self-documenting.</p>",
+      "tags": [
+        "Intermediate",
+        "Enums",
+        "OOP"
+      ],
+      "id": 402
+    },
+    {
+      "title": "403. WeakValueDictionary for caching",
+      "language": "python",
+      "description": "Use WeakValueDictionary to create a cache that allows garbage collection.",
+      "initialCode": "from weakref import WeakValueDictionary\n\nclass Data:\n    def __init__(self, value):\n        self.value = value\n\ncache = WeakValueDictionary()\nobj = Data(\"cached\")\ncache[\"key\"] = obj\n\n# TODO: print the cached value before obj goes out of scope\n\n",
+      "fullSolution": "from weakref import WeakValueDictionary\n\nclass Data:\n    def __init__(self, value):\n        self.value = value\n\ncache = WeakValueDictionary()\nobj = Data(\"cached\")\ncache[\"key\"] = obj\nprint(cache[\"key\"].value)\n",
+      "expectedOutput": "cached",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>WeakValueDictionary</code> holds weak references to values. When no strong references exist, values are garbage collected and entries removed.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from weakref import WeakValueDictionary\ncache = WeakValueDictionary()\ncache[key] = value\n# When value is GC'd, entry disappears</pre></div><p class=\"mt-4 text-gray-300\">Perfect for caches where you don't want to prevent garbage collection of expensive objects.</p>",
+      "tags": [
+        "Advanced",
+        "Collections",
+        "Memory Management"
+      ],
+      "id": 403
+    },
+    {
+      "title": "404. Function composition with toolz",
+      "language": "python",
+      "description": "Compose functions to create a processing pipeline.",
+      "initialCode": "# TODO: define two functions: get_length takes string returns len, double takes int returns int*2\n# Compose them and apply to \"hello\", print 10\n\n",
+      "fullSolution": "get_length = lambda s: len(s)\ndouble = lambda n: n * 2\n\ndef compose(f, g):\n    return lambda x: g(f(x))\n\npipeline = compose(get_length, double)\nprint(pipeline(\"hello\"))\n",
+      "expectedOutput": "10",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Function composition chains functions so output of one becomes input of the next. Python doesn't have built-in composition, but it's easy to implement.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">def compose(f, g):\n    return lambda x: g(f(x))\n\npipeline = compose(f, g)\n# Or use libraries like toolz, funcy</pre></div><p class=\"mt-4 text-gray-300\">Composition creates reusable transformation pipelines, common in functional programming.</p>",
+      "tags": [
+        "Intermediate",
+        "Functional",
+        "Functions"
+      ],
+      "id": 404
+    },
+    {
+      "title": "405. Lambda with filter and all",
+      "language": "python",
+      "description": "Combine filter with all() for complex filtering logic.",
+      "initialCode": "words = [\"apple\", \"ax\", \"banana\", \"blueberry\"]\n\n# TODO: filter words that start with 'a' AND are longer than 3 chars, print first result\n\n",
+      "fullSolution": "words = [\"apple\", \"ax\", \"banana\", \"blueberry\"]\n\nstarts_with_a = lambda s: s.startswith(\"a\")\nlong_word = lambda s: len(s) > 3\n\nresult = list(filter(lambda s: starts_with_a(s) and long_word(s), words))\nprint(result[0])\n",
+      "expectedOutput": "apple",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Combine predicates with <code>and</code>, <code>or</code>, and <code>not</code> operators inside lambdas or filter expressions.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">filtered = filter(lambda x: p1(x) and p2(x), items)\n# Or use comprehensions:\nresult = [x for x in items if p1(x) and p2(x)]</pre></div><p class=\"mt-4 text-gray-300\">List comprehensions are often more Pythonic than filter for complex predicates.</p>",
+      "tags": [
+        "Intermediate",
+        "Functional",
+        "Functions"
+      ],
+      "id": 405
+    },
+    {
+      "title": "406. Lazy evaluation with generators",
+      "language": "python",
+      "description": "Use generator expressions for lazy evaluation of expensive computations.",
+      "initialCode": "# TODO: create generator expression for squares of 1-5, sum them and print 55\n\n",
+      "fullSolution": "lazy = (x**2 for x in range(1, 11))\nresult = sum(lazy)\nprint(result)\n",
+      "expectedOutput": "385",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Generator expressions use <code>()</code> instead of <code>[]</code> for lazy evaluation. Values are computed on-demand, saving memory.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">lazy = (expensive(x) for x in items)\n# Nothing computed yet\nresult = next(lazy)\n# Now first item is computed</pre></div><p class=\"mt-4 text-gray-300\">Use generators for large datasets or infinite sequences to avoid loading everything into memory.</p>",
+      "tags": [
+        "Intermediate",
+        "Functional",
+        "Generators"
+      ],
+      "id": 406
+    },
+    {
+      "title": "407. threading.Event synchronization",
+      "language": "python",
+      "description": "Use threading.Event to wait for a signal from another thread.",
+      "initialCode": "import threading\nimport time\n\nevent = threading.Event()\n\ndef worker():\n    time.sleep(0.1)\n    # TODO: set the event to signal completion\n\n# TODO: start worker thread, wait for event, print \"done\"\n\n",
+      "fullSolution": "import threading\nimport time\n\nevent = threading.Event()\n\ndef worker():\n    time.sleep(0.1)\n    event.set()\n\nthread = threading.Thread(target=worker)\nthread.start()\nevent.wait()\nprint(\"done\")\n",
+      "expectedOutput": "done",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>threading.Event</code> provides a simple signaling mechanism. One thread calls <code>set()</code>, others call <code>wait()</code> to block until signaled.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">event = threading.Event()\n# Worker thread:\nevent.set()\n# Main thread:\nevent.wait()  # Blocks until set</pre></div><p class=\"mt-4 text-gray-300\">Simple and effective for coordinating thread initialization or shutdown.</p>",
+      "tags": [
+        "Advanced",
+        "Concurrency",
+        "Threading"
+      ],
+      "id": 407
+    },
+    {
+      "title": "408. threading.Barrier coordination",
+      "language": "python",
+      "description": "Use threading.Barrier to synchronize threads at a common point.",
+      "initialCode": "import threading\nimport time\n\nbarrier = threading.Barrier(2, action=lambda: print(\"ready\"))\n\ndef worker():\n    # TODO: call barrier.wait()\n    pass\n\n# TODO: start worker thread, sleep briefly, call barrier.wait() in main\n\n",
+      "fullSolution": "import threading\nimport time\n\nbarrier = threading.Barrier(2, action=lambda: print(\"ready\"))\n\ndef worker():\n    barrier.wait()\n\nthread = threading.Thread(target=worker)\nthread.start()\ntime.sleep(0.05)\nbarrier.wait()\nthread.join()\n",
+      "expectedOutput": "ready",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>threading.Barrier</code> blocks threads until all parties arrive, then optionally runs an action. Reusable for multiple synchronization points.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">barrier = threading.Barrier(n, action=callback)\n# Each of n threads calls:\nbarrier.wait()\n# When all arrive, action runs</pre></div><p class=\"mt-4 text-gray-300\">Useful for iterative parallel algorithms needing phase synchronization.</p>",
+      "tags": [
+        "Advanced",
+        "Concurrency",
+        "Threading"
+      ],
+      "id": 408
+    },
+    {
+      "title": "409. threading.Semaphore resource limiting",
+      "language": "python",
+      "description": "Use Semaphore to limit concurrent access to a resource pool.",
+      "initialCode": "import threading\n\nsemaphore = threading.Semaphore(2)\n\n# TODO: acquire semaphore, print \"acquired\", release semaphore\n\n",
+      "fullSolution": "import threading\n\nsemaphore = threading.Semaphore(2)\n\nsemaphore.acquire()\ntry:\n    print(\"acquired\")\nfinally:\n    semaphore.release()\n",
+      "expectedOutput": "acquired",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>threading.Semaphore</code> controls access to a limited pool of resources. <code>acquire()</code> blocks when limit is reached; <code>release()</code> frees a slot.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">sem = threading.Semaphore(max_concurrent)\nwith sem:\n    # Use resource\n# Or manually:\nsem.acquire()\ntry:\n    pass\nfinally:\n    sem.release()</pre></div><p class=\"mt-4 text-gray-300\">Perfect for throttling connections, API calls, or any limited resource.</p>",
+      "tags": [
+        "Advanced",
+        "Concurrency",
+        "Resource Management"
+      ],
+      "id": 409
+    },
+    {
+      "title": "410. itertools.count infinite sequence",
+      "language": "python",
+      "description": "Generate an infinite sequence with itertools.count and limit it with islice.",
+      "initialCode": "from itertools import count, islice\n\n# TODO: create infinite counter starting at 1, step 2, take first 5, sum and print (25)\n\n",
+      "fullSolution": "from itertools import count, islice\n\nresult = sum(islice(count(1, 2), 5))\nprint(result)\n",
+      "expectedOutput": "25",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>itertools.count(start, step)</code> generates infinite sequences. Always use <code>islice()</code> or <code>takewhile()</code> to limit consumption.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from itertools import count, islice\nfor i in islice(count(0), 10):\n    print(i)  # Prints 0-9</pre></div><p class=\"mt-4 text-gray-300\">Useful for generating IDs, sequence numbers, or iterative computations.</p>",
+      "tags": [
+        "Intermediate",
+        "Itertools",
+        "Functional"
+      ],
+      "id": 410
+    },
+    {
+      "title": "411. itertools.takewhile conditional limit",
+      "language": "python",
+      "description": "Use takewhile to consume elements while a condition holds.",
+      "initialCode": "from itertools import takewhile\n\nnumbers = [1, 2, 3, 4, 5, 1, 2]\n\n# TODO: use takewhile to take elements while < 4, print length (3)\n\n",
+      "fullSolution": "from itertools import takewhile\n\nnumbers = [1, 2, 3, 4, 5, 1, 2]\nresult = list(takewhile(lambda n: n < 4, numbers))\nprint(len(result))\n",
+      "expectedOutput": "3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>takewhile(predicate, iterable)</code> yields elements until the predicate returns False, then stops completely.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from itertools import takewhile\nresult = takewhile(lambda x: x < 10, items)\n# Stops at first False</pre></div><p class=\"mt-4 text-gray-300\">Perfect for reading until a sentinel value or processing sorted data up to a threshold.</p>",
+      "tags": [
+        "Intermediate",
+        "Itertools",
+        "Functional"
+      ],
+      "id": 411
+    },
+    {
+      "title": "412. String intern for memory optimization",
+      "language": "python",
+      "description": "Use sys.intern to optimize memory for repeated string values.",
+      "initialCode": "import sys\n\ns1 = \"hello world\"\ns2 = sys.intern(s1)\n\n# TODO: check if s1 is s2 (identity check), print True\n\n",
+      "fullSolution": "import sys\n\ns1 = \"hello world\"\ns2 = sys.intern(s1)\nprint(s1 is s2)\n",
+      "expectedOutput": "True",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>sys.intern()</code> ensures that only one copy of each unique string exists in memory. Useful for large datasets with repeated string values.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import sys\ninterned = sys.intern(string)\n# All interned copies share same object</pre></div><p class=\"mt-4 text-gray-300\">Python automatically interns short strings and identifiers. Manual interning helps with repeated large strings in data processing.</p>",
+      "tags": [
+        "Advanced",
+        "Strings",
+        "Performance"
+      ],
+      "id": 412
     }
   ]
 }

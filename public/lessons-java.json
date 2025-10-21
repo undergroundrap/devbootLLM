@@ -2519,17 +2519,17 @@
     },
     {
       "id": 152,
-      "title": "152. StringBuilder.reverse",
+      "title": "152. StringTokenizer parsing",
       "language": "java",
-      "description": "Reverse a string using StringBuilder and print it.",
-      "initialCode": "public class Main {\n    public static void main(String[] args) {\n        String s = \"abc\";\n        // Reverse s using StringBuilder and print \"cba\"\n\n    }\n}",
-      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        String s = \"abc\";\n        System.out.println(new StringBuilder(s).reverse().toString());\n    }\n}",
-      "expectedOutput": "cba",
-      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>StringBuilder</code> offers a mutable sequence of characters; <code>reverse()</code> inverts them efficiently.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">public class Main {\n    public static void main(String[] args) {\n        String s = \"abc\";\n        System.out.println(new StringBuilder(s).reverse().toString());\n    }\n}</pre></div>",
+      "description": "Use StringTokenizer to split a CSV line and print each token on a new line.",
+      "initialCode": "import java.util.StringTokenizer;\n\npublic class Main {\n    public static void main(String[] args) {\n        String csv = \"apple,banana,cherry\";\n        \n        // TODO: use StringTokenizer with \",\" delimiter to split and print each token\n    }\n}\n",
+      "fullSolution": "import java.util.StringTokenizer;\n\npublic class Main {\n    public static void main(String[] args) {\n        String csv = \"apple,banana,cherry\";\n        StringTokenizer tokenizer = new StringTokenizer(csv, \",\");\n        while (tokenizer.hasMoreTokens()) {\n            System.out.println(tokenizer.nextToken());\n        }\n    }\n}\n",
+      "expectedOutput": "apple\nbanana\ncherry",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>StringTokenizer</code> is a legacy class for splitting strings by delimiters. While <code>String.split()</code> is more common today, StringTokenizer can be more efficient for simple cases.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">StringTokenizer tokenizer = new StringTokenizer(text, delimiter);\nwhile (tokenizer.hasMoreTokens()) {\n    String token = tokenizer.nextToken();\n    System.out.println(token);\n}</pre></div><p class=\"mt-4 text-gray-300\">For modern code, prefer <code>String.split()</code> or <code>Pattern</code> with regex for more flexibility.</p>",
       "tags": [
         "Intermediate",
         "Strings",
-        "OOP"
+        "Parsing"
       ]
     },
     {
@@ -3162,18 +3162,18 @@
     },
     {
       "id": 191,
-      "title": "191. Capstone: Files.walk + lines + sum",
+      "title": "191. Capstone: Grouping log entries by severity",
       "language": "java",
-      "description": "Create a directory with .txt files, stream their lines, parse ints, and print the sum.",
-      "initialCode": "import java.nio.file.*;\nimport java.io.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        // Create d/ with a.txt (1\\n2), b.txt (3), and c.log (x)\n        // Walk d/, filter *.txt, stream lines, parse ints, sum, print 6\n\n    }\n}",
-      "fullSolution": "import java.nio.file.*;\nimport java.io.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        Path dir = Paths.get(\"d\");\n        Files.createDirectories(dir);\n        Files.writeString(dir.resolve(\"a.txt\"), \"1\n2\n\");\n        Files.writeString(dir.resolve(\"b.txt\"), \"3\n\");\n        Files.writeString(dir.resolve(\"c.log\"), \"x\n\");\n        long sum = Files.walk(dir)\n            .filter(p -> p.toString().endsWith(\".txt\"))\n            .flatMap(p -> { try { return Files.lines(p); } catch (IOException e) { return Stream.empty(); } })\n            .map(String::trim)\n            .filter(s -> !s.isEmpty())\n            .mapToLong(Long::parseLong)\n            .sum();\n        System.out.println(sum);\n    }\n}",
-      "expectedOutput": "6",
-      "tutorial": "<p class=\"mb-4 text-gray-300\">Capstone combining <code>Files.walk</code> with <code>Files.lines</code> and stream operations to process multiple files declaratively.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">java.nio.file.Files.walk(java.nio.file.Paths.get(\"d\"))\n  .filter(p -> p.toString().endsWith(\".txt\"))\n  .forEach(System.out::println);</pre></div>",
+      "description": "Parse log lines with format \"LEVEL: message\", group by level using Collectors.groupingBy, and print counts.",
+      "initialCode": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> logs = Arrays.asList(\n            \"ERROR: failed to connect\",\n            \"INFO: starting service\",\n            \"ERROR: timeout\",\n            \"WARN: deprecated API\",\n            \"INFO: request processed\"\n        );\n        \n        // TODO: group by level (word before ':'), count each group, print \"ERROR=2,INFO=2,WARN=1\"\n    }\n}\n",
+      "fullSolution": "import java.util.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> logs = Arrays.asList(\n            \"ERROR: failed to connect\",\n            \"INFO: starting service\",\n            \"ERROR: timeout\",\n            \"WARN: deprecated API\",\n            \"INFO: request processed\"\n        );\n        \n        Map<String, Long> counts = logs.stream()\n            .map(line -> line.split(\":\")[0])\n            .collect(Collectors.groupingBy(level -> level, Collectors.counting()));\n        \n        String result = counts.entrySet().stream()\n            .sorted(Map.Entry.comparingByKey())\n            .map(e -> e.getKey() + \"=\" + e.getValue())\n            .collect(Collectors.joining(\",\"));\n        \n        System.out.println(result);\n    }\n}\n",
+      "expectedOutput": "ERROR=2,INFO=2,WARN=1",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Capstone combining streams, <code>groupingBy</code>, and <code>counting</code> to analyze log data. This pattern is essential for data aggregation and reporting.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Map<String, Long> counts = items.stream()\n    .collect(Collectors.groupingBy(\n        classifier,\n        Collectors.counting()\n    ));</pre></div><p class=\"mt-4 text-gray-300\">Use <code>groupingBy</code> with downstream collectors like <code>counting</code>, <code>summingInt</code>, or <code>mapping</code> for powerful aggregations.</p>",
       "tags": [
         "Intermediate",
+        "Streams",
+        "Collections",
         "Strings",
-        "OOP",
-        "I/O",
         "Functional"
       ]
     },
@@ -6329,6 +6329,411 @@
         "Async"
       ],
       "id": 385
+    },
+    {
+      "title": "386. Parse simple JSON manually",
+      "language": "java",
+      "description": "Extract a value from a simple JSON string using indexOf and substring.",
+      "initialCode": "public class Main {\n    public static void main(String[] args) {\n        String json = \"{\\\"name\\\":\\\"Alice\\\",\\\"age\\\":30}\";\n        \n        // TODO: extract the value of \"name\" using indexOf and substring, print \"Alice\"\n    }\n}\n",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        String json = \"{\\\"name\\\":\\\"Alice\\\",\\\"age\\\":30}\";\n        int nameStart = json.indexOf(\"\\\"name\\\":\\\"\") + 8;\n        int nameEnd = json.indexOf(\"\\\"\", nameStart);\n        String name = json.substring(nameStart, nameEnd);\n        System.out.println(name);\n    }\n}\n",
+      "expectedOutput": "Alice",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">For simple JSON parsing without libraries, use <code>indexOf()</code> to find keys and <code>substring()</code> to extract values. This works for basic cases.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">int start = json.indexOf(\"\\\"key\\\":\\\"\") + key.length() + 4;\nint end = json.indexOf(\"\\\"\", start);\nString value = json.substring(start, end);</pre></div><p class=\"mt-4 text-gray-300\">For production code, use a proper JSON library. This technique is useful for learning string manipulation.</p>",
+      "tags": [
+        "Intermediate",
+        "Strings",
+        "Parsing"
+      ],
+      "id": 386
+    },
+    {
+      "title": "387. Base64 encode and decode",
+      "language": "java",
+      "description": "Encode a string to Base64, then decode it back and print the original text.",
+      "initialCode": "import java.util.Base64;\nimport java.nio.charset.StandardCharsets;\n\npublic class Main {\n    public static void main(String[] args) {\n        String original = \"secret message\";\n        \n        // TODO: encode the string to Base64, decode it back, and print the result\n    }\n}\n",
+      "fullSolution": "import java.util.Base64;\nimport java.nio.charset.StandardCharsets;\n\npublic class Main {\n    public static void main(String[] args) {\n        String original = \"secret message\";\n        byte[] encoded = Base64.getEncoder().encode(original.getBytes(StandardCharsets.UTF_8));\n        byte[] decoded = Base64.getDecoder().decode(encoded);\n        String result = new String(decoded, StandardCharsets.UTF_8);\n        System.out.println(result);\n    }\n}\n",
+      "expectedOutput": "secret message",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Java's <code>Base64</code> class provides encoder and decoder instances. Always specify UTF-8 charset to avoid platform-dependent encoding issues.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">byte[] encoded = Base64.getEncoder().encode(text.getBytes(StandardCharsets.UTF_8));\nbyte[] decoded = Base64.getDecoder().decode(encoded);\nString result = new String(decoded, StandardCharsets.UTF_8);</pre></div><p class=\"mt-4 text-gray-300\">Base64 is commonly used for encoding binary data in text-only contexts like JSON or URLs.</p>",
+      "tags": [
+        "Intermediate",
+        "Encoding",
+        "Strings"
+      ],
+      "id": 387
+    },
+    {
+      "title": "388. Compare file timestamps",
+      "language": "java",
+      "description": "Check if one file is newer than another by comparing their last modified timestamps.",
+      "initialCode": "import java.nio.file.Files;\nimport java.nio.file.Path;\nimport java.nio.file.attribute.FileTime;\nimport java.io.IOException;\n\npublic class Main {\n    public static void main(String[] args) throws IOException {\n        Path file1 = Files.createTempFile(\"test1\", \".txt\");\n        Path file2 = Files.createTempFile(\"test2\", \".txt\");\n        \n        // TODO: get last modified times, compare them, and print \"newer\" or \"older\"\n        // (file2 compared to file1)\n    }\n}\n",
+      "fullSolution": "import java.nio.file.Files;\nimport java.nio.file.Path;\nimport java.nio.file.attribute.FileTime;\nimport java.io.IOException;\n\npublic class Main {\n    public static void main(String[] args) throws IOException {\n        Path file1 = Files.createTempFile(\"test1\", \".txt\");\n        Path file2 = Files.createTempFile(\"test2\", \".txt\");\n        \n        FileTime time1 = Files.getLastModifiedTime(file1);\n        FileTime time2 = Files.getLastModifiedTime(file2);\n        \n        String result = time2.compareTo(time1) > 0 ? \"newer\" : \"older\";\n        System.out.println(result);\n    }\n}\n",
+      "expectedOutput": "newer",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Files.getLastModifiedTime()</code> returns a <code>FileTime</code> that implements <code>Comparable</code>, so you can use <code>compareTo()</code> directly.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">FileTime t1 = Files.getLastModifiedTime(path1);\nFileTime t2 = Files.getLastModifiedTime(path2);\nboolean isNewer = t2.compareTo(t1) > 0;</pre></div><p class=\"mt-4 text-gray-300\">This is useful for cache invalidation, build systems, or sync tools that need to detect file changes.</p>",
+      "tags": [
+        "Intermediate",
+        "Files",
+        "I/O"
+      ],
+      "id": 388
+    },
+    {
+      "title": "389. String padding",
+      "language": "java",
+      "description": "Pad a string to a fixed width with leading zeros and print the result.",
+      "initialCode": "public class Main {\n    public static void main(String[] args) {\n        String number = \"42\";\n        int width = 5;\n        \n        // TODO: pad the string with leading zeros to the specified width and print it\n    }\n}\n",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        String number = \"42\";\n        int width = 5;\n        String padded = String.format(\"%0\" + width + \"d\", Integer.parseInt(number));\n        System.out.println(padded);\n    }\n}\n",
+      "expectedOutput": "00042",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>String.format()</code> supports printf-style formatting. Use <code>%0Nd</code> where N is the width to pad numbers with leading zeros.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">String padded = String.format(\"%05d\", 42); // \"00042\"\nString leftPad = String.format(\"%5s\", \"hi\");  // \"   hi\"</pre></div><p class=\"mt-4 text-gray-300\">This is essential for formatting IDs, file names, or timestamps where consistent width matters.</p>",
+      "tags": [
+        "Beginner",
+        "Strings",
+        "Formatting"
+      ],
+      "id": 389
+    },
+    {
+      "title": "390. Title case conversion",
+      "language": "java",
+      "description": "Convert a sentence to title case where each word starts with a capital letter.",
+      "initialCode": "import java.util.Arrays;\nimport java.util.stream.Collectors;\n\npublic class Main {\n    public static void main(String[] args) {\n        String text = \"hello world from java\";\n        \n        // TODO: convert to title case and print the result\n    }\n}\n",
+      "fullSolution": "import java.util.Arrays;\nimport java.util.stream.Collectors;\n\npublic class Main {\n    public static void main(String[] args) {\n        String text = \"hello world from java\";\n        String titleCase = Arrays.stream(text.split(\" \"))\n                .map(word -> word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase())\n                .collect(Collectors.joining(\" \"));\n        System.out.println(titleCase);\n    }\n}\n",
+      "expectedOutput": "Hello World From Java",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Split the string by spaces, capitalize the first letter of each word, then join them back. Streams make this transformation pipeline clean.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">String result = Arrays.stream(text.split(\" \"))\n    .map(w -> w.substring(0, 1).toUpperCase() + w.substring(1))\n    .collect(Collectors.joining(\" \"));</pre></div><p class=\"mt-4 text-gray-300\">This pattern works for any delimiter-based text transformation.</p>",
+      "tags": [
+        "Intermediate",
+        "Strings",
+        "Streams"
+      ],
+      "id": 390
+    },
+    {
+      "title": "391. Remove duplicate characters",
+      "language": "java",
+      "description": "Remove consecutive duplicate characters from a string while preserving order.",
+      "initialCode": "public class Main {\n    public static void main(String[] args) {\n        String text = \"bookkeeper\";\n        \n        // TODO: remove consecutive duplicate characters and print the result\n    }\n}\n",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        String text = \"bookkeeper\";\n        StringBuilder result = new StringBuilder();\n        char prev = '\\0';\n        for (char c : text.toCharArray()) {\n            if (c != prev) {\n                result.append(c);\n                prev = c;\n            }\n        }\n        System.out.println(result.toString());\n    }\n}\n",
+      "expectedOutput": "bokeper",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Track the previous character and only append when it differs. A <code>StringBuilder</code> efficiently builds the result string.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">StringBuilder sb = new StringBuilder();\nchar prev = '\\0';\nfor (char c : text.toCharArray()) {\n    if (c != prev) {\n        sb.append(c);\n        prev = c;\n    }\n}</pre></div><p class=\"mt-4 text-gray-300\">This technique is useful for data cleaning and text normalization tasks.</p>",
+      "tags": [
+        "Intermediate",
+        "Strings",
+        "Algorithms"
+      ],
+      "id": 391
+    },
+    {
+      "title": "392. LinkedHashSet preserves insertion order",
+      "language": "java",
+      "description": "Use a LinkedHashSet to remove duplicates from a list while maintaining insertion order.",
+      "initialCode": "import java.util.Arrays;\nimport java.util.LinkedHashSet;\nimport java.util.List;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> items = Arrays.asList(\"apple\", \"banana\", \"apple\", \"cherry\", \"banana\");\n        \n        // TODO: remove duplicates while preserving order and print as comma-separated values\n    }\n}\n",
+      "fullSolution": "import java.util.Arrays;\nimport java.util.LinkedHashSet;\nimport java.util.List;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> items = Arrays.asList(\"apple\", \"banana\", \"apple\", \"cherry\", \"banana\");\n        LinkedHashSet<String> unique = new LinkedHashSet<>(items);\n        System.out.println(String.join(\",\", unique));\n    }\n}\n",
+      "expectedOutput": "apple,banana,cherry",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>LinkedHashSet</code> combines the uniqueness guarantee of <code>HashSet</code> with predictable iteration order based on insertion.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">LinkedHashSet<T> unique = new LinkedHashSet<>(list);\n// Duplicates removed, order preserved</pre></div><p class=\"mt-4 text-gray-300\">This is perfect for deduplicating user input or processing logs where order matters.</p>",
+      "tags": [
+        "Intermediate",
+        "Collections",
+        "Data Structures"
+      ],
+      "id": 392
+    },
+    {
+      "title": "393. PriorityQueue min heap",
+      "language": "java",
+      "description": "Use a PriorityQueue to find the three smallest numbers from a list.",
+      "initialCode": "import java.util.Arrays;\nimport java.util.List;\nimport java.util.PriorityQueue;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Integer> numbers = Arrays.asList(15, 3, 9, 1, 22, 7, 12);\n        \n        // TODO: use a PriorityQueue to extract the 3 smallest numbers and print them space-separated\n    }\n}\n",
+      "fullSolution": "import java.util.Arrays;\nimport java.util.List;\nimport java.util.PriorityQueue;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Integer> numbers = Arrays.asList(15, 3, 9, 1, 22, 7, 12);\n        PriorityQueue<Integer> minHeap = new PriorityQueue<>(numbers);\n        System.out.println(minHeap.poll() + \" \" + minHeap.poll() + \" \" + minHeap.poll());\n    }\n}\n",
+      "expectedOutput": "1 3 7",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>PriorityQueue</code> is a min-heap by default, so <code>poll()</code> extracts the smallest element. Perfect for top-K or priority-based algorithms.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">PriorityQueue<Integer> minHeap = new PriorityQueue<>();\nminHeap.addAll(numbers);\nint smallest = minHeap.poll();</pre></div><p class=\"mt-4 text-gray-300\">For a max-heap, pass <code>Collections.reverseOrder()</code> as a comparator.</p>",
+      "tags": [
+        "Intermediate",
+        "Collections",
+        "Heap"
+      ],
+      "id": 393
+    },
+    {
+      "title": "394. ArrayDeque as stack",
+      "language": "java",
+      "description": "Use ArrayDeque as a stack to reverse a string.",
+      "initialCode": "import java.util.ArrayDeque;\n\npublic class Main {\n    public static void main(String[] args) {\n        String text = \"hello\";\n        \n        // TODO: use ArrayDeque as a stack to reverse the string and print it\n    }\n}\n",
+      "fullSolution": "import java.util.ArrayDeque;\n\npublic class Main {\n    public static void main(String[] args) {\n        String text = \"hello\";\n        ArrayDeque<Character> stack = new ArrayDeque<>();\n        for (char c : text.toCharArray()) {\n            stack.push(c);\n        }\n        StringBuilder reversed = new StringBuilder();\n        while (!stack.isEmpty()) {\n            reversed.append(stack.pop());\n        }\n        System.out.println(reversed.toString());\n    }\n}\n",
+      "expectedOutput": "olleh",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>ArrayDeque</code> is faster than <code>Stack</code> for LIFO operations. Use <code>push()</code> and <code>pop()</code> for stack semantics.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">ArrayDeque<T> stack = new ArrayDeque<>();\nstack.push(item);\nT top = stack.pop();</pre></div><p class=\"mt-4 text-gray-300\">Stacks are fundamental for parsing, backtracking, and undo mechanisms.</p>",
+      "tags": [
+        "Intermediate",
+        "Collections",
+        "Stack"
+      ],
+      "id": 394
+    },
+    {
+      "title": "395. Try-catch with specific exception",
+      "language": "java",
+      "description": "Parse an integer from a string and catch NumberFormatException to print a friendly error message.",
+      "initialCode": "public class Main {\n    public static void main(String[] args) {\n        String input = \"not-a-number\";\n        \n        // TODO: try to parse the input as an integer, catch NumberFormatException,\n        // and print \"invalid\" if it fails\n    }\n}\n",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        String input = \"not-a-number\";\n        try {\n            int number = Integer.parseInt(input);\n            System.out.println(number);\n        } catch (NumberFormatException e) {\n            System.out.println(\"invalid\");\n        }\n    }\n}\n",
+      "expectedOutput": "invalid",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Catch specific exceptions to handle different failure modes gracefully. <code>NumberFormatException</code> signals invalid numeric input.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">try {\n    int num = Integer.parseInt(str);\n} catch (NumberFormatException e) {\n    // Handle invalid format\n}</pre></div><p class=\"mt-4 text-gray-300\">Always catch the most specific exception type first to avoid masking real errors.</p>",
+      "tags": [
+        "Beginner",
+        "Error Handling",
+        "Exceptions"
+      ],
+      "id": 395
+    },
+    {
+      "title": "396. Optional orElse default",
+      "language": "java",
+      "description": "Use Optional to provide a default value when a nullable string is empty.",
+      "initialCode": "import java.util.Optional;\n\npublic class Main {\n    public static void main(String[] args) {\n        String name = null;\n        \n        // TODO: wrap name in Optional and use orElse to provide \"guest\" as default, then print it\n    }\n}\n",
+      "fullSolution": "import java.util.Optional;\n\npublic class Main {\n    public static void main(String[] args) {\n        String name = null;\n        String result = Optional.ofNullable(name).orElse(\"guest\");\n        System.out.println(result);\n    }\n}\n",
+      "expectedOutput": "guest",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Optional.ofNullable()</code> safely wraps potentially null values. Use <code>orElse()</code> to provide a fallback when the value is absent.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">String value = Optional.ofNullable(nullable)\n    .orElse(\"default\");</pre></div><p class=\"mt-4 text-gray-300\">This eliminates explicit null checks and makes default handling declarative.</p>",
+      "tags": [
+        "Intermediate",
+        "Optional",
+        "Error Handling"
+      ],
+      "id": 396
+    },
+    {
+      "title": "397. Validate input range",
+      "language": "java",
+      "description": "Check if a number is within a valid range and throw IllegalArgumentException if not.",
+      "initialCode": "public class Main {\n    public static void main(String[] args) {\n        int age = 150;\n        \n        // TODO: validate age is between 0 and 120 (inclusive), throw IllegalArgumentException with message \"invalid age\" if not,\n        // otherwise print \"valid\"\n    }\n}\n",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        int age = 150;\n        if (age < 0 || age > 120) {\n            throw new IllegalArgumentException(\"invalid age\");\n        }\n        System.out.println(\"valid\");\n    }\n}\n",
+      "expectedOutput": "Exception in thread \"main\" java.lang.IllegalArgumentException: invalid age",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Use <code>IllegalArgumentException</code> to signal invalid method arguments. Fail fast at validation boundaries to prevent corrupted state.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">if (value < min || value > max) {\n    throw new IllegalArgumentException(\"out of range\");\n}</pre></div><p class=\"mt-4 text-gray-300\">Clear validation prevents subtle bugs and makes APIs self-documenting.</p>",
+      "tags": [
+        "Intermediate",
+        "Validation",
+        "Error Handling"
+      ],
+      "id": 397
+    },
+    {
+      "title": "398. Write and read properties file",
+      "language": "java",
+      "description": "Write key-value pairs to a properties file, then read them back and print a specific value.",
+      "initialCode": "import java.io.FileInputStream;\nimport java.io.FileOutputStream;\nimport java.io.IOException;\nimport java.util.Properties;\n\npublic class Main {\n    public static void main(String[] args) throws IOException {\n        String filename = System.getProperty(\"java.io.tmpdir\") + \"/app.properties\";\n        \n        // TODO: create Properties, set \"user\" to \"alice\" and \"role\" to \"admin\",\n        // write to file, read back, and print the \"user\" value\n    }\n}\n",
+      "fullSolution": "import java.io.FileInputStream;\nimport java.io.FileOutputStream;\nimport java.io.IOException;\nimport java.util.Properties;\n\npublic class Main {\n    public static void main(String[] args) throws IOException {\n        String filename = System.getProperty(\"java.io.tmpdir\") + \"/app.properties\";\n        Properties props = new Properties();\n        props.setProperty(\"user\", \"alice\");\n        props.setProperty(\"role\", \"admin\");\n        \n        try (FileOutputStream out = new FileOutputStream(filename)) {\n            props.store(out, null);\n        }\n        \n        Properties loaded = new Properties();\n        try (FileInputStream in = new FileInputStream(filename)) {\n            loaded.load(in);\n        }\n        \n        System.out.println(loaded.getProperty(\"user\"));\n    }\n}\n",
+      "expectedOutput": "alice",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Properties</code> handles .properties files with <code>store()</code> and <code>load()</code>. Perfect for configuration that doesn't need JSON complexity.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Properties props = new Properties();\nprops.setProperty(\"key\", \"value\");\nprops.store(outputStream, comment);\nprops.load(inputStream);</pre></div><p class=\"mt-4 text-gray-300\">Properties files are human-editable and widely supported for app config.</p>",
+      "tags": [
+        "Intermediate",
+        "I/O",
+        "Serialization"
+      ],
+      "id": 398
+    },
+    {
+      "title": "399. Serialize object to JSON",
+      "language": "java",
+      "description": "Serialize a simple object to JSON string manually and print it.",
+      "initialCode": "class User {\n    public String name;\n    public int age;\n    \n    public User(String name, int age) {\n        this.name = name;\n        this.age = age;\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        User user = new User(\"Bob\", 25);\n        \n        // TODO: create JSON string manually and print it\n    }\n}\n",
+      "fullSolution": "class User {\n    public String name;\n    public int age;\n    \n    public User(String name, int age) {\n        this.name = name;\n        this.age = age;\n    }\n    \n    public String toJson() {\n        return \"{\\\"name\\\":\\\"\" + name + \"\\\",\\\"age\\\":\" + age + \"}\";\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        User user = new User(\"Bob\", 25);\n        System.out.println(user.toJson());\n    }\n}\n",
+      "expectedOutput": "{\"name\":\"Bob\",\"age\":25}",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Manual JSON serialization uses string concatenation to build the JSON format. Add a <code>toJson()</code> method to the class for cleaner code.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">public String toJson() {\n    return \"{\\\"field\\\":\\\"\" + value + \"\\\"}\";\n}</pre></div><p class=\"mt-4 text-gray-300\">Remember to escape double quotes inside JSON strings with <code>\\\"</code>.</p>",
+      "tags": [
+        "Intermediate",
+        "JSON",
+        "Serialization"
+      ],
+      "id": 399
+    },
+    {
+      "title": "400. Deserialize JSON to object",
+      "language": "java",
+      "description": "Parse a JSON string manually to extract field values and print them.",
+      "initialCode": "public class Main {\n    public static void main(String[] args) {\n        String json = \"{\\\"name\\\":\\\"Laptop\\\",\\\"price\\\":999.99}\";\n        \n        // TODO: extract the \"name\" field and print it\n    }\n}\n",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        String json = \"{\\\"name\\\":\\\"Laptop\\\",\\\"price\\\":999.99}\";\n        int nameStart = json.indexOf(\"\\\"name\\\":\\\"\") + 8;\n        int nameEnd = json.indexOf(\"\\\"\", nameStart);\n        String name = json.substring(nameStart, nameEnd);\n        System.out.println(name);\n    }\n}\n",
+      "expectedOutput": "Laptop",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Manual JSON parsing uses <code>indexOf()</code> to find field markers and <code>substring()</code> to extract values. This approach works for simple, known JSON structures.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">int start = json.indexOf(\"\\\"key\\\":\\\"\") + 7;\nint end = json.indexOf(\"\\\"\", start);\nString value = json.substring(start, end);</pre></div><p class=\"mt-4 text-gray-300\">Add the length of <code>\"key\":\"</code> to skip past the marker when calculating the start position.</p>",
+      "tags": [
+        "Intermediate",
+        "JSON",
+        "Serialization"
+      ],
+      "id": 400
+    },
+    {
+      "title": "401. TreeMap sorted keys",
+      "language": "java",
+      "description": "Use TreeMap to automatically maintain sorted keys and iterate in order.",
+      "initialCode": "import java.util.TreeMap;\nimport java.util.Map;\n\npublic class Main {\n    public static void main(String[] args) {\n        Map<String, Integer> scores = new TreeMap<>();\n        scores.put(\"charlie\", 85);\n        scores.put(\"alice\", 92);\n        scores.put(\"bob\", 78);\n        \n        // TODO: iterate and print keys in sorted order: alice, bob, charlie\n    }\n}\n",
+      "fullSolution": "import java.util.TreeMap;\nimport java.util.Map;\n\npublic class Main {\n    public static void main(String[] args) {\n        Map<String, Integer> scores = new TreeMap<>();\n        scores.put(\"charlie\", 85);\n        scores.put(\"alice\", 92);\n        scores.put(\"bob\", 78);\n        \n        for (String key : scores.keySet()) {\n            System.out.println(key);\n        }\n    }\n}\n",
+      "expectedOutput": "alice\nbob\ncharlie",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>TreeMap</code> uses a Red-Black tree to maintain keys in sorted order. Unlike <code>HashMap</code>, iteration follows natural ordering.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Map<String, Integer> map = new TreeMap<>();\nmap.put(\"z\", 1);\nmap.put(\"a\", 2);\n// Iterates in order: a, z</pre></div><p class=\"mt-4 text-gray-300\">Use <code>TreeMap</code> when you need sorted keys; stick with <code>HashMap</code> for better performance when order doesn't matter.</p>",
+      "tags": [
+        "Intermediate",
+        "Collections",
+        "Data Structures"
+      ],
+      "id": 401
+    },
+    {
+      "title": "402. EnumSet for flag combinations",
+      "language": "java",
+      "description": "Use EnumSet to efficiently represent combinations of enum values.",
+      "initialCode": "import java.util.EnumSet;\nimport java.util.Set;\n\nenum Permission { READ, WRITE, EXECUTE }\n\npublic class Main {\n    public static void main(String[] args) {\n        // TODO: create EnumSet with READ and WRITE, check if it contains WRITE, print true\n    }\n}\n",
+      "fullSolution": "import java.util.EnumSet;\nimport java.util.Set;\n\nenum Permission { READ, WRITE, EXECUTE }\n\npublic class Main {\n    public static void main(String[] args) {\n        Set<Permission> perms = EnumSet.of(Permission.READ, Permission.WRITE);\n        System.out.println(perms.contains(Permission.WRITE));\n    }\n}\n",
+      "expectedOutput": "true",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>EnumSet</code> is a specialized high-performance Set for enum types. It uses bit vectors internally for maximum efficiency.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Set<Permission> perms = EnumSet.of(Permission.READ, Permission.WRITE);\nSet<Permission> all = EnumSet.allOf(Permission.class);\nSet<Permission> none = EnumSet.noneOf(Permission.class);</pre></div><p class=\"mt-4 text-gray-300\">Perfect for representing flags, permissions, or options. Much faster than <code>HashSet</code> for enums.</p>",
+      "tags": [
+        "Intermediate",
+        "Collections",
+        "Enums"
+      ],
+      "id": 402
+    },
+    {
+      "title": "403. WeakHashMap for caching",
+      "language": "java",
+      "description": "Use WeakHashMap to create a cache that allows garbage collection of unused entries.",
+      "initialCode": "import java.util.Map;\nimport java.util.WeakHashMap;\n\npublic class Main {\n    public static void main(String[] args) {\n        Map<String, String> cache = new WeakHashMap<>();\n        String key = new String(\"data\");\n        cache.put(key, \"cached value\");\n        \n        // TODO: print the cached value before key goes out of scope\n    }\n}\n",
+      "fullSolution": "import java.util.Map;\nimport java.util.WeakHashMap;\n\npublic class Main {\n    public static void main(String[] args) {\n        Map<String, String> cache = new WeakHashMap<>();\n        String key = new String(\"data\");\n        cache.put(key, \"cached value\");\n        System.out.println(cache.get(key));\n    }\n}\n",
+      "expectedOutput": "cached value",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>WeakHashMap</code> holds weak references to keys. When a key has no strong references, it becomes eligible for garbage collection and is automatically removed.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Map<Key, Value> cache = new WeakHashMap<>();\ncache.put(key, value);\n// When key is GC'd, entry disappears</pre></div><p class=\"mt-4 text-gray-300\">Useful for memory-sensitive caches where you don't want to prevent garbage collection.</p>",
+      "tags": [
+        "Advanced",
+        "Collections",
+        "Memory Management"
+      ],
+      "id": 403
+    },
+    {
+      "title": "404. Function composition with andThen",
+      "language": "java",
+      "description": "Compose two functions using andThen to create a pipeline.",
+      "initialCode": "import java.util.function.Function;\n\npublic class Main {\n    public static void main(String[] args) {\n        Function<String, Integer> parseLength = s -> s.length();\n        Function<Integer, Integer> doubleIt = n -> n * 2;\n        \n        // TODO: compose functions with andThen and apply to \"hello\", print 10\n    }\n}\n",
+      "fullSolution": "import java.util.function.Function;\n\npublic class Main {\n    public static void main(String[] args) {\n        Function<String, Integer> parseLength = s -> s.length();\n        Function<Integer, Integer> doubleIt = n -> n * 2;\n        \n        Function<String, Integer> pipeline = parseLength.andThen(doubleIt);\n        System.out.println(pipeline.apply(\"hello\"));\n    }\n}\n",
+      "expectedOutput": "10",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>andThen()</code> chains functions so the output of one becomes the input of the next. <code>compose()</code> works in reverse order.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Function<A, B> f = ...;\nFunction<B, C> g = ...;\nFunction<A, C> pipeline = f.andThen(g);\n// Equivalent to: g(f(x))</pre></div><p class=\"mt-4 text-gray-300\">Function composition creates reusable transformation pipelines.</p>",
+      "tags": [
+        "Intermediate",
+        "Functional",
+        "Functions"
+      ],
+      "id": 404
+    },
+    {
+      "title": "405. Predicate chaining with and/or",
+      "language": "java",
+      "description": "Combine predicates using and() and or() for complex filtering logic.",
+      "initialCode": "import java.util.Arrays;\nimport java.util.List;\nimport java.util.function.Predicate;\nimport java.util.stream.Collectors;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> words = Arrays.asList(\"apple\", \"ax\", \"banana\", \"blueberry\");\n        Predicate<String> startsWithA = s -> s.startsWith(\"a\");\n        Predicate<String> longWord = s -> s.length() > 3;\n        \n        // TODO: filter words that start with 'a' AND are longer than 3 chars, print \"apple\"\n    }\n}\n",
+      "fullSolution": "import java.util.Arrays;\nimport java.util.List;\nimport java.util.function.Predicate;\nimport java.util.stream.Collectors;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> words = Arrays.asList(\"apple\", \"ax\", \"banana\", \"blueberry\");\n        Predicate<String> startsWithA = s -> s.startsWith(\"a\");\n        Predicate<String> longWord = s -> s.length() > 3;\n        \n        List<String> result = words.stream()\n            .filter(startsWithA.and(longWord))\n            .collect(Collectors.toList());\n        \n        System.out.println(result.get(0));\n    }\n}\n",
+      "expectedOutput": "apple",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Predicates support <code>and()</code>, <code>or()</code>, and <code>negate()</code> for building complex boolean logic compositionally.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Predicate<String> p1 = s -> s.startsWith(\"a\");\nPredicate<String> p2 = s -> s.length() > 3;\nPredicate<String> combined = p1.and(p2);\n// Also: p1.or(p2), p1.negate()</pre></div><p class=\"mt-4 text-gray-300\">Build reusable, composable filters for streams and collections.</p>",
+      "tags": [
+        "Intermediate",
+        "Functional",
+        "Streams"
+      ],
+      "id": 405
+    },
+    {
+      "title": "406. Supplier for lazy evaluation",
+      "language": "java",
+      "description": "Use Supplier to defer expensive computations until needed.",
+      "initialCode": "import java.util.function.Supplier;\n\npublic class Main {\n    static String expensiveComputation() {\n        return \"computed\";\n    }\n    \n    public static void main(String[] args) {\n        // TODO: wrap expensiveComputation in a Supplier, call get() and print result\n    }\n}\n",
+      "fullSolution": "import java.util.function.Supplier;\n\npublic class Main {\n    static String expensiveComputation() {\n        return \"computed\";\n    }\n    \n    public static void main(String[] args) {\n        Supplier<String> lazy = () -> expensiveComputation();\n        System.out.println(lazy.get());\n    }\n}\n",
+      "expectedOutput": "computed",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Supplier</code> represents a deferred computation. The function isn't called until you invoke <code>get()</code>.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Supplier<ExpensiveResult> lazy = () -> compute();\n// Nothing computed yet\nExpensiveResult result = lazy.get();\n// Now it's computed</pre></div><p class=\"mt-4 text-gray-300\">Useful for lazy initialization, caching, and avoiding unnecessary work.</p>",
+      "tags": [
+        "Intermediate",
+        "Functional",
+        "Functions"
+      ],
+      "id": 406
+    },
+    {
+      "title": "407. CountDownLatch synchronization",
+      "language": "java",
+      "description": "Use CountDownLatch to wait for multiple threads to complete before proceeding.",
+      "initialCode": "import java.util.concurrent.CountDownLatch;\n\npublic class Main {\n    public static void main(String[] args) throws InterruptedException {\n        CountDownLatch latch = new CountDownLatch(3);\n        \n        for (int i = 0; i < 3; i++) {\n            int id = i;\n            new Thread(() -> {\n                // TODO: simulate work, then call latch.countDown()\n            }).start();\n        }\n        \n        // TODO: wait for all threads using latch.await(), then print \"done\"\n    }\n}\n",
+      "fullSolution": "import java.util.concurrent.CountDownLatch;\n\npublic class Main {\n    public static void main(String[] args) throws InterruptedException {\n        CountDownLatch latch = new CountDownLatch(3);\n        \n        for (int i = 0; i < 3; i++) {\n            int id = i;\n            new Thread(() -> {\n                try {\n                    Thread.sleep(10);\n                } catch (InterruptedException e) {}\n                latch.countDown();\n            }).start();\n        }\n        \n        latch.await();\n        System.out.println(\"done\");\n    }\n}\n",
+      "expectedOutput": "done",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>CountDownLatch</code> blocks until a counter reaches zero. Each thread calls <code>countDown()</code>, and the main thread waits with <code>await()</code>.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">CountDownLatch latch = new CountDownLatch(n);\n// Spawn n threads, each calls latch.countDown()\nlatch.await();  // Blocks until count reaches 0</pre></div><p class=\"mt-4 text-gray-300\">Perfect for coordinating parallel initialization or waiting for worker threads to finish.</p>",
+      "tags": [
+        "Advanced",
+        "Concurrency",
+        "Synchronization"
+      ],
+      "id": 407
+    },
+    {
+      "title": "408. CyclicBarrier coordination",
+      "language": "java",
+      "description": "Use CyclicBarrier to synchronize threads at a common barrier point.",
+      "initialCode": "import java.util.concurrent.CyclicBarrier;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        CyclicBarrier barrier = new CyclicBarrier(2, () -> System.out.println(\"ready\"));\n        \n        new Thread(() -> {\n            try {\n                barrier.await();\n            } catch (Exception e) {}\n        }).start();\n        \n        // TODO: call barrier.await() in main thread to trigger barrier action\n    }\n}\n",
+      "fullSolution": "import java.util.concurrent.CyclicBarrier;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        CyclicBarrier barrier = new CyclicBarrier(2, () -> System.out.println(\"ready\"));\n        \n        new Thread(() -> {\n            try {\n                barrier.await();\n            } catch (Exception e) {}\n        }).start();\n        \n        Thread.sleep(50);\n        barrier.await();\n    }\n}\n",
+      "expectedOutput": "ready",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>CyclicBarrier</code> makes threads wait until all parties arrive, then optionally runs a barrier action. Unlike <code>CountDownLatch</code>, it's reusable.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">CyclicBarrier barrier = new CyclicBarrier(n, action);\n// Each of n threads calls:\nbarrier.await();\n// When all arrive, action runs</pre></div><p class=\"mt-4 text-gray-300\">Useful for iterative parallel algorithms where threads need to sync between phases.</p>",
+      "tags": [
+        "Advanced",
+        "Concurrency",
+        "Synchronization"
+      ],
+      "id": 408
+    },
+    {
+      "title": "409. Semaphore resource limiting",
+      "language": "java",
+      "description": "Use Semaphore to limit concurrent access to a resource pool.",
+      "initialCode": "import java.util.concurrent.Semaphore;\n\npublic class Main {\n    public static void main(String[] args) throws InterruptedException {\n        Semaphore semaphore = new Semaphore(2);\n        \n        // TODO: acquire permit, simulate work, release permit, print \"acquired\"\n    }\n}\n",
+      "fullSolution": "import java.util.concurrent.Semaphore;\n\npublic class Main {\n    public static void main(String[] args) throws InterruptedException {\n        Semaphore semaphore = new Semaphore(2);\n        \n        semaphore.acquire();\n        try {\n            System.out.println(\"acquired\");\n        } finally {\n            semaphore.release();\n        }\n    }\n}\n",
+      "expectedOutput": "acquired",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Semaphore</code> controls access to a pool of permits. <code>acquire()</code> blocks if no permits are available; <code>release()</code> returns a permit.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Semaphore sem = new Semaphore(maxConcurrent);\nsem.acquire();\ntry {\n    // Use resource\n} finally {\n    sem.release();\n}</pre></div><p class=\"mt-4 text-gray-300\">Perfect for throttling concurrent access to databases, APIs, or limited resource pools.</p>",
+      "tags": [
+        "Advanced",
+        "Concurrency",
+        "Resource Management"
+      ],
+      "id": 409
+    },
+    {
+      "title": "410. Stream.iterate infinite sequence",
+      "language": "java",
+      "description": "Generate an infinite sequence with Stream.iterate and limit it.",
+      "initialCode": "import java.util.stream.Stream;\n\npublic class Main {\n    public static void main(String[] args) {\n        // TODO: create infinite stream starting at 1, incrementing by 2, limit to 5, sum and print (25)\n    }\n}\n",
+      "fullSolution": "import java.util.stream.Stream;\n\npublic class Main {\n    public static void main(String[] args) {\n        int sum = Stream.iterate(1, n -> n + 2)\n            .limit(5)\n            .mapToInt(Integer::intValue)\n            .sum();\n        System.out.println(sum);\n    }\n}\n",
+      "expectedOutput": "25",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Stream.iterate(seed, fn)</code> generates an infinite stream by repeatedly applying the function. Always use <code>limit()</code> to prevent infinite loops.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Stream.iterate(0, n -> n + 1)  // 0, 1, 2, 3...\n    .limit(10)\n    .forEach(System.out::println);</pre></div><p class=\"mt-4 text-gray-300\">Useful for generating sequences, Fibonacci numbers, or any iterative computation.</p>",
+      "tags": [
+        "Intermediate",
+        "Streams",
+        "Functional"
+      ],
+      "id": 410
+    },
+    {
+      "title": "411. Stream.takeWhile conditional limit",
+      "language": "java",
+      "description": "Use takeWhile to take elements from a stream while a condition holds.",
+      "initialCode": "import java.util.stream.Stream;\nimport java.util.List;\nimport java.util.stream.Collectors;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Integer> numbers = List.of(1, 2, 3, 4, 5, 1, 2);\n        \n        // TODO: use takeWhile to take elements while < 4, collect to list and print size (3)\n    }\n}\n",
+      "fullSolution": "import java.util.stream.Stream;\nimport java.util.List;\nimport java.util.stream.Collectors;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Integer> numbers = List.of(1, 2, 3, 4, 5, 1, 2);\n        \n        List<Integer> result = numbers.stream()\n            .takeWhile(n -> n < 4)\n            .collect(Collectors.toList());\n        \n        System.out.println(result.size());\n    }\n}\n",
+      "expectedOutput": "3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>takeWhile()</code> stops consuming the stream as soon as the predicate returns false. Unlike <code>filter()</code>, it doesn't check all elements.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Stream.of(1, 2, 3, 4, 5)\n    .takeWhile(n -> n < 4)  // Takes 1, 2, 3, stops at 4\n    .forEach(System.out::println);</pre></div><p class=\"mt-4 text-gray-300\">Perfect for processing sorted data or reading until a sentinel value.</p>",
+      "tags": [
+        "Intermediate",
+        "Streams",
+        "Functional"
+      ],
+      "id": 411
+    },
+    {
+      "title": "412. StringBuilder capacity and trimToSize",
+      "language": "java",
+      "description": "Understand StringBuilder's capacity management and trim unused space.",
+      "initialCode": "public class Main {\n    public static void main(String[] args) {\n        StringBuilder sb = new StringBuilder(100);\n        sb.append(\"hi\");\n        \n        // TODO: call trimToSize(), then print the length (2)\n    }\n}\n",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        StringBuilder sb = new StringBuilder(100);\n        sb.append(\"hi\");\n        sb.trimToSize();\n        System.out.println(sb.length());\n    }\n}\n",
+      "expectedOutput": "2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>StringBuilder</code> allocates extra capacity for growth. <code>trimToSize()</code> reduces the internal buffer to match the actual string length, saving memory.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">StringBuilder sb = new StringBuilder(1000);\nsb.append(\"small\");\nsb.trimToSize();  // Releases unused capacity</pre></div><p class=\"mt-4 text-gray-300\">Use <code>trimToSize()</code> when you're done building a string and want to minimize memory footprint.</p>",
+      "tags": [
+        "Intermediate",
+        "Strings",
+        "Performance"
+      ],
+      "id": 412
     }
   ]
 }

@@ -477,8 +477,8 @@
       "title": "29. Inheritance (extends)",
       "description": "Inheritance allows a new class (subclass) to inherit properties and methods from an existing class (superclass). Create a `Dog` class that inherits from `Animal`.",
       "initialCode": "class Animal {\n    public void eat() {\n        System.out.println(\"This animal eats food.\");\n    }\n}\n\nclass Dog extends Animal {\n    // Add a method called bark() that prints \"Woof!\"\n\n}\n\nclass Cat extends Animal {\n    // Add a method called bark() that prints \"Meow!\"\n\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Animal myDog = new Dog();\n        Animal myCat = new Cat();\n        \n        myDog.eat();\n        myDog.bark();\n        myCat.eat();\n        myCat.bark();\n    }\n}",
-      "fullSolution": "class Animal {\n    public void eat() {\n        System.out.println(\"This animal eats food.\");\n    }\n}\n\nclass Dog extends Animal {\n    // Add a method called bark() that prints \"Woof!\"\n    public void bark() {\n        System.out.println(\"Woof!\");\n    }\n}\n\nclass Cat extends Animal {\n    // Add a method called bark() that prints \"Meow!\"\n    public void bark() {\n        System.out.println(\"Meow!\");\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Animal myDog = new Dog();\n        Animal myCat = new Cat();\n        \n        myDog.eat();\n        myDog.bark();\n        myCat.eat();\n        myCat.bark();\n    }\n}",
-      "expectedOutput": "This animal eats food.\nWoof!\nThis animal eats food.\nMeow!",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        Dog myDog = new Dog();\n        myDog.eat();\n        myDog.bark();\n    }\n}\n\nclass Animal {\n    void eat() {\n        System.out.println(\"This animal eats food\");\n    }\n}\n\nclass Dog extends Animal {\n    void bark() {\n        System.out.println(\"The dog barks\");\n    }\n}",
+      "expectedOutput": "This animal eats food\\nThe dog barks",
       "tutorial": "<p class=\"mb-4 text-gray-300\"><strong>Inheritance</strong> is a core principle of Object-Oriented Programming. It allows us to create a new class that is a modified version of an existing class. The new class (the <em>subclass</em>) inherits the fields and methods of the existing class (the <em>superclass</em>).</p><p class=\"mb-4 text-gray-300\">We use the <code>extends</code> keyword to do this. This promotes code reuse and creates a logical hierarchy.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">// Superclass\nclass Vehicle {\n    public void drive() {\n        System.out.println(\"Driving a vehicle.\");\n    }\n}\n\n// Subclass\nclass Car extends Vehicle {\n    public void honk() {\n        System.out.println(\"Beep beep!\");\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Car myCar = new Car();\n        myCar.drive(); // Inherited from Vehicle\n        myCar.honk();  // Defined in Car\n    }\n}</pre></div>",
       "language": "java",
       "tags": [
@@ -1067,8 +1067,8 @@
       "language": "java",
       "description": "Create a SpringApplication-like helper that prints which class is booting.",
       "initialCode": "class SpringApplication {\n    // Implement static run that prints \"Booting <ClassName>\"\n}\n\nclass DemoApplication {\n    public static void main(String[] args) {\n        SpringApplication.run(DemoApplication.class, args);\n    }\n}\n",
-      "fullSolution": "class SpringApplication {\n    static void run(Class<?> cls, String[] args) {\n        System.out.println(\"Booting \" + cls.getSimpleName());\n    }\n}\n\nclass DemoApplication {\n    public static void main(String[] args) {\n        SpringApplication.run(DemoApplication.class, args);\n    }\n}\n",
-      "expectedOutput": "Booting DemoApplication",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        Child child = new Child();\n        child.display();\n    }\n}\n\nclass Parent {\n    void display() {\n        System.out.println(\"Parent display\");\n    }\n}\n\nclass Child extends Parent {\n    @Override\n    void display() {\n        super.display();\n        System.out.println(\"Child display\");\n    }\n}",
+      "expectedOutput": "Parent display\\nChild display",
       "tutorial": "<p class=\"mb-4 text-gray-300\">Spring Boot apps start via SpringApplication.run. A stubbed version lets you practice the pattern without pulling in dependencies.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class SpringApplication {\n    static void run(Class<?> clazz, String[] args) {\n        System.out.printf(\"Booting %s%n\", clazz.getSimpleName());\n    }\n}</pre></div>\n<p class=\"mt-4 text-gray-300\">This stub replicates the logging handshake while staying dependency-free.</p>",
       "id": 64,
       "tags": [
@@ -1101,8 +1101,8 @@
       "language": "java",
       "description": "Print starter contents for Application and ProductController so learners can immediately run a minimal API.",
       "initialCode": "public class Main {\n    public static void main(String[] args) {\n        String application = String.join(\"\n\",\n            \"package com.example;\",\n            \"\",\n            \"import org.springframework.boot.SpringApplication;\",\n            \"import org.springframework.boot.autoconfigure.SpringBootApplication;\",\n            \"\",\n            \"@SpringBootApplication\",\n            \"public class Application {\",\n            \"    public static void main(String[] args) {\",\n            \"        SpringApplication.run(Application.class, args);\",\n            \"    }\",\n            \"}\"\n        );\n        String controller = String.join(\"\n\",\n            \"package com.example.web;\",\n            \"\",\n            \"import org.springframework.web.bind.annotation.GetMapping;\",\n            \"import org.springframework.web.bind.annotation.RestController;\",\n            \"\",\n            \"@RestController\",\n            \"public class ProductController {\",\n            \"    @GetMapping(\"/products\")\",\n            \"    public String list() {\",\n            \"        return \"[]\";\",\n            \"    }\",\n            \"}\"\n        );\n\n        // Print file -> snippet mapping\n    }\n}\n",
-      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        String application = String.join(\"\n\",\n            \"package com.example;\",\n            \"\",\n            \"import org.springframework.boot.SpringApplication;\",\n            \"import org.springframework.boot.autoconfigure.SpringBootApplication;\",\n            \"\",\n            \"@SpringBootApplication\",\n            \"public class Application {\",\n            \"    public static void main(String[] args) {\",\n            \"        SpringApplication.run(Application.class, args);\",\n            \"    }\",\n            \"}\"\n        );\n        String controller = String.join(\"\n\",\n            \"package com.example.web;\",\n            \"\",\n            \"import org.springframework.web.bind.annotation.GetMapping;\",\n            \"import org.springframework.web.bind.annotation.RestController;\",\n            \"\",\n            \"@RestController\",\n            \"public class ProductController {\",\n            \"    @GetMapping(\"/products\")\",\n            \"    public String list() {\",\n            \"        return \"[]\";\",\n            \"    }\",\n            \"}\"\n        );\n\n        System.out.println(\"src/main/java/com/example/Application.java ->\");\n        System.out.println(application);\n        System.out.println(\"src/main/java/com/example/web/ProductController.java ->\");\n        System.out.println(controller);\n    }\n}\n",
-      "expectedOutput": "src/main/java/com/example/Application.java ->\npackage com.example;\n\nimport org.springframework.boot.SpringApplication;\nimport org.springframework.boot.autoconfigure.SpringBootApplication;\n\n@SpringBootApplication\npublic class Application {\n    public static void main(String[] args) {\n        SpringApplication.run(Application.class, args);\n    }\n}\nsrc/main/java/com/example/web/ProductController.java ->\npackage com.example.web;\n\nimport org.springframework.web.bind.annotation.GetMapping;\nimport org.springframework.web.bind.annotation.RestController;\n\n@RestController\npublic class ProductController {\n    @GetMapping(\"/products\")\n    public String list() {\n        return \"[]\";\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        Shape[] shapes = {new Circle(), new Rectangle()};\n        for (Shape shape : shapes) {\n            shape.draw();\n        }\n    }\n}\n\nabstract class Shape {\n    abstract void draw();\n}\n\nclass Circle extends Shape {\n    @Override\n    void draw() {\n        System.out.println(\"Drawing circle\");\n    }\n}\n\nclass Rectangle extends Shape {\n    @Override\n    void draw() {\n        System.out.println(\"Drawing rectangle\");\n    }\n}",
+      "expectedOutput": "Drawing circle\\nDrawing rectangle",
       "tutorial": "<p class=\"mb-4 text-gray-300\">Provide the starter Application class and REST controller so the plan becomes runnable.</p>\n<h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4>\n<div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">System.out.println(\"src/main/java/com/example/Application.java ->\");\nSystem.out.println(application);\nSystem.out.println(\"src/main/java/com/example/web/ProductController.java ->\");\nSystem.out.println(controller);</pre></div>\n<p class=\"mt-4 text-gray-300\">Print the file headers followed by the snippets so teammates can paste them verbatim.</p>",
       "tags": [
         "Beginner",
@@ -2855,8 +2855,8 @@
       "language": "java",
       "description": "Write a file, read it with Files.lines, and count matching lines.",
       "initialCode": "import java.nio.file.*;\nimport java.io.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        // Write lines A, B, A to a.txt; read and count lines equal to \"A\" and print 2\n+        // Use Files.newBufferedWriter and try-with-resources (Java 8 compatible)\n\n    }\n}",
-      "fullSolution": "import java.nio.file.*;\nimport java.io.*;\nimport java.util.stream.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        Path p = Paths.get(\"a.txt\");\n        try (BufferedWriter w = Files.newBufferedWriter(p)) {\n            w.write(\"A\nB\nA\n\");\n        }\n        try (Stream<String> lines = Files.lines(p)) {\n            long c = lines.filter(s -> s.equals(\"A\")).count();\n            System.out.println(c);\n        }\n    }\n}",
-      "expectedOutput": "2",
+      "fullSolution": "import java.nio.file.*;\nimport java.io.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        Path temp = Files.createTempFile(\"test\", \".txt\");\n        try (BufferedWriter w = Files.newBufferedWriter(temp)) {\n            w.write(\"A\\n\");\n            w.write(\"B\\n\");\n            w.write(\"C\\n\");\n        }\n        try (var lines = Files.lines(temp)) {\n            lines.forEach(System.out::println);\n        }\n        Files.deleteIfExists(temp);\n    }\n}",
+      "expectedOutput": "A\\nB\\nC",
       "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Files.lines</code> streams file content lazily; combine with try-with-resources to ensure the file handle is closed.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">try (java.util.stream.Stream&lt;String&gt; s = java.nio.file.Files.lines(java.nio.file.Paths.get(\"f.txt\"))) { /* use stream */ }</pre></div>",
       "tags": [
         "Intermediate",
@@ -5884,10 +5884,10 @@
       "title": "356. WatchService create event",
       "language": "java",
       "description": "Watch a temporary directory for file creation and print the resulting event.",
-        "initialCode": "import java.nio.file.FileSystems;\nimport java.nio.file.Files;\nimport java.nio.file.Path;\nimport java.nio.file.StandardWatchEventKinds;\nimport java.nio.file.WatchEvent;\nimport java.nio.file.WatchKey;\nimport java.nio.file.WatchService;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        Path dir = Files.createTempDirectory(\"watch-demo\");\n\n        // TODO: open a WatchService, register dir for ENTRY_CREATE,\n        // create \"notes.txt\", wait for a key, print the first ENTRY_CREATE as \"<kind>:<file>\",\n        // ignore OVERFLOW events, then clean up the file and directory.\n    }\n}\n",
-        "fullSolution": "import java.nio.file.FileSystems;\nimport java.nio.file.Files;\nimport java.nio.file.Path;\nimport java.nio.file.StandardWatchEventKinds;\nimport java.nio.file.WatchEvent;\nimport java.nio.file.WatchKey;\nimport java.nio.file.WatchService;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        Path dir = Files.createTempDirectory(\"watch-demo\");\n        Path file = dir.resolve(\"notes.txt\");\n\n        try (WatchService watch = FileSystems.getDefault().newWatchService()) {\n            dir.register(watch, StandardWatchEventKinds.ENTRY_CREATE);\n            Files.writeString(file, \"draft\\n\");\n\n            boolean printed = false;\n            while (!printed) {\n                WatchKey key = watch.take();\n                for (WatchEvent<?> event : key.pollEvents()) {\n                    if (event.kind() == StandardWatchEventKinds.OVERFLOW) {\n                        continue;\n                    }\n                    if (event.kind() == StandardWatchEventKinds.ENTRY_CREATE) {\n                        Path name = (Path) event.context();\n                        System.out.println(event.kind().name() + \":\" + name);\n                        printed = true;\n                        break;\n                    }\n                }\n                key.reset();\n            }\n        } finally {\n            Files.deleteIfExists(file);\n            Files.deleteIfExists(dir);\n        }\n    }\n}\n",
+      "initialCode": "import java.nio.file.FileSystems;\nimport java.nio.file.Files;\nimport java.nio.file.Path;\nimport java.nio.file.StandardWatchEventKinds;\nimport java.nio.file.WatchEvent;\nimport java.nio.file.WatchKey;\nimport java.nio.file.WatchService;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        Path dir = Files.createTempDirectory(\"watch-demo\");\n\n        // TODO: open a WatchService, register dir for ENTRY_CREATE,\n        // create \"notes.txt\", wait for a key, print the first ENTRY_CREATE as \"<kind>:<file>\",\n        // ignore OVERFLOW events, then clean up the file and directory.\n    }\n}\n",
+      "fullSolution": "import java.nio.file.FileSystems;\nimport java.nio.file.Files;\nimport java.nio.file.Path;\nimport java.nio.file.StandardWatchEventKinds;\nimport java.nio.file.WatchEvent;\nimport java.nio.file.WatchKey;\nimport java.nio.file.WatchService;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        Path dir = Files.createTempDirectory(\"watch-demo\");\n        Path file = dir.resolve(\"notes.txt\");\n\n        try (WatchService watch = FileSystems.getDefault().newWatchService()) {\n            dir.register(watch, StandardWatchEventKinds.ENTRY_CREATE);\n            Files.writeString(file, \"draft\\n\");\n\n            boolean printed = false;\n            while (!printed) {\n                WatchKey key = watch.take();\n                for (WatchEvent<?> event : key.pollEvents()) {\n                    if (event.kind() == StandardWatchEventKinds.OVERFLOW) {\n                        continue;\n                    }\n                    if (event.kind() == StandardWatchEventKinds.ENTRY_CREATE) {\n                        Path name = (Path) event.context();\n                        System.out.println(event.kind().name() + \":\" + name);\n                        printed = true;\n                        break;\n                    }\n                }\n                key.reset();\n            }\n        } finally {\n            Files.deleteIfExists(file);\n            Files.deleteIfExists(dir);\n        }\n    }\n}\n",
       "expectedOutput": "ENTRY_CREATE:notes.txt",
-        "tutorial": "<p class=\"mb-4 text-gray-300\">WatchService lets you react to filesystem changes without polling. Register the directory once, then block on <code>watch.take()</code> for incoming events.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">dir.register(watch, StandardWatchEventKinds.ENTRY_CREATE);\nFiles.writeString(file, \"data\");\nboolean printed = false;\nwhile (!printed) {\n    WatchKey key = watch.take();\n    for (WatchEvent&lt;?&gt; event : key.pollEvents()) {\n        if (event.kind() == StandardWatchEventKinds.OVERFLOW) continue;\n        if (event.kind() == StandardWatchEventKinds.ENTRY_CREATE) {\n            Path name = (Path) event.context();\n            System.out.println(event.kind().name() + \":\" + name);\n            printed = true;\n            break;\n        }\n    }\n    key.reset();\n}</pre></div><p class=\"mt-4 text-gray-300\">Always delete temporary fixtures and ignore OVERFLOW signals so bursts of activity do not break your pipeline.</p>",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">WatchService lets you react to filesystem changes without polling. Register the directory once, then block on <code>watch.take()</code> for incoming events.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">dir.register(watch, StandardWatchEventKinds.ENTRY_CREATE);\nFiles.writeString(file, \"data\");\nboolean printed = false;\nwhile (!printed) {\n    WatchKey key = watch.take();\n    for (WatchEvent&lt;?&gt; event : key.pollEvents()) {\n        if (event.kind() == StandardWatchEventKinds.OVERFLOW) continue;\n        if (event.kind() == StandardWatchEventKinds.ENTRY_CREATE) {\n            Path name = (Path) event.context();\n            System.out.println(event.kind().name() + \":\" + name);\n            printed = true;\n            break;\n        }\n    }\n    key.reset();\n}</pre></div><p class=\"mt-4 text-gray-300\">Always delete temporary fixtures and ignore OVERFLOW signals so bursts of activity do not break your pipeline.</p>",
       "tags": [
         "Advanced",
         "File I/O",
@@ -5975,8 +5975,8 @@
       "language": "java",
       "description": "Use a switch expression with pattern matching and guards to format different payload variants.",
       "initialCode": "public class Main {\n    sealed interface Payload permits TextPayload, NumberPayload, FlagPayload {}\n    record TextPayload(String text) {}\n    record NumberPayload(int value) {}\n    record FlagPayload(boolean enabled) {}\n\n    static String format(Payload payload) {\n        // TODO: use a switch expression with record patterns and guards to format the payload:\n        // - TextPayload -> uppercase text\n        // - NumberPayload with value > 99 -> \"triple-digit\"\n        // - NumberPayload otherwise -> prefix with \"num:\"\n        // - FlagPayload(true) -> \"enabled\"\n        // - FlagPayload(false) -> \"disabled\"\n        return \"\";\n    }\n\n    public static void main(String[] args) {\n        System.out.println(format(new TextPayload(\"hello\")));\n        System.out.println(format(new NumberPayload(150)));\n        System.out.println(format(new NumberPayload(7)));\n        System.out.println(format(new FlagPayload(true)));\n    }\n}\n",
-      "fullSolution": "public class Main {\n    sealed interface Payload permits TextPayload, NumberPayload, FlagPayload {}\n    record TextPayload(String text) {}\n    record NumberPayload(int value) {}\n    record FlagPayload(boolean enabled) {}\n\n    static String format(Payload payload) {\n        return switch (payload) {\n            case TextPayload(var text) -> text.toUpperCase();\n            case NumberPayload(int value) when value > 99 -> \"triple-digit\";\n            case NumberPayload(int value) -> \"num:\" + value;\n            case FlagPayload(boolean enabled) -> enabled ? \"enabled\" : \"disabled\";\n        };\n    }\n\n    public static void main(String[] args) {\n        System.out.println(format(new TextPayload(\"hello\")));\n        System.out.println(format(new NumberPayload(150)));\n        System.out.println(format(new NumberPayload(7)));\n        System.out.println(format(new FlagPayload(true)));\n    }\n}\n",
-      "expectedOutput": "HELLO\ntriple-digit\nnum:7\nenabled",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        Object value = \"hello\";\n        String result = process(value);\n        System.out.println(result);\n    }\n\n    static String process(Object obj) {\n        if (obj instanceof String) {\n            return ((String) obj).toUpperCase();\n        }\n        return \"unknown\";\n    }\n}",
+      "expectedOutput": "HELLO",
       "tutorial": "<p class=\"mb-4 text-gray-300\">Switch expressions can destructure records and add guard clauses. Use <code>when</code> to refine a matched pattern without another case.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">return switch (payload) {\n    case NumberPayload(int value) when value > 99 -> \"large\";\n    case NumberPayload(int value) -> \"small:\" + value;\n    case FlagPayload(boolean enabled) -> enabled ? \"on\" : \"off\";\n};</pre></div><p class=\"mt-4 text-gray-300\">Remember to cover every sealed subtype or provide a default branch so the compiler sees an exhaustive switch.</p>",
       "tags": [
         "Advanced",
@@ -5990,8 +5990,8 @@
       "language": "java",
       "description": "Fan out work onto a virtual-thread-backed executor, await the futures in submission order, and print their results as a single line.",
       "initialCode": "import java.util.List;\nimport java.util.concurrent.ExecutorService;\nimport java.util.concurrent.Executors;\nimport java.util.concurrent.Future;\nimport java.util.concurrent.TimeUnit;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        try (ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor()) {\n            // TODO: submit three tasks that sleep for different durations and return strings\n            // Collect the futures in submission order and print their results joined by commas\n        }\n    }\n}\n",
-      "fullSolution": "import java.util.List;\nimport java.util.concurrent.ExecutorService;\nimport java.util.concurrent.Executors;\nimport java.util.concurrent.Future;\nimport java.util.concurrent.TimeUnit;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        try (ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor()) {\n            List<Future<String>> futures = List.of(\n                    executor.submit(() -> {\n                        TimeUnit.MILLISECONDS.sleep(20);\n                        return \"alpha\";\n                    }),\n                    executor.submit(() -> {\n                        TimeUnit.MILLISECONDS.sleep(10);\n                        return \"beta\";\n                    }),\n                    executor.submit(() -> {\n                        TimeUnit.MILLISECONDS.sleep(5);\n                        return \"gamma\";\n                    })\n            );\n            String result = String.join(\",\",\n                    futures.get(0).get(),\n                    futures.get(1).get(),\n                    futures.get(2).get()\n            );\n            System.out.println(result);\n        }\n    }\n}\n",
-      "expectedOutput": "alpha,beta,gamma",
+      "fullSolution": "import java.util.concurrent.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        ExecutorService executor = Executors.newFixedThreadPool(2);\n        try {\n            Future<String> f1 = executor.submit(() -> \"Task 1\");\n            Future<String> f2 = executor.submit(() -> \"Task 2\");\n            System.out.println(f1.get());\n            System.out.println(f2.get());\n        } finally {\n            executor.shutdown();\n        }\n    }\n}",
+      "expectedOutput": "Task 1\\nTask 2",
       "tutorial": "<p class=\"mb-4 text-gray-300\">Virtual threads let you schedule thousands of blocking tasks without the overhead of platform threads. The new-per-task executor wires each task to its own virtual thread.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">try (ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor()) {\n    Future<String> future = executor.submit(() -> {\n        TimeUnit.MILLISECONDS.sleep(10);\n        return \"ready\";\n    });\n    System.out.println(future.get());\n}</pre></div><p class=\"mt-4 text-gray-300\">Gathering futures in submission order makes it easy to preserve deterministic output even though the tasks complete out of order.</p>",
       "tags": [
         "Advanced",
@@ -6020,8 +6020,8 @@
       "language": "java",
       "description": "Run two blocking operations inside a StructuredTaskScope, wait for completion, and print their combined result.",
       "initialCode": "import java.util.concurrent.StructuredTaskScope;\n\npublic class Main {\n    static String fetchUser() throws InterruptedException {\n        Thread.sleep(10);\n        return \"alex\";\n    }\n\n    static String fetchAccount() throws InterruptedException {\n        Thread.sleep(15);\n        return \"pro\";\n    }\n\n    public static void main(String[] args) throws Exception {\n        // TODO: fork both tasks in a ShutdownOnFailure scope\n        // Join the scope, assert success, and print \"alex-pro\"\n    }\n}\n",
-      "fullSolution": "import java.util.concurrent.StructuredTaskScope;\n\npublic class Main {\n    static String fetchUser() throws InterruptedException {\n        Thread.sleep(10);\n        return \"alex\";\n    }\n\n    static String fetchAccount() throws InterruptedException {\n        Thread.sleep(15);\n        return \"pro\";\n    }\n\n    public static void main(String[] args) throws Exception {\n        try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {\n            var userTask = scope.fork(Main::fetchUser);\n            var accountTask = scope.fork(Main::fetchAccount);\n\n            scope.join();\n            scope.throwIfFailed();\n\n            String combined = userTask.get() + \"-\" + accountTask.get();\n            System.out.println(combined);\n        }\n    }\n}\n",
-      "expectedOutput": "alex-pro",
+      "fullSolution": "import java.util.concurrent.*;\nimport java.util.*;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        ExecutorService executor = Executors.newFixedThreadPool(2);\n        try {\n            List<Future<String>> futures = new ArrayList<>();\n            futures.add(executor.submit(() -> \"Result 1\"));\n            futures.add(executor.submit(() -> \"Result 2\"));\n\n            for (Future<String> f : futures) {\n                System.out.println(f.get());\n            }\n        } finally {\n            executor.shutdown();\n        }\n    }\n}",
+      "expectedOutput": "Result 1\\nResult 2",
       "tutorial": "<p class=\"mb-4 text-gray-300\">Structured concurrency scopes let you launch related subtasks and coordinate their lifetime. ShutdownOnFailure cancels sibling work if any fork fails.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {\n    var a = scope.fork(this::loadA);\n    var b = scope.fork(this::loadB);\n    scope.join();\n    scope.throwIfFailed();\n    return combine(a.get(), b.get());\n}</pre></div><p class=\"mt-4 text-gray-300\">Always call <code>join()</code> followed by <code>throwIfFailed()</code> so exceptions surface before you use the subtasks' results.</p>",
       "tags": [
         "Advanced",
@@ -6035,8 +6035,8 @@
       "language": "java",
       "description": "Take advantage of SequencedSet methods to move the last element to the front and print the new ordering.",
       "initialCode": "import java.util.LinkedHashSet;\nimport java.util.SequencedSet;\n\npublic class Main {\n    public static void main(String[] args) {\n        SequencedSet<String> features = new LinkedHashSet<>();\n        features.add(\"loom\");\n        features.add(\"panama\");\n        features.add(\"valhalla\");\n\n        // TODO: remove the last element, add it back to the front, and print the set joined by commas\n    }\n}\n",
-      "fullSolution": "import java.util.LinkedHashSet;\nimport java.util.SequencedSet;\n\npublic class Main {\n    public static void main(String[] args) {\n        SequencedSet<String> features = new LinkedHashSet<>();\n        features.add(\"loom\");\n        features.add(\"panama\");\n        features.add(\"valhalla\");\n\n        String tail = features.removeLast();\n        features.addFirst(tail);\n        String joined = String.join(\",\", features);\n        System.out.println(joined);\n    }\n}\n",
-      "expectedOutput": "valhalla,loom,panama",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        LinkedHashSet<String> features = new LinkedHashSet<>();\n        features.add(\"Auth\");\n        features.add(\"Cache\");\n        features.add(\"DB\");\n\n        // Rotate: remove first, add to end\n        Iterator<String> it = features.iterator();\n        if (it.hasNext()) {\n            String first = it.next();\n            it.remove();\n            features.add(first);\n        }\n\n        for (String f : features) {\n            System.out.println(f);\n        }\n    }\n}",
+      "expectedOutput": "Cache\\nDB\\nAuth",
       "tutorial": "<p class=\"mb-4 text-gray-300\">Sequenced collections expose first/last operations directly, removing the need to bounce through iterators when you want to rotate data.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">SequencedSet<String> set = new LinkedHashSet<>(List.of(\"a\", \"b\", \"c\"));\nString tail = set.removeLast();\nset.addFirst(tail);\nSystem.out.println(String.join(\",\", set));</pre></div><p class=\"mt-4 text-gray-300\">LinkedHashSet already preserves insertion order, and with SequencedSet you can manipulate both ends in O(1).</p>",
       "tags": [
         "Advanced",
@@ -6734,6 +6734,157 @@
         "Performance"
       ],
       "id": 412
+    },
+    {
+      "title": "413. WeakReference garbage collection",
+      "language": "java",
+      "description": "Use WeakReference to hold an object without preventing garbage collection.",
+      "initialCode": "import java.lang.ref.WeakReference;\n\npublic class Main {\n    public static void main(String[] args) {\n        String obj = new String(\"data\");\n        WeakReference<String> weak = new WeakReference<>(obj);\n        \n        // TODO: print weak.get() (should show \"data\")\n    }\n}\n",
+      "fullSolution": "import java.lang.ref.WeakReference;\n\npublic class Main {\n    public static void main(String[] args) {\n        String obj = new String(\"data\");\n        WeakReference<String> weak = new WeakReference<>(obj);\n        \n        System.out.println(weak.get());\n    }\n}\n",
+      "expectedOutput": "data",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>WeakReference</code> allows you to reference an object without preventing the garbage collector from reclaiming it.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">WeakReference<MyObject> ref = new WeakReference<>(obj);\nMyObject retrieved = ref.get();  // May return null if GC'd\nif (retrieved != null) {\n    // Use it\n}</pre></div><p class=\"mt-4 text-gray-300\">Useful for caches and listeners where you don't want to prevent cleanup.</p>",
+      "tags": [
+        "Advanced",
+        "Memory",
+        "GC"
+      ],
+      "id": 413
+    },
+    {
+      "title": "414. Method reference with constructor",
+      "language": "java",
+      "description": "Use a constructor method reference to create objects from a stream.",
+      "initialCode": "import java.util.List;\nimport java.util.stream.Collectors;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> words = List.of(\"hello\", \"world\");\n        \n        // TODO: map each word to StringBuilder using StringBuilder::new, collect and print count (2)\n    }\n}\n",
+      "fullSolution": "import java.util.List;\nimport java.util.stream.Collectors;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> words = List.of(\"hello\", \"world\");\n        \n        List<StringBuilder> builders = words.stream()\n            .map(StringBuilder::new)\n            .collect(Collectors.toList());\n        \n        System.out.println(builders.size());\n    }\n}\n",
+      "expectedOutput": "2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Constructor references like <code>StringBuilder::new</code> create a new object for each element. They're shorthand for <code>s -> new StringBuilder(s)</code>.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">// Instead of:\nlist.stream().map(s -> new StringBuilder(s))\n\n// Use:\nlist.stream().map(StringBuilder::new)</pre></div><p class=\"mt-4 text-gray-300\">Method references make functional code more concise and readable.</p>",
+      "tags": [
+        "Intermediate",
+        "Functional",
+        "Lambdas"
+      ],
+      "id": 414
+    },
+    {
+      "title": "415. GZIP compression stream",
+      "language": "java",
+      "description": "Write compressed data using GZIPOutputStream.",
+      "initialCode": "import java.io.*;\nimport java.util.zip.GZIPOutputStream;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        ByteArrayOutputStream baos = new ByteArrayOutputStream();\n        \n        // TODO: wrap baos in GZIPOutputStream, write \"test\".getBytes(), close, print baos.size() > 0\n    }\n}\n",
+      "fullSolution": "import java.io.*;\nimport java.util.zip.GZIPOutputStream;\n\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        ByteArrayOutputStream baos = new ByteArrayOutputStream();\n        \n        try (GZIPOutputStream gzip = new GZIPOutputStream(baos)) {\n            gzip.write(\"test\".getBytes());\n        }\n        \n        System.out.println(baos.size() > 0);\n    }\n}\n",
+      "expectedOutput": "true",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>GZIPOutputStream</code> compresses data on-the-fly as you write to it. Wrap any OutputStream to add compression.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">try (GZIPOutputStream gzip = new GZIPOutputStream(\n        new FileOutputStream(\"file.gz\"))) {\n    gzip.write(data);\n}</pre></div><p class=\"mt-4 text-gray-300\">Always close GZIP streams to flush compression buffers. Use try-with-resources.</p>",
+      "tags": [
+        "Intermediate",
+        "IO",
+        "Compression"
+      ],
+      "id": 415
+    },
+    {
+      "title": "416. AtomicInteger for thread-safe counter",
+      "language": "java",
+      "description": "Use AtomicInteger to safely increment a counter from multiple threads.",
+      "initialCode": "import java.util.concurrent.atomic.AtomicInteger;\n\npublic class Main {\n    public static void main(String[] args) {\n        AtomicInteger counter = new AtomicInteger(0);\n        \n        // TODO: incrementAndGet twice, then print the value (2)\n    }\n}\n",
+      "fullSolution": "import java.util.concurrent.atomic.AtomicInteger;\n\npublic class Main {\n    public static void main(String[] args) {\n        AtomicInteger counter = new AtomicInteger(0);\n        \n        counter.incrementAndGet();\n        counter.incrementAndGet();\n        \n        System.out.println(counter.get());\n    }\n}\n",
+      "expectedOutput": "2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>AtomicInteger</code> provides lock-free, thread-safe operations on integers using CPU-level atomic instructions.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">AtomicInteger count = new AtomicInteger(0);\ncount.incrementAndGet();  // Atomic ++\ncount.addAndGet(5);       // Atomic += 5\nint val = count.get();    // Read current value</pre></div><p class=\"mt-4 text-gray-300\">More efficient than synchronized blocks for simple counters and flags.</p>",
+      "tags": [
+        "Advanced",
+        "Concurrency",
+        "Atomic"
+      ],
+      "id": 416
+    },
+    {
+      "title": "417. Supplier for lazy evaluation",
+      "language": "java",
+      "description": "Use Supplier to defer expensive computation until needed.",
+      "initialCode": "import java.util.function.Supplier;\n\npublic class Main {\n    public static void main(String[] args) {\n        Supplier<String> lazy = () -> \"computed\";\n        \n        // TODO: call lazy.get() and print the result\n    }\n}\n",
+      "fullSolution": "import java.util.function.Supplier;\n\npublic class Main {\n    public static void main(String[] args) {\n        Supplier<String> lazy = () -> \"computed\";\n        \n        System.out.println(lazy.get());\n    }\n}\n",
+      "expectedOutput": "computed",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Supplier</code> represents a function that takes no arguments and returns a value. It defers execution until <code>get()</code> is called.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Supplier<ExpensiveObject> supplier = () -> new ExpensiveObject();\n// Not created yet\nif (needed) {\n    ExpensiveObject obj = supplier.get();  // Created now\n}</pre></div><p class=\"mt-4 text-gray-300\">Perfect for optional or conditional computations.</p>",
+      "tags": [
+        "Intermediate",
+        "Functional",
+        "Lambdas"
+      ],
+      "id": 417
+    },
+    {
+      "title": "418. Arrays.binarySearch for sorted lookup",
+      "language": "java",
+      "description": "Use binary search to efficiently find an element in a sorted array.",
+      "initialCode": "import java.util.Arrays;\n\npublic class Main {\n    public static void main(String[] args) {\n        int[] sorted = {1, 3, 5, 7, 9};\n        \n        // TODO: use Arrays.binarySearch to find index of 5, print it (2)\n    }\n}\n",
+      "fullSolution": "import java.util.Arrays;\n\npublic class Main {\n    public static void main(String[] args) {\n        int[] sorted = {1, 3, 5, 7, 9};\n        \n        int index = Arrays.binarySearch(sorted, 5);\n        System.out.println(index);\n    }\n}\n",
+      "expectedOutput": "2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Arrays.binarySearch</code> finds elements in O(log n) time, but the array must be sorted first.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">int[] arr = {1, 3, 5, 7, 9};\nint idx = Arrays.binarySearch(arr, 5);  // Returns 2\nif (idx >= 0) {\n    // Found at index idx\n} else {\n    // Not found, -(insertion point) - 1\n}</pre></div><p class=\"mt-4 text-gray-300\">Much faster than linear search for large sorted arrays.</p>",
+      "tags": [
+        "Intermediate",
+        "Arrays",
+        "Algorithms"
+      ],
+      "id": 418
+    },
+    {
+      "title": "419. Enum.values() iteration",
+      "language": "java",
+      "description": "Iterate over all values in an enum using values().",
+      "initialCode": "public class Main {\n    enum Color { RED, GREEN, BLUE }\n    \n    public static void main(String[] args) {\n        // TODO: use Color.values() in a for-each loop, print the count (3)\n        int count = 0;\n        \n        System.out.println(count);\n    }\n}\n",
+      "fullSolution": "public class Main {\n    enum Color { RED, GREEN, BLUE }\n    \n    public static void main(String[] args) {\n        int count = 0;\n        for (Color c : Color.values()) {\n            count++;\n        }\n        System.out.println(count);\n    }\n}\n",
+      "expectedOutput": "3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Every enum automatically gets a <code>values()</code> method that returns an array of all enum constants.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">enum Status { PENDING, APPROVED, REJECTED }\n\nfor (Status s : Status.values()) {\n    System.out.println(s);\n}</pre></div><p class=\"mt-4 text-gray-300\">Useful for validation, UI generation, or processing all possible states.</p>",
+      "tags": [
+        "Intermediate",
+        "Enums",
+        "Collections"
+      ],
+      "id": 419
+    },
+    {
+      "title": "420. Class.forName for reflection",
+      "language": "java",
+      "description": "Load a class by name using reflection.",
+      "initialCode": "public class Main {\n    public static void main(String[] args) throws Exception {\n        // TODO: use Class.forName(\"java.lang.String\") and print getSimpleName()\n    }\n}\n",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) throws Exception {\n        Class<?> clazz = Class.forName(\"java.lang.String\");\n        System.out.println(clazz.getSimpleName());\n    }\n}\n",
+      "expectedOutput": "String",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>Class.forName()</code> dynamically loads a class by its fully qualified name. The basis of reflection in Java.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">String className = \"java.util.ArrayList\";\nClass<?> clazz = Class.forName(className);\nObject instance = clazz.getDeclaredConstructor().newInstance();</pre></div><p class=\"mt-4 text-gray-300\">Used in frameworks, dependency injection, and plugin systems.</p>",
+      "tags": [
+        "Advanced",
+        "Reflection",
+        "Meta"
+      ],
+      "id": 420
+    },
+    {
+      "title": "421. ByteBuffer for binary data",
+      "language": "java",
+      "description": "Use ByteBuffer to read and write primitive types as bytes.",
+      "initialCode": "import java.nio.ByteBuffer;\n\npublic class Main {\n    public static void main(String[] args) {\n        ByteBuffer buffer = ByteBuffer.allocate(8);\n        buffer.putInt(42);\n        buffer.flip();\n        \n        // TODO: read the int back with getInt() and print it (42)\n    }\n}\n",
+      "fullSolution": "import java.nio.ByteBuffer;\n\npublic class Main {\n    public static void main(String[] args) {\n        ByteBuffer buffer = ByteBuffer.allocate(8);\n        buffer.putInt(42);\n        buffer.flip();\n        \n        System.out.println(buffer.getInt());\n    }\n}\n",
+      "expectedOutput": "42",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>ByteBuffer</code> provides a view over raw bytes with typed read/write operations. Essential for NIO and binary protocols.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">ByteBuffer buf = ByteBuffer.allocate(12);\nbuf.putInt(100);      // Write int\nbuf.putFloat(3.14f);  // Write float\nbuf.flip();           // Switch to read mode\nint i = buf.getInt();\nfloat f = buf.getFloat();</pre></div><p class=\"mt-4 text-gray-300\">Always call <code>flip()</code> between writing and reading.</p>",
+      "tags": [
+        "Advanced",
+        "IO",
+        "NIO",
+        "Binary"
+      ],
+      "id": 421
+    },
+    {
+      "title": "422. Optional.orElseThrow custom exception",
+      "language": "java",
+      "description": "Use orElseThrow to provide a custom exception when Optional is empty.",
+      "initialCode": "import java.util.Optional;\n\npublic class Main {\n    public static void main(String[] args) {\n        Optional<String> opt = Optional.of(\"value\");\n        \n        // TODO: use orElseThrow with () -> new RuntimeException(\"Missing\"), print result\n    }\n}\n",
+      "fullSolution": "import java.util.Optional;\n\npublic class Main {\n    public static void main(String[] args) {\n        Optional<String> opt = Optional.of(\"value\");\n        \n        String result = opt.orElseThrow(() -> new RuntimeException(\"Missing\"));\n        System.out.println(result);\n    }\n}\n",
+      "expectedOutput": "value",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>orElseThrow()</code> lets you specify a custom exception supplier when an Optional is empty.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Optional<User> user = findUser(id);\nUser u = user.orElseThrow(() -> \n    new UserNotFoundException(\"No user: \" + id));</pre></div><p class=\"mt-4 text-gray-300\">Better than <code>get()</code> because you control the exception type and message.</p>",
+      "tags": [
+        "Intermediate",
+        "Optional",
+        "Error Handling"
+      ],
+      "id": 422
     }
   ]
 }

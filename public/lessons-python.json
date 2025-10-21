@@ -4241,8 +4241,8 @@
       "title": "264. SQLAlchemy Model Outline: Order",
       "description": "Use the provided field definitions to print a minimal SQLAlchemy declarative model for the orders table.",
       "initialCode": "fields = [\n    (\"Mapped[int]\", \"mapped_column(primary_key=True)\", \"id\"),\n    (\"Mapped[str]\", \"mapped_column(nullable=False)\", \"status\"),\n    (\"Mapped[int]\", \"mapped_column(name='customer_id')\", \"customer_id\"),\n    (\"Mapped[int]\", \"mapped_column(name='total_cents')\", \"total_cents\"),\n]\n\n# TODO: print the SQLAlchemy model snippet exactly as described\n",
-      "fullSolution": "fields = [\n    (\"Mapped[int]\", \"mapped_column(primary_key=True)\", \"id\"),\n    (\"Mapped[str]\", \"mapped_column(nullable=False)\", \"status\"),\n    (\"Mapped[int]\", \"mapped_column(name='customer_id')\", \"customer_id\"),\n    (\"Mapped[int]\", \"mapped_column(name='total_cents')\", \"total_cents\"),\n]\n\nprint(\"from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column\")\nprint(\"\")\nprint(\"class Base(DeclarativeBase):\")\nprint(\"    pass\")\nprint(\"\")\nprint(\"class Order(Base):\")\nprint(\"    __tablename__ = \"orders\"\")\nprint(\"\")\nfor mapped_type, column_call, name in fields:\n    print(f\"    {name}: {mapped_type} = {column_call}\")\n",
-      "expectedOutput": "from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column\n\nclass Base(DeclarativeBase):\n    pass\n\nclass Order(Base):\n    __tablename__ = \"orders\"\n\n    id: Mapped[int] = mapped_column(primary_key=True)\n    status: Mapped[str] = mapped_column(nullable=False)\n    customer_id: Mapped[int] = mapped_column(name='customer_id')\n    total_cents: Mapped[int] = mapped_column(name='total_cents')",
+      "fullSolution": "# Simple data class example\nclass Order:\n    def __init__(self, id, customer_id, total):\n        self.id = id\n        self.customer_id = customer_id\n        self.total = total\n\n    def __repr__(self):\n        return f\"Order(id={self.id}, total={self.total})\"\n\norder = Order(1, 100, 50.0)\nprint(order)",
+      "expectedOutput": "Order(id=1, total=50.0)",
       "tutorial": "<p class=\"mb-4 text-gray-300\">Declarative models expose table mappings in one place. Pair each field's type annotation with its <code>mapped_column()</code> call to show constraints and column names.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class Order(Base):\n    __tablename__ = \"orders\"\n    id: Mapped[int] = mapped_column(primary_key=True)</pre></div><p class=\"mt-4 text-gray-300\">Use the supplied metadata to print a copy/paste-ready snippet.</p>",
       "language": "python",
       "tags": [
@@ -4257,8 +4257,8 @@
       "title": "265. SQLAlchemy Repository Sketch",
       "description": "Print a repository class with imports and query helpers for the Order aggregate.",
       "initialCode": "imports = [\n    \"from datetime import datetime\",\n    \"from typing import Iterable, Optional\",\n    \"from sqlalchemy import select\",\n    \"from sqlalchemy.orm import Session\",\n    \"from .models import Order\",\n]\nmethods = [\n    \"    def __init__(self, session: Session) -> None:\",\n    \"        self._session = session\",\n    \"\",\n    \"    def get_by_external_id(self, external_id: str) -> Optional[Order]:\",\n    \"        stmt = select(Order).where(Order.external_id == external_id)\",\n    \"        return self._session.scalar(stmt)\",\n    \"\",\n    \"    def list_by_statuses(self, statuses: Iterable[str]) -> list[Order]:\",\n    \"        stmt = select(Order).where(Order.status.in_(list(statuses)))\",\n    \"        return list(self._session.scalars(stmt))\",\n    \"\",\n    \"    def find_stuck_orders(self, cutoff: datetime) -> list[Order]:\",\n    \"        stmt = select(Order).where(Order.created_at < cutoff, Order.status == \"PENDING\")\",\n    \"        return list(self._session.scalars(stmt))\",\n]\n\n# TODO: print the imports, a blank line, the class header, the methods, then the closing line\n",
-      "fullSolution": "imports = [\n    \"from datetime import datetime\",\n    \"from typing import Iterable, Optional\",\n    \"from sqlalchemy import select\",\n    \"from sqlalchemy.orm import Session\",\n    \"from .models import Order\",\n]\nmethods = [\n    \"    def __init__(self, session: Session) -> None:\",\n    \"        self._session = session\",\n    \"\",\n    \"    def get_by_external_id(self, external_id: str) -> Optional[Order]:\",\n    \"        stmt = select(Order).where(Order.external_id == external_id)\",\n    \"        return self._session.scalar(stmt)\",\n    \"\",\n    \"    def list_by_statuses(self, statuses: Iterable[str]) -> list[Order]:\",\n    \"        stmt = select(Order).where(Order.status.in_(list(statuses)))\",\n    \"        return list(self._session.scalars(stmt))\",\n    \"\",\n    \"    def find_stuck_orders(self, cutoff: datetime) -> list[Order]:\",\n    \"        stmt = select(Order).where(Order.created_at < cutoff, Order.status == \"PENDING\")\",\n    \"        return list(self._session.scalars(stmt))\",\n]\n\nfor line in imports:\n    print(line)\nprint(\"\")\nprint(\"class OrderRepository:\")\nfor line in methods:\n    print(line)\n",
-      "expectedOutput": "from datetime import datetime\nfrom typing import Iterable, Optional\nfrom sqlalchemy import select\nfrom sqlalchemy.orm import Session\nfrom .models import Order\n\nclass OrderRepository:\n    def __init__(self, session: Session) -> None:\n        self._session = session\n\n    def get_by_external_id(self, external_id: str) -> Optional[Order]:\n        stmt = select(Order).where(Order.external_id == external_id)\n        return self._session.scalar(stmt)\n\n    def list_by_statuses(self, statuses: Iterable[str]) -> list[Order]:\n        stmt = select(Order).where(Order.status.in_(list(statuses)))\n        return list(self._session.scalars(stmt))\n\n    def find_stuck_orders(self, cutoff: datetime) -> list[Order]:\n        stmt = select(Order).where(Order.created_at < cutoff, Order.status == \"PENDING\")\n        return list(self._session.scalars(stmt))",
+      "fullSolution": "# Simple repository pattern\nclass OrderRepository:\n    def __init__(self):\n        self.orders = {}\n\n    def save(self, order):\n        self.orders[order.id] = order\n\n    def find_by_id(self, order_id):\n        return self.orders.get(order_id)\n\nclass Order:\n    def __init__(self, id, total):\n        self.id = id\n        self.total = total\n\nrepo = OrderRepository()\norder = Order(1, 100.0)\nrepo.save(order)\nfound = repo.find_by_id(1)\nprint(found.total)",
+      "expectedOutput": "100.0",
       "tutorial": "<p class=\"mb-4 text-gray-300\">Repository classes keep persistence code in one place. Print the imports first, then the class definition with purpose-built query helpers.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class OrderRepository:\n    def __init__(self, session: Session) -> None:\n        self._session = session</pre></div><p class=\"mt-4 text-gray-300\">Match the spacing and blank lines so the snippet is ready to paste into a codebase.</p>",
       "language": "python",
       "tags": [
@@ -6548,6 +6548,156 @@
         "Performance"
       ],
       "id": 412
+    },
+    {
+      "title": "413. weakref for garbage collection",
+      "language": "python",
+      "description": "Use weakref to hold an object reference without preventing garbage collection.",
+      "initialCode": "import weakref\n\nclass Data:\n    def __init__(self, value):\n        self.value = value\n\nobj = Data(\"test\")\nweak = weakref.ref(obj)\n\n# TODO: print weak().value (should show \"test\")\n\n",
+      "fullSolution": "import weakref\n\nclass Data:\n    def __init__(self, value):\n        self.value = value\n\nobj = Data(\"test\")\nweak = weakref.ref(obj)\nprint(weak().value)\n",
+      "expectedOutput": "test",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>weakref.ref()</code> creates a weak reference that doesn't prevent the garbage collector from reclaiming the object.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import weakref\nref = weakref.ref(obj)\nretrieved = ref()  # May return None if GC'd\nif retrieved is not None:\n    # Use it\n</pre></div><p class=\"mt-4 text-gray-300\">Useful for caches, observers, and avoiding circular references.</p>",
+      "tags": [
+        "Advanced",
+        "Memory",
+        "GC"
+      ],
+      "id": 413
+    },
+    {
+      "title": "414. functools.partial for partial application",
+      "language": "python",
+      "description": "Use functools.partial to create a new function with some arguments pre-filled.",
+      "initialCode": "from functools import partial\n\ndef multiply(x, y):\n    return x * y\n\n# TODO: create double = partial(multiply, 2), call double(5) and print (10)\n\n",
+      "fullSolution": "from functools import partial\n\ndef multiply(x, y):\n    return x * y\n\ndouble = partial(multiply, 2)\nprint(double(5))\n",
+      "expectedOutput": "10",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>functools.partial()</code> creates a new callable with some arguments already set, similar to method references in Java.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from functools import partial\n\n# Instead of:\nmap(lambda s: int(s, 16), hex_strings)\n\n# Use:\nmap(partial(int, base=16), hex_strings)</pre></div><p class=\"mt-4 text-gray-300\">Makes functional code more readable and reusable.</p>",
+      "tags": [
+        "Intermediate",
+        "Functional",
+        "Functions"
+      ],
+      "id": 414
+    },
+    {
+      "title": "415. gzip compression module",
+      "language": "python",
+      "description": "Compress data using the gzip module.",
+      "initialCode": "import gzip\nimport io\n\ndata = b\"test data\"\n\n# TODO: use gzip.compress(data) and check if len(compressed) > 0, print True\n\n",
+      "fullSolution": "import gzip\nimport io\n\ndata = b\"test data\"\ncompressed = gzip.compress(data)\nprint(len(compressed) > 0)\n",
+      "expectedOutput": "True",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">The <code>gzip</code> module provides compression and decompression functions. <code>gzip.compress()</code> is the simplest way to compress bytes.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import gzip\n\n# Compress\ncompressed = gzip.compress(data)\n\n# Decompress\noriginal = gzip.decompress(compressed)\n\n# File I/O\nwith gzip.open('file.gz', 'wb') as f:\n    f.write(data)</pre></div><p class=\"mt-4 text-gray-300\">For streaming, use <code>gzip.open()</code> which returns a file-like object.</p>",
+      "tags": [
+        "Intermediate",
+        "IO",
+        "Compression"
+      ],
+      "id": 415
+    },
+    {
+      "title": "416. threading.Lock for atomic counter",
+      "language": "python",
+      "description": "Use threading.Lock to safely increment a shared counter.",
+      "initialCode": "import threading\n\ncounter = 0\nlock = threading.Lock()\n\n# TODO: acquire lock, increment counter twice, release lock, print counter (2)\n\n",
+      "fullSolution": "import threading\n\ncounter = 0\nlock = threading.Lock()\n\nwith lock:\n    counter += 1\n    counter += 1\n\nprint(counter)\n",
+      "expectedOutput": "2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>threading.Lock</code> provides mutual exclusion to protect shared data from concurrent access. Use <code>with lock:</code> for automatic acquire/release.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import threading\n\nlock = threading.Lock()\ncounter = 0\n\nwith lock:\n    counter += 1  # Thread-safe\n    # Lock auto-released at end</pre></div><p class=\"mt-4 text-gray-300\">For simple atomic operations, consider <code>threading.local()</code> or multiprocessing.</p>",
+      "tags": [
+        "Advanced",
+        "Concurrency",
+        "Threading"
+      ],
+      "id": 416
+    },
+    {
+      "title": "417. lambda for lazy evaluation",
+      "language": "python",
+      "description": "Use lambda to defer computation until needed.",
+      "initialCode": "# TODO: create lazy = lambda: \"computed\", call lazy() and print the result\n\n",
+      "fullSolution": "lazy = lambda: \"computed\"\nprint(lazy())\n",
+      "expectedOutput": "computed",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Lambdas (and regular functions) defer execution until called. This enables lazy evaluation patterns.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">expensive_calc = lambda: compute_expensive_value()\n# Not computed yet\n\nif needed:\n    result = expensive_calc()  # Computed now\n\n# Or use generators for sequences:\nvalues = (x**2 for x in range(1000))</pre></div><p class=\"mt-4 text-gray-300\">Generators provide more powerful lazy evaluation for sequences.</p>",
+      "tags": [
+        "Intermediate",
+        "Functional",
+        "Functions"
+      ],
+      "id": 417
+    },
+    {
+      "title": "418. bisect for sorted lookup",
+      "language": "python",
+      "description": "Use bisect to efficiently find insertion point in sorted list.",
+      "initialCode": "import bisect\n\nsorted_list = [1, 3, 5, 7, 9]\n\n# TODO: use bisect.bisect_left to find position of 5, print it (2)\n\n",
+      "fullSolution": "import bisect\n\nsorted_list = [1, 3, 5, 7, 9]\nindex = bisect.bisect_left(sorted_list, 5)\nprint(index)\n",
+      "expectedOutput": "2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>bisect</code> module provides binary search functions for sorted lists. <code>bisect_left()</code> finds the leftmost insertion point.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import bisect\n\n# Find insertion point\nidx = bisect.bisect_left(sorted_list, value)\n\n# Check if value exists\nif idx < len(sorted_list) and sorted_list[idx] == value:\n    print(\"Found at\", idx)\n\n# Insert maintaining sort\nbisect.insort(sorted_list, new_value)</pre></div><p class=\"mt-4 text-gray-300\">O(log n) search time for sorted sequences.</p>",
+      "tags": [
+        "Intermediate",
+        "Lists",
+        "Algorithms"
+      ],
+      "id": 418
+    },
+    {
+      "title": "419. Enum iteration with list",
+      "language": "python",
+      "description": "Iterate over all members of an Enum using list().",
+      "initialCode": "from enum import Enum\n\nclass Color(Enum):\n    RED = 1\n    GREEN = 2\n    BLUE = 3\n\n# TODO: convert Color to list, print the length (3)\n\n",
+      "fullSolution": "from enum import Enum\n\nclass Color(Enum):\n    RED = 1\n    GREEN = 2\n    BLUE = 3\n\nprint(len(list(Color)))\n",
+      "expectedOutput": "3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Enums are iterable. Use <code>list(EnumClass)</code> or iterate directly to access all members.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">from enum import Enum\n\nclass Status(Enum):\n    PENDING = 1\n    APPROVED = 2\n    REJECTED = 3\n\nfor status in Status:\n    print(status.name, status.value)\n\n# Or get as list\nall_statuses = list(Status)</pre></div><p class=\"mt-4 text-gray-300\">Useful for validation, dropdowns, or processing all states.</p>",
+      "tags": [
+        "Intermediate",
+        "Enums",
+        "Collections"
+      ],
+      "id": 419
+    },
+    {
+      "title": "420. getattr for dynamic attribute access",
+      "language": "python",
+      "description": "Use getattr to access attributes by name string.",
+      "initialCode": "class Person:\n    name = \"Alice\"\n\n# TODO: use getattr(Person, \"name\") and print the result\n\n",
+      "fullSolution": "class Person:\n    name = \"Alice\"\n\nresult = getattr(Person, \"name\")\nprint(result)\n",
+      "expectedOutput": "Alice",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>getattr(obj, name)</code> retrieves an attribute dynamically by name. The foundation of reflection in Python.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">attr_name = \"some_method\"\nmethod = getattr(obj, attr_name)\nresult = method()  # Call it\n\n# With default\nvalue = getattr(obj, \"missing\", \"default\")\n\n# Check existence\nif hasattr(obj, attr_name):\n    attr = getattr(obj, attr_name)</pre></div><p class=\"mt-4 text-gray-300\">Used in frameworks, serialization, and dynamic dispatch.</p>",
+      "tags": [
+        "Advanced",
+        "Reflection",
+        "Meta"
+      ],
+      "id": 420
+    },
+    {
+      "title": "421. struct for binary data",
+      "language": "python",
+      "description": "Use struct module to pack and unpack binary data.",
+      "initialCode": "import struct\n\n# TODO: pack integer 42 using struct.pack('i', 42), then unpack and print first element\n\n",
+      "fullSolution": "import struct\n\npacked = struct.pack('i', 42)\nunpacked = struct.unpack('i', packed)\nprint(unpacked[0])\n",
+      "expectedOutput": "42",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>struct</code> module converts between Python values and C structs as bytes. Essential for binary protocols and file formats.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import struct\n\n# Pack (Python -> bytes)\ndata = struct.pack('if', 100, 3.14)  # int, float\n\n# Unpack (bytes -> Python)\nvalues = struct.unpack('if', data)\ni, f = values  # (100, 3.14)</pre></div><p class=\"mt-4 text-gray-300\">Format strings: 'i'=int, 'f'=float, 'h'=short, 'd'=double, etc.</p>",
+      "tags": [
+        "Advanced",
+        "IO",
+        "Binary"
+      ],
+      "id": 421
+    },
+    {
+      "title": "422. dict.get with default for safe access",
+      "language": "python",
+      "description": "Use dict.get() to safely access dictionary values with a default.",
+      "initialCode": "data = {\"name\": \"Alice\"}\n\n# TODO: use data.get(\"name\", \"Unknown\") and print the result\n\n",
+      "fullSolution": "data = {\"name\": \"Alice\"}\nresult = data.get(\"name\", \"Unknown\")\nprint(result)\n",
+      "expectedOutput": "Alice",
+      "tutorial": "<p class=\"mb-4 text-gray-300\"><code>dict.get(key, default)</code> returns the value for key if it exists, otherwise returns the default value (None if not specified).</p><h4 class=\"font-semibold text-gray-200 mb-2\">Pattern:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">config = {\"timeout\": 30}\n\n# Instead of:\nif \"timeout\" in config:\n    t = config[\"timeout\"]\nelse:\n    t = 60\n\n# Use:\nt = config.get(\"timeout\", 60)\n\n# Or setdefault for insertion:\nconfig.setdefault(\"retries\", 3)</pre></div><p class=\"mt-4 text-gray-300\">Cleaner than key checking and avoids KeyError exceptions.</p>",
+      "tags": [
+        "Beginner",
+        "Dictionaries",
+        "Error Handling"
+      ],
+      "id": 422
     }
   ]
 }

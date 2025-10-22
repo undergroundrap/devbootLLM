@@ -7118,6 +7118,381 @@
         "OOP",
         "Design Patterns"
       ]
+    },
+    {
+      "id": 451,
+      "title": "451. Observer pattern with listeners",
+      "description": "Learn how to implement the Observer pattern in Python",
+      "initialCode": "class Observer:\n    def update(self, message):\n        pass\n\nclass Subject:\n    def __init__(self):\n        self._observers = []\n\n    # TODO: Implement attach, detach, notify methods\n\n# TODO: Create concrete observers\n# TODO: Test observer pattern\n",
+      "fullSolution": "class Observer:\n    def update(self, message):\n        pass\n\nclass Subject:\n    def __init__(self):\n        self._observers = []\n\n    def attach(self, observer):\n        self._observers.append(observer)\n\n    def detach(self, observer):\n        self._observers.remove(observer)\n\n    def notify(self, message):\n        for observer in self._observers:\n            observer.update(message)\n\nclass EmailNotifier(Observer):\n    def __init__(self, name):\n        self.name = name\n\n    def update(self, message):\n        print(f\"{self.name} received email: {message}\")\n\nclass SMSNotifier(Observer):\n    def __init__(self, name):\n        self.name = name\n\n    def update(self, message):\n        print(f\"{self.name} received SMS: {message}\")\n\n# Test\nsubject = Subject()\n\nemail = EmailNotifier(\"Alice\")\nsms = SMSNotifier(\"Bob\")\n\nsubject.attach(email)\nsubject.attach(sms)\n\nsubject.notify(\"New message available\")\n\nsubject.detach(email)\nsubject.notify(\"Another update\")\n",
+      "expectedOutput": "Alice received email: New message available\nBob received SMS: New message available\nBob received SMS: Another update",
+      "tutorial": "# Observer Pattern with Listeners\n\nDefine one-to-many dependency for automatic notifications.\n\n## Pattern\n\n```python\nclass Subject:\n    def __init__(self):\n        self._observers = []\n\n    def attach(self, observer):\n        self._observers.append(observer)\n\n    def notify(self, event):\n        for observer in self._observers:\n            observer.update(event)\n\nclass Observer:\n    def update(self, event):\n        # Handle event\n        pass\n```\n\n## Example with Properties\n\n```python\nclass Observable:\n    def __init__(self):\n        self._observers = []\n        self._value = None\n\n    @property\n    def value(self):\n        return self._value\n\n    @value.setter\n    def value(self, val):\n        self._value = val\n        self.notify(val)\n```\n\n## Using Python's Built-in Support\n\n```python\n# With descriptors\nclass ObservableProperty:\n    def __set__(self, obj, value):\n        obj._notify_observers(value)\n```\n\n## Benefits\n\n- Loose coupling\n- Dynamic subscriptions\n- Event-driven architecture\n- Multiple observers\n\n## Best Practices\n\n- Use weakref to avoid circular references\n- Consider threading.Event for sync\n- Add event types/filtering\n- Use dataclasses for events\n\n## When to Use\n\n- Event systems\n- Data binding (GUI frameworks)\n- Pub-sub messaging\n- Model-View patterns\n- Real-time updates",
+      "language": "python",
+      "tags": [
+        "Advanced",
+        "OOP",
+        "Design Patterns"
+      ]
+    },
+    {
+      "id": 452,
+      "title": "452. Event-driven system with typed events",
+      "description": "Learn how to create a typed event system in Python",
+      "initialCode": "from typing import Callable, Dict, List, Any\n\nclass Event:\n    def __init__(self, event_type: str, data: Any):\n        self.type = event_type\n        self.data = data\n\nclass EventBus:\n    def __init__(self):\n        self._listeners: Dict[str, List[Callable]] = {}\n\n    # TODO: Implement on, emit, off methods\n\n# TODO: Test event bus\n",
+      "fullSolution": "from typing import Callable, Dict, List, Any\n\nclass Event:\n    def __init__(self, event_type: str, data: Any):\n        self.type = event_type\n        self.data = data\n\nclass EventBus:\n    def __init__(self):\n        self._listeners: Dict[str, List[Callable]] = {}\n\n    def on(self, event_type: str, listener: Callable[[Event], None]):\n        if event_type not in self._listeners:\n            self._listeners[event_type] = []\n        self._listeners[event_type].append(listener)\n\n    def emit(self, event: Event):\n        listeners = self._listeners.get(event.type, [])\n        for listener in listeners:\n            listener(event)\n\n    def off(self, event_type: str, listener: Callable[[Event], None]):\n        if event_type in self._listeners:\n            self._listeners[event_type].remove(listener)\n\n# Test\nbus = EventBus()\n\n# Register listeners\nbus.on(\"user.login\", lambda event: print(f\"User logged in: {event.data}\"))\nbus.on(\"user.logout\", lambda event: print(f\"User logged out: {event.data}\"))\n\n# Emit events\nbus.emit(Event(\"user.login\", \"alice\"))\nbus.emit(Event(\"user.logout\", \"alice\"))\nbus.emit(Event(\"unknown\", \"ignored\"))\n",
+      "expectedOutput": "User logged in: alice\nUser logged out: alice",
+      "tutorial": "# Event-Driven System with Typed Events\n\nCreate a flexible event bus for component communication.\n\n## Pattern\n\n```python\nclass EventBus:\n    def __init__(self):\n        self._listeners = defaultdict(list)\n\n    def on(self, event_type, callback):\n        self._listeners[event_type].append(callback)\n\n    def emit(self, event):\n        for callback in self._listeners[event.type]:\n            callback(event)\n```\n\n## Example with Decorators\n\n```python\nclass EventBus:\n    def event(self, event_type):\n        def decorator(func):\n            self.on(event_type, func)\n            return func\n        return decorator\n\nbus = EventBus()\n\n@bus.event(\"user.login\")\ndef on_login(event):\n    print(f\"Welcome {event.data}\")\n```\n\n## Using dataclasses for Events\n\n```python\nfrom dataclasses import dataclass\n\n@dataclass\nclass UserLoginEvent:\n    username: str\n    timestamp: float\n\nbus.emit(UserLoginEvent(\"alice\", time.time()))\n```\n\n## Benefits\n\n- Loose coupling\n- Easy extensibility\n- Type hints for safety\n- Pythonic API\n\n## Best Practices\n\n- Use Enum for event types\n- Add type hints\n- Consider async with asyncio\n- Use dataclasses for event data\n\n## When to Use\n\n- Application events\n- Plugin systems\n- Async task coordination\n- State change notifications\n- Domain events",
+      "language": "python",
+      "tags": [
+        "Advanced",
+        "OOP",
+        "Design Patterns"
+      ]
+    },
+    {
+      "id": 453,
+      "title": "453. Dependency Injection - Constructor Injection",
+      "description": "Implement a constructor-based dependency injection pattern where dependencies are provided through the constructor.",
+      "initialCode": "# TODO: Create a Logger base class with log(message) method\n\n# TODO: Create ConsoleLogger class inheriting from Logger\n\n# TODO: Create UserService class that takes logger in __init__\n\n# TODO: Create a ConsoleLogger instance\n# TODO: Inject it into UserService via constructor\n# TODO: Call register_user(\"Alice\") on the service\n",
+      "fullSolution": "class Logger:\n    def log(self, message):\n        raise NotImplementedError\n\nclass ConsoleLogger(Logger):\n    def log(self, message):\n        print(f\"[LOG] {message}\")\n\nclass UserService:\n    def __init__(self, logger):\n        self.logger = logger\n\n    def register_user(self, username):\n        self.logger.log(f\"Registering user: {username}\")\n\nlogger = ConsoleLogger()\nservice = UserService(logger)\nservice.register_user(\"Alice\")\n",
+      "expectedOutput": "[LOG] Registering user: Alice",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Dependency Injection (DI) is a pattern where objects receive their dependencies from external sources rather than creating them. Constructor injection provides dependencies via __init__ parameters, ensuring explicit requirements.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class EmailService:\n    def __init__(self, logger):\n        self.logger = logger</pre></div><p class=\"text-gray-300\">Benefits: testability (easy to mock), loose coupling, clear dependencies.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\"># Easy testing\nmock_logger = MockLogger()\nservice = EmailService(mock_logger)</pre></div>",
+      "language": "python",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Best Practices"
+      ]
+    },
+    {
+      "id": 454,
+      "title": "454. Dependency Injection - Setter Injection",
+      "description": "Implement setter-based dependency injection where dependencies can be set after object creation.",
+      "initialCode": "# TODO: Create Database base class with query(sql) method\n\n# TODO: Create MockDatabase class inheriting from Database\n\n# TODO: Create Repository class with set_database(db) method\n\n# TODO: Create Repository instance\n# TODO: Inject MockDatabase using setter\n# TODO: Call find_user() method\n",
+      "fullSolution": "class Database:\n    def query(self, sql):\n        raise NotImplementedError\n\nclass MockDatabase(Database):\n    def query(self, sql):\n        return f\"Mock result for: {sql}\"\n\nclass Repository:\n    def __init__(self):\n        self.database = None\n\n    def set_database(self, database):\n        self.database = database\n\n    def find_user(self):\n        result = self.database.query(\"SELECT * FROM users\")\n        print(result)\n\nrepo = Repository()\nrepo.set_database(MockDatabase())\nrepo.find_user()\n",
+      "expectedOutput": "Mock result for: SELECT * FROM users",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Setter injection allows dependencies to be set after object construction via setter methods. Useful for optional dependencies or when you need to change dependencies at runtime.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class Service:\n    def set_cache(self, cache):\n        self.cache = cache</pre></div><p class=\"text-gray-300\">Trade-off: less strict than constructor injection, allows optional dependencies.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">svc = Service()\nsvc.set_cache(RedisCache())</pre></div>",
+      "language": "python",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Best Practices"
+      ]
+    },
+    {
+      "id": 455,
+      "title": "455. Factory Method - Product Creation",
+      "description": "Implement the Factory Method pattern to create different types of products without specifying their concrete classes.",
+      "initialCode": "# TODO: Create Animal base class with speak() method\n\n# TODO: Create Dog and Cat classes inheriting from Animal\n\n# TODO: Create AnimalFactory class with create_animal(type) static method\n\n# TODO: Use factory to create a dog and call speak()\n# TODO: Use factory to create a cat and call speak()\n",
+      "fullSolution": "class Animal:\n    def speak(self):\n        raise NotImplementedError\n\nclass Dog(Animal):\n    def speak(self):\n        print(\"Woof!\")\n\nclass Cat(Animal):\n    def speak(self):\n        print(\"Meow!\")\n\nclass AnimalFactory:\n    @staticmethod\n    def create_animal(animal_type):\n        if animal_type == \"dog\":\n            return Dog()\n        elif animal_type == \"cat\":\n            return Cat()\n        raise ValueError(\"Unknown type\")\n\ndog = AnimalFactory.create_animal(\"dog\")\ndog.speak()\ncat = AnimalFactory.create_animal(\"cat\")\ncat.speak()\n",
+      "expectedOutput": "Woof!\nMeow!",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Factory Method pattern defines an interface for creating objects but lets subclasses decide which class to instantiate. It encapsulates object creation logic in one place.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class ButtonFactory:\n    @staticmethod\n    def create(os):\n        if os == \"win\": return WinButton()\n        return MacButton()</pre></div><p class=\"text-gray-300\">Benefits: flexibility, decoupling, easier to extend with new types.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">btn = ButtonFactory.create(\"win\")\nbtn.render()</pre></div>",
+      "language": "python",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Creational Patterns"
+      ]
+    },
+    {
+      "id": 456,
+      "title": "456. Factory Method - Parameterized Factories",
+      "description": "Create a parameterized factory that uses configuration to determine which object to create.",
+      "initialCode": "# TODO: Create Vehicle base class with drive() method\n\n# TODO: Create Car and Bike classes inheriting from Vehicle\n\n# TODO: Create VehicleFactory with create_vehicle(wheels) static method\n\n# TODO: Create vehicle with 4 wheels and call drive()\n# TODO: Create vehicle with 2 wheels and call drive()\n",
+      "fullSolution": "class Vehicle:\n    def drive(self):\n        raise NotImplementedError\n\nclass Car(Vehicle):\n    def drive(self):\n        print(\"Driving a car\")\n\nclass Bike(Vehicle):\n    def drive(self):\n        print(\"Riding a bike\")\n\nclass VehicleFactory:\n    @staticmethod\n    def create_vehicle(wheels):\n        if wheels == 4:\n            return Car()\n        elif wheels == 2:\n            return Bike()\n        raise ValueError(\"Invalid wheels\")\n\ncar = VehicleFactory.create_vehicle(4)\ncar.drive()\nbike = VehicleFactory.create_vehicle(2)\nbike.drive()\n",
+      "expectedOutput": "Driving a car\nRiding a bike",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Parameterized factories use input parameters to determine which concrete class to instantiate. This allows dynamic object creation based on runtime conditions or configuration.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class ShapeFactory:\n    @staticmethod\n    def create(sides):\n        if sides == 3: return Triangle()\n        if sides == 4: return Square()\n        return Circle()</pre></div><p class=\"text-gray-300\">Use cases: configuration-driven creation, plugin systems.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">s = ShapeFactory.create(4)\ns.draw()</pre></div>",
+      "language": "python",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Creational Patterns"
+      ]
+    },
+    {
+      "id": 457,
+      "title": "457. Abstract Factory - Family of Products",
+      "description": "Implement Abstract Factory pattern to create families of related objects without specifying concrete classes.",
+      "initialCode": "# TODO: Create Button and Checkbox base classes with render() method\n\n# TODO: Create WindowsButton and WindowsCheckbox classes\n\n# TODO: Create GUIFactory base class with create_button() and create_checkbox()\n\n# TODO: Create WindowsFactory inheriting from GUIFactory\n\n# TODO: Create WindowsFactory and use it to create button and checkbox\n# TODO: Call render() on both\n",
+      "fullSolution": "class Button:\n    def render(self):\n        raise NotImplementedError\n\nclass Checkbox:\n    def render(self):\n        raise NotImplementedError\n\nclass WindowsButton(Button):\n    def render(self):\n        print(\"Windows Button\")\n\nclass WindowsCheckbox(Checkbox):\n    def render(self):\n        print(\"Windows Checkbox\")\n\nclass GUIFactory:\n    def create_button(self):\n        raise NotImplementedError\n    def create_checkbox(self):\n        raise NotImplementedError\n\nclass WindowsFactory(GUIFactory):\n    def create_button(self):\n        return WindowsButton()\n    def create_checkbox(self):\n        return WindowsCheckbox()\n\nfactory = WindowsFactory()\nbtn = factory.create_button()\nbtn.render()\nchk = factory.create_checkbox()\nchk.render()\n",
+      "expectedOutput": "Windows Button\nWindows Checkbox",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Abstract Factory provides an interface for creating families of related objects without specifying concrete classes. Ensures created objects are compatible.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class GUIFactory:\n    def create_button(self): pass\n    def create_checkbox(self): pass</pre></div><p class=\"text-gray-300\">Benefits: consistency across product families, easy theme switching.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">factory = MacFactory()\nbtn = factory.create_button()</pre></div>",
+      "language": "python",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Creational Patterns"
+      ]
+    },
+    {
+      "id": 458,
+      "title": "458. Abstract Factory - Multiple Families",
+      "description": "Extend Abstract Factory to support multiple product families with consistent interfaces.",
+      "initialCode": "# TODO: Create Theme base class with get_color() method\n\n# TODO: Create DarkTheme and LightTheme classes\n\n# TODO: Create ThemeFactory base class with create_theme() method\n\n# TODO: Create DarkThemeFactory and LightThemeFactory\n\n# TODO: Use DarkThemeFactory to create and print dark theme color\n# TODO: Use LightThemeFactory to create and print light theme color\n",
+      "fullSolution": "class Theme:\n    def get_color(self):\n        raise NotImplementedError\n\nclass DarkTheme(Theme):\n    def get_color(self):\n        return \"Dark: #000000\"\n\nclass LightTheme(Theme):\n    def get_color(self):\n        return \"Light: #FFFFFF\"\n\nclass ThemeFactory:\n    def create_theme(self):\n        raise NotImplementedError\n\nclass DarkThemeFactory(ThemeFactory):\n    def create_theme(self):\n        return DarkTheme()\n\nclass LightThemeFactory(ThemeFactory):\n    def create_theme(self):\n        return LightTheme()\n\ndark_factory = DarkThemeFactory()\nprint(dark_factory.create_theme().get_color())\n\nlight_factory = LightThemeFactory()\nprint(light_factory.create_theme().get_color())\n",
+      "expectedOutput": "Dark: #000000\nLight: #FFFFFF",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Abstract Factory scales to multiple product families by defining factory interfaces. Each concrete factory produces a complete family of compatible products.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class UIFactory:\n    def create_theme(self): pass\n    def create_font(self): pass</pre></div><p class=\"text-gray-300\">Use case: supporting multiple platforms, themes, or configurations.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">factory = get_factory(platform)\ntheme = factory.create_theme()</pre></div>",
+      "language": "python",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Creational Patterns"
+      ]
+    },
+    {
+      "id": 459,
+      "title": "459. Singleton - Thread-Safe Implementation",
+      "description": "Implement a thread-safe Singleton pattern using class methods and locks.",
+      "initialCode": "# TODO: Import threading module\n\n# TODO: Create ConfigManager class\n# TODO: Add class variable _instance = None and _lock = threading.Lock()\n# TODO: Add @classmethod get_instance() that uses lock for thread safety\n# TODO: Add get_setting(key) method that returns f\"value_{key}\"\n\n# TODO: Get singleton instance and call get_setting(\"db_host\")\n",
+      "fullSolution": "import threading\n\nclass ConfigManager:\n    _instance = None\n    _lock = threading.Lock()\n\n    def __init__(self):\n        if ConfigManager._instance is not None:\n            raise Exception(\"Use get_instance()\")\n\n    @classmethod\n    def get_instance(cls):\n        if cls._instance is None:\n            with cls._lock:\n                if cls._instance is None:\n                    cls._instance = cls.__new__(cls)\n        return cls._instance\n\n    def get_setting(self, key):\n        return f\"value_{key}\"\n\nconfig = ConfigManager.get_instance()\nprint(config.get_setting(\"db_host\"))\n",
+      "expectedOutput": "value_db_host",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Singleton ensures a class has only one instance with global access point. Thread-safe implementation uses locks to prevent race conditions in multi-threaded environments.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class Database:\n    _instance = None\n    _lock = threading.Lock()\n    @classmethod\n    def get_instance(cls):\n        with cls._lock:\n            if not cls._instance: cls._instance = cls()\n        return cls._instance</pre></div><p class=\"text-gray-300\">Use cases: configuration, logging, connection pools.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">db = Database.get_instance()</pre></div>",
+      "language": "python",
+      "tags": [
+        "Design Patterns",
+        "Concurrency",
+        "Creational Patterns"
+      ]
+    },
+    {
+      "id": 460,
+      "title": "460. Singleton - Double-Checked Locking",
+      "description": "Implement Singleton with double-checked locking for better performance in multi-threaded scenarios.",
+      "initialCode": "# TODO: Import threading\n\n# TODO: Create Logger class with double-checked locking pattern\n# TODO: Add _instance and _lock class variables\n# TODO: Implement get_instance() with double-checked locking\n# TODO: Add log(msg) method\n\n# TODO: Get instance and log \"Application started\"\n",
+      "fullSolution": "import threading\n\nclass Logger:\n    _instance = None\n    _lock = threading.Lock()\n\n    @classmethod\n    def get_instance(cls):\n        if cls._instance is None:\n            with cls._lock:\n                if cls._instance is None:\n                    cls._instance = cls()\n        return cls._instance\n\n    def log(self, msg):\n        print(f\"[LOG] {msg}\")\n\nlogger = Logger.get_instance()\nlogger.log(\"Application started\")\n",
+      "expectedOutput": "[LOG] Application started",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Double-checked locking optimizes Singleton by checking instance twice: once without lock (fast path) and once with lock (initialization). Reduces synchronization overhead while maintaining thread safety.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">if cls._instance is None:\n    with cls._lock:\n        if cls._instance is None:\n            cls._instance = cls()</pre></div><p class=\"text-gray-300\">First check avoids lock overhead for already-initialized instance.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">instance = Singleton.get_instance()</pre></div>",
+      "language": "python",
+      "tags": [
+        "Design Patterns",
+        "Concurrency",
+        "Creational Patterns"
+      ]
+    },
+    {
+      "id": 461,
+      "title": "461. Prototype - Cloning Objects",
+      "description": "Implement the Prototype pattern to create new objects by cloning existing instances.",
+      "initialCode": "# TODO: Import copy module\n\n# TODO: Create Document class with content attribute\n# TODO: Add __init__ and clone() method using copy.copy()\n# TODO: Add get_content() and set_content() methods\n\n# TODO: Create original document with \"Original\"\n# TODO: Clone it and set cloned content to \"Cloned\"\n# TODO: Print both contents\n",
+      "fullSolution": "import copy\n\nclass Document:\n    def __init__(self, content):\n        self.content = content\n\n    def clone(self):\n        return copy.copy(self)\n\n    def get_content(self):\n        return self.content\n\n    def set_content(self, content):\n        self.content = content\n\noriginal = Document(\"Original\")\ncloned = original.clone()\ncloned.set_content(\"Cloned\")\n\nprint(original.get_content())\nprint(cloned.get_content())\n",
+      "expectedOutput": "Original\nCloned",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Prototype pattern creates new objects by copying existing instances rather than instantiating from scratch. Useful when object creation is expensive or complex.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">import copy\nclass Shape:\n    def clone(self):\n        return copy.copy(self)</pre></div><p class=\"text-gray-300\">Benefits: avoids costly initialization, dynamic object creation.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">original = Circle()\nduplicate = original.clone()</pre></div>",
+      "language": "python",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Creational Patterns"
+      ]
+    },
+    {
+      "id": 462,
+      "title": "462. Prototype - Deep vs Shallow Copy",
+      "description": "Understand the difference between shallow and deep copying when cloning objects with nested structures.",
+      "initialCode": "# TODO: Import copy module\n\n# TODO: Create Team class with members list\n# TODO: Add shallow_copy() using copy.copy()\n# TODO: Add deep_copy() using copy.deepcopy()\n# TODO: Add add_member(name) and get_size() methods\n\n# TODO: Create team with member \"Alice\"\n# TODO: Deep copy it and add \"Bob\" to copy\n# TODO: Print both team sizes\n",
+      "fullSolution": "import copy\n\nclass Team:\n    def __init__(self):\n        self.members = []\n\n    def shallow_copy(self):\n        return copy.copy(self)\n\n    def deep_copy(self):\n        return copy.deepcopy(self)\n\n    def add_member(self, name):\n        self.members.append(name)\n\n    def get_size(self):\n        return len(self.members)\n\noriginal = Team()\noriginal.add_member(\"Alice\")\n\nteam_copy = original.deep_copy()\nteam_copy.add_member(\"Bob\")\n\nprint(original.get_size())\nprint(team_copy.get_size())\n",
+      "expectedOutput": "1\n2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Shallow copy duplicates object references, while deep copy creates new copies of nested objects. Deep copy prevents shared mutable state between original and clone.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\"># Shallow: shares list reference\nshallow = copy.copy(obj)\n# Deep: creates new list\ndeep = copy.deepcopy(obj)</pre></div><p class=\"text-gray-300\">Use deep copy for independent clones.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">clone = team.deep_copy()</pre></div>",
+      "language": "python",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Creational Patterns"
+      ]
+    },
+    {
+      "id": 463,
+      "title": "463. Adapter - Class Adapter",
+      "description": "Implement the Adapter pattern to make incompatible interfaces work together using inheritance.",
+      "initialCode": "# TODO: Create MediaPlayer base class with play(filename) method\n\n# TODO: Create LegacyAudioPlayer with play_audio(file) method\n\n# TODO: Create AudioAdapter inheriting from both classes\n\n# TODO: Create adapter and call play(\"song.mp3\")\n",
+      "fullSolution": "class MediaPlayer:\n    def play(self, filename):\n        raise NotImplementedError\n\nclass LegacyAudioPlayer:\n    def play_audio(self, file):\n        print(f\"Playing: {file}\")\n\nclass AudioAdapter(LegacyAudioPlayer, MediaPlayer):\n    def play(self, filename):\n        self.play_audio(filename)\n\nplayer = AudioAdapter()\nplayer.play(\"song.mp3\")\n",
+      "expectedOutput": "Playing: song.mp3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Adapter pattern converts one interface to another that clients expect. Class adapter uses inheritance to adapt an existing class to a new interface.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class Adapter(OldClass, NewInterface):\n    def new_method(self):\n        self.old_method()</pre></div><p class=\"text-gray-300\">Use cases: integrating legacy code, third-party libraries.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">obj = Adapter()\nobj.new_method()</pre></div>",
+      "language": "python",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Structural Patterns"
+      ]
+    },
+    {
+      "id": 464,
+      "title": "464. Adapter - Object Adapter",
+      "description": "Implement the Adapter pattern using composition instead of inheritance for greater flexibility.",
+      "initialCode": "# TODO: Create Printer base class with print(text) method\n\n# TODO: Create LegacyPrinter with print_document(doc) method\n\n# TODO: Create PrinterAdapter using composition to wrap LegacyPrinter\n\n# TODO: Create LegacyPrinter\n# TODO: Wrap it in adapter and call print(\"Hello\")\n",
+      "fullSolution": "class Printer:\n    def print(self, text):\n        raise NotImplementedError\n\nclass LegacyPrinter:\n    def print_document(self, doc):\n        print(f\"Document: {doc}\")\n\nclass PrinterAdapter(Printer):\n    def __init__(self, legacy_printer):\n        self.legacy_printer = legacy_printer\n\n    def print(self, text):\n        self.legacy_printer.print_document(text)\n\nlegacy = LegacyPrinter()\nprinter = PrinterAdapter(legacy)\nprinter.print(\"Hello\")\n",
+      "expectedOutput": "Document: Hello",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Object adapter uses composition (wrapping) instead of inheritance. It's more flexible as it can adapt multiple classes and doesn't expose the adaptee's interface.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class Adapter(NewInterface):\n    def __init__(self, old):\n        self.old = old\n    def new_method(self):\n        self.old.old_method()</pre></div><p class=\"text-gray-300\">Preferred over class adapter for better encapsulation.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">a = Adapter(old_obj)</pre></div>",
+      "language": "python",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Structural Patterns"
+      ]
+    },
+    {
+      "id": 465,
+      "title": "465. Decorator - Dynamic Behavior",
+      "description": "Implement the Decorator pattern to add behavior to objects dynamically without modifying their structure.",
+      "initialCode": "# TODO: Create Coffee base class with get_cost() and get_description() methods\n\n# TODO: Create SimpleCoffee implementing Coffee\n\n# TODO: Create MilkDecorator wrapping Coffee and adding functionality\n\n# TODO: Create SimpleCoffee, wrap with MilkDecorator\n# TODO: Print description and cost\n",
+      "fullSolution": "class Coffee:\n    def get_cost(self):\n        raise NotImplementedError\n    def get_description(self):\n        raise NotImplementedError\n\nclass SimpleCoffee(Coffee):\n    def get_cost(self):\n        return 2.0\n    def get_description(self):\n        return \"Simple coffee\"\n\nclass MilkDecorator(Coffee):\n    def __init__(self, coffee):\n        self.coffee = coffee\n\n    def get_cost(self):\n        return self.coffee.get_cost() + 0.5\n\n    def get_description(self):\n        return self.coffee.get_description() + \" + milk\"\n\ncoffee = SimpleCoffee()\ncoffee = MilkDecorator(coffee)\nprint(f\"{coffee.get_description()}: ${coffee.get_cost()}\")\n",
+      "expectedOutput": "Simple coffee + milk: $2.5",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Decorator pattern attaches additional responsibilities to objects dynamically. Decorators provide flexible alternative to subclassing for extending functionality.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class Decorator(Component):\n    def __init__(self, wrapped):\n        self.wrapped = wrapped\n    def operation(self):\n        self.wrapped.operation()\n        # add behavior</pre></div><p class=\"text-gray-300\">Benefits: single responsibility, open/closed principle.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">c = Decorator(Base())</pre></div>",
+      "language": "python",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Structural Patterns"
+      ]
+    },
+    {
+      "id": 466,
+      "title": "466. Decorator - Wrapper Chains",
+      "description": "Chain multiple decorators to combine behaviors dynamically at runtime.",
+      "initialCode": "# TODO: Create Message base class with get_content() method\n\n# TODO: Create TextMessage implementing Message\n\n# TODO: Create EncryptDecorator and CompressDecorator\n\n# TODO: Create TextMessage, wrap with both decorators\n# TODO: Print final content\n",
+      "fullSolution": "class Message:\n    def get_content(self):\n        raise NotImplementedError\n\nclass TextMessage(Message):\n    def __init__(self, text):\n        self.text = text\n    def get_content(self):\n        return self.text\n\nclass EncryptDecorator(Message):\n    def __init__(self, message):\n        self.message = message\n    def get_content(self):\n        return f\"[encrypted:{self.message.get_content()}]\"\n\nclass CompressDecorator(Message):\n    def __init__(self, message):\n        self.message = message\n    def get_content(self):\n        return f\"[compressed:{self.message.get_content()}]\"\n\nmsg = TextMessage(\"Hello\")\nmsg = EncryptDecorator(msg)\nmsg = CompressDecorator(msg)\nprint(msg.get_content())\n",
+      "expectedOutput": "[compressed:[encrypted:Hello]]",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Decorator chains wrap objects in multiple layers, each adding behavior. Order matters as each decorator wraps the previous result.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">c = Base()\nc = DecoratorA(c)\nc = DecoratorB(c)\nc.operation()  # runs all layers</pre></div><p class=\"text-gray-300\">Enables mix-and-match functionality composition.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">s = BufferedStream(FileStream())</pre></div>",
+      "language": "python",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Structural Patterns"
+      ]
+    },
+    {
+      "id": 467,
+      "title": "467. Facade - Simplified Interface",
+      "description": "Implement the Facade pattern to provide a simplified interface to a complex subsystem.",
+      "initialCode": "# TODO: Create CPU, Memory, HardDrive classes with simple methods\n\n# TODO: Create ComputerFacade that coordinates all subsystems\n# TODO: Add start() method that uses all components\n\n# TODO: Create facade and call start()\n",
+      "fullSolution": "class CPU:\n    def freeze(self):\n        print(\"CPU frozen\")\n    def execute(self):\n        print(\"CPU executing\")\n\nclass Memory:\n    def load(self):\n        print(\"Memory loaded\")\n\nclass HardDrive:\n    def read(self):\n        print(\"HardDrive read\")\n\nclass ComputerFacade:\n    def __init__(self):\n        self.cpu = CPU()\n        self.memory = Memory()\n        self.hard_drive = HardDrive()\n\n    def start(self):\n        self.cpu.freeze()\n        self.memory.load()\n        self.hard_drive.read()\n        self.cpu.execute()\n\ncomputer = ComputerFacade()\ncomputer.start()\n",
+      "expectedOutput": "CPU frozen\nMemory loaded\nHardDrive read\nCPU executing",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Facade pattern provides a unified, simplified interface to a complex subsystem. It hides complexity and makes subsystems easier to use.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class VideoConverter:\n    def convert(self, file):\n        # coordinates codec, audio, video\n        return converted_file</pre></div><p class=\"text-gray-300\">Benefits: loose coupling, easier client code.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">converter = VideoConverter()\nconverter.convert(\"video.mp4\")</pre></div>",
+      "language": "python",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Structural Patterns"
+      ]
+    },
+    {
+      "id": 468,
+      "title": "468. Facade - Subsystem Coordination",
+      "description": "Use Facade to coordinate multiple subsystems and manage their interactions.",
+      "initialCode": "# TODO: Create Authentication, Authorization, Logger classes\n\n# TODO: Create SecurityFacade coordinating all security subsystems\n# TODO: Add login(user, password) method\n\n# TODO: Create facade and call login(\"admin\", \"pass\")\n",
+      "fullSolution": "class Authentication:\n    def verify(self, user, password):\n        print(f\"Authenticating {user}\")\n        return True\n\nclass Authorization:\n    def grant_access(self, user):\n        print(f\"Granting access to {user}\")\n\nclass Logger:\n    def log(self, msg):\n        print(f\"Log: {msg}\")\n\nclass SecurityFacade:\n    def __init__(self):\n        self.auth = Authentication()\n        self.authz = Authorization()\n        self.logger = Logger()\n\n    def login(self, user, password):\n        if self.auth.verify(user, password):\n            self.authz.grant_access(user)\n            self.logger.log(f\"{user} logged in\")\n\nsecurity = SecurityFacade()\nsecurity.login(\"admin\", \"pass\")\n",
+      "expectedOutput": "Authenticating admin\nGranting access to admin\nLog: admin logged in",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Facade coordinates multiple subsystems, managing their interactions and dependencies. Clients interact with one simple interface instead of multiple complex ones.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class OrderFacade:\n    def place_order(self):\n        self.inventory.check()\n        self.payment.process()\n        self.shipping.schedule()</pre></div><p class=\"text-gray-300\">Simplifies complex workflows into single method calls.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">order = OrderFacade()\norder.place_order()</pre></div>",
+      "language": "python",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Structural Patterns"
+      ]
+    },
+    {
+      "id": 469,
+      "title": "469. Proxy - Lazy Loading",
+      "description": "Implement the Proxy pattern to defer expensive object creation until actually needed.",
+      "initialCode": "# TODO: Create Image base class with display() method\n\n# TODO: Create RealImage with expensive __init__\n\n# TODO: Create ImageProxy that loads RealImage on first display()\n\n# TODO: Create proxy, call display() twice\n",
+      "fullSolution": "class Image:\n    def display(self):\n        raise NotImplementedError\n\nclass RealImage(Image):\n    def __init__(self, filename):\n        self.filename = filename\n        self._load_from_disk()\n\n    def _load_from_disk(self):\n        print(f\"Loading {self.filename}\")\n\n    def display(self):\n        print(f\"Displaying {self.filename}\")\n\nclass ImageProxy(Image):\n    def __init__(self, filename):\n        self.filename = filename\n        self.real_image = None\n\n    def display(self):\n        if self.real_image is None:\n            self.real_image = RealImage(self.filename)\n        self.real_image.display()\n\nimage = ImageProxy(\"photo.jpg\")\nimage.display()\nimage.display()\n",
+      "expectedOutput": "Loading photo.jpg\nDisplaying photo.jpg\nDisplaying photo.jpg",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Proxy pattern provides a placeholder for expensive objects, deferring creation until first use. Lazy loading proxy creates the real object only when needed.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class Proxy(Subject):\n    def __init__(self):\n        self.real = None\n    def request(self):\n        if not self.real: self.real = RealSubject()\n        self.real.request()</pre></div><p class=\"text-gray-300\">Benefits: performance optimization, resource management.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">s = Proxy(\"data\")\ns.request()  # loads now</pre></div>",
+      "language": "python",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Structural Patterns"
+      ]
+    },
+    {
+      "id": 470,
+      "title": "470. Proxy - Access Control",
+      "description": "Use Proxy pattern to control access to sensitive operations based on permissions.",
+      "initialCode": "# TODO: Create Document base class with edit() method\n\n# TODO: Create RealDocument implementing Document\n\n# TODO: Create ProtectedDocument proxy with role-based access\n\n# TODO: Create proxy for \"admin\" and \"guest\"\n# TODO: Try edit() on both\n",
+      "fullSolution": "class Document:\n    def edit(self):\n        raise NotImplementedError\n\nclass RealDocument(Document):\n    def edit(self):\n        print(\"Editing document\")\n\nclass ProtectedDocument(Document):\n    def __init__(self, role):\n        self.real_document = RealDocument()\n        self.role = role\n\n    def edit(self):\n        if self.role == \"admin\":\n            self.real_document.edit()\n        else:\n            print(\"Access denied\")\n\nadmin_doc = ProtectedDocument(\"admin\")\nadmin_doc.edit()\n\nguest_doc = ProtectedDocument(\"guest\")\nguest_doc.edit()\n",
+      "expectedOutput": "Editing document\nAccess denied",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Protection proxy controls access to objects based on permissions or credentials. It adds security layer before delegating to real object.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class SecureProxy(Service):\n    def execute(self):\n        if self.has_permission():\n            self.real_service.execute()\n        else: raise SecurityException()</pre></div><p class=\"text-gray-300\">Use cases: authentication, authorization, access logging.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">s = SecureProxy(user)\ns.execute()</pre></div>",
+      "language": "python",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Structural Patterns"
+      ]
+    },
+    {
+      "id": 471,
+      "title": "471. Template Method - Algorithm Skeleton",
+      "description": "Implement Template Method pattern to define algorithm skeleton while letting subclasses override specific steps.",
+      "initialCode": "# TODO: Create abstract DataProcessor with process() template method\n# TODO: Add abstract read_data() and process_data() methods\n\n# TODO: Create CSVProcessor inheriting from DataProcessor\n\n# TODO: Create CSVProcessor and call process()\n",
+      "fullSolution": "from abc import ABC, abstractmethod\n\nclass DataProcessor(ABC):\n    def process(self):\n        self.read_data()\n        self.process_data()\n        print(\"Data saved\")\n\n    @abstractmethod\n    def read_data(self):\n        pass\n\n    @abstractmethod\n    def process_data(self):\n        pass\n\nclass CSVProcessor(DataProcessor):\n    def read_data(self):\n        print(\"Reading CSV\")\n\n    def process_data(self):\n        print(\"Processing CSV\")\n\nprocessor = CSVProcessor()\nprocessor.process()\n",
+      "expectedOutput": "Reading CSV\nProcessing CSV\nData saved",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Template Method defines algorithm structure in base class, deferring specific steps to subclasses. The template method controls flow while subclasses implement details.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class Game(ABC):\n    def play(self):\n        self.start()\n        self.play_turn()\n        self.end()\n    @abstractmethod\n    def play_turn(self): pass</pre></div><p class=\"text-gray-300\">Benefits: code reuse, consistent algorithm structure.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">g = Chess()\ng.play()</pre></div>",
+      "language": "python",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Behavioral Patterns"
+      ]
+    },
+    {
+      "id": 472,
+      "title": "472. Template Method - Hooks",
+      "description": "Add optional hook methods to Template Method pattern for fine-grained customization.",
+      "initialCode": "# TODO: Create abstract Report with generate() template method\n# TODO: Add hook method should_include_header() with default True\n# TODO: Add abstract methods for header and body\n\n# TODO: Create SimpleReport that skips header\n\n# TODO: Create SimpleReport and call generate()\n",
+      "fullSolution": "from abc import ABC, abstractmethod\n\nclass Report(ABC):\n    def generate(self):\n        if self.should_include_header():\n            self.print_header()\n        self.print_body()\n\n    def should_include_header(self):\n        return True\n\n    @abstractmethod\n    def print_header(self):\n        pass\n\n    @abstractmethod\n    def print_body(self):\n        pass\n\nclass SimpleReport(Report):\n    def should_include_header(self):\n        return False\n\n    def print_header(self):\n        print(\"Header\")\n\n    def print_body(self):\n        print(\"Body content\")\n\nreport = SimpleReport()\nreport.generate()\n",
+      "expectedOutput": "Body content",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Hooks are optional methods in Template Method with default implementations. Subclasses can override hooks to customize behavior without changing algorithm structure.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class Builder(ABC):\n    def build(self):\n        if self.should_validate(): self.validate()\n        self.construct()\n    def should_validate(self): return True</pre></div><p class=\"text-gray-300\">Hooks provide extension points without breaking encapsulation.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">def should_validate(self): return False</pre></div>",
+      "language": "python",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Behavioral Patterns"
+      ]
+    },
+    {
+      "id": 473,
+      "title": "473. Strategy - Interchangeable Algorithms",
+      "description": "Implement Strategy pattern to define family of algorithms and make them interchangeable.",
+      "initialCode": "# TODO: Create SortStrategy base class with sort(arr) method\n\n# TODO: Create BubbleSort and QuickSort strategies\n\n# TODO: Create Sorter class that uses a strategy\n\n# TODO: Create sorter with BubbleSort and sort array\n",
+      "fullSolution": "class SortStrategy:\n    def sort(self, arr):\n        raise NotImplementedError\n\nclass BubbleSort(SortStrategy):\n    def sort(self, arr):\n        print(\"Bubble sorting\")\n\nclass QuickSort(SortStrategy):\n    def sort(self, arr):\n        print(\"Quick sorting\")\n\nclass Sorter:\n    def __init__(self, strategy):\n        self.strategy = strategy\n\n    def set_strategy(self, strategy):\n        self.strategy = strategy\n\n    def sort(self, arr):\n        self.strategy.sort(arr)\n\narr = [3, 1, 2]\nsorter = Sorter(BubbleSort())\nsorter.sort(arr)\n",
+      "expectedOutput": "Bubble sorting",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Strategy pattern defines family of algorithms, encapsulates each one, and makes them interchangeable. Strategy lets algorithm vary independently from clients.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class PaymentStrategy:\n    def pay(self, amount): pass\nclass CreditCard(PaymentStrategy):\n    def pay(self, amt): # process</pre></div><p class=\"text-gray-300\">Benefits: eliminates conditionals, runtime algorithm selection.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">context.set_strategy(FastAlgo())\ncontext.execute()</pre></div>",
+      "language": "python",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Behavioral Patterns"
+      ]
+    },
+    {
+      "id": 474,
+      "title": "474. Strategy - Runtime Selection",
+      "description": "Demonstrate changing strategies at runtime based on conditions or user input.",
+      "initialCode": "# TODO: Create CompressionStrategy base class\n\n# TODO: Create ZipCompression and RarCompression strategies\n\n# TODO: Create FileCompressor that switches strategies based on file size\n\n# TODO: Compress files of different sizes\n",
+      "fullSolution": "class CompressionStrategy:\n    def compress(self, file):\n        raise NotImplementedError\n\nclass ZipCompression(CompressionStrategy):\n    def compress(self, file):\n        print(f\"ZIP: {file}\")\n\nclass RarCompression(CompressionStrategy):\n    def compress(self, file):\n        print(f\"RAR: {file}\")\n\nclass FileCompressor:\n    def compress(self, file, size):\n        if size < 100:\n            strategy = ZipCompression()\n        else:\n            strategy = RarCompression()\n        strategy.compress(file)\n\ncompressor = FileCompressor()\ncompressor.compress(\"small.txt\", 50)\ncompressor.compress(\"large.txt\", 500)\n",
+      "expectedOutput": "ZIP: small.txt\nRAR: large.txt",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Strategy pattern enables runtime algorithm selection based on context, conditions, or user preferences. Strategies can be swapped dynamically without changing client code.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">if user.is_premium():\n    context.set_strategy(FastStrategy())\nelse:\n    context.set_strategy(FreeStrategy())</pre></div><p class=\"text-gray-300\">Enables adaptive behavior and A/B testing.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">processor.set_strategy(get_optimal_strategy())</pre></div>",
+      "language": "python",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Behavioral Patterns"
+      ]
+    },
+    {
+      "id": 475,
+      "title": "475. Memento - State Capture and Restore",
+      "description": "Implement Memento pattern to capture and restore object state without violating encapsulation.",
+      "initialCode": "# TODO: Create Editor class with text and save()/restore(memento) methods\n\n# TODO: Create Memento class to store state\n\n# TODO: Create History class to manage mementos\n\n# TODO: Edit text, save state, edit again, then undo\n",
+      "fullSolution": "class Editor:\n    def __init__(self):\n        self.text = \"\"\n\n    def set_text(self, text):\n        self.text = text\n\n    def get_text(self):\n        return self.text\n\n    def save(self):\n        return Memento(self.text)\n\n    def restore(self, memento):\n        self.text = memento.get_state()\n\nclass Memento:\n    def __init__(self, state):\n        self._state = state\n\n    def get_state(self):\n        return self._state\n\nclass History:\n    def __init__(self):\n        self.memento = None\n\n    def save(self, editor):\n        self.memento = editor.save()\n\n    def undo(self, editor):\n        editor.restore(self.memento)\n\neditor = Editor()\nhistory = History()\n\neditor.set_text(\"Version 1\")\nhistory.save(editor)\n\neditor.set_text(\"Version 2\")\nprint(editor.get_text())\n\nhistory.undo(editor)\nprint(editor.get_text())\n",
+      "expectedOutput": "Version 2\nVersion 1",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Memento pattern captures and externalizes object's internal state so it can be restored later, without violating encapsulation. Enables undo/redo functionality.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class Editor:\n    def save(self):\n        return Memento(self.state)\n    def restore(self, m):\n        self.state = m.get_state()</pre></div><p class=\"text-gray-300\">Use cases: undo mechanisms, snapshots, transaction rollback.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">snapshot = editor.save()\neditor.restore(snapshot)</pre></div>",
+      "language": "python",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Behavioral Patterns"
+      ]
     }
   ]
 }

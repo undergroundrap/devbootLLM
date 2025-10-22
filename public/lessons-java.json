@@ -7305,6 +7305,381 @@
         "OOP",
         "Design Patterns"
       ]
+    },
+    {
+      "id": 451,
+      "title": "451. Observer pattern with listeners",
+      "description": "Learn how to implement the Observer pattern for event handling",
+      "initialCode": "import java.util.*;\n\npublic class Main {\n    interface Observer {\n        void update(String message);\n    }\n\n    static class Subject {\n        private List<Observer> observers = new ArrayList<>();\n\n        // TODO: Implement attach, detach, notify methods\n    }\n\n    // TODO: Create concrete observer\n    // TODO: Test observer pattern\n\n    public static void main(String[] args) {\n    }\n}",
+      "fullSolution": "import java.util.*;\n\npublic class Main {\n    interface Observer {\n        void update(String message);\n    }\n\n    static class Subject {\n        private List<Observer> observers = new ArrayList<>();\n\n        public void attach(Observer observer) {\n            observers.add(observer);\n        }\n\n        public void detach(Observer observer) {\n            observers.remove(observer);\n        }\n\n        public void notifyObservers(String message) {\n            for (Observer observer : observers) {\n                observer.update(message);\n            }\n        }\n    }\n\n    static class EmailNotifier implements Observer {\n        private String name;\n\n        public EmailNotifier(String name) {\n            this.name = name;\n        }\n\n        public void update(String message) {\n            System.out.println(name + \" received email: \" + message);\n        }\n    }\n\n    static class SMSNotifier implements Observer {\n        private String name;\n\n        public SMSNotifier(String name) {\n            this.name = name;\n        }\n\n        public void update(String message) {\n            System.out.println(name + \" received SMS: \" + message);\n        }\n    }\n\n    public static void main(String[] args) {\n        Subject subject = new Subject();\n\n        Observer email = new EmailNotifier(\"Alice\");\n        Observer sms = new SMSNotifier(\"Bob\");\n\n        subject.attach(email);\n        subject.attach(sms);\n\n        subject.notifyObservers(\"New message available\");\n\n        subject.detach(email);\n        subject.notifyObservers(\"Another update\");\n    }\n}",
+      "expectedOutput": "Alice received email: New message available\nBob received SMS: New message available\nBob received SMS: Another update",
+      "tutorial": "# Observer Pattern with Listeners\n\nThe Observer pattern defines a one-to-many dependency where when one object changes state, all dependents are notified.\n\n## Structure\n\n```java\ninterface Observer {\n    void update(Event event);\n}\n\nclass Subject {\n    List<Observer> observers = new ArrayList<>();\n\n    void attach(Observer o) {\n        observers.add(o);\n    }\n\n    void notifyObservers(Event e) {\n        for (Observer o : observers) {\n            o.update(e);\n        }\n    }\n}\n```\n\n## Example Use Case\n\n```java\n// Event system\nEventManager manager = new EventManager();\nmanager.attach(new LoggingObserver());\nmanager.attach(new EmailObserver());\nmanager.attach(new MetricsObserver());\n\nmanager.fireEvent(new UserLoginEvent(user));\n// All observers are notified\n```\n\n## Benefits\n\n- Loose coupling between subject and observers\n- Dynamic subscription/unsubscription\n- Broadcast communication\n- Supports multiple observers\n\n## Best Practices\n\n- Use weak references to prevent memory leaks\n- Consider async notification for slow observers\n- Add event filtering\n- Thread-safe for concurrent access\n\n## When to Use\n\n- Event handling systems\n- MVC architecture\n- Publish-subscribe patterns\n- UI components (button clicks, etc.)\n- Real-time data updates",
+      "language": "java",
+      "tags": [
+        "Advanced",
+        "OOP",
+        "Design Patterns"
+      ]
+    },
+    {
+      "id": 452,
+      "title": "452. Event-driven system with typed events",
+      "description": "Learn how to create a typed event system",
+      "initialCode": "import java.util.*;\nimport java.util.function.Consumer;\n\npublic class Main {\n    static class Event {\n        private final String type;\n        private final Object data;\n\n        public Event(String type, Object data) {\n            this.type = type;\n            this.data = data;\n        }\n\n        public String getType() { return type; }\n        public Object getData() { return data; }\n    }\n\n    static class EventBus {\n        private Map<String, List<Consumer<Event>>> listeners = new HashMap<>();\n\n        // TODO: Implement on, emit, off methods\n    }\n\n    public static void main(String[] args) {\n    }\n}",
+      "fullSolution": "import java.util.*;\nimport java.util.function.Consumer;\n\npublic class Main {\n    static class Event {\n        private final String type;\n        private final Object data;\n\n        public Event(String type, Object data) {\n            this.type = type;\n            this.data = data;\n        }\n\n        public String getType() { return type; }\n        public Object getData() { return data; }\n    }\n\n    static class EventBus {\n        private Map<String, List<Consumer<Event>>> listeners = new HashMap<>();\n\n        public void on(String eventType, Consumer<Event> listener) {\n            listeners.computeIfAbsent(eventType, k -> new ArrayList<>()).add(listener);\n        }\n\n        public void emit(Event event) {\n            List<Consumer<Event>> eventListeners = listeners.get(event.getType());\n            if (eventListeners != null) {\n                for (Consumer<Event> listener : eventListeners) {\n                    listener.accept(event);\n                }\n            }\n        }\n\n        public void off(String eventType, Consumer<Event> listener) {\n            List<Consumer<Event>> eventListeners = listeners.get(eventType);\n            if (eventListeners != null) {\n                eventListeners.remove(listener);\n            }\n        }\n    }\n\n    public static void main(String[] args) {\n        EventBus bus = new EventBus();\n\n        // Register listeners\n        bus.on(\"user.login\", event -> {\n            System.out.println(\"User logged in: \" + event.getData());\n        });\n\n        bus.on(\"user.logout\", event -> {\n            System.out.println(\"User logged out: \" + event.getData());\n        });\n\n        // Emit events\n        bus.emit(new Event(\"user.login\", \"alice\"));\n        bus.emit(new Event(\"user.logout\", \"alice\"));\n        bus.emit(new Event(\"unknown\", \"ignored\"));\n    }\n}",
+      "expectedOutput": "User logged in: alice\nUser logged out: alice",
+      "tutorial": "# Event-Driven System with Typed Events\n\nBuild a flexible event bus for decoupled communication.\n\n## Pattern\n\n```java\nclass EventBus {\n    Map<String, List<Consumer<Event>>> listeners = new HashMap<>();\n\n    void on(String type, Consumer<Event> listener) {\n        listeners.computeIfAbsent(type, k -> new ArrayList<>())\n                .add(listener);\n    }\n\n    void emit(Event event) {\n        List<Consumer<Event>> list = listeners.get(event.getType());\n        if (list != null) {\n            list.forEach(l -> l.accept(event));\n        }\n    }\n}\n```\n\n## Example with Generic Events\n\n```java\nclass TypedEvent<T> {\n    String type;\n    T data;\n\n    TypedEvent(String type, T data) {\n        this.type = type;\n        this.data = data;\n    }\n}\n\nbus.emit(new TypedEvent<>(\"user.created\", new User(\"alice\")));\n```\n\n## Benefits\n\n- Decoupled components\n- Easy to add new event types\n- Flexible event handlers\n- Centralized event management\n\n## Enhancements\n\n- Add priority to listeners\n- Support async event dispatch\n- Add once() for one-time listeners\n- Event bubbling/propagation control\n\n## Best Practices\n\n- Use enums for event types\n- Strong typing with generics\n- Thread-safe for concurrent use\n- Remove listeners to prevent leaks\n\n## When to Use\n\n- Application-wide events\n- Plugin architectures\n- Microservices communication\n- UI event handling\n- Domain events (DDD)",
+      "language": "java",
+      "tags": [
+        "Advanced",
+        "OOP",
+        "Design Patterns"
+      ]
+    },
+    {
+      "id": 453,
+      "title": "453. Dependency Injection - Constructor Injection",
+      "description": "Implement a constructor-based dependency injection pattern where dependencies are provided through the constructor.",
+      "initialCode": "public class Main {\n    // TODO: Create a Logger interface with a log(String message) method\n\n    // TODO: Create ConsoleLogger class implementing Logger\n\n    // TODO: Create UserService class that takes Logger in constructor\n\n    public static void main(String[] args) {\n        // TODO: Create a ConsoleLogger instance\n        // TODO: Inject it into UserService via constructor\n        // TODO: Call registerUser(\"Alice\") on the service\n    }\n}",
+      "fullSolution": "public class Main {\n    interface Logger {\n        void log(String message);\n    }\n\n    static class ConsoleLogger implements Logger {\n        public void log(String message) {\n            System.out.println(\"[LOG] \" + message);\n        }\n    }\n\n    static class UserService {\n        private final Logger logger;\n\n        public UserService(Logger logger) {\n            this.logger = logger;\n        }\n\n        public void registerUser(String username) {\n            logger.log(\"Registering user: \" + username);\n        }\n    }\n\n    public static void main(String[] args) {\n        Logger logger = new ConsoleLogger();\n        UserService service = new UserService(logger);\n        service.registerUser(\"Alice\");\n    }\n}",
+      "expectedOutput": "[LOG] Registering user: Alice",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Dependency Injection (DI) is a pattern where objects receive their dependencies from external sources rather than creating them. Constructor injection provides dependencies via constructor parameters, ensuring immutability and explicit requirements.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class EmailService {\n    private final Logger logger;\n    public EmailService(Logger logger) {\n        this.logger = logger;\n    }\n}</pre></div><p class=\"text-gray-300\">Benefits: testability (easy to mock), loose coupling, clear dependencies.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">// Easy testing\nLogger mockLogger = new MockLogger();\nEmailService service = new EmailService(mockLogger);</pre></div>",
+      "language": "java",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Best Practices"
+      ]
+    },
+    {
+      "id": 454,
+      "title": "454. Dependency Injection - Setter Injection",
+      "description": "Implement setter-based dependency injection where dependencies can be set after object creation.",
+      "initialCode": "public class Main {\n    // TODO: Create Database interface with query(String sql) method\n\n    // TODO: Create MockDatabase implementing Database\n\n    // TODO: Create Repository class with setDatabase(Database db) setter\n\n    public static void main(String[] args) {\n        // TODO: Create Repository instance\n        // TODO: Inject MockDatabase using setter\n        // TODO: Call findUser() method\n    }\n}",
+      "fullSolution": "public class Main {\n    interface Database {\n        String query(String sql);\n    }\n\n    static class MockDatabase implements Database {\n        public String query(String sql) {\n            return \"Mock result for: \" + sql;\n        }\n    }\n\n    static class Repository {\n        private Database database;\n\n        public void setDatabase(Database database) {\n            this.database = database;\n        }\n\n        public void findUser() {\n            String result = database.query(\"SELECT * FROM users\");\n            System.out.println(result);\n        }\n    }\n\n    public static void main(String[] args) {\n        Repository repo = new Repository();\n        repo.setDatabase(new MockDatabase());\n        repo.findUser();\n    }\n}",
+      "expectedOutput": "Mock result for: SELECT * FROM users",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Setter injection allows dependencies to be set after object construction via setter methods. Useful for optional dependencies or when you need to change dependencies at runtime.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class Service {\n    private Cache cache;\n    public void setCache(Cache c) {\n        this.cache = c;\n    }\n}</pre></div><p class=\"text-gray-300\">Trade-off: less strict than constructor injection, allows optional dependencies.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Service svc = new Service();\nsvc.setCache(new RedisCache());</pre></div>",
+      "language": "java",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Best Practices"
+      ]
+    },
+    {
+      "id": 455,
+      "title": "455. Factory Method - Product Creation",
+      "description": "Implement the Factory Method pattern to create different types of products without specifying their concrete classes.",
+      "initialCode": "public class Main {\n    // TODO: Create Animal interface with speak() method\n\n    // TODO: Create Dog and Cat classes implementing Animal\n\n    // TODO: Create AnimalFactory with static createAnimal(String type) method\n\n    public static void main(String[] args) {\n        // TODO: Use factory to create a dog and call speak()\n        // TODO: Use factory to create a cat and call speak()\n    }\n}",
+      "fullSolution": "public class Main {\n    interface Animal {\n        void speak();\n    }\n\n    static class Dog implements Animal {\n        public void speak() {\n            System.out.println(\"Woof!\");\n        }\n    }\n\n    static class Cat implements Animal {\n        public void speak() {\n            System.out.println(\"Meow!\");\n        }\n    }\n\n    static class AnimalFactory {\n        public static Animal createAnimal(String type) {\n            if (type.equals(\"dog\")) {\n                return new Dog();\n            } else if (type.equals(\"cat\")) {\n                return new Cat();\n            }\n            throw new IllegalArgumentException(\"Unknown type\");\n        }\n    }\n\n    public static void main(String[] args) {\n        Animal dog = AnimalFactory.createAnimal(\"dog\");\n        dog.speak();\n        Animal cat = AnimalFactory.createAnimal(\"cat\");\n        cat.speak();\n    }\n}",
+      "expectedOutput": "Woof!\nMeow!",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Factory Method pattern defines an interface for creating objects but lets subclasses decide which class to instantiate. It encapsulates object creation logic in one place.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class ButtonFactory {\n    static Button create(String os) {\n        if (os.equals(\"win\")) return new WinButton();\n        return new MacButton();\n    }\n}</pre></div><p class=\"text-gray-300\">Benefits: flexibility, decoupling, easier to extend with new types.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Button btn = ButtonFactory.create(\"win\");\nbtn.render();</pre></div>",
+      "language": "java",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Creational Patterns"
+      ]
+    },
+    {
+      "id": 456,
+      "title": "456. Factory Method - Parameterized Factories",
+      "description": "Create a parameterized factory that uses configuration to determine which object to create.",
+      "initialCode": "public class Main {\n    // TODO: Create Vehicle interface with drive() method\n\n    // TODO: Create Car and Bike classes implementing Vehicle\n\n    // TODO: Create VehicleFactory with createVehicle(int wheels) method\n\n    public static void main(String[] args) {\n        // TODO: Create vehicle with 4 wheels and call drive()\n        // TODO: Create vehicle with 2 wheels and call drive()\n    }\n}",
+      "fullSolution": "public class Main {\n    interface Vehicle {\n        void drive();\n    }\n\n    static class Car implements Vehicle {\n        public void drive() {\n            System.out.println(\"Driving a car\");\n        }\n    }\n\n    static class Bike implements Vehicle {\n        public void drive() {\n            System.out.println(\"Riding a bike\");\n        }\n    }\n\n    static class VehicleFactory {\n        public static Vehicle createVehicle(int wheels) {\n            if (wheels == 4) {\n                return new Car();\n            } else if (wheels == 2) {\n                return new Bike();\n            }\n            throw new IllegalArgumentException(\"Invalid wheels\");\n        }\n    }\n\n    public static void main(String[] args) {\n        Vehicle car = VehicleFactory.createVehicle(4);\n        car.drive();\n        Vehicle bike = VehicleFactory.createVehicle(2);\n        bike.drive();\n    }\n}",
+      "expectedOutput": "Driving a car\nRiding a bike",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Parameterized factories use input parameters to determine which concrete class to instantiate. This allows dynamic object creation based on runtime conditions or configuration.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class ShapeFactory {\n    static Shape create(int sides) {\n        if (sides == 3) return new Triangle();\n        if (sides == 4) return new Square();\n        return new Circle();\n    }\n}</pre></div><p class=\"text-gray-300\">Use cases: configuration-driven creation, plugin systems.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Shape s = ShapeFactory.create(4);\ns.draw();</pre></div>",
+      "language": "java",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Creational Patterns"
+      ]
+    },
+    {
+      "id": 457,
+      "title": "457. Abstract Factory - Family of Products",
+      "description": "Implement Abstract Factory pattern to create families of related objects without specifying concrete classes.",
+      "initialCode": "public class Main {\n    // TODO: Create Button and Checkbox interfaces\n\n    // TODO: Create WindowsButton, WindowsCheckbox classes\n\n    // TODO: Create GUIFactory interface with createButton() and createCheckbox()\n\n    // TODO: Create WindowsFactory implementing GUIFactory\n\n    public static void main(String[] args) {\n        // TODO: Create WindowsFactory and use it to create button and checkbox\n        // TODO: Call render() on both\n    }\n}",
+      "fullSolution": "public class Main {\n    interface Button {\n        void render();\n    }\n\n    interface Checkbox {\n        void render();\n    }\n\n    static class WindowsButton implements Button {\n        public void render() {\n            System.out.println(\"Windows Button\");\n        }\n    }\n\n    static class WindowsCheckbox implements Checkbox {\n        public void render() {\n            System.out.println(\"Windows Checkbox\");\n        }\n    }\n\n    interface GUIFactory {\n        Button createButton();\n        Checkbox createCheckbox();\n    }\n\n    static class WindowsFactory implements GUIFactory {\n        public Button createButton() {\n            return new WindowsButton();\n        }\n        public Checkbox createCheckbox() {\n            return new WindowsCheckbox();\n        }\n    }\n\n    public static void main(String[] args) {\n        GUIFactory factory = new WindowsFactory();\n        Button btn = factory.createButton();\n        btn.render();\n        Checkbox chk = factory.createCheckbox();\n        chk.render();\n    }\n}",
+      "expectedOutput": "Windows Button\nWindows Checkbox",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Abstract Factory provides an interface for creating families of related objects without specifying concrete classes. Ensures created objects are compatible.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">interface GUIFactory {\n    Button createButton();\n    Checkbox createCheckbox();\n}</pre></div><p class=\"text-gray-300\">Benefits: consistency across product families, easy theme switching.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">GUIFactory factory = new MacFactory();\nButton btn = factory.createButton();</pre></div>",
+      "language": "java",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Creational Patterns"
+      ]
+    },
+    {
+      "id": 458,
+      "title": "458. Abstract Factory - Multiple Families",
+      "description": "Extend Abstract Factory to support multiple product families with consistent interfaces.",
+      "initialCode": "public class Main {\n    // TODO: Create Theme interface with getColor() method\n\n    // TODO: Create DarkTheme and LightTheme classes\n\n    // TODO: Create ThemeFactory interface with createTheme() method\n\n    // TODO: Create DarkThemeFactory and LightThemeFactory\n\n    public static void main(String[] args) {\n        // TODO: Use DarkThemeFactory to create and print dark theme color\n        // TODO: Use LightThemeFactory to create and print light theme color\n    }\n}",
+      "fullSolution": "public class Main {\n    interface Theme {\n        String getColor();\n    }\n\n    static class DarkTheme implements Theme {\n        public String getColor() {\n            return \"Dark: #000000\";\n        }\n    }\n\n    static class LightTheme implements Theme {\n        public String getColor() {\n            return \"Light: #FFFFFF\";\n        }\n    }\n\n    interface ThemeFactory {\n        Theme createTheme();\n    }\n\n    static class DarkThemeFactory implements ThemeFactory {\n        public Theme createTheme() {\n            return new DarkTheme();\n        }\n    }\n\n    static class LightThemeFactory implements ThemeFactory {\n        public Theme createTheme() {\n            return new LightTheme();\n        }\n    }\n\n    public static void main(String[] args) {\n        ThemeFactory darkFactory = new DarkThemeFactory();\n        System.out.println(darkFactory.createTheme().getColor());\n\n        ThemeFactory lightFactory = new LightThemeFactory();\n        System.out.println(lightFactory.createTheme().getColor());\n    }\n}",
+      "expectedOutput": "Dark: #000000\nLight: #FFFFFF",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Abstract Factory scales to multiple product families by defining factory interfaces. Each concrete factory produces a complete family of compatible products.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">interface UIFactory {\n    Theme createTheme();\n    Font createFont();\n}</pre></div><p class=\"text-gray-300\">Use case: supporting multiple platforms, themes, or configurations.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">UIFactory factory = getFactory(platform);\nTheme theme = factory.createTheme();</pre></div>",
+      "language": "java",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Creational Patterns"
+      ]
+    },
+    {
+      "id": 459,
+      "title": "459. Singleton - Thread-Safe Implementation",
+      "description": "Implement a thread-safe Singleton pattern using synchronized lazy initialization.",
+      "initialCode": "public class Main {\n    // TODO: Create ConfigManager singleton class\n    // TODO: Add private static volatile instance variable\n    // TODO: Add private constructor\n    // TODO: Add synchronized getInstance() method\n    // TODO: Add getSetting(String key) method that returns \"value_\" + key\n\n    public static void main(String[] args) {\n        // TODO: Get singleton instance and call getSetting(\"db_host\")\n    }\n}",
+      "fullSolution": "public class Main {\n    static class ConfigManager {\n        private static volatile ConfigManager instance;\n\n        private ConfigManager() {}\n\n        public static synchronized ConfigManager getInstance() {\n            if (instance == null) {\n                instance = new ConfigManager();\n            }\n            return instance;\n        }\n\n        public String getSetting(String key) {\n            return \"value_\" + key;\n        }\n    }\n\n    public static void main(String[] args) {\n        ConfigManager config = ConfigManager.getInstance();\n        System.out.println(config.getSetting(\"db_host\"));\n    }\n}",
+      "expectedOutput": "value_db_host",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Singleton ensures a class has only one instance with global access point. Thread-safe implementation uses synchronized keyword and volatile to prevent race conditions in multi-threaded environments.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class Database {\n    private static volatile Database instance;\n    public static synchronized Database getInstance() {\n        if (instance == null) instance = new Database();\n        return instance;\n    }\n}</pre></div><p class=\"text-gray-300\">Use cases: configuration, logging, connection pools.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Database db = Database.getInstance();</pre></div>",
+      "language": "java",
+      "tags": [
+        "Design Patterns",
+        "Concurrency",
+        "Creational Patterns"
+      ]
+    },
+    {
+      "id": 460,
+      "title": "460. Singleton - Double-Checked Locking",
+      "description": "Implement Singleton with double-checked locking for better performance in multi-threaded scenarios.",
+      "initialCode": "public class Main {\n    // TODO: Create Logger singleton with double-checked locking\n    // TODO: Add private static volatile instance\n    // TODO: Add private constructor\n    // TODO: Add getInstance() with double-checked locking pattern\n    // TODO: Add log(String msg) method\n\n    public static void main(String[] args) {\n        // TODO: Get instance and log \"Application started\"\n    }\n}",
+      "fullSolution": "public class Main {\n    static class Logger {\n        private static volatile Logger instance;\n\n        private Logger() {}\n\n        public static Logger getInstance() {\n            if (instance == null) {\n                synchronized (Logger.class) {\n                    if (instance == null) {\n                        instance = new Logger();\n                    }\n                }\n            }\n            return instance;\n        }\n\n        public void log(String msg) {\n            System.out.println(\"[LOG] \" + msg);\n        }\n    }\n\n    public static void main(String[] args) {\n        Logger logger = Logger.getInstance();\n        logger.log(\"Application started\");\n    }\n}",
+      "expectedOutput": "[LOG] Application started",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Double-checked locking optimizes Singleton by checking instance twice: once without lock (fast path) and once with lock (initialization). Reduces synchronization overhead while maintaining thread safety.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">if (instance == null) {\n    synchronized (Class.class) {\n        if (instance == null) {\n            instance = new Class();\n        }\n    }\n}</pre></div><p class=\"text-gray-300\">Volatile keyword ensures visibility across threads.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">private static volatile Instance instance;</pre></div>",
+      "language": "java",
+      "tags": [
+        "Design Patterns",
+        "Concurrency",
+        "Creational Patterns"
+      ]
+    },
+    {
+      "id": 461,
+      "title": "461. Prototype - Cloning Objects",
+      "description": "Implement the Prototype pattern to create new objects by cloning existing instances.",
+      "initialCode": "public class Main {\n    // TODO: Create Document class with String content field\n    // TODO: Add constructor and clone() method\n    // TODO: Add getContent() and setContent() methods\n\n    public static void main(String[] args) {\n        // TODO: Create original document with \"Original\"\n        // TODO: Clone it and set cloned content to \"Cloned\"\n        // TODO: Print both contents\n    }\n}",
+      "fullSolution": "public class Main {\n    static class Document {\n        private String content;\n\n        public Document(String content) {\n            this.content = content;\n        }\n\n        public Document clone() {\n            return new Document(this.content);\n        }\n\n        public String getContent() {\n            return content;\n        }\n\n        public void setContent(String content) {\n            this.content = content;\n        }\n    }\n\n    public static void main(String[] args) {\n        Document original = new Document(\"Original\");\n        Document cloned = original.clone();\n        cloned.setContent(\"Cloned\");\n\n        System.out.println(original.getContent());\n        System.out.println(cloned.getContent());\n    }\n}",
+      "expectedOutput": "Original\nCloned",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Prototype pattern creates new objects by copying existing instances rather than instantiating from scratch. Useful when object creation is expensive or complex.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class Shape {\n    public Shape clone() {\n        return new Shape(this);\n    }\n}</pre></div><p class=\"text-gray-300\">Benefits: avoids costly initialization, dynamic object creation.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Shape original = new Circle();\nShape copy = original.clone();</pre></div>",
+      "language": "java",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Creational Patterns"
+      ]
+    },
+    {
+      "id": 462,
+      "title": "462. Prototype - Deep vs Shallow Copy",
+      "description": "Understand the difference between shallow and deep copying when cloning objects with nested structures.",
+      "initialCode": "import java.util.ArrayList;\nimport java.util.List;\n\npublic class Main {\n    // TODO: Create Team class with List<String> members\n    // TODO: Add shallowCopy() and deepCopy() methods\n    // TODO: Add addMember(String name) method\n\n    public static void main(String[] args) {\n        // TODO: Create team with member \"Alice\"\n        // TODO: Deep copy it and add \"Bob\" to copy\n        // TODO: Print both team sizes\n    }\n}",
+      "fullSolution": "import java.util.ArrayList;\nimport java.util.List;\n\npublic class Main {\n    static class Team {\n        private List<String> members;\n\n        public Team() {\n            this.members = new ArrayList<>();\n        }\n\n        public Team shallowCopy() {\n            Team copy = new Team();\n            copy.members = this.members;\n            return copy;\n        }\n\n        public Team deepCopy() {\n            Team copy = new Team();\n            copy.members = new ArrayList<>(this.members);\n            return copy;\n        }\n\n        public void addMember(String name) {\n            members.add(name);\n        }\n\n        public int getSize() {\n            return members.size();\n        }\n    }\n\n    public static void main(String[] args) {\n        Team original = new Team();\n        original.addMember(\"Alice\");\n\n        Team copy = original.deepCopy();\n        copy.addMember(\"Bob\");\n\n        System.out.println(original.getSize());\n        System.out.println(copy.getSize());\n    }\n}",
+      "expectedOutput": "1\n2",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Shallow copy duplicates object references, while deep copy creates new copies of nested objects. Deep copy prevents shared mutable state between original and clone.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">// Shallow: shares list reference\ncopy.list = this.list;\n// Deep: creates new list\ncopy.list = new ArrayList<>(this.list);</pre></div><p class=\"text-gray-300\">Use deep copy for independent clones.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Team clone = team.deepCopy();</pre></div>",
+      "language": "java",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Creational Patterns"
+      ]
+    },
+    {
+      "id": 463,
+      "title": "463. Adapter - Class Adapter",
+      "description": "Implement the Adapter pattern to make incompatible interfaces work together using inheritance.",
+      "initialCode": "public class Main {\n    // TODO: Create MediaPlayer interface with play(String filename) method\n\n    // TODO: Create LegacyAudioPlayer with playAudio(String file) method\n\n    // TODO: Create AudioAdapter extending LegacyAudioPlayer and implementing MediaPlayer\n\n    public static void main(String[] args) {\n        // TODO: Create adapter and call play(\"song.mp3\")\n    }\n}",
+      "fullSolution": "public class Main {\n    interface MediaPlayer {\n        void play(String filename);\n    }\n\n    static class LegacyAudioPlayer {\n        public void playAudio(String file) {\n            System.out.println(\"Playing: \" + file);\n        }\n    }\n\n    static class AudioAdapter extends LegacyAudioPlayer implements MediaPlayer {\n        public void play(String filename) {\n            playAudio(filename);\n        }\n    }\n\n    public static void main(String[] args) {\n        MediaPlayer player = new AudioAdapter();\n        player.play(\"song.mp3\");\n    }\n}",
+      "expectedOutput": "Playing: song.mp3",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Adapter pattern converts one interface to another that clients expect. Class adapter uses inheritance to adapt an existing class to a new interface.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class Adapter extends OldClass implements NewInterface {\n    public void newMethod() {\n        oldMethod();\n    }\n}</pre></div><p class=\"text-gray-300\">Use cases: integrating legacy code, third-party libraries.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">NewInterface obj = new Adapter();\nobj.newMethod();</pre></div>",
+      "language": "java",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Structural Patterns"
+      ]
+    },
+    {
+      "id": 464,
+      "title": "464. Adapter - Object Adapter",
+      "description": "Implement the Adapter pattern using composition instead of inheritance for greater flexibility.",
+      "initialCode": "public class Main {\n    // TODO: Create Printer interface with print(String text) method\n\n    // TODO: Create LegacyPrinter with printDocument(String doc) method\n\n    // TODO: Create PrinterAdapter using composition to wrap LegacyPrinter\n\n    public static void main(String[] args) {\n        // TODO: Create LegacyPrinter\n        // TODO: Wrap it in adapter and call print(\"Hello\")\n    }\n}",
+      "fullSolution": "public class Main {\n    interface Printer {\n        void print(String text);\n    }\n\n    static class LegacyPrinter {\n        public void printDocument(String doc) {\n            System.out.println(\"Document: \" + doc);\n        }\n    }\n\n    static class PrinterAdapter implements Printer {\n        private LegacyPrinter legacyPrinter;\n\n        public PrinterAdapter(LegacyPrinter legacyPrinter) {\n            this.legacyPrinter = legacyPrinter;\n        }\n\n        public void print(String text) {\n            legacyPrinter.printDocument(text);\n        }\n    }\n\n    public static void main(String[] args) {\n        LegacyPrinter legacy = new LegacyPrinter();\n        Printer printer = new PrinterAdapter(legacy);\n        printer.print(\"Hello\");\n    }\n}",
+      "expectedOutput": "Document: Hello",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Object adapter uses composition (wrapping) instead of inheritance. It's more flexible as it can adapt multiple classes and doesn't expose the adaptee's interface.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class Adapter implements NewInterface {\n    private OldClass old;\n    public void newMethod() {\n        old.oldMethod();\n    }\n}</pre></div><p class=\"text-gray-300\">Preferred over class adapter for better encapsulation.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Adapter a = new Adapter(oldObj);</pre></div>",
+      "language": "java",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Structural Patterns"
+      ]
+    },
+    {
+      "id": 465,
+      "title": "465. Decorator - Dynamic Behavior",
+      "description": "Implement the Decorator pattern to add behavior to objects dynamically without modifying their structure.",
+      "initialCode": "public class Main {\n    // TODO: Create Coffee interface with getCost() and getDescription() methods\n\n    // TODO: Create SimpleCoffee implementing Coffee\n\n    // TODO: Create MilkDecorator wrapping Coffee and adding functionality\n\n    public static void main(String[] args) {\n        // TODO: Create SimpleCoffee, wrap with MilkDecorator\n        // TODO: Print description and cost\n    }\n}",
+      "fullSolution": "public class Main {\n    interface Coffee {\n        double getCost();\n        String getDescription();\n    }\n\n    static class SimpleCoffee implements Coffee {\n        public double getCost() {\n            return 2.0;\n        }\n        public String getDescription() {\n            return \"Simple coffee\";\n        }\n    }\n\n    static class MilkDecorator implements Coffee {\n        private Coffee coffee;\n\n        public MilkDecorator(Coffee coffee) {\n            this.coffee = coffee;\n        }\n\n        public double getCost() {\n            return coffee.getCost() + 0.5;\n        }\n\n        public String getDescription() {\n            return coffee.getDescription() + \" + milk\";\n        }\n    }\n\n    public static void main(String[] args) {\n        Coffee coffee = new SimpleCoffee();\n        coffee = new MilkDecorator(coffee);\n        System.out.println(coffee.getDescription() + \": $\" + coffee.getCost());\n    }\n}",
+      "expectedOutput": "Simple coffee + milk: $2.5",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Decorator pattern attaches additional responsibilities to objects dynamically. Decorators provide flexible alternative to subclassing for extending functionality.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class Decorator implements Component {\n    private Component wrapped;\n    public void operation() {\n        wrapped.operation();\n        // add behavior\n    }\n}</pre></div><p class=\"text-gray-300\">Benefits: single responsibility, open/closed principle.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Component c = new Decorator(new Base());</pre></div>",
+      "language": "java",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Structural Patterns"
+      ]
+    },
+    {
+      "id": 466,
+      "title": "466. Decorator - Wrapper Chains",
+      "description": "Chain multiple decorators to combine behaviors dynamically at runtime.",
+      "initialCode": "public class Main {\n    // TODO: Create Message interface with getContent() method\n\n    // TODO: Create TextMessage implementing Message\n\n    // TODO: Create EncryptDecorator and CompressDecorator\n\n    public static void main(String[] args) {\n        // TODO: Create TextMessage, wrap with both decorators\n        // TODO: Print final content\n    }\n}",
+      "fullSolution": "public class Main {\n    interface Message {\n        String getContent();\n    }\n\n    static class TextMessage implements Message {\n        private String text;\n        public TextMessage(String text) {\n            this.text = text;\n        }\n        public String getContent() {\n            return text;\n        }\n    }\n\n    static class EncryptDecorator implements Message {\n        private Message message;\n        public EncryptDecorator(Message message) {\n            this.message = message;\n        }\n        public String getContent() {\n            return \"[encrypted:\" + message.getContent() + \"]\";\n        }\n    }\n\n    static class CompressDecorator implements Message {\n        private Message message;\n        public CompressDecorator(Message message) {\n            this.message = message;\n        }\n        public String getContent() {\n            return \"[compressed:\" + message.getContent() + \"]\";\n        }\n    }\n\n    public static void main(String[] args) {\n        Message msg = new TextMessage(\"Hello\");\n        msg = new EncryptDecorator(msg);\n        msg = new CompressDecorator(msg);\n        System.out.println(msg.getContent());\n    }\n}",
+      "expectedOutput": "[compressed:[encrypted:Hello]]",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Decorator chains wrap objects in multiple layers, each adding behavior. Order matters as each decorator wraps the previous result.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Component c = new Base();\nc = new DecoratorA(c);\nc = new DecoratorB(c);\nc.operation(); // runs all layers</pre></div><p class=\"text-gray-300\">Enables mix-and-match functionality composition.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Stream s = new BufferedStream(new FileStream());</pre></div>",
+      "language": "java",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Structural Patterns"
+      ]
+    },
+    {
+      "id": 467,
+      "title": "467. Facade - Simplified Interface",
+      "description": "Implement the Facade pattern to provide a simplified interface to a complex subsystem.",
+      "initialCode": "public class Main {\n    // TODO: Create CPU, Memory, HardDrive classes with simple methods\n\n    // TODO: Create ComputerFacade that coordinates all subsystems\n    // TODO: Add start() method that uses all components\n\n    public static void main(String[] args) {\n        // TODO: Create facade and call start()\n    }\n}",
+      "fullSolution": "public class Main {\n    static class CPU {\n        public void freeze() { System.out.println(\"CPU frozen\"); }\n        public void execute() { System.out.println(\"CPU executing\"); }\n    }\n\n    static class Memory {\n        public void load() { System.out.println(\"Memory loaded\"); }\n    }\n\n    static class HardDrive {\n        public void read() { System.out.println(\"HardDrive read\"); }\n    }\n\n    static class ComputerFacade {\n        private CPU cpu;\n        private Memory memory;\n        private HardDrive hardDrive;\n\n        public ComputerFacade() {\n            this.cpu = new CPU();\n            this.memory = new Memory();\n            this.hardDrive = new HardDrive();\n        }\n\n        public void start() {\n            cpu.freeze();\n            memory.load();\n            hardDrive.read();\n            cpu.execute();\n        }\n    }\n\n    public static void main(String[] args) {\n        ComputerFacade computer = new ComputerFacade();\n        computer.start();\n    }\n}",
+      "expectedOutput": "CPU frozen\nMemory loaded\nHardDrive read\nCPU executing",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Facade pattern provides a unified, simplified interface to a complex subsystem. It hides complexity and makes subsystems easier to use.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class VideoConverter {\n    public File convert(String file) {\n        // coordinates codec, audio, video\n        return convertedFile;\n    }\n}</pre></div><p class=\"text-gray-300\">Benefits: loose coupling, easier client code.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">VideoConverter converter = new VideoConverter();\nconverter.convert(\"video.mp4\");</pre></div>",
+      "language": "java",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Structural Patterns"
+      ]
+    },
+    {
+      "id": 468,
+      "title": "468. Facade - Subsystem Coordination",
+      "description": "Use Facade to coordinate multiple subsystems and manage their interactions.",
+      "initialCode": "public class Main {\n    // TODO: Create Authentication, Authorization, Logger classes\n\n    // TODO: Create SecurityFacade coordinating all security subsystems\n    // TODO: Add login(user, pass) method\n\n    public static void main(String[] args) {\n        // TODO: Create facade and call login(\"admin\", \"pass\")\n    }\n}",
+      "fullSolution": "public class Main {\n    static class Authentication {\n        public boolean verify(String user, String pass) {\n            System.out.println(\"Authenticating \" + user);\n            return true;\n        }\n    }\n\n    static class Authorization {\n        public void grantAccess(String user) {\n            System.out.println(\"Granting access to \" + user);\n        }\n    }\n\n    static class Logger {\n        public void log(String msg) {\n            System.out.println(\"Log: \" + msg);\n        }\n    }\n\n    static class SecurityFacade {\n        private Authentication auth;\n        private Authorization authz;\n        private Logger logger;\n\n        public SecurityFacade() {\n            this.auth = new Authentication();\n            this.authz = new Authorization();\n            this.logger = new Logger();\n        }\n\n        public void login(String user, String pass) {\n            if (auth.verify(user, pass)) {\n                authz.grantAccess(user);\n                logger.log(user + \" logged in\");\n            }\n        }\n    }\n\n    public static void main(String[] args) {\n        SecurityFacade security = new SecurityFacade();\n        security.login(\"admin\", \"pass\");\n    }\n}",
+      "expectedOutput": "Authenticating admin\nGranting access to admin\nLog: admin logged in",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Facade coordinates multiple subsystems, managing their interactions and dependencies. Clients interact with one simple interface instead of multiple complex ones.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class OrderFacade {\n    void placeOrder() {\n        inventory.check();\n        payment.process();\n        shipping.schedule();\n    }\n}</pre></div><p class=\"text-gray-300\">Simplifies complex workflows into single method calls.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">OrderFacade order = new OrderFacade();\norder.placeOrder();</pre></div>",
+      "language": "java",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Structural Patterns"
+      ]
+    },
+    {
+      "id": 469,
+      "title": "469. Proxy - Lazy Loading",
+      "description": "Implement the Proxy pattern to defer expensive object creation until actually needed.",
+      "initialCode": "public class Main {\n    // TODO: Create Image interface with display() method\n\n    // TODO: Create RealImage with expensive constructor\n\n    // TODO: Create ImageProxy that loads RealImage on first display()\n\n    public static void main(String[] args) {\n        // TODO: Create proxy, call display() twice\n    }\n}",
+      "fullSolution": "public class Main {\n    interface Image {\n        void display();\n    }\n\n    static class RealImage implements Image {\n        private String filename;\n\n        public RealImage(String filename) {\n            this.filename = filename;\n            loadFromDisk();\n        }\n\n        private void loadFromDisk() {\n            System.out.println(\"Loading \" + filename);\n        }\n\n        public void display() {\n            System.out.println(\"Displaying \" + filename);\n        }\n    }\n\n    static class ImageProxy implements Image {\n        private String filename;\n        private RealImage realImage;\n\n        public ImageProxy(String filename) {\n            this.filename = filename;\n        }\n\n        public void display() {\n            if (realImage == null) {\n                realImage = new RealImage(filename);\n            }\n            realImage.display();\n        }\n    }\n\n    public static void main(String[] args) {\n        Image image = new ImageProxy(\"photo.jpg\");\n        image.display();\n        image.display();\n    }\n}",
+      "expectedOutput": "Loading photo.jpg\nDisplaying photo.jpg\nDisplaying photo.jpg",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Proxy pattern provides a placeholder for expensive objects, deferring creation until first use. Lazy loading proxy creates the real object only when needed.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class Proxy implements Subject {\n    private RealSubject real;\n    public void request() {\n        if (real == null) real = new RealSubject();\n        real.request();\n    }\n}</pre></div><p class=\"text-gray-300\">Benefits: performance optimization, resource management.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Subject s = new Proxy(\"data\");\ns.request(); // loads now</pre></div>",
+      "language": "java",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Structural Patterns"
+      ]
+    },
+    {
+      "id": 470,
+      "title": "470. Proxy - Access Control",
+      "description": "Use Proxy pattern to control access to sensitive operations based on permissions.",
+      "initialCode": "public class Main {\n    // TODO: Create Document interface with edit() method\n\n    // TODO: Create RealDocument implementing Document\n\n    // TODO: Create ProtectedDocument proxy with role-based access\n\n    public static void main(String[] args) {\n        // TODO: Create proxy for \"admin\" and \"guest\"\n        // TODO: Try edit() on both\n    }\n}",
+      "fullSolution": "public class Main {\n    interface Document {\n        void edit();\n    }\n\n    static class RealDocument implements Document {\n        public void edit() {\n            System.out.println(\"Editing document\");\n        }\n    }\n\n    static class ProtectedDocument implements Document {\n        private RealDocument realDocument;\n        private String role;\n\n        public ProtectedDocument(String role) {\n            this.realDocument = new RealDocument();\n            this.role = role;\n        }\n\n        public void edit() {\n            if (role.equals(\"admin\")) {\n                realDocument.edit();\n            } else {\n                System.out.println(\"Access denied\");\n            }\n        }\n    }\n\n    public static void main(String[] args) {\n        Document adminDoc = new ProtectedDocument(\"admin\");\n        adminDoc.edit();\n\n        Document guestDoc = new ProtectedDocument(\"guest\");\n        guestDoc.edit();\n    }\n}",
+      "expectedOutput": "Editing document\nAccess denied",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Protection proxy controls access to objects based on permissions or credentials. It adds security layer before delegating to real object.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class SecureProxy implements Service {\n    public void execute() {\n        if (hasPermission()) {\n            realService.execute();\n        } else throw new SecurityException();\n    }\n}</pre></div><p class=\"text-gray-300\">Use cases: authentication, authorization, access logging.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Service s = new SecureProxy(user);\ns.execute();</pre></div>",
+      "language": "java",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Structural Patterns"
+      ]
+    },
+    {
+      "id": 471,
+      "title": "471. Template Method - Algorithm Skeleton",
+      "description": "Implement Template Method pattern to define algorithm skeleton while letting subclasses override specific steps.",
+      "initialCode": "public class Main {\n    // TODO: Create abstract DataProcessor with process() template method\n    // TODO: Add abstract readData() and processData() methods\n\n    // TODO: Create CSVProcessor extending DataProcessor\n\n    public static void main(String[] args) {\n        // TODO: Create CSVProcessor and call process()\n    }\n}",
+      "fullSolution": "public class Main {\n    static abstract class DataProcessor {\n        public final void process() {\n            readData();\n            processData();\n            System.out.println(\"Data saved\");\n        }\n\n        protected abstract void readData();\n        protected abstract void processData();\n    }\n\n    static class CSVProcessor extends DataProcessor {\n        protected void readData() {\n            System.out.println(\"Reading CSV\");\n        }\n\n        protected void processData() {\n            System.out.println(\"Processing CSV\");\n        }\n    }\n\n    public static void main(String[] args) {\n        DataProcessor processor = new CSVProcessor();\n        processor.process();\n    }\n}",
+      "expectedOutput": "Reading CSV\nProcessing CSV\nData saved",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Template Method defines algorithm structure in base class, deferring specific steps to subclasses. The template method is final to preserve algorithm skeleton.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">abstract class Game {\n    final void play() {\n        start();\n        playTurn();\n        end();\n    }\n    abstract void playTurn();\n}</pre></div><p class=\"text-gray-300\">Benefits: code reuse, consistent algorithm structure.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Game g = new Chess();\ng.play();</pre></div>",
+      "language": "java",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Behavioral Patterns"
+      ]
+    },
+    {
+      "id": 472,
+      "title": "472. Template Method - Hooks",
+      "description": "Add optional hook methods to Template Method pattern for fine-grained customization.",
+      "initialCode": "public class Main {\n    // TODO: Create abstract Report with generate() template method\n    // TODO: Add hook method shouldIncludeHeader() with default true\n    // TODO: Add abstract methods for header and body\n\n    // TODO: Create SimpleReport that skips header\n\n    public static void main(String[] args) {\n        // TODO: Create SimpleReport and call generate()\n    }\n}",
+      "fullSolution": "public class Main {\n    static abstract class Report {\n        public final void generate() {\n            if (shouldIncludeHeader()) {\n                printHeader();\n            }\n            printBody();\n        }\n\n        protected boolean shouldIncludeHeader() {\n            return true;\n        }\n\n        protected abstract void printHeader();\n        protected abstract void printBody();\n    }\n\n    static class SimpleReport extends Report {\n        protected boolean shouldIncludeHeader() {\n            return false;\n        }\n\n        protected void printHeader() {\n            System.out.println(\"Header\");\n        }\n\n        protected void printBody() {\n            System.out.println(\"Body content\");\n        }\n    }\n\n    public static void main(String[] args) {\n        Report report = new SimpleReport();\n        report.generate();\n    }\n}",
+      "expectedOutput": "Body content",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Hooks are optional methods in Template Method with default implementations. Subclasses can override hooks to customize behavior without changing algorithm structure.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">abstract class Builder {\n    void build() {\n        if (shouldValidate()) validate();\n        construct();\n    }\n    boolean shouldValidate() { return true; }\n}</pre></div><p class=\"text-gray-300\">Hooks provide extension points without breaking encapsulation.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">boolean shouldValidate() { return false; }</pre></div>",
+      "language": "java",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Behavioral Patterns"
+      ]
+    },
+    {
+      "id": 473,
+      "title": "473. Strategy - Interchangeable Algorithms",
+      "description": "Implement Strategy pattern to define family of algorithms and make them interchangeable.",
+      "initialCode": "public class Main {\n    // TODO: Create SortStrategy interface with sort(int[] arr) method\n\n    // TODO: Create BubbleSort and QuickSort strategies\n\n    // TODO: Create Sorter class that uses a strategy\n\n    public static void main(String[] args) {\n        // TODO: Create sorter with BubbleSort and sort array\n    }\n}",
+      "fullSolution": "public class Main {\n    interface SortStrategy {\n        void sort(int[] arr);\n    }\n\n    static class BubbleSort implements SortStrategy {\n        public void sort(int[] arr) {\n            System.out.println(\"Bubble sorting\");\n        }\n    }\n\n    static class QuickSort implements SortStrategy {\n        public void sort(int[] arr) {\n            System.out.println(\"Quick sorting\");\n        }\n    }\n\n    static class Sorter {\n        private SortStrategy strategy;\n\n        public Sorter(SortStrategy strategy) {\n            this.strategy = strategy;\n        }\n\n        public void setStrategy(SortStrategy strategy) {\n            this.strategy = strategy;\n        }\n\n        public void sort(int[] arr) {\n            strategy.sort(arr);\n        }\n    }\n\n    public static void main(String[] args) {\n        int[] arr = {3, 1, 2};\n        Sorter sorter = new Sorter(new BubbleSort());\n        sorter.sort(arr);\n    }\n}",
+      "expectedOutput": "Bubble sorting",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Strategy pattern defines family of algorithms, encapsulates each one, and makes them interchangeable. Strategy lets algorithm vary independently from clients.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">interface PaymentStrategy {\n    void pay(int amount);\n}\nclass CreditCard implements PaymentStrategy {\n    void pay(int amt) { /* process */ }\n}</pre></div><p class=\"text-gray-300\">Benefits: eliminates conditionals, runtime algorithm selection.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">context.setStrategy(new FastAlgo());\ncontext.execute();</pre></div>",
+      "language": "java",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Behavioral Patterns"
+      ]
+    },
+    {
+      "id": 474,
+      "title": "474. Strategy - Runtime Selection",
+      "description": "Demonstrate changing strategies at runtime based on conditions or user input.",
+      "initialCode": "public class Main {\n    // TODO: Create CompressionStrategy interface\n\n    // TODO: Create ZipCompression and RarCompression strategies\n\n    // TODO: Create FileCompressor that switches strategies based on file size\n\n    public static void main(String[] args) {\n        // TODO: Compress files of different sizes\n    }\n}",
+      "fullSolution": "public class Main {\n    interface CompressionStrategy {\n        void compress(String file);\n    }\n\n    static class ZipCompression implements CompressionStrategy {\n        public void compress(String file) {\n            System.out.println(\"ZIP: \" + file);\n        }\n    }\n\n    static class RarCompression implements CompressionStrategy {\n        public void compress(String file) {\n            System.out.println(\"RAR: \" + file);\n        }\n    }\n\n    static class FileCompressor {\n        public void compress(String file, int size) {\n            CompressionStrategy strategy;\n            if (size < 100) {\n                strategy = new ZipCompression();\n            } else {\n                strategy = new RarCompression();\n            }\n            strategy.compress(file);\n        }\n    }\n\n    public static void main(String[] args) {\n        FileCompressor compressor = new FileCompressor();\n        compressor.compress(\"small.txt\", 50);\n        compressor.compress(\"large.txt\", 500);\n    }\n}",
+      "expectedOutput": "ZIP: small.txt\nRAR: large.txt",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Strategy pattern enables runtime algorithm selection based on context, conditions, or user preferences. Strategies can be swapped dynamically without changing client code.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">if (user.isPremium()) {\n    context.setStrategy(new FastStrategy());\n} else {\n    context.setStrategy(new FreeStrategy());\n}</pre></div><p class=\"text-gray-300\">Enables adaptive behavior and A/B testing.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">processor.setStrategy(getOptimalStrategy());</pre></div>",
+      "language": "java",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Behavioral Patterns"
+      ]
+    },
+    {
+      "id": 475,
+      "title": "475. Memento - State Capture and Restore",
+      "description": "Implement Memento pattern to capture and restore object state without violating encapsulation.",
+      "initialCode": "public class Main {\n    // TODO: Create Editor class with text and getMemento()/restore(memento) methods\n\n    // TODO: Create Memento class to store state\n\n    // TODO: Create History class to manage mementos\n\n    public static void main(String[] args) {\n        // TODO: Edit text, save state, edit again, then undo\n    }\n}",
+      "fullSolution": "public class Main {\n    static class Editor {\n        private String text;\n\n        public void setText(String text) {\n            this.text = text;\n        }\n\n        public String getText() {\n            return text;\n        }\n\n        public Memento save() {\n            return new Memento(text);\n        }\n\n        public void restore(Memento memento) {\n            this.text = memento.getState();\n        }\n    }\n\n    static class Memento {\n        private final String state;\n\n        public Memento(String state) {\n            this.state = state;\n        }\n\n        public String getState() {\n            return state;\n        }\n    }\n\n    static class History {\n        private Memento memento;\n\n        public void save(Editor editor) {\n            memento = editor.save();\n        }\n\n        public void undo(Editor editor) {\n            editor.restore(memento);\n        }\n    }\n\n    public static void main(String[] args) {\n        Editor editor = new Editor();\n        History history = new History();\n\n        editor.setText(\"Version 1\");\n        history.save(editor);\n\n        editor.setText(\"Version 2\");\n        System.out.println(editor.getText());\n\n        history.undo(editor);\n        System.out.println(editor.getText());\n    }\n}",
+      "expectedOutput": "Version 2\nVersion 1",
+      "tutorial": "<p class=\"mb-4 text-gray-300\">Memento pattern captures and externalizes object's internal state so it can be restored later, without violating encapsulation. Enables undo/redo functionality.</p><h4 class=\"font-semibold text-gray-200 mb-2\">Example:</h4><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">class Editor {\n    Memento save() {\n        return new Memento(this.state);\n    }\n    void restore(Memento m) {\n        this.state = m.getState();\n    }\n}</pre></div><p class=\"text-gray-300\">Use cases: undo mechanisms, snapshots, transaction rollback.</p><div class=\"code-block-wrapper\"><pre class=\"tutorial-code-block\">Memento snapshot = editor.save();\neditor.restore(snapshot);</pre></div>",
+      "language": "java",
+      "tags": [
+        "Design Patterns",
+        "OOP",
+        "Behavioral Patterns"
+      ]
     }
   ]
 }

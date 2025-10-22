@@ -6698,6 +6698,426 @@
         "Error Handling"
       ],
       "id": 422
+    },
+    {
+      "id": 423,
+      "title": "423. Reading environment variables with os.environ",
+      "description": "Learn how to read environment variables using os.environ in Python",
+      "initialCode": "import os\n\n# Read the PATH environment variable\npath = os.environ.get('PATH')\nprint(f\"PATH exists: {path is not None}\")\n\n# TODO: Read the USER or USERNAME environment variable\n# TODO: Count all environment variables\n",
+      "fullSolution": "import os\n\n# Read the PATH environment variable\npath = os.environ.get('PATH')\nprint(f\"PATH exists: {path is not None}\")\n\n# Read the USER or USERNAME environment variable\nuser = os.environ.get('USER') or os.environ.get('USERNAME', 'unknown')\nprint(f\"User: {user}\")\n\n# Count all environment variables\ncount = len(os.environ)\nprint(f\"Total environment variables: {count}\")\n",
+      "expectedOutput": "PATH exists: True\nUser: [username]\nTotal environment variables: [count]",
+      "tutorial": "# Reading Environment Variables in Python\n\nAccess environment variables via the os.environ dictionary.\n\n## Key Methods\n\n1. **os.environ.get(name, default)**: Safe read with default value\n2. **os.environ[name]**: Direct access (raises KeyError if missing)\n3. **os.environ.items()**: Iterate all variables\n\n## Common Variables\n\n- PATH: Executable search paths\n- HOME/USERPROFILE: User home directory\n- USER/USERNAME: Current username\n- VIRTUAL_ENV: Python venv path\n\n## Best Practices\n\n- Use .get() to avoid KeyError\n- Provide sensible defaults\n- Use os.path.expanduser('~') for cross-platform home",
+      "language": "python",
+      "tags": [
+        "Intermediate",
+        "CLI",
+        "Workflow"
+      ]
+    },
+    {
+      "id": 424,
+      "title": "424. Environment variables with default values",
+      "description": "Learn how to provide default values for environment variables",
+      "initialCode": "import os\n\n# Read APP_NAME with default\napp_name = os.environ.get('APP_NAME', 'MyApp')\nprint(f\"App: {app_name}\")\n\n# TODO: Read PORT with default 8080 (as integer)\n# TODO: Read LOG_LEVEL with default \"INFO\"\n",
+      "fullSolution": "import os\n\n# Read APP_NAME with default\napp_name = os.environ.get('APP_NAME', 'MyApp')\nprint(f\"App: {app_name}\")\n\n# Read PORT with default 8080 (as integer)\nport = int(os.environ.get('PORT', '8080'))\nprint(f\"Port: {port}\")\n\n# Read LOG_LEVEL with default \"INFO\"\nlog_level = os.environ.get('LOG_LEVEL', 'INFO')\nprint(f\"Log Level: {log_level}\")\n",
+      "expectedOutput": "App: MyApp\nPort: 8080\nLog Level: INFO",
+      "tutorial": "# Environment Variables with Defaults\n\nThe os.environ.get() method provides clean default handling.\n\n## Patterns\n\n```python\n# String default\nname = os.environ.get('NAME', 'default')\n\n# Integer default\nport = int(os.environ.get('PORT', '8080'))\n\n# Boolean default\ndebug = os.environ.get('DEBUG', 'false').lower() == 'true'\n```\n\n## Best Practices\n\n- Always provide sensible defaults\n- Convert types explicitly\n- Document in .env.example file\n- Use python-dotenv for .env support",
+      "language": "python",
+      "tags": [
+        "Intermediate",
+        "CLI",
+        "Workflow"
+      ]
+    },
+    {
+      "id": 425,
+      "title": "425. Logging with multiple levels",
+      "description": "Learn how to use different logging levels in Python",
+      "initialCode": "import logging\n\nlogging.basicConfig(level=logging.INFO)\nlogger = logging.getLogger(__name__)\n\nlogger.info(\"Application started\")\n\n# TODO: Log a warning message\n# TODO: Log an error message\n",
+      "fullSolution": "import logging\n\nlogging.basicConfig(level=logging.DEBUG, format='%(levelname)s: %(message)s')\nlogger = logging.getLogger(__name__)\n\nlogger.debug(\"This is a DEBUG message\")\nlogger.info(\"This is an INFO message\")\nlogger.warning(\"This is a WARNING message\")\nlogger.error(\"This is an ERROR message\")\nlogger.critical(\"This is a CRITICAL message\")\n\nprint(\"Check console for log messages\")\n",
+      "expectedOutput": "DEBUG: This is a DEBUG message\nINFO: This is an INFO message\nWARNING: This is a WARNING message\nERROR: This is an ERROR message\nCRITICAL: This is a CRITICAL message\nCheck console for log messages",
+      "tutorial": "# Python Logging Levels\n\nPython logging provides five standard levels.\n\n## Levels (highest to lowest)\n\n1. CRITICAL (50): Critical errors\n2. ERROR (40): Errors\n3. WARNING (30): Warnings (default)\n4. INFO (20): Information\n5. DEBUG (10): Debugging\n\n## Usage\n\n```python\nlogger.critical(\"Critical error\")\nlogger.error(\"Error occurred\")\nlogger.warning(\"Warning\")\nlogger.info(\"Info\")\nlogger.debug(\"Debug details\")\n```\n\n## Best Practices\n\n- Use DEBUG for diagnostics\n- Use INFO for events\n- Use WARNING for unexpected issues\n- Use ERROR for operation failures\n- Use CRITICAL for shutdown",
+      "language": "python",
+      "tags": [
+        "Intermediate",
+        "Debugging",
+        "Tooling"
+      ]
+    },
+    {
+      "id": 426,
+      "title": "426. Custom logging formatter",
+      "description": "Learn how to create custom log formatters in Python",
+      "initialCode": "import logging\n\n# TODO: Create custom formatter with timestamp\n# TODO: Configure logger with custom formatter\n# TODO: Log messages with custom format\n\nlogger = logging.getLogger(__name__)\nlogger.info(\"Test message\")\n",
+      "fullSolution": "import logging\n\n# Create custom formatter\nformatter = logging.Formatter(\n    '[%(asctime)s] %(levelname)s: %(message)s',\n    datefmt='%Y-%m-%d %H:%M:%S'\n)\n\n# Configure logger with custom formatter\nhandler = logging.StreamHandler()\nhandler.setFormatter(formatter)\n\nlogger = logging.getLogger(__name__)\nlogger.setLevel(logging.DEBUG)\nlogger.addHandler(logger)\n\n# Log messages with custom format\nlogger.info(\"Application started\")\nlogger.warning(\"This is a warning\")\n",
+      "expectedOutput": "[2024-01-15 10:30:45] INFO: Application started\n[2024-01-15 10:30:45] WARNING: This is a warning",
+      "tutorial": "# Custom Logging Formatters in Python\n\nCustomize log output with logging.Formatter.\n\n## Format String\n\n```python\n'%(asctime)s - %(name)s - %(levelname)s - %(message)s'\n```\n\n## Available Attributes\n\n- %(asctime)s: Human-readable time\n- %(levelname)s: Log level\n- %(message)s: Log message\n- %(name)s: Logger name\n- %(pathname)s: Full path of source file\n- %(lineno)d: Line number\n\n## Best Practices\n\n- Use ISO 8601 date format\n- Include level and message at minimum\n- Add pathname for debugging\n- Consider JSON format for parsing",
+      "language": "python",
+      "tags": [
+        "Intermediate",
+        "Debugging",
+        "Tooling"
+      ]
+    },
+    {
+      "id": 427,
+      "title": "427. Reading CSV with csv.reader",
+      "description": "Learn how to read CSV files in Python",
+      "initialCode": "import csv\nfrom io import StringIO\n\n# TODO: Create sample CSV data\n# TODO: Use csv.reader to parse\n# TODO: Print each row\n",
+      "fullSolution": "import csv\nfrom io import StringIO\n\n# Create sample CSV data\ncsv_data = \"\"\"Name,Age,City\nAlice,30,NYC\nBob,25,LA\nCharlie,35,Chicago\"\"\"\n\n# Use csv.reader to parse\nreader = csv.reader(StringIO(csv_data))\n\n# Print each row\nheader = next(reader)\nprint(f\"Header: {header}\")\n\nfor row in reader:\n    print(f\"Name: {row[0]}, Age: {row[1]}, City: {row[2]}\")\n",
+      "expectedOutput": "Header: ['Name', 'Age', 'City']\nName: Alice, Age: 30, City: NYC\nName: Bob, Age: 25, City: LA\nName: Charlie, Age: 35, City: Chicago",
+      "tutorial": "# Reading CSV with Python\n\nThe csv module provides robust CSV parsing.\n\n## Basic Usage\n\n```python\nimport csv\nwith open('data.csv') as f:\n    reader = csv.reader(f)\n    for row in reader:\n        print(row)  # row is a list\n```\n\n## DictReader\n\n```python\nreader = csv.DictReader(f)\nfor row in reader:\n    print(row['Name'])  # row is a dict\n```\n\n## Best Practices\n\n- Use DictReader for named columns\n- Handle different delimiters\n- Use quoting for special characters\n- Close files with context managers",
+      "language": "python",
+      "tags": [
+        "Intermediate",
+        "I/O",
+        "Data Processing"
+      ]
+    },
+    {
+      "id": 428,
+      "title": "428. Writing CSV with csv.DictWriter",
+      "description": "Learn how to write CSV files using DictWriter in Python",
+      "initialCode": "import csv\nfrom io import StringIO\n\n# TODO: Create StringIO output\n# TODO: Create DictWriter with fieldnames\n# TODO: Write header and rows\n",
+      "fullSolution": "import csv\nfrom io import StringIO\n\n# Create StringIO output\noutput = StringIO()\n\n# Create DictWriter with fieldnames\nfieldnames = ['Name', 'Age', 'City']\nwriter = csv.DictWriter(output, fieldnames=fieldnames)\n\n# Write header and rows\nwriter.writeheader()\nwriter.writerow({'Name': 'Alice', 'Age': 30, 'City': 'NYC'})\nwriter.writerow({'Name': 'Bob', 'Age': 25, 'City': 'LA'})\n\nprint(output.getvalue())\n",
+      "expectedOutput": "Name,Age,City\nAlice,30,NYC\nBob,25,LA\n",
+      "tutorial": "# Writing CSV with DictWriter\n\ncsv.DictWriter maps dictionaries to CSV rows.\n\n## Basic Usage\n\n```python\nwriter = csv.DictWriter(f, fieldnames=['Name', 'Age'])\nwriter.writeheader()\nwriter.writerow({'Name': 'Alice', 'Age': 30})\n```\n\n## Advantages\n\n- Named fields (no index errors)\n- Automatic ordering\n- Missing fields are empty strings\n\n## Best Practices\n\n- Always call writeheader()\n- Use extrasaction='raise' to catch extra keys\n- Specify dialect for special formats",
+      "language": "python",
+      "tags": [
+        "Intermediate",
+        "I/O",
+        "Data Processing"
+      ]
+    },
+    {
+      "id": 429,
+      "title": "429. ConfigParser for INI files",
+      "description": "Learn how to use ConfigParser for configuration files in Python",
+      "initialCode": "import configparser\nfrom io import StringIO\n\n# TODO: Create ConfigParser instance\n# TODO: Read configuration from string\n# TODO: Access values from sections\n",
+      "fullSolution": "import configparser\nfrom io import StringIO\n\n# Create ConfigParser instance\nconfig = configparser.ConfigParser()\n\n# Read configuration from string (simulating file)\nconfig_data = \"\"\"\n[app]\nname = MyApp\nport = 8080\ndebug = true\n\n[database]\nhost = localhost\n\"\"\"\n\nconfig.read_string(config_data)\n\n# Access values from sections\napp_name = config['app']['name']\nport = config['app'].getint('port')\ndebug = config['app'].getboolean('debug')\n\nprint(f\"App: {app_name}\")\nprint(f\"Port: {port}\")\nprint(f\"Debug: {debug}\")\n\n# Provide default values\nlog_level = config['app'].get('loglevel', 'INFO')\nprint(f\"Log Level: {log_level}\")\n",
+      "expectedOutput": "App: MyApp\nPort: 8080\nDebug: True\nLog Level: INFO",
+      "tutorial": "# ConfigParser for INI Files\n\nConfigParser reads INI-style configuration files with sections.\n\n## File Format\n\n```ini\n[section]\nkey = value\n```\n\n## Type Conversion\n\n- get(key): Returns string\n- getint(key): Returns integer\n- getboolean(key): Returns boolean\n- getfloat(key): Returns float\n\n## Best Practices\n\n- Organize by sections\n- Use get() with defaults\n- Don't store secrets in config files\n- Consider python-dotenv for .env files",
+      "language": "python",
+      "tags": [
+        "Intermediate",
+        "I/O",
+        "Workflow"
+      ]
+    },
+    {
+      "id": 430,
+      "title": "430. Writing configuration with ConfigParser",
+      "description": "Learn how to write configuration files with ConfigParser",
+      "initialCode": "import configparser\nfrom io import StringIO\n\n# TODO: Create ConfigParser and add sections\n# TODO: Set values in sections\n# TODO: Write to string output\n",
+      "fullSolution": "import configparser\nfrom io import StringIO\n\n# Create ConfigParser and add sections\nconfig = configparser.ConfigParser()\nconfig['app'] = {\n    'name': 'MyApp',\n    'port': '8080',\n    'debug': 'true'\n}\nconfig['database'] = {\n    'host': 'localhost',\n    'port': '5432'\n}\n\n# Write to string output\noutput = StringIO()\nconfig.write(output)\n\nprint(output.getvalue())\n",
+      "expectedOutput": "[app]\nname = MyApp\nport = 8080\ndebug = true\n\n[database]\nhost = localhost\nport = 5432\n",
+      "tutorial": "# Writing Configuration Files\n\nConfigParser.write() outputs INI-formatted configuration.\n\n## Writing\n\n```python\nwith open('config.ini', 'w') as f:\n    config.write(f)\n```\n\n## Adding Sections\n\n```python\nconfig['section'] = {}\nconfig['section']['key'] = 'value'\n```\n\n## Best Practices\n\n- Group related settings in sections\n- Use string values (convert when reading)\n- Add comments manually if needed\n- Keep config templates in version control",
+      "language": "python",
+      "tags": [
+        "Intermediate",
+        "I/O",
+        "Workflow"
+      ]
+    },
+    {
+      "id": 431,
+      "title": "431. Parsing XML with ElementTree",
+      "description": "Learn how to parse XML documents in Python",
+      "initialCode": "import xml.etree.ElementTree as ET\n\nxml_string = \"<users><user><name>Alice</name><age>30</age></user></users>\"\n\n# TODO: Parse XML string\n# TODO: Get root element\n# TODO: Find and extract data from elements\n",
+      "fullSolution": "import xml.etree.ElementTree as ET\n\nxml_string = \"<users><user><name>Alice</name><age>30</age></user></users>\"\n\n# Parse XML string\nroot = ET.fromstring(xml_string)\n\n# Get root element\nprint(f\"Root: {root.tag}\")\n\n# Find and extract data from elements\nfor user in root.findall('user'):\n    name = user.find('name').text\n    age = user.find('age').text\n    print(f\"User: {name}, Age: {age}\")\n",
+      "expectedOutput": "Root: users\nUser: Alice, Age: 30",
+      "tutorial": "# XML Parsing with ElementTree\n\nElementTree provides a lightweight XML parser in Python's standard library.\n\n## Key Methods\n\n- ET.fromstring(xml): Parse from string\n- ET.parse(file): Parse from file\n- element.find(tag): Find first child\n- element.findall(tag): Find all children\n- element.text: Get text content\n\n## Best Practices\n\n- Use findall() for multiple elements\n- Use XPath for complex queries: findall('.//tag')\n- Use iterparse() for large files\n- Validate with schema when needed\n\n## When to Use\n\n- Standard library solution needed\n- Small to medium XML files\n- Simple parsing requirements",
+      "language": "python",
+      "tags": [
+        "Intermediate",
+        "Parsing",
+        "Data Processing"
+      ]
+    },
+    {
+      "id": 432,
+      "title": "432. Creating XML with ElementTree",
+      "description": "Learn how to create XML documents in Python",
+      "initialCode": "import xml.etree.ElementTree as ET\n\n# TODO: Create root element\n# TODO: Add child elements with text\n# TODO: Convert to string\n",
+      "fullSolution": "import xml.etree.ElementTree as ET\n\n# Create root element\nroot = ET.Element('users')\n\n# Add child elements with text\nuser = ET.SubElement(root, 'user')\nname = ET.SubElement(user, 'name')\nname.text = 'Alice'\nage = ET.SubElement(user, 'age')\nage.text = '30'\n\n# Convert to string\nET.indent(root, space='  ')  # Python 3.9+\nxml_string = ET.tostring(root, encoding='unicode')\n\nprint(xml_string)\n",
+      "expectedOutput": "<users>\n  <user>\n    <name>Alice</name>\n    <age>30</age>\n  </user>\n</users>",
+      "tutorial": "# Creating XML with ElementTree\n\nBuild XML documents programmatically using ElementTree.\n\n## Key Functions\n\n- ET.Element(tag): Create root/element\n- ET.SubElement(parent, tag): Create child\n- element.text = 'value': Set text content\n- ET.tostring(element): Convert to string\n- ET.indent(element): Add indentation (3.9+)\n\n## Best Practices\n\n- Use SubElement for cleaner code\n- Add indentation for readability\n- Use attrib parameter for attributes\n- Consider xml.dom.minidom for pretty printing\n\n## When to Use\n\n- Generating XML responses\n- Creating configuration files\n- Building structured exports",
+      "language": "python",
+      "tags": [
+        "Intermediate",
+        "Parsing",
+        "Data Processing"
+      ]
+    },
+    {
+      "id": 433,
+      "title": "433. Argument parsing with argparse",
+      "description": "Learn how to parse command line arguments with argparse",
+      "initialCode": "import argparse\n\n# TODO: Create ArgumentParser\n# TODO: Add arguments (name, verbose flag)\n# TODO: Parse arguments\n",
+      "fullSolution": "import argparse\n\n# Create ArgumentParser\nparser = argparse.ArgumentParser(description='Demo CLI application')\n\n# Add arguments\nparser.add_argument('--name', type=str, default='Unknown', help='User name')\nparser.add_argument('--verbose', action='store_true', help='Enable verbose output')\n\n# Parse arguments (simulating command line)\nargs = parser.parse_args(['--name', 'Alice', '--verbose'])\n\nprint(f\"Name: {args.name}\")\nprint(f\"Verbose: {args.verbose}\")\n\n# Accessing argument that wasn't provided\nage = getattr(args, 'age', 'Not provided')\nprint(f\"Age: {age}\")\n",
+      "expectedOutput": "Name: Alice\nVerbose: True\nAge: Not provided",
+      "tutorial": "# Argument Parsing with argparse\n\nargparse is Python's standard library for CLI argument parsing.\n\n## Basic Usage\n\n```python\nparser = argparse.ArgumentParser()\nparser.add_argument('--name', type=str)\nargs = parser.parse_args()\n```\n\n## Argument Types\n\n- type=str, int, float: Type conversion\n- action='store_true': Boolean flag\n- default=value: Default value\n- required=True: Required argument\n\n## Best Practices\n\n- Add help descriptions\n- Group related arguments\n- Validate values with choices\n- Use subcommands for complex CLIs\n\n## When to Use\n\n- Command-line tools\n- Scripts with options\n- Automation utilities",
+      "language": "python",
+      "tags": [
+        "Intermediate",
+        "CLI",
+        "Tooling"
+      ]
+    },
+    {
+      "id": 434,
+      "title": "434. Required and optional arguments in argparse",
+      "description": "Learn how to define required and optional arguments with argparse",
+      "initialCode": "import argparse\n\n# TODO: Create parser with description\n# TODO: Add required argument\n# TODO: Add optional argument with default\n# TODO: Parse and display\n",
+      "fullSolution": "import argparse\nimport sys\n\n# Create parser with description\nparser = argparse.ArgumentParser(description='Demo with required/optional args')\n\n# Add required argument\nparser.add_argument('--required', type=str, required=True, help='Required parameter')\n\n# Add optional argument with default\nparser.add_argument('--optional', type=str, default='default_value', help='Optional parameter')\n\n# Parse and display (simulating CLI)\ntry:\n    args = parser.parse_args(['--required', 'value1', '--optional', 'value2'])\n    print(f\"Required: {args.required}\")\n    print(f\"Optional: {args.optional}\")\nexcept SystemExit:\n    print(\"Error: Missing required argument\")\n",
+      "expectedOutput": "Required: value1\nOptional: value2",
+      "tutorial": "# Required and Optional Arguments\n\nargparse makes it easy to enforce required arguments.\n\n## Required Arguments\n\n```python\nparser.add_argument('--name', required=True)\n```\n\n## Optional with Default\n\n```python\nparser.add_argument('--config', default='config.ini')\n```\n\n## Positional (Always Required)\n\n```python\nparser.add_argument('filename')  # No --\n```\n\n## Best Practices\n\n- Use required=True for mandatory args\n- Provide meaningful defaults\n- Add help descriptions\n- Group related arguments\n\n## When to Use\n\n- Scripts requiring specific inputs\n- Tools with mandatory configuration\n- CLIs with flexible options",
+      "language": "python",
+      "tags": [
+        "Intermediate",
+        "CLI",
+        "Tooling"
+      ]
+    },
+    {
+      "id": 435,
+      "title": "435. String Template for safe substitution",
+      "description": "Learn how to use string.Template for safe string substitution",
+      "initialCode": "from string import Template\n\n# TODO: Create template with $placeholders\n# TODO: Substitute with dictionary\n# TODO: Use safe_substitute for missing keys\n",
+      "fullSolution": "from string import Template\n\n# Create template with $placeholders\ntemplate = Template(\"Hello $name, you have $count new messages.\")\n\n# Substitute with dictionary\nresult = template.substitute(name=\"Alice\", count=5)\nprint(result)\n\n# Use safe_substitute for missing keys\ntemplate2 = Template(\"User $user has $points points and $badges badges\")\nresult2 = template2.safe_substitute(user=\"Bob\", points=100)\nprint(result2)\n\n# f-strings for most cases\nname, count = \"Charlie\", 7\nprint(f\"Hello {name}, you have {count} new messages.\")\n",
+      "expectedOutput": "Hello Alice, you have 5 new messages.\nUser Bob has 100 points and $badges badges\nHello Charlie, you have 7 new messages.",
+      "tutorial": "# String Template for Safe Substitution\n\nstring.Template provides safer variable substitution than format().\n\n## Syntax\n\n```python\nt = Template(\"Hello $name\")\nt.substitute(name=\"Alice\")\n```\n\n## Methods\n\n- substitute(): Raises KeyError if key missing\n- safe_substitute(): Leaves placeholder if key missing\n\n## vs f-strings\n\n```python\n# Template: Safe from code injection\nt = Template(\"$cmd\").substitute(cmd=user_input)\n\n# f-string: Evaluate expressions (use carefully)\nf\"{user_input}\"  # Could execute code!\n```\n\n## Best Practices\n\n- Use Template for user-provided templates\n- Use f-strings for code-controlled formatting\n- Use safe_substitute() for optional values\n\n## When to Use\n\n- Configuration file templates\n- User-customizable messages\n- Email templates",
+      "language": "python",
+      "tags": [
+        "Intermediate",
+        "Strings",
+        "Formatting"
+      ]
+    },
+    {
+      "id": 436,
+      "title": "436. Multi-line f-string templates",
+      "description": "Learn how to use multi-line f-strings for templates",
+      "initialCode": "# TODO: Create multi-line f-string\n# TODO: Embed variables\n# TODO: Use expressions in f-string\n",
+      "fullSolution": "name = \"Alice\"\norder_id = 12345\ntotal = 99.99\n\n# Create multi-line f-string\nmessage = f\"\"\"Dear {name},\n\nThank you for your order #{order_id}.\nTotal: ${total:.2f}\n\nBest regards\"\"\"\n\nprint(message)\n\n# Use expressions in f-string\nitems = [\"Book\", \"Pen\", \"Notebook\"]\nprint(f\"\"\"\nOrder Summary:\n- Items: {', '.join(items)}\n- Count: {len(items)}\n- Average: ${total / len(items):.2f}\n\"\"\")\n",
+      "expectedOutput": "Dear Alice,\n\nThank you for your order #12345.\nTotal: $99.99\n\nBest regards\n\nOrder Summary:\n- Items: Book, Pen, Notebook\n- Count: 3\n- Average: $33.33",
+      "tutorial": "# Multi-line F-String Templates\n\nF-strings support multi-line strings with embedded expressions.\n\n## Syntax\n\n```python\nmsg = f\"\"\"\nHello {name},\nYou have {count} items.\n\"\"\"\n```\n\n## Formatting\n\n- {value:.2f}: Float with 2 decimals\n- {value:>10}: Right-align in 10 chars\n- {value!r}: repr() representation\n\n## Expressions\n\n```python\nf\"Total: {sum(prices):.2f}\"\nf\"Name: {user.name.upper()}\"\n```\n\n## Best Practices\n\n- Use for readable templates\n- Keep expressions simple\n- Use .format() for complex logic\n- Consider Template for user input\n\n## When to Use\n\n- Email templates\n- Report generation\n- Multi-line messages\n- Formatted output",
+      "language": "python",
+      "tags": [
+        "Intermediate",
+        "Strings",
+        "Formatting"
+      ]
+    },
+    {
+      "id": 437,
+      "title": "437. Retry with exponential backoff",
+      "description": "Learn how to implement retry logic with exponential backoff in Python",
+      "initialCode": "import time\n\nattempt = 0\n\ndef unreliable_operation():\n    global attempt\n    attempt += 1\n    if attempt < 3:\n        raise Exception(\"Temporary failure\")\n    print(f\"Success on attempt {attempt}\")\n\n# TODO: Implement retry with exponential backoff\n# TODO: Max retries: 3\n# TODO: Backoff: 0.1s, 0.2s, 0.4s\n",
+      "fullSolution": "import time\n\nattempt = 0\n\ndef unreliable_operation():\n    global attempt\n    attempt += 1\n    if attempt < 3:\n        raise Exception(\"Temporary failure\")\n    print(f\"Success on attempt {attempt}\")\n\n# Implement retry with exponential backoff\nmax_retries = 3\nbase_delay = 0.1  # seconds\n\nfor i in range(max_retries):\n    try:\n        unreliable_operation()\n        break  # Success, exit loop\n    except Exception as e:\n        print(f\"Attempt {i + 1} failed: {e}\")\n\n        if i < max_retries - 1:\n            # Exponential backoff: 0.1s, 0.2s, 0.4s\n            delay = base_delay * (2 ** i)\n            print(f\"Retrying in {delay}s...\")\n            time.sleep(delay)\n        else:\n            print(\"Max retries reached\")\n",
+      "expectedOutput": "Attempt 1 failed: Temporary failure\nRetrying in 0.1s...\nAttempt 2 failed: Temporary failure\nRetrying in 0.2s...\nSuccess on attempt 3",
+      "tutorial": "# Retry with Exponential Backoff\n\nExponential backoff progressively increases delay between retries.\n\n## Formula\n\n```python\ndelay = base_delay * (2 ** attempt)\n```\n\n## With Decorator\n\n```python\ndef retry(max_retries=3, base_delay=0.1):\n    def decorator(func):\n        def wrapper(*args, **kwargs):\n            for i in range(max_retries):\n                try:\n                    return func(*args, **kwargs)\n                except Exception as e:\n                    if i == max_retries - 1:\n                        raise\n                    time.sleep(base_delay * (2 ** i))\n        return wrapper\n    return decorator\n```\n\n## Best Practices\n\n- Set reasonable max retries\n- Add jitter: random.uniform(0, delay)\n- Specify which exceptions to retry\n- Log retry attempts\n- Consider using tenacity library\n\n## When to Use\n\n- API requests\n- Database operations\n- Network calls\n- Flaky external services",
+      "language": "python",
+      "tags": [
+        "Advanced",
+        "Error Handling",
+        "Patterns"
+      ]
+    },
+    {
+      "id": 438,
+      "title": "438. Retry decorator with max attempts",
+      "description": "Learn how to create a retry decorator",
+      "initialCode": "# TODO: Create retry decorator\n# TODO: Accept max_attempts parameter\n# TODO: Apply to function\n",
+      "fullSolution": "import functools\n\ndef retry(max_attempts=3):\n    \"\"\"Decorator that retries a function on exception\"\"\"\n    def decorator(func):\n        @functools.wraps(func)\n        def wrapper(*args, **kwargs):\n            last_exception = None\n\n            for i in range(max_attempts):\n                try:\n                    return func(*args, **kwargs)\n                except Exception as e:\n                    last_exception = e\n                    print(f\"Attempt {i + 1} failed: {e}\")\n                    if i < max_attempts - 1:\n                        print(f\"Retrying...\")\n\n            raise Exception(f\"Max attempts ({max_attempts}) reached\") from last_exception\n\n        return wrapper\n    return decorator\n\n# Apply decorator\nattempt = 0\n\n@retry(max_attempts=3)\ndef unreliable_operation():\n    global attempt\n    attempt += 1\n    print(f\"Attempt {attempt}\")\n    if attempt < 2:\n        raise ValueError(\"Temporary failure\")\n    return \"Success\"\n\n# Use decorated function\nresult = unreliable_operation()\nprint(f\"Result: {result}\")\n",
+      "expectedOutput": "Attempt 1\nAttempt 1 failed: Temporary failure\nRetrying...\nAttempt 2\nResult: Success",
+      "tutorial": "# Retry Decorator\n\nDecorators provide a clean way to add retry logic.\n\n## Basic Decorator\n\n```python\ndef retry(max_attempts=3):\n    def decorator(func):\n        @functools.wraps(func)\n        def wrapper(*args, **kwargs):\n            for i in range(max_attempts):\n                try:\n                    return func(*args, **kwargs)\n                except Exception:\n                    if i == max_attempts - 1:\n                        raise\n        return wrapper\n    return decorator\n```\n\n## Usage\n\n```python\n@retry(max_attempts=5)\ndef fetch_data():\n    # potentially failing code\n    pass\n```\n\n## Enhancements\n\n- Add delay parameter\n- Specify exception types\n- Add exponential backoff\n- Log attempts\n- Use tenacity library for production\n\n## When to Use\n\n- Consistent retry across functions\n- Clean, declarative code\n- Reusable retry logic",
+      "language": "python",
+      "tags": [
+        "Advanced",
+        "Error Handling",
+        "Decorators"
+      ]
+    },
+    {
+      "id": 439,
+      "title": "439. functools.lru_cache with maxsize",
+      "description": "Learn how to use functools.lru_cache for memoization",
+      "initialCode": "from functools import lru_cache\n\n# TODO: Create function with lru_cache decorator\n# TODO: Set maxsize parameter\n# TODO: Test cache behavior\n",
+      "fullSolution": "from functools import lru_cache\n\n# Create function with lru_cache decorator\n@lru_cache(maxsize=3)\ndef expensive_operation(n):\n    print(f\"Computing for {n}\")\n    return n * n\n\n# Test cache behavior\nprint(expensive_operation(1))\nprint(expensive_operation(2))\nprint(expensive_operation(3))\nprint(\"Cache info:\", expensive_operation.cache_info())\n\n# Hit cache\nprint(expensive_operation(1))  # Cache hit, no \"Computing\" message\nprint(\"Cache info:\", expensive_operation.cache_info())\n\n# Exceed maxsize\nprint(expensive_operation(4))  # Evicts least recently used\nprint(expensive_operation(1))  # Cache miss, recompute\nprint(\"Final cache info:\", expensive_operation.cache_info())\n",
+      "expectedOutput": "Computing for 1\n1\nComputing for 2\n4\nComputing for 3\n9\nCache info: CacheInfo(hits=0, misses=3, maxsize=3, currsize=3)\n1\nCache info: CacheInfo(hits=1, misses=3, maxsize=3, currsize=3)\nComputing for 4\n16\nComputing for 1\n1\nFinal cache info: CacheInfo(hits=1, misses=5, maxsize=3, currsize=3)",
+      "tutorial": "# functools.lru_cache\n\nBuilt-in decorator for Least Recently Used caching.\n\n## Usage\n\n```python\n@lru_cache(maxsize=128)\ndef fibonacci(n):\n    if n < 2:\n        return n\n    return fibonacci(n-1) + fibonacci(n-2)\n```\n\n## Parameters\n\n- maxsize: Max cache entries (None = unlimited)\n- typed: Cache args of different types separately\n\n## Cache Methods\n\n- cache_info(): View hits/misses/size\n- cache_clear(): Clear cache\n\n## Best Practices\n\n- Use for expensive pure functions\n- Set appropriate maxsize\n- Functions must have hashable args\n- Clear cache when needed\n\n## When to Use\n\n- Expensive computations\n- Recursive functions (fibonacci, etc.)\n- API response caching\n- Database query results",
+      "language": "python",
+      "tags": [
+        "Advanced",
+        "Performance",
+        "Functions"
+      ]
+    },
+    {
+      "id": 440,
+      "title": "440. TTL cache with timestamps",
+      "description": "Learn how to implement time-based cache expiration",
+      "initialCode": "import time\n\n# TODO: Create cache with expiry times\n# TODO: Implement get with expiration check\n# TODO: Test TTL behavior\n",
+      "fullSolution": "import time\n\nclass TTLCache:\n    def __init__(self):\n        self.cache = {}\n\n    def set(self, key, value, ttl_seconds):\n        \"\"\"Set value with TTL in seconds\"\"\"\n        expiry_time = time.time() + ttl_seconds\n        self.cache[key] = (value, expiry_time)\n\n    def get(self, key):\n        \"\"\"Get value if not expired\"\"\"\n        if key not in self.cache:\n            return None\n\n        value, expiry_time = self.cache[key]\n        if time.time() > expiry_time:\n            del self.cache[key]  # Clean up\n            return None\n\n        return value\n\n# Test TTL behavior\ncache = TTLCache()\ncache.set('key1', 'value1', 1)  # 1 second TTL\ncache.set('key2', 'value2', 5)  # 5 second TTL\n\nprint(f\"key1: {cache.get('key1')}\")\n\ntime.sleep(1.1)\nprint(f\"key1 after 1.1s: {cache.get('key1')}\")\nprint(f\"key2 after 1.1s: {cache.get('key2')}\")\n",
+      "expectedOutput": "key1: value1\nkey1 after 1.1s: None\nkey2 after 1.1s: value2",
+      "tutorial": "# TTL Cache with Timestamps\n\nImplement caching with automatic expiration.\n\n## Pattern\n\n```python\nclass TTLCache:\n    def set(self, key, value, ttl):\n        self.cache[key] = (value, time.time() + ttl)\n\n    def get(self, key):\n        if key in self.cache:\n            value, expiry = self.cache[key]\n            if time.time() < expiry:\n                return value\n            del self.cache[key]\n        return None\n```\n\n## Enhancements\n\n- Background cleanup thread\n- Max size with LRU + TTL\n- Update expiry on access\n- Different TTL per key\n\n## Libraries\n\n- cachetools: TTLCache class\n- redis: Built-in TTL support\n- memcached: Expiration support\n\n## Best Practices\n\n- Clean expired entries lazily\n- Use threading.Timer for background cleanup\n- Set reasonable TTLs\n- Monitor cache hit rates\n\n## When to Use\n\n- API response caching\n- Session management\n- Rate limiting\n- Temporary computations",
+      "language": "python",
+      "tags": [
+        "Advanced",
+        "Performance",
+        "Collections"
+      ]
+    },
+    {
+      "id": 441,
+      "title": "441. Token bucket rate limiter",
+      "description": "Learn how to implement token bucket rate limiting",
+      "initialCode": "import time\n\nclass TokenBucket:\n    def __init__(self, capacity, refill_rate):\n        self.capacity = capacity\n        self.refill_rate = refill_rate\n        self.tokens = capacity\n        self.last_refill = time.time()\n\n    # TODO: Implement refill method\n    # TODO: Implement try_consume method\n\n# TODO: Create bucket and test\n",
+      "fullSolution": "import time\n\nclass TokenBucket:\n    def __init__(self, capacity, refill_rate):\n        self.capacity = capacity\n        self.refill_rate = refill_rate\n        self.tokens = capacity\n        self.last_refill = time.time()\n\n    def _refill(self):\n        now = time.time()\n        time_passed = now - self.last_refill\n        tokens_to_add = time_passed * self.refill_rate\n\n        if tokens_to_add > 0:\n            self.tokens = min(self.capacity, self.tokens + tokens_to_add)\n            self.last_refill = now\n\n    def try_consume(self, tokens_needed=1):\n        self._refill()\n        if self.tokens >= tokens_needed:\n            self.tokens -= tokens_needed\n            return True\n        return False\n\n# Test\nbucket = TokenBucket(capacity=3, refill_rate=1)  # 1 token/sec\n\nfor i in range(4):\n    result = bucket.try_consume()\n    print(f\"Request {i + 1}: {result}\")\n\ntime.sleep(1.1)\nprint(f\"After 1s: {bucket.try_consume()}\")\n",
+      "expectedOutput": "Request 1: True\nRequest 2: True\nRequest 3: True\nRequest 4: False\nAfter 1s: True",
+      "tutorial": "# Token Bucket Rate Limiter\n\nToken bucket allows bursts while maintaining average rate.\n\n## Algorithm\n\n1. Initialize bucket with capacity tokens\n2. Refill tokens at constant rate\n3. Consume tokens for each request\n4. Reject if insufficient tokens\n\n## Implementation\n\n```python\ntokens_to_add = time_passed * refill_rate\ntokens = min(capacity, tokens + tokens_to_add)\n```\n\n## Thread Safety\n\n```python\nimport threading\n\nclass ThreadSafeTokenBucket:\n    def __init__(self, capacity, refill_rate):\n        self.lock = threading.Lock()\n        # ... rest of implementation\n```\n\n## Best Practices\n\n- Use for API rate limiting\n- Add locks for multi-threading\n- Log rate limit hits\n- Return retry-after header\n\n## When to Use\n\n- API rate limiting\n- Resource throttling\n- DDoS protection\n- Fair usage enforcement",
+      "language": "python",
+      "tags": [
+        "Advanced",
+        "Concurrency",
+        "Patterns"
+      ]
+    },
+    {
+      "id": 442,
+      "title": "442. Sliding window rate limiter",
+      "description": "Learn how to implement sliding window rate limiting",
+      "initialCode": "import time\nfrom collections import deque\n\nclass SlidingWindowRateLimiter:\n    def __init__(self, max_requests, window_seconds):\n        self.max_requests = max_requests\n        self.window_seconds = window_seconds\n        self.request_times = deque()\n\n    # TODO: Implement allow_request method\n\n# TODO: Create limiter and test\n",
+      "fullSolution": "import time\nfrom collections import deque\n\nclass SlidingWindowRateLimiter:\n    def __init__(self, max_requests, window_seconds):\n        self.max_requests = max_requests\n        self.window_seconds = window_seconds\n        self.request_times = deque()\n\n    def allow_request(self):\n        now = time.time()\n\n        # Remove requests outside window\n        while self.request_times and now - self.request_times[0] > self.window_seconds:\n            self.request_times.popleft()\n\n        # Check if under limit\n        if len(self.request_times) < self.max_requests:\n            self.request_times.append(now)\n            return True\n\n        return False\n\n# Test\nlimiter = SlidingWindowRateLimiter(max_requests=3, window_seconds=1)\n\nfor i in range(4):\n    result = limiter.allow_request()\n    print(f\"Request {i + 1}: {result}\")\n\ntime.sleep(1.1)\nprint(f\"After 1s: {limiter.allow_request()}\")\n",
+      "expectedOutput": "Request 1: True\nRequest 2: True\nRequest 3: True\nRequest 4: False\nAfter 1s: True",
+      "tutorial": "# Sliding Window Rate Limiter\n\nMaintains exact request timestamps for accurate rate limiting.\n\n## Algorithm\n\n1. Store all request timestamps in deque\n2. Remove timestamps outside window\n3. Allow if count < max_requests\n4. Add current timestamp if allowed\n\n## Complexity\n\n- Time: O(n) per request (cleanup)\n- Space: O(max_requests)\n\n## Thread Safety\n\n```python\nimport threading\n\nclass ThreadSafeSlidingWindow:\n    def __init__(self, max_requests, window_seconds):\n        self.lock = threading.Lock()\n        # ... rest\n```\n\n## Advantages\n\n- Most accurate rate limiting\n- No burst at boundaries\n- Fair distribution\n\n## Disadvantages\n\n- Higher memory usage\n- More CPU for cleanup\n- Complex implementation\n\n## When to Use\n\n- Critical API endpoints\n- Preventing abuse\n- Fair quota distribution\n- Precise rate control",
+      "language": "python",
+      "tags": [
+        "Advanced",
+        "Concurrency",
+        "Patterns"
+      ]
+    },
+    {
+      "id": 443,
+      "title": "443. Chain of Responsibility pattern",
+      "description": "Learn how to implement Chain of Responsibility in Python",
+      "initialCode": "class Handler:\n    def __init__(self):\n        self.next_handler = None\n\n    def set_next(self, handler):\n        self.next_handler = handler\n        return handler\n\n    def handle(self, request):\n        pass\n\n# TODO: Create concrete handlers\n# TODO: Chain handlers\n# TODO: Process requests\n",
+      "fullSolution": "class Handler:\n    def __init__(self):\n        self.next_handler = None\n\n    def set_next(self, handler):\n        self.next_handler = handler\n        return handler\n\n    def handle(self, request):\n        pass\n\nclass AuthHandler(Handler):\n    def handle(self, request):\n        if 'auth' in request:\n            print(\"AuthHandler: Authenticated\")\n        elif self.next_handler:\n            self.next_handler.handle(request)\n\nclass LogHandler(Handler):\n    def handle(self, request):\n        print(\"LogHandler: Logged request\")\n        if self.next_handler:\n            self.next_handler.handle(request)\n\nclass ProcessHandler(Handler):\n    def handle(self, request):\n        print(f\"ProcessHandler: Processed {request}\")\n\n# Chain handlers\nauth = AuthHandler()\nlog = LogHandler()\nprocess = ProcessHandler()\n\nauth.set_next(log).set_next(process)\n\n# Process requests\nauth.handle(\"auth:user123\")\nprint()\nauth.handle(\"data:xyz\")\n",
+      "expectedOutput": "AuthHandler: Authenticated\nLogHandler: Logged request\nProcessHandler: Processed auth:user123\n\nLogHandler: Logged request\nProcessHandler: Processed data:xyz",
+      "tutorial": "# Chain of Responsibility Pattern\n\nA chain of handler objects processes requests sequentially.\n\n## Pattern\n\n```python\nclass Handler:\n    def set_next(self, handler):\n        self.next = handler\n        return handler\n\n    def handle(self, request):\n        if self.next:\n            self.next.handle(request)\n```\n\n## Benefits\n\n- Loose coupling\n- Flexible chain composition\n- Single Responsibility\n- Easy to add handlers\n\n## Variations\n\n- Functional: Use list of functions\n- Middleware: Web frameworks\n- Decorators: Can achieve similar goals\n\n## Best Practices\n\n- Return self from set_next() for chaining\n- Always check if next exists\n- Keep handlers focused\n- Consider using ABCs\n\n## When to Use\n\n- Request processing pipelines\n- Event handling systems\n- Middleware chains\n- Validation sequences",
+      "language": "python",
+      "tags": [
+        "Advanced",
+        "OOP",
+        "Design Patterns"
+      ]
+    },
+    {
+      "id": 444,
+      "title": "444. Logging chain with multiple handlers",
+      "description": "Learn how to create logging chain with Chain of Responsibility",
+      "initialCode": "from enum import Enum\n\nclass LogLevel(Enum):\n    INFO = 1\n    WARNING = 2\n    ERROR = 3\n\nclass Logger:\n    def __init__(self, level):\n        self.level = level\n        self.next_logger = None\n\n    def set_next(self, logger):\n        self.next_logger = logger\n        return logger\n\n    # TODO: Implement log method\n    # TODO: Implement write method\n\n# TODO: Create ConsoleLogger, FileLogger, ErrorLogger\n# TODO: Chain and test\n",
+      "fullSolution": "from enum import Enum\n\nclass LogLevel(Enum):\n    INFO = 1\n    WARNING = 2\n    ERROR = 3\n\nclass Logger:\n    def __init__(self, level):\n        self.level = level\n        self.next_logger = None\n\n    def set_next(self, logger):\n        self.next_logger = logger\n        return logger\n\n    def log(self, message_level, message):\n        if message_level.value >= self.level.value:\n            self.write(message)\n        if self.next_logger:\n            self.next_logger.log(message_level, message)\n\n    def write(self, message):\n        pass\n\nclass ConsoleLogger(Logger):\n    def write(self, message):\n        print(f\"[Console] {message}\")\n\nclass FileLogger(Logger):\n    def write(self, message):\n        print(f\"[File] {message}\")\n\nclass ErrorLogger(Logger):\n    def write(self, message):\n        print(f\"[Error] {message}\")\n\n# Chain loggers\nconsole = ConsoleLogger(LogLevel.INFO)\nfile = FileLogger(LogLevel.WARNING)\nerror = ErrorLogger(LogLevel.ERROR)\n\nconsole.set_next(file).set_next(error)\n\n# Test\nconsole.log(LogLevel.INFO, \"Application started\")\nconsole.log(LogLevel.WARNING, \"Low memory\")\nconsole.log(LogLevel.ERROR, \"Database connection failed\")\n",
+      "expectedOutput": "[Console] Application started\n[Console] Low memory\n[File] Low memory\n[Console] Database connection failed\n[File] Database connection failed\n[Error] Database connection failed",
+      "tutorial": "# Logging Chain Pattern\n\nCombine Chain of Responsibility with logging for flexible output.\n\n## Pattern\n\n```python\nclass Logger:\n    def log(self, level, message):\n        if level.value >= self.level.value:\n            self.write(message)\n        if self.next:\n            self.next.log(level, message)\n```\n\n## Benefits\n\n- Multiple simultaneous outputs\n- Level-based filtering\n- Easy to extend\n- Composable handlers\n\n## Python's logging Module\n\nPython's built-in logging uses similar concept:\n\n```python\nimport logging\nlogger = logging.getLogger()\nlogger.addHandler(logging.StreamHandler())\nlogger.addHandler(logging.FileHandler('app.log'))\n```\n\n## Best Practices\n\n- Use Enum for log levels\n- Order handlers by severity\n- All handlers see all messages\n- Each filters independently\n\n## When to Use\n\n- Custom logging needs\n- Multiple destinations\n- Educational purposes\n- Understanding logging internals",
+      "language": "python",
+      "tags": [
+        "Advanced",
+        "OOP",
+        "Design Patterns"
+      ]
+    },
+    {
+      "id": 445,
+      "title": "445. Command pattern for undo/redo",
+      "description": "Learn how to implement Command pattern with undo/redo in Python",
+      "initialCode": "class Command:\n    def execute(self):\n        pass\n\n    def undo(self):\n        pass\n\nclass Calculator:\n    def __init__(self):\n        self.value = 0\n\n    # TODO: Implement add and subtract\n\n# TODO: Create AddCommand and SubtractCommand\n# TODO: Implement command history and undo\n",
+      "fullSolution": "class Command:\n    def execute(self):\n        pass\n\n    def undo(self):\n        pass\n\nclass Calculator:\n    def __init__(self):\n        self.value = 0\n\n    def add(self, amount):\n        self.value += amount\n\n    def subtract(self, amount):\n        self.value -= amount\n\nclass AddCommand(Command):\n    def __init__(self, calculator, amount):\n        self.calculator = calculator\n        self.amount = amount\n\n    def execute(self):\n        self.calculator.add(self.amount)\n\n    def undo(self):\n        self.calculator.subtract(self.amount)\n\nclass SubtractCommand(Command):\n    def __init__(self, calculator, amount):\n        self.calculator = calculator\n        self.amount = amount\n\n    def execute(self):\n        self.calculator.subtract(self.amount)\n\n    def undo(self):\n        self.calculator.add(self.amount)\n\n# Test\ncalc = Calculator()\nhistory = []\n\n# Execute commands\nadd5 = AddCommand(calc, 5)\nadd5.execute()\nhistory.append(add5)\nprint(f\"After +5: {calc.value}\")\n\nsub3 = SubtractCommand(calc, 3)\nsub3.execute()\nhistory.append(sub3)\nprint(f\"After -3: {calc.value}\")\n\n# Undo\nhistory.pop().undo()\nprint(f\"After undo: {calc.value}\")\n\nhistory.pop().undo()\nprint(f\"After undo: {calc.value}\")\n",
+      "expectedOutput": "After +5: 5\nAfter -3: 2\nAfter undo: 5\nAfter undo: 0",
+      "tutorial": "# Command Pattern for Undo/Redo\n\nEncapsulate actions as objects to enable undo/redo.\n\n## Pattern\n\n```python\nclass Command:\n    def execute(self):\n        pass\n\n    def undo(self):\n        pass\n\nhistory = []\ncmd.execute()\nhistory.append(cmd)\n\n# Undo\nhistory.pop().undo()\n```\n\n## Benefits\n\n- Decouple invoker from receiver\n- Undo/redo support\n- Command queuing\n- Macro commands\n- Command logging\n\n## Pythonic Alternative\n\n```python\n# Using lambdas for simple commands\nhistory = []\nhistory.append((lambda: obj.add(5), lambda: obj.subtract(5)))\nhistory[-1][0]()  # execute\nhistory[-1][1]()  # undo\n```\n\n## Best Practices\n\n- Store state in command\n- Use list/deque for history\n- Limit history size (memory)\n- Consider memento for complex state\n\n## When to Use\n\n- Undo/redo functionality\n- Transactional operations\n- Macro recording\n- Request queuing",
+      "language": "python",
+      "tags": [
+        "Advanced",
+        "OOP",
+        "Design Patterns"
+      ]
+    },
+    {
+      "id": 446,
+      "title": "446. Command queue with execution",
+      "description": "Learn how to use Command pattern with queue in Python",
+      "initialCode": "from collections import deque\n\nclass Command:\n    def execute(self):\n        pass\n\n# TODO: Create Task receiver\n# TODO: Create concrete commands\n# TODO: Implement CommandQueue\n",
+      "fullSolution": "from collections import deque\n\nclass Command:\n    def execute(self):\n        pass\n\nclass Task:\n    def print_msg(self, message):\n        print(f\"Task: {message}\")\n\n    def save(self, data):\n        print(f\"Saved: {data}\")\n\nclass PrintCommand(Command):\n    def __init__(self, task, message):\n        self.task = task\n        self.message = message\n\n    def execute(self):\n        self.task.print_msg(self.message)\n\nclass SaveCommand(Command):\n    def __init__(self, task, data):\n        self.task = task\n        self.data = data\n\n    def execute(self):\n        self.task.save(self.data)\n\nclass CommandQueue:\n    def __init__(self):\n        self.queue = deque()\n\n    def add_command(self, command):\n        self.queue.append(command)\n\n    def execute_all(self):\n        while self.queue:\n            command = self.queue.popleft()\n            command.execute()\n\n# Test\ntask = Task()\nqueue = CommandQueue()\n\n# Queue commands\nqueue.add_command(PrintCommand(task, \"Hello\"))\nqueue.add_command(SaveCommand(task, \"data.txt\"))\nqueue.add_command(PrintCommand(task, \"Done\"))\n\n# Execute\nprint(\"Executing queued commands:\")\nqueue.execute_all()\n",
+      "expectedOutput": "Executing queued commands:\nTask: Hello\nSaved: data.txt\nTask: Done",
+      "tutorial": "# Command Queue Pattern\n\nQueue commands for batch or deferred execution.\n\n## Pattern\n\n```python\nqueue = deque()\nqueue.append(command)\n\nwhile queue:\n    queue.popleft().execute()\n```\n\n## Use Cases\n\n- Job queues (Celery, RQ)\n- Event processing\n- Batch operations\n- Request buffering\n\n## Async Version\n\n```python\nimport asyncio\n\nclass AsyncCommandQueue:\n    async def execute_all(self):\n        while self.queue:\n            await self.queue.popleft().execute()\n```\n\n## Benefits\n\n- Deferred execution\n- Batch processing\n- Priority handling (use heapq)\n- Load balancing\n\n## Best Practices\n\n- Use deque for FIFO\n- Handle exceptions per command\n- Add logging\n- Consider async for I/O operations\n\n## When to Use\n\n- Background jobs\n- Task scheduling\n- Event processing\n- Batch workflows",
+      "language": "python",
+      "tags": [
+        "Advanced",
+        "OOP",
+        "Design Patterns"
+      ]
+    },
+    {
+      "id": 447,
+      "title": "447. State machine with Enum states",
+      "description": "Learn how to implement state machine using Enum in Python",
+      "initialCode": "from enum import Enum\n\nclass State(Enum):\n    DRAFT = 1\n    PUBLISHED = 2\n    ARCHIVED = 3\n\nclass Document:\n    def __init__(self):\n        self.state = State.DRAFT\n\n    # TODO: Implement publish method\n    # TODO: Implement archive method\n    # TODO: Add state validation\n\n# TODO: Test state transitions\n",
+      "fullSolution": "from enum import Enum\n\nclass State(Enum):\n    DRAFT = 1\n    PUBLISHED = 2\n    ARCHIVED = 3\n\nclass Document:\n    def __init__(self):\n        self.state = State.DRAFT\n\n    def publish(self):\n        if self.state == State.DRAFT:\n            self.state = State.PUBLISHED\n            print(\"Document published\")\n        else:\n            print(\"Can only publish from DRAFT state\")\n\n    def archive(self):\n        if self.state == State.PUBLISHED:\n            self.state = State.ARCHIVED\n            print(\"Document archived\")\n        else:\n            print(\"Can only archive from PUBLISHED state\")\n\n# Test\ndoc = Document()\nprint(f\"Initial state: {doc.state.name}\")\n\ndoc.publish()\nprint(f\"State: {doc.state.name}\")\n\ndoc.archive()\nprint(f\"State: {doc.state.name}\")\n\n# Invalid transition\ndoc.publish()\n",
+      "expectedOutput": "Initial state: DRAFT\nDocument published\nState: PUBLISHED\nDocument archived\nState: ARCHIVED\nCan only publish from DRAFT state",
+      "tutorial": "# State Machine with Enum\n\nUse Enum to create type-safe state machines.\n\n## Pattern\n\n```python\nfrom enum import Enum\n\nclass State(Enum):\n    STATE1 = 1\n    STATE2 = 2\n\nclass StateMachine:\n    def __init__(self):\n        self.state = State.STATE1\n\n    def transition(self):\n        if self.state == State.STATE1:\n            self.state = State.STATE2\n```\n\n## Libraries\n\n- transitions: Full-featured state machine\n- python-statemachine: Declarative DSL\n- automata: Finite state machines\n\n## Benefits\n\n- Type safety with Enum\n- Clear state representation\n- Explicit transitions\n- Easy debugging\n\n## Best Practices\n\n- Validate all transitions\n- Log state changes\n- Use match/case (Python 3.10+)\n- Consider libraries for complex FSM\n\n## When to Use\n\n- Workflow engines\n- Protocol parsers\n- Game logic\n- Order processing",
+      "language": "python",
+      "tags": [
+        "Advanced",
+        "OOP",
+        "Design Patterns"
+      ]
+    },
+    {
+      "id": 448,
+      "title": "448. State pattern with behavior",
+      "description": "Learn how to implement State pattern in Python",
+      "initialCode": "class State:\n    def handle(self, context):\n        pass\n\nclass Context:\n    def __init__(self, state):\n        self.state = state\n\n    # TODO: Implement set_state and request methods\n\n# TODO: Create concrete states\n# TODO: Test state transitions\n",
+      "fullSolution": "class State:\n    def handle(self, context):\n        pass\n\nclass Context:\n    def __init__(self, state):\n        self.state = state\n\n    def set_state(self, state):\n        self.state = state\n\n    def request(self):\n        self.state.handle(self)\n\nclass StartState(State):\n    def handle(self, context):\n        print(\"StartState: Transitioning to Running\")\n        context.set_state(RunningState())\n\nclass RunningState(State):\n    def handle(self, context):\n        print(\"RunningState: Transitioning to Stop\")\n        context.set_state(StopState())\n\nclass StopState(State):\n    def handle(self, context):\n        print(\"StopState: Already stopped\")\n\n# Test\ncontext = Context(StartState())\n\ncontext.request()\ncontext.request()\ncontext.request()\n",
+      "expectedOutput": "StartState: Transitioning to Running\nRunningState: Transitioning to Stop\nStopState: Already stopped",
+      "tutorial": "# State Pattern with Behavior\n\nEncapsulate state-specific behavior in state objects.\n\n## Pattern\n\n```python\nclass State:\n    def handle(self, context):\n        pass\n\nclass Context:\n    def __init__(self, state):\n        self.state = state\n\n    def request(self):\n        self.state.handle(self)\n```\n\n## Benefits\n\n- No if/elif chains\n- State-specific behavior\n- Easy to extend\n- Clear transitions\n\n## vs Enum FSM\n\n- Use State Pattern for complex behavior\n- Use Enum for simple state tracking\n\n## Pythonic Alternative\n\n```python\n# Using methods as states\nclass Context:\n    def __init__(self):\n        self.state = self.start_state\n\n    def start_state(self):\n        self.state = self.running_state\n\n    def running_state(self):\n        self.state = self.stop_state\n```\n\n## When to Use\n\n- Complex state behavior\n- Behavior varies by state\n- Many state transitions\n- Avoiding large if/else",
+      "language": "python",
+      "tags": [
+        "Advanced",
+        "OOP",
+        "Design Patterns"
+      ]
+    },
+    {
+      "id": 449,
+      "title": "449. Fluent builder with validation",
+      "description": "Learn how to create fluent builders with validation in Python",
+      "initialCode": "class User:\n    def __init__(self, name, age, email):\n        self.name = name\n        self.age = age\n        self.email = email\n\n    # TODO: Create Builder class\n    # TODO: Implement fluent methods\n    # TODO: Add validation in build()\n\n# TODO: Test builder\n",
+      "fullSolution": "class User:\n    def __init__(self, name, age, email):\n        self.name = name\n        self.age = age\n        self.email = email\n\n    @staticmethod\n    def builder():\n        return UserBuilder()\n\n    def __str__(self):\n        return f\"User(name='{self.name}', age={self.age}, email='{self.email}')\"\n\nclass UserBuilder:\n    def __init__(self):\n        self._name = None\n        self._age = None\n        self._email = None\n\n    def name(self, name):\n        self._name = name\n        return self\n\n    def age(self, age):\n        self._age = age\n        return self\n\n    def email(self, email):\n        self._email = email\n        return self\n\n    def build(self):\n        # Validation\n        if not self._name:\n            raise ValueError(\"Name is required\")\n        if self._age is None or self._age < 0 or self._age > 150:\n            raise ValueError(\"Invalid age\")\n\n        return User(self._name, self._age, self._email)\n\n# Test\nuser = (User.builder()\n    .name(\"Alice\")\n    .age(30)\n    .email(\"alice@example.com\")\n    .build())\n\nprint(user)\n\n# Invalid user\ntry:\n    User.builder().age(200).build()\nexcept ValueError as e:\n    print(f\"Error: {e}\")\n",
+      "expectedOutput": "User(name='Alice', age=30, email='alice@example.com')\nError: Name is required",
+      "tutorial": "# Fluent Builder with Validation\n\nCreate readable, validated object construction.\n\n## Pattern\n\n```python\nclass Builder:\n    def field(self, value):\n        self._field = value\n        return self  # Enable chaining\n\n    def build(self):\n        self._validate()\n        return Object(self._field)\n```\n\n## Benefits\n\n- Readable construction\n- Validation before creation\n- Optional parameters\n- Method chaining\n\n## Alternative: dataclasses\n\n```python\nfrom dataclasses import dataclass\n\n@dataclass\nclass User:\n    name: str\n    age: int\n    email: str = None\n\n    def __post_init__(self):\n        if self.age < 0:\n            raise ValueError(\"Invalid age\")\n```\n\n## Best Practices\n\n- Return self for chaining\n- Validate in build()\n- Use for complex objects\n- Consider dataclasses for simple cases\n\n## When to Use\n\n- Complex object construction\n- Many optional parameters\n- Validation needed\n- Fluent API desired",
+      "language": "python",
+      "tags": [
+        "Intermediate",
+        "OOP",
+        "Design Patterns"
+      ]
+    },
+    {
+      "id": 450,
+      "title": "450. Builder with nested builders",
+      "description": "Learn how to create builders for nested objects in Python",
+      "initialCode": "class Address:\n    def __init__(self, street, city):\n        self.street = street\n        self.city = city\n\n    # TODO: Create Builder\n\nclass Person:\n    def __init__(self, name, address):\n        self.name = name\n        self.address = address\n\n    # TODO: Create Builder with nested Address.Builder\n\n# TODO: Test nested builder\n",
+      "fullSolution": "class Address:\n    def __init__(self, street, city):\n        self.street = street\n        self.city = city\n\n    @staticmethod\n    def builder():\n        return AddressBuilder()\n\n    def __str__(self):\n        return f\"{self.street}, {self.city}\"\n\nclass AddressBuilder:\n    def __init__(self):\n        self._street = None\n        self._city = None\n\n    def street(self, street):\n        self._street = street\n        return self\n\n    def city(self, city):\n        self._city = city\n        return self\n\n    def build(self):\n        return Address(self._street, self._city)\n\nclass Person:\n    def __init__(self, name, address):\n        self.name = name\n        self.address = address\n\n    @staticmethod\n    def builder():\n        return PersonBuilder()\n\n    def __str__(self):\n        return f\"Person(name='{self.name}', address={self.address})\"\n\nclass PersonBuilder:\n    def __init__(self):\n        self._name = None\n        self._address_builder = AddressBuilder()\n\n    def name(self, name):\n        self._name = name\n        return self\n\n    def street(self, street):\n        self._address_builder.street(street)\n        return self\n\n    def city(self, city):\n        self._address_builder.city(city)\n        return self\n\n    def build(self):\n        return Person(self._name, self._address_builder.build())\n\n# Test\nperson = (Person.builder()\n    .name(\"Alice\")\n    .street(\"123 Main St\")\n    .city(\"New York\")\n    .build())\n\nprint(person)\n",
+      "expectedOutput": "Person(name='Alice', address=123 Main St, New York)",
+      "tutorial": "# Builder with Nested Builders\n\nBuild complex nested objects with fluent API.\n\n## Pattern\n\n```python\nclass OuterBuilder:\n    def __init__(self):\n        self._inner_builder = InnerBuilder()\n\n    def inner_field(self, value):\n        self._inner_builder.field(value)\n        return self\n\n    def build(self):\n        return Outer(\n            self._field,\n            self._inner_builder.build()\n        )\n```\n\n## Benefits\n\n- Flat, readable API\n- Encapsulates complexity\n- Single fluent chain\n- Validates all levels\n\n## Alternative: Direct Nesting\n\n```python\nperson = (Person.builder()\n    .name(\"Alice\")\n    .address(Address.builder()\n        .street(\"123 Main St\")\n        .city(\"NYC\")\n        .build())\n    .build())\n```\n\n## Best Practices\n\n- Flatten when possible\n- Keep builder focused\n- Document nested structure\n- Consider dataclasses for simple cases\n\n## When to Use\n\n- Complex nested DTOs\n- Configuration objects\n- Fluent API desired\n- Validation at multiple levels",
+      "language": "python",
+      "tags": [
+        "Advanced",
+        "OOP",
+        "Design Patterns"
+      ]
     }
   ]
 }

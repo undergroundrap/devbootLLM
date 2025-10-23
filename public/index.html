@@ -433,7 +433,7 @@
                         <!-- Left Panel: Lesson and Editor -->
                         <div id="left-panel" class="w-3/5 flex flex-col border-r gemini-border h-full">
                             <div id="lesson-panel" class="p-6 gemini-bg-secondary border-b gemini-border fade-in flex-shrink-0">
-                                <h1 id="lesson-title" class="text-2xl font-bold text-white mb-2 flex items-center"></h1>
+                                <h1 id="lesson-title" class="text-2xl font-bold text-white mb-2"></h1>
                                 <p id="lesson-description" class="text-gray-400 mb-3"></p>
                                 <div id="lesson-tags" class="mb-5 flex flex-wrap gap-2"></div>
                                 <div class="flex justify-between items-center">
@@ -1020,7 +1020,9 @@
                     this.elements.nextLessonBtn.querySelector('span').textContent = 'Next';
 
                     setTimeout(() => {
-                        this.elements.lessonTitle.innerHTML = `${lesson.title} ${isCompleted ? '<i class="fa-solid fa-circle-check text-emerald-400 ml-3 text-xl"></i>' : ''}`;
+                        // Remove number prefix from title if it exists (e.g., "431. Parsing XML" -> "Parsing XML")
+                        const cleanTitle = lesson.title.replace(/^\d+\.\s*/, '');
+                        this.elements.lessonTitle.innerHTML = `<div class="text-center w-full"><span class="text-purple-400 text-lg font-semibold">Lesson ${lesson.id}</span></div><div class="mt-2">${cleanTitle} ${isCompleted ? '<i class="fa-solid fa-circle-check text-emerald-400 ml-3 text-xl"></i>' : ''}</div>`;
                         this.elements.lessonDescription.textContent = lesson.description;
                         // Render derived tags
                         try {

@@ -412,18 +412,20 @@
                             <h3 id="course-title" class="text-lg font-bold text-white">Java Fundamentals</h3>
                             <label for="lesson-filter" class="block mt-3 text-xs uppercase tracking-wide text-gray-400">Level Filter</label>
                             <select id="lesson-filter" class="mt-1 w-full bg-[#1e1f20] border gemini-border rounded-md text-sm p-2 focus:outline-none">
-                                <option value="all">All Lessons (1-500)</option>
+                                <option value="all">All Lessons (1-650)</option>
                                 <option value="beginner">Beginner (1-100)</option>
                                 <option value="intermediate">Intermediate (101-200)</option>
                                 <option value="advanced">Advanced (201-350)</option>
                                 <option value="expert">Expert (351-500)</option>
+                                <option value="enterprise">Enterprise (501-600)</option>
+                                <option value="faang">FAANG Interview Prep (601-650)</option>
                             </select>
                             <label for="tag-filter" class="block mt-3 text-xs uppercase tracking-wide text-gray-400">Tag</label>
                             <select id="tag-filter" class="mt-1 w-full bg-[#1e1f20] border gemini-border rounded-md text-sm p-2 focus:outline-none">
                                 <option value="all">All Tags</option>
                             </select>
                             <label for="lesson-search" class="block mt-3 text-xs uppercase tracking-wide text-gray-400">Search</label>
-                            <input id="lesson-search" type="text" placeholder="Search lessons..." class="mt-1 w-full bg-[#1e1f20] border gemini-border rounded-md text-sm p-2 focus:outline-none" />
+                            <input id="lesson-search" type="text" placeholder="Search by title, description, or #number..." class="mt-1 w-full bg-[#1e1f20] border gemini-border rounded-md text-sm p-2 focus:outline-none" />
                         </div>
                         <nav id="lesson-list" class="flex-grow p-2 space-y-1"></nav>
                     </aside>
@@ -1385,6 +1387,8 @@
                     const list = this.elements.lessonList;
                     list.innerHTML = '';
                     let view = this.lessons || [];
+
+                    // Level filter
                     if (this.lessonFilter === 'beginner') {
                         view = view.filter(l => (typeof l.id === 'number') ? (l.id >= 1 && l.id <= 100) : true);
                     } else if (this.lessonFilter === 'intermediate') {
@@ -1393,16 +1397,30 @@
                         view = view.filter(l => (typeof l.id === 'number') ? (l.id >= 201 && l.id <= 350) : false);
                     } else if (this.lessonFilter === 'expert') {
                         view = view.filter(l => (typeof l.id === 'number') ? (l.id >= 351 && l.id <= 500) : false);
+                    } else if (this.lessonFilter === 'enterprise') {
+                        view = view.filter(l => (typeof l.id === 'number') ? (l.id >= 501 && l.id <= 600) : false);
+                    } else if (this.lessonFilter === 'faang') {
+                        view = view.filter(l => (typeof l.id === 'number') ? (l.id >= 601 && l.id <= 650) : false);
                     }
+
                     // Tag filter
                     const selectedTag = this.tagFilter || 'all';
                     if (selectedTag && selectedTag !== 'all') {
                         view = view.filter(l => this.deriveTagsForLesson(l).includes(selectedTag));
                     }
-                    const q = String(this.lessonSearchQuery || '').toLowerCase();
+
+                    // Search filter - supports title, description, or lesson number (#123)
+                    const q = String(this.lessonSearchQuery || '').toLowerCase().trim();
                     if (q) {
                         view = view.filter(l => {
                             try {
+                                // Check if searching by lesson number (#123 or just 123)
+                                const numMatch = q.match(/^#?(\d+)$/);
+                                if (numMatch) {
+                                    const searchNum = parseInt(numMatch[1], 10);
+                                    return l.id === searchNum;
+                                }
+                                // Otherwise search in title and description
                                 const hay = `${l.title || ''} ${l.description || ''}`.toLowerCase();
                                 return hay.includes(q);
                             } catch (_) { return true; }

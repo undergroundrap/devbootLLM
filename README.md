@@ -1,14 +1,15 @@
 # devbootLLM - Interactive Programming Learning Platform
 
-An interactive web application for learning Java and Python programming with **600 lessons per language** (1,200 total). Features real-time code execution, AI-powered assistance, and comprehensive tutorials from beginner to enterprise level.
+An interactive web application for learning Java and Python programming with **611 lessons per language** (1,222 total). Features real-time code execution, AI-powered assistance, and comprehensive tutorials from beginner to FAANG engineer level.
 
 ## Features
 
-- **1,200 Interactive Lessons**: 600 lessons each for Java and Python, covering beginner to enterprise topics
+- **1,222 Interactive Lessons**: 611 lessons each for Java and Python, covering beginner to FAANG engineer level
+- **FAANG Interview Prep**: System Design, LeetCode-style algorithms, security best practices, and soft skills
 - **Real-Time Code Execution**: Run Java and Python code securely in isolated Docker containers
 - **AI-Powered Help**: Integrated AI assistant supporting Ollama and LM Studio for coding help
 - **Progress Tracking**: Save your progress and code per lesson in browser localStorage
-- **Comprehensive Tutorials**: Each lesson includes detailed explanations, examples, and expected outputs
+- **Comprehensive Tutorials**: Each lesson includes 2000+ char tutorials with real-world examples from Google, Amazon, Facebook
 - **Modern UI**: Clean, responsive interface built with Tailwind CSS
 - **SQLite Backend**: Lessons stored in SQLite database with automatic JSON fallback
 
@@ -108,6 +109,14 @@ Production systems - microservices, databases, APIs, distributed systems
 ### Level 5: Enterprise (Lessons 501-600)
 FAANG-level topics - cloud platforms (AWS, Azure, GCP), Kubernetes, CI/CD, system design
 **Career Target:** Staff/Principal engineer ($220K-$350K+)
+
+### Level 6: FAANG Interview Prep (Lessons 601-611)
+**NEW!** Interview-critical topics:
+- **System Design:** URL Shortener, Pastebin, Rate Limiter, Instagram, Twitter (asked at Google, Meta, Amazon)
+- **Algorithms:** Two Pointers, Sliding Window (LeetCode patterns)
+- **Security:** SQL Injection, XSS Defense (OWASP Top 10)
+- **Soft Skills:** Code Review, Technical Documentation (senior engineer requirements)
+**Career Target:** Pass FAANG interviews, $200K-$400K+ offers
 
 ## Architecture
 

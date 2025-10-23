@@ -1,23 +1,43 @@
-# devbootLLM - Local Code Execution Environment
+# devbootLLM - Interactive Programming Learning Platform
 
-## PowerShell Quick Start (SQLite Verified)
+An interactive web application for learning Java and Python programming with **600 lessons per language** (1,200 total). Features real-time code execution, AI-powered assistance, and comprehensive tutorials from beginner to enterprise level.
 
-The following exact commands were run and confirmed that the server uses SQLite (not the JSON fallback).
+## Features
 
+- **1,200 Interactive Lessons**: 600 lessons each for Java and Python, covering beginner to enterprise topics
+- **Real-Time Code Execution**: Run Java and Python code securely in isolated Docker containers
+- **AI-Powered Help**: Integrated AI assistant supporting Ollama and LM Studio for coding help
+- **Progress Tracking**: Save your progress and code per lesson in browser localStorage
+- **Comprehensive Tutorials**: Each lesson includes detailed explanations, examples, and expected outputs
+- **Modern UI**: Clean, responsive interface built with Tailwind CSS
+- **SQLite Backend**: Lessons stored in SQLite database with automatic JSON fallback
+
+## Quick Start
+
+### Prerequisites
+
+- **Docker Desktop** installed and running
+- For AI features (optional):
+  - **Ollama** (running on port 11434) and/or
+  - **LM Studio** (running on port 1234)
+
+### 1. Build the Docker Image
 
 ```bash
 docker build -t devbootllm-app .
 ```
 
-1) Create the persistent data volume:
+### 2. Create Persistent Storage
 
-```
+```bash
 docker volume create devbootllm-data
 ```
 
-2) Run the container (hardened, with SQLite writes to the volume):
+### 3. Run the Application
 
-```
+**Windows (PowerShell):**
+
+```powershell
 docker run --rm `
   -p 3000:3000 `
   -e OLLAMA_URL=http://host.docker.internal:11434 `
@@ -34,156 +54,19 @@ docker run --rm `
   --memory 512m `
   --cpus 1 `
   devbootllm-app
-
-## Tooling Prerequisites
-
-To run the local build scripts and lesson compilation checks you need:
-
-- Node.js 18+ (for the Tailwind build and lesson utilities).
-- Microsoft OpenJDK 17 so the automated Java compilation sweep can run locally. Install with winget install --id Microsoft.OpenJDK.17 -e --source winget and verify with javac -version.
-## Scaling Lessons to 1,000+
-
-To keep the UI fast as the catalog grows, the server now exposes a paginated Lessons API and the client lazily loads full lesson details on demand. This lets the sidebar load thousands of items without downloading all code/tutorial content upfront.
-
-- List summaries: `GET /api/lessons?lang=java|python&offset=0&limit=200&fields=summary[&q=search]`
-  - Returns lightweight items: `id, language, title, description`.
-- Get details: `GET /api/lessons/:lang/:id`
-  - Returns the full lesson including `initialCode`, `expectedOutput`, `tutorial`, etc.
-
-Behavior notes:
-- If SQLite is available, the API streams from `data/app.db` with proper indexes for speed.
-- If SQLite is unavailable, the API falls back to `public/lessons-*.json` while still returning summaries for the list call.
-- On app start, the server seeds the DB from `public/lessons-*.json` (idempotent) and optionally mirrors JSON on each boot when `LESSONS_REPLACE_ON_START=1`.
-
-Recommended workflow while adding lessons incrementally:
-- Use `node scripts/validate-lessons.mjs` to catch schema issues.
-- Use `node scripts/find-dup-ids.mjs` to prevent ID collisions across tracks.
-- Use `node scripts/next-id.mjs` to get the next available ID per language.
-- Optionally run `node scripts/test-added-lessons.mjs` for smoke checks.
-
-Quick checks (PowerShell):
-
-```
-# Total counts (summary API)
-(Invoke-RestMethod "http://localhost:3000/api/lessons?lang=java&limit=1").meta.total
-(Invoke-RestMethod "http://localhost:3000/api/lessons?lang=python&limit=1").meta.total
-
-# Fetch one detail
-Invoke-RestMethod "http://localhost:3000/api/lessons/java/1" | ConvertTo-Json -Depth 4
 ```
 
-The client now prefers the summary API automatically and fetches full content only when a lesson is opened.
-```
+**Linux/macOS (Bash):**
 
-Expected logs confirming SQLite (not JSON fallback):
-
-```
-[lessons] storage=sqlite db=/data/app.db mode=replace replaceOnStart=true upsertOnStart=false
-devbootLLM server listening at http://localhost:3000
-```
-
-Optional verification (PowerShell):
-
-```
-(Invoke-RestMethod http://localhost:3000/health).lessons
-```
-
-You should see `storage` equal to `sqlite`.
-
-## What's New
-
-- Replaced the Tailwind CDN runtime with a compiled stylesheet. Run `npm run build:css` after changing UI classes to regenerate `public/css/tailwind.css`.
-- AI chat now separates the model's Thinking from the final Answer. The Thinking section is styled differently and is collapsible. If a model emits <think>…</think> (e.g., DeepSeek R1) or prefixes like "Thinking:"/"Reasoning:", the UI captures it into the collapsible panel while the Answer remains front and center.
-- Lessons receive a quick validation on load (duplicates/missing required fields). Any issues are logged to the browser console to help keep tutorials consistent.
-- New: Tag filter in the Learning view sidebar. You can now:
-  - Filter by Level (All, Fundamentals, Advanced).
-  - Filter by Tag (e.g., Concurrency, I/O, Streams, OOP, Collections, Regex). Tags are auto-derived from lesson content and also shown as chips under the lesson description.
-
-## Adding Lessons (Sequential IDs)
-
-- IDs are strictly sequential per language to make the path feel like a natural progression from beginner to senior.
-- Get the next ID:
-
-  node scripts/next-id.mjs public/lessons-java.json
-  node scripts/next-id.mjs public/lessons-python.json
-
-- After adding/editing lessons, validate the JSON for consistency:
-
-  node scripts/validate-lessons.mjs
-
-- Normalize and autofix tutorials (adds missing language field, ensures code examples, sorts by id):
-
-  node scripts/normalize-lessons.mjs public/lessons-java.json
-  node scripts/normalize-lessons.mjs public/lessons-python.json
-
-- Append multiple lessons from a small module (auto-ids and title prefixes):
-
-  node scripts/add-lessons.mjs public/lessons-python.json scripts/new-lessons-python.mjs
-  node scripts/add-lessons.mjs public/lessons-java.json scripts/new-lessons-java.mjs
-
-- Fill a specific missing id (point to a module that exports `{ lesson }`):
-
-  node scripts/insert-lesson.mjs public/lessons-java.json 160 path/to/custom-lesson.mjs
-
-- Tips for consistency:
-  - Include: id, title, description, initialCode, fullSolution, expectedOutput, tutorial.
-  - Keep the numeric prefix in the title in sync with the id (e.g., "162. …").
-  - Write concise, testable prompts and exact expected outputs.
-  - Tutorials should include a short rationale plus an example code block.
-
-This project transitions the devbootLLM application from a front-end only simulation to a full-stack application with a local server for executing code. This allows users to run actual Java and Python code securely in an isolated environment.
-
-## Project Structure
-
-Here is the file structure for the project:
-
-```
-/devbootllm-app/
-|-- public/
-|   |-- index.html         # The front-end web application
-|-- Dockerfile            # Instructions to build the Docker container
-|-- package.json          # Node.js project dependencies
-|-- server.js             # The local Express.js server for code execution
-```
-
-### Explanation of Components:
-
-- **/devbootllm-app/**: The root directory for your project.
-- **public/**: This folder holds all static front-end files, primarily index.html.
-- **server.js**: The Node.js and Express.js backend. It exposes API endpoints (/run/java, /run/python) that receive code, save it to a temporary file, execute it using a child process, capture the output, and send it back to the front-end.
-- **package.json**: The standard manifest file for a Node.js project, listing dependencies like express.
-- **Dockerfile**: A script to automatically build a container image with Node.js, the Java Development Kit (JDK), and Python installed. This creates a consistent and portable development environment.
-
-## How to Run
-
-Follow these steps to build the Docker image and run the application.
-
-### Prerequisites
-
-You must have Docker Desktop installed and running on your system (Windows, macOS, or Linux).
-
-### 1. Build the Docker Image
-
-Open your terminal (PowerShell, Command Prompt, or any Linux/macOS terminal), navigate to the root devbootllm-app directory, and run the following command. This will create a Docker image named devbootllm-app based on the Dockerfile.
-
-```bash
-docker build -t devbootllm-app .
-```
-
-> **Note:** The `.` at the end of the command is important as it specifies the build context.
-
-### 2. Run the Docker Container (Hardened)
-
-Once the image is built, start the server with a hardened container configuration that isolates it from your host to prevent any code from harming your machine.
-
-Recommended (Windows/macOS/Linux):
 ```bash
 docker run --rm \
   -p 3000:3000 \
   -e OLLAMA_URL=http://host.docker.internal:11434 \
   -e LMSTUDIO_URL=http://host.docker.internal:1234 \
   -e RUN_TMP_DIR=/tmp \
+  -e LESSONS_REPLACE_ON_START=1 \
   -v devbootllm-data:/data \
+  --user 0:0 \
   --read-only \
   --tmpfs /tmp:rw,noexec,nodev,nosuid,size=64m \
   --cap-drop ALL \
@@ -192,347 +75,245 @@ docker run --rm \
   --memory 512m \
   --cpus 1 \
   devbootllm-app
-
-Switch to SQLite (two easy options)
-
-- Use the image as-built (recommended): remove the full source mount; keep the data volume so the Linux-native better-sqlite3 stays intact.
-
-  PowerShell (Windows):
-
-  docker run --rm `
-    -p 3000:3000 `
-    -e OLLAMA_URL=http://host.docker.internal:11434 `
-    -e LMSTUDIO_URL=http://host.docker.internal:1234 `
-    -e RUN_TMP_DIR=/tmp `
-    -e LESSONS_REPLACE_ON_START=1 `
-    -v devbootllm-data:/data `
-    --read-only `
-    --tmpfs "/tmp:rw,noexec,nodev,nosuid,size=64m" `
-    --cap-drop ALL `
-    --security-opt "no-new-privileges" `
-    --pids-limit 128 `
-    --memory 512m `
-    --cpus 1 `
-    devbootllm-app
-
-- Live-edit public only (optional): mount just your lessons UI JSON and assets without overwriting node_modules inside the image.
-
-  docker run --rm `
-    -p 3000:3000 `
-    -e OLLAMA_URL=http://host.docker.internal:11434 `
-    -e LMSTUDIO_URL=http://host.docker.internal:1234 `
-    -e RUN_TMP_DIR=/tmp `
-    -e LESSONS_REPLACE_ON_START=1 `
-    -v "$($PWD.Path)\public:/usr/src/app/public:ro" `
-    -v devbootllm-data:/data `
-    --read-only `
-    --tmpfs "/tmp:rw,noexec,nodev,nosuid,size=64m" `
-    --cap-drop ALL `
-    --security-opt "no-new-privileges" `
-    --pids-limit 128 `
-    --memory 512m `
-    --cpus 1 `
-    devbootllm-app
-
-After starting, verify using the logs and /health as described in "Verify storage backend (PowerShell)" below.
 ```
 
-Windows PowerShell (copy/paste):
+### 4. Access the Application
 
-```
-docker run --rm `
-  -p 3000:3000 `
-  -e OLLAMA_URL=http://host.docker.internal:11434 `
-  -e LMSTUDIO_URL=http://host.docker.internal:1234 `
-  -e RUN_TMP_DIR=/tmp `
-  -e LESSONS_REPLACE_ON_START=1 `
-  -v "$($PWD.Path):/usr/src/app:ro" `
-  -v devbootllm-data:/data `
-  --read-only `
-  --tmpfs "/tmp:rw,noexec,nodev,nosuid,size=64m" `
-  --cap-drop ALL `
-  --security-opt "no-new-privileges" `
-  --pids-limit 128 `
-  --memory 512m `
-  --cpus 1 `
-  devbootllm-app
-
-Verify storage backend (PowerShell):
-
-- Startup logs: the server now prints a clear line indicating lessons storage. Look for one of:
-  - `[lessons] storage=sqlite db=/data/app.db mode=... upsertOnStart=...`
-  - `[lessons] storage=json (fallback to public/*.json) mode=... upsertOnStart=...`
-
-- Health check JSON:
-  - `curl.exe -s http://localhost:3000/health` (or `Invoke-RestMethod http://localhost:3000/health`)
-  - The response includes a `lessons` field like:
-    - `{"lessons":{"storage":"sqlite","dbFile":"/data/app.db",...}}` when using SQLite
-    - `{"lessons":{"storage":"json",...}}` when serving from `public/*.json`
-
-- Endpoint behavior:
-  - `curl.exe -s http://localhost:3000/lessons-java.json` → with DB active you’ll still get lessons but sourced from SQLite. If you set `LESSONS_MODE=append` in the container, the response will show `"mode":"append"` indicating DB path.
-  - Editing `public/lessons-*.json` and refreshing without restarting:
-    - If using SQLite: no immediate change (DB seeded at start or when `LESSONS_REPLACE_ON_START=1` or `LESSONS_UPSERT_ON_START=1`).
-    - If using JSON fallback: changes appear immediately.
-
-Notes:
-
-- Data file location inside container: `/data/app.db` (persisted by `-v devbootllm-data:/data`).
-- You can seed manually from host: `npm run seed` (uses `/data/app.db` in Docker, or `./data/app.db` locally).
-```
-
-
-Notes:
-- No host directories are writable. The app uses a named Docker volume (`devbootllm-data`) for `/data` to persist the SQLite DB safely.
-- Filesystem is read-only; the app only writes to `/data` (volume) and an in-memory `/tmp` with `noexec`, `nodev`, and `nosuid`.
-- The backend writes temp files under `RUN_TMP_DIR` (defaults to OS tmp). In Docker, ensure it points to a writable mount (e.g., `/tmp`).
-- Container runs as a non-root user (from the image) with zero Linux capabilities and no privilege escalation.
-- Basic resource limits (CPU, memory, PIDs) are enforced to mitigate abuse.
-
-## Using Local Ollama
-
-The AI assistant can use a local Ollama instance. To enable it:
-
-- Install Ollama from https://ollama.com and ensure it runs on port 11434.
-- Pull at least one model, for example: `ollama pull llama3.1`
-- Start this app as usual. In the AI panel, pick a model from the dropdown. If no models appear, click refresh.
-
-Container note:
-
-- If you run this app in Docker and Ollama is on the host, set the env var `OLLAMA_URL` so the container can reach the host service:
-  - macOS/Windows: `-e OLLAMA_URL=http://host.docker.internal:11434`
-  - Linux (Docker Desktop): `-e OLLAMA_URL=http://host.docker.internal:11434` (enable host.docker.internal), or connect via your host IP.
-
-If you need live-editing during development and accept higher risk, you may mount the project directory read-only:
-
-> Prefer the earlier "Live-edit public only" example to avoid overwriting `node_modules` inside the image.
-
-PowerShell variant for the hot‑reload (read‑only bind) run:
-
-```
-docker run --rm `
-  -p 3000:3000 `
-  -e OLLAMA_URL=http://host.docker.internal:11434 `
-  -e LMSTUDIO_URL=http://host.docker.internal:1234 `
-  -e RUN_TMP_DIR=/tmp `
-  -e LESSONS_REPLACE_ON_START=1 `
-  -v "$($PWD.Path):/usr/src/app:ro" `
-  -v devbootllm-data:/data `
-  --read-only `
-  --tmpfs "/tmp:rw,noexec,nodev,nosuid,size=64m" `
-  --cap-drop ALL `
-  --security-opt "no-new-privileges" `
-  --pids-limit 128 `
-  --memory 512m `
-  --cpus 1 `
-  devbootllm-app
-```
-
-- `-p 3000:3000`: Maps port 3000 from the container to port 3000 on your local machine.
-- `--rm`: Automatically removes the container when you stop it.
-- `-v "${PWD}:/usr/src/app:ro"`: Optional, read-only bind mount for hot-reload workflows.
-- `-v devbootllm-data:/data`: Named volume to persist the SQLite database.
-
-Windows tips:
-- Use ``-v "$($PWD.Path):/usr/src/app:ro"`` in PowerShell so Docker sees your Windows path.
-- Keep the `--tmpfs` value quoted as a single argument: `"/tmp:rw,noexec,nodev,nosuid,size=64m"`.
-- If port 3000 is busy, use `-p 3100:3000` and open `http://localhost:3100`.
-
-## Using LM Studio (Local)
-
-The AI assistant can also connect to an LM Studio local server (OpenAI-compatible API).
-
-- Install LM Studio and start the local server (default: `http://127.0.0.1:1234`).
-- In the AI panel, choose `Provider: LM Studio`, then pick a model from the dropdown. Click refresh if needed.
-- Optionally, configure the backend to a different URL via the `LMSTUDIO_URL` environment variable.
-
-Docker examples (add alongside `OLLAMA_URL` if you use both):
-
-```bash
-docker run --rm \
-  -p 3000:3000 \
-  -e LMSTUDIO_URL=http://host.docker.internal:1234 \
-  devbootllm-app
-```
-
-PowerShell example:
-
-```
-docker run --rm `
-  -p 3000:3000 `
-  -e LMSTUDIO_URL=http://host.docker.internal:1234 `
-  devbootllm-app
-```
-
-### Security Hardening Summary
-
-- Backend enforces code size limits and execution timeouts for Java and Python.
-- Java runs with `-Xmx64m` to cap heap usage; both languages run in `/tmp` and are cleaned up.
-- Container runs as non-root with a read-only filesystem and tight kernel capability set.
-- No host filesystem is writable by the container in the recommended run mode.
-
-### 3. Access the Application
-
-With the container running, open your web browser and navigate to:
+Open your browser and navigate to:
 
 ```
 http://localhost:3000
 ```
 
-You should now see the devbootLLM application running and ready to execute code.
+## Learning Path
 
-## Clear the AI Chat
+The course is organized into 5 progressive levels:
 
-- Click the Clear icon (trash) next to the Ask button to clear the chat thread and reset the welcome message.
+### Level 1: Beginner (Lessons 1-100)
+Foundation programming skills - variables, loops, functions, basic OOP
+**Career Target:** Entry-level developer ($50K-$80K)
 
-## Add Lessons via JSON (no hardcoding)
+### Level 2: Intermediate (Lessons 101-200)
+Core software engineering - advanced OOP, collections, streams, file I/O
+**Career Target:** Mid-level developer ($80K-$120K)
 
-You can extend or replace lessons without editing `public/index.html` by creating a JSON file the frontend loads at startup.
+### Level 3: Advanced (Lessons 201-300)
+Professional patterns - concurrency, design patterns, testing, optimization
+**Career Target:** Senior developer ($120K-$160K)
 
-- File path: `public/lessons.json`
-- Structure: either an array of lesson objects, or an object with `{ "mode": "append" | "replace", "lessons": [ ... ] }`.
-- Default behavior is append; use `"mode": "replace"` to replace the built-in lessons entirely.
+### Level 4: Senior (Lessons 301-500)
+Production systems - microservices, databases, APIs, distributed systems
+**Career Target:** Senior/Staff engineer ($160K-$220K)
 
-Lesson fields:
+### Level 5: Enterprise (Lessons 501-600)
+FAANG-level topics - cloud platforms (AWS, Azure, GCP), Kubernetes, CI/CD, system design
+**Career Target:** Staff/Principal engineer ($220K-$350K+)
 
-- `id`: unique number (used for progress tracking)
-- `title`: short title
-- `description`: short lesson description
-- `language`: `"java"` (default) or `"python"`
-- `initialCode`: starter code shown in the editor
-- `fullSolution`: optional reference solution
-- `fullSolutionCommented`: optional solution with explanatory comments (preferred when pressing Solve)
-- `expectedOutput`: exact output the checker compares against
-- `userInput`: optional array of strings to feed as stdin (Java only at the moment)
-- `tutorial`: optional HTML string shown in the Tutorial modal
+## Architecture
 
-Example `public/lessons.json`:
+### Project Structure
 
 ```
+devbootllm-app/
+├── public/
+│   ├── index.html              # Main web application
+│   ├── lessons-java.json       # Java lesson catalog
+│   ├── lessons-python.json     # Python lesson catalog
+│   └── css/                    # Compiled Tailwind CSS
+├── scripts/
+│   ├── validate-lessons.mjs    # Validate lesson JSON schema
+│   ├── next-id.mjs            # Get next available lesson ID
+│   ├── normalize-lessons.mjs   # Format and sort lessons
+│   ├── seed-db.js             # Seed SQLite database
+│   └── ...                    # Other lesson management tools
+├── data/
+│   └── app.db                 # SQLite database (in Docker volume)
+├── server.js                  # Express.js backend
+├── db.js                      # Database layer
+├── Dockerfile                 # Container configuration
+└── package.json               # Node.js dependencies
+```
+
+### Backend Stack
+
+- **Node.js** + **Express.js** for the web server
+- **SQLite** (better-sqlite3) for lesson storage with JSON fallback
+- **Java 17** (OpenJDK) for executing Java code
+- **Python 3** for executing Python code
+
+### Frontend Stack
+
+- Vanilla JavaScript (no framework dependencies)
+- **Tailwind CSS** for styling
+- CodeMirror-style code editor
+
+## API Endpoints
+
+### Code Execution
+- `POST /run/java` - Execute Java code
+- `POST /run/python` - Execute Python code
+
+### Lessons
+- `GET /api/lessons?lang={java|python}&offset=0&limit=200` - Paginated lesson summaries
+- `GET /api/lessons/:lang/:id` - Full lesson details
+- `GET /lessons-java.json` - All Java lessons (legacy)
+- `GET /lessons-python.json` - All Python lessons (legacy)
+
+### AI Integration
+- `POST /chat` - Send messages to AI assistant
+- `GET /ollama/models` - List available Ollama models
+- `GET /lmstudio/models` - List available LM Studio models
+
+### Health
+- `GET /health` - Server health and configuration status
+
+## Development
+
+### Prerequisites
+
+- Node.js 18+
+- Java 17 (Microsoft OpenJDK recommended)
+- Python 3
+
+### Install Dependencies
+
+```bash
+npm install
+```
+
+### Build Tailwind CSS
+
+After modifying UI styles:
+
+```bash
+npm run build:css
+```
+
+### Validate Lessons
+
+```bash
+npm run validate:lessons
+```
+
+### Manage Lessons
+
+Get the next available lesson ID:
+```bash
+node scripts/next-id.mjs public/lessons-java.json
+```
+
+Normalize and sort lessons:
+```bash
+node scripts/normalize-lessons.mjs public/lessons-java.json
+```
+
+Seed database from JSON files:
+```bash
+npm run seed
+```
+
+### Verify Lesson Counts
+
+```powershell
+# PowerShell
+(Invoke-RestMethod http://localhost:3000/api/lessons?lang=java&limit=1).meta.total
+(Invoke-RestMethod http://localhost:3000/api/lessons?lang=python&limit=1).meta.total
+```
+
+## Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `PORT` | `3000` | Server port |
+| `OLLAMA_URL` | `http://localhost:11434` | Ollama API endpoint |
+| `LMSTUDIO_URL` | `http://localhost:1234` | LM Studio API endpoint |
+| `RUN_TMP_DIR` | OS temp | Directory for code execution temp files |
+| `DATA_DIR` | `/data` (Docker) or `./data` (local) | Database directory |
+| `DB_FILE` | `${DATA_DIR}/app.db` | SQLite database path |
+| `LESSONS_MODE` | `replace` | JSON response mode (`replace` or `append`) |
+| `LESSONS_REPLACE_ON_START` | `0` | Wipe and reseed DB on startup (1=yes) |
+| `LESSONS_UPSERT_ON_START` | `0` | Upsert lessons from JSON on startup (1=yes) |
+
+## Security Features
+
+The Docker configuration includes multiple security hardening measures:
+
+- **Read-only filesystem** - Application code cannot be modified at runtime
+- **Isolated execution** - Code runs in `/tmp` with `noexec`, `nodev`, `nosuid`
+- **Non-root user** - Container runs without root privileges
+- **No capabilities** - All Linux capabilities dropped (`--cap-drop ALL`)
+- **Resource limits** - CPU, memory, and process limits enforced
+- **Code limits** - Maximum code size and execution timeouts
+- **Java heap limit** - `-Xmx64m` prevents memory abuse
+
+## AI Integration
+
+### Using Ollama
+
+1. Install Ollama from https://ollama.com
+2. Pull a model: `ollama pull llama3.1`
+3. Ensure Ollama is running on port 11434
+4. Start the app with `OLLAMA_URL` configured
+5. Select your model from the AI panel dropdown
+
+### Using LM Studio
+
+1. Install and start LM Studio (http://127.0.0.1:1234)
+2. Load a model in LM Studio
+3. Start the app with `LMSTUDIO_URL` configured
+4. Select "LM Studio" as provider in the AI panel
+5. Choose your model from the dropdown
+
+## Troubleshooting
+
+### Port 3000 already in use
+
+Use a different port:
+```bash
+docker run -p 3100:3000 ... devbootllm-app
+```
+Then access at `http://localhost:3100`
+
+### SQLite not working
+
+Check logs for:
+```
+[lessons] storage=sqlite db=/data/app.db ...
+```
+
+Verify with health endpoint:
+```powershell
+(Invoke-RestMethod http://localhost:3000/health).lessons.storage
+```
+
+Should return `"sqlite"`. If it shows `"json"`, the app is using the fallback mode.
+
+### AI models not appearing
+
+1. Verify Ollama/LM Studio is running
+2. Check the URL is correct (use `host.docker.internal` in Docker)
+3. Click the refresh button in the AI panel
+4. Check browser console for errors
+
+## License
+
+MIT License - See [LICENSE](LICENSE) file for details
+
+## Contributing
+
+Lessons are stored in `public/lessons-java.json` and `public/lessons-python.json`. Each lesson follows this schema:
+
+```json
 {
-  "mode": "append",
-  "lessons": [
-    {
-      "id": 51,
-      "title": "51. Hello, Universe!",
-      "language": "java",
-      "description": "Practice printing another message.",
-      "initialCode": "public class Main {\\n    public static void main(String[] args) {\\n        // Print Hello, Universe!\\n    }\\n}",
-      "fullSolution": "public class Main {\\n    public static void main(String[] args) {\\n        System.out.println(\\"Hello, Universe!\\");\\n    }\\n}",
-      "expectedOutput": "Hello, Universe!"
-    },
-    {
-      "id": 101,
-      "title": "Python 1. Hello, World",
-      "language": "python",
-      "description": "Print Hello, World! in Python.",
-      "initialCode": "print(\\"Hello, World!\\")",
-      "fullSolution": "print(\\"Hello, World!\\")",
-      "expectedOutput": "Hello, World!"
-    }
-  ]
+  "id": 1,
+  "title": "1. Hello World",
+  "description": "Your first program",
+  "language": "java",
+  "initialCode": "public class Main { ... }",
+  "fullSolution": "...",
+  "expectedOutput": "Hello, World!",
+  "tutorial": "Detailed markdown tutorial..."
 }
 ```
 
-Notes:
-
-- Python lessons run via the `/run/python` endpoint and are checked against `expectedOutput` like Java lessons. The editor language switches automatically per lesson.
-- The lesson list and progress bar adapt to however many lessons you provide. Use `"mode": "replace"` if you want to supply a fully custom set (e.g., all Python).
-- The left sidebar header currently says “Java Fundamentals” by default; this is cosmetic only and does not affect lesson loading or execution.
-
-## Separate Java and Python Courses
-
-- Use the Course selector in the header to switch between Java and Python tracks. Your selection persists.
-- Java uses `public/lessons-java.json` (provided). You can edit or expand it freely; the app loads it at startup.
-- Python uses `public/lessons-python.json` (provided with a starter set). You can expand it freely.
-
-Persistence per track:
-- Progress and code are saved separately per course in localStorage using keys like `devbootllm-java-progress` and `devbootllm-python-progress`.
-
-## SQLite Lessons (optional)
-
-You can store lessons in a SQLite DB instead of JSON files. The backend will serve the same JSON endpoints (`/lessons-java.json`, `/lessons-python.json`, `/lessons.json`) from the DB so the frontend keeps working unchanged. If the DB is missing or empty, it falls back to the JSON files in `public/`.
-
-- Env vars:
-  - `DATA_DIR`: directory for the DB (default `/data` in Docker, `./data` on Windows).
-  - `DB_FILE`: full path to the DB file (default `${DATA_DIR}/app.db`).
-  - `LESSONS_MODE`: `replace` or `append` for the JSON wrapper the server responds with (default `replace`).
-- Seed from existing JSON:
-  - `npm run seed` (wipes the `lessons` table, then reads `public/lessons-java.json`, `public/lessons-python.json`, and optional `public/lessons.json`).
-- Docker persistent volume (recommended):
-  - Add a data volume to your `docker run` so the DB persists:
-
-```
-docker run --rm ^
-  -p 3000:3000 ^
-  -e OLLAMA_URL=http://host.docker.internal:11434 ^
-  -e LMSTUDIO_URL=http://host.docker.internal:1234 ^
-  -e RUN_TMP_DIR=/tmp ^
-  -v "%cd%:/usr/src/app:ro" ^
-  -v devbootllm-data:/data ^
-  --read-only ^
-  --tmpfs "/tmp:rw,noexec,nodev,nosuid,size=64m" ^
-  --cap-drop ALL ^
-  --security-opt "no-new-privileges" ^
-  --pids-limit 128 ^
-  --memory 512m ^
-  --cpus 1 ^
-  devbootllm-app
-```
-
-Notes:
-- If `better-sqlite3` native prebuild is unavailable in your environment, install build tools inside your container/base image (e.g., `build-essential`) or switch to a Node version with prebuilt binaries.
-- The server auto-seeds from JSON only when the DB is empty.
-  - To wipe and reseed from JSON on every container start (exact mirror, no stale rows), set `-e LESSONS_REPLACE_ON_START=1`.
-  - To upsert changes from JSON on every container start (no deletes), set `-e LESSONS_UPSERT_ON_START=1`.
-
-### Seed the DB in Docker
-
-After building the image, you can populate the DB from the JSON files without starting the web server.
-
-- Create the volume (once):
-
-```bash
-docker volume create devbootllm-data
-```
-
-- Seed (Windows PowerShell):
-
-```
-docker run --rm `
-  -e RUN_TMP_DIR=/tmp `
-  -v "$($PWD.Path):/usr/src/app:ro" `
-  -v devbootllm-data:/data `
-  --read-only `
-  --tmpfs "/tmp:rw,noexec,nodev,nosuid,size=64m" `
-  devbootllm-app node scripts/seed-db.js
-```
-
-
-
-Tip: For a clean, idempotent mirror of your JSON files on each start, add `-e LESSONS_REPLACE_ON_START=1` to your regular `docker run` command (wipes then seeds). If you prefer non-destructive updates, use `-e LESSONS_UPSERT_ON_START=1` instead.
-
-## Verify Lesson Counts (PowerShell)
-
-```
-(Invoke-RestMethod http://localhost:3000/lessons-java.json).lessons.Length
-(Invoke-RestMethod http://localhost:3000/lessons-python.json).lessons.Length
-```
-
-Expected (as of latest content update): Python 275, Java 269. Counts may change as lessons evolve.
-
-## Advanced Lessons Added
-
-- Additional senior-level lessons have been added beyond the original set (101-111). Highlights:
-  - Java: ConcurrentHashMap.merge counters, computeIfAbsent/Present, CompletableFuture allOf/thenCompose, Semaphore, LongAdder, collectingAndThen, IntSummaryStatistics, Optional.flatMap, ReadWriteLock, ScheduledExecutor (fixed rate), Files.lines + try-with-resources, Collectors.mapping.
-  - Python: asyncio.Semaphore, queue+threads fan-out, logging to stdout, dataclass default_factory, typing.TypedDict, operator.itemgetter, as_completed (futures), contextvars, re.sub with function, pathlib read/write, dataclass frozen, __slots__, functools.reduce, json loads, fractions.Fraction.
-  - These extend fundamentals with production-oriented patterns for concurrency, collections, typing, and I/O.
-
-## Lesson Filter (UI)
-
-- In the lesson sidebar, use the new Filter dropdown to switch between:
-  - All Lessons
-  - Fundamentals (1–100)
-  - Advanced (101+)
-- The selection persists per course in localStorage.
-
+Use the scripts in `scripts/` to validate, normalize, and manage lessons before submitting changes.

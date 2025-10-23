@@ -412,9 +412,11 @@
                             <h3 id="course-title" class="text-lg font-bold text-white">Java Fundamentals</h3>
                             <label for="lesson-filter" class="block mt-3 text-xs uppercase tracking-wide text-gray-400">Level Filter</label>
                             <select id="lesson-filter" class="mt-1 w-full bg-[#1e1f20] border gemini-border rounded-md text-sm p-2 focus:outline-none">
-                                <option value="all">All Lessons</option>
-                                <option value="fundamentals">Fundamentals (1–100)</option>
-                                <option value="advanced">Advanced (101+)</option>
+                                <option value="all">All Lessons (1-500)</option>
+                                <option value="beginner">Beginner (1-100)</option>
+                                <option value="intermediate">Intermediate (101-200)</option>
+                                <option value="advanced">Advanced (201-350)</option>
+                                <option value="expert">Expert (351-500)</option>
                             </select>
                             <label for="tag-filter" class="block mt-3 text-xs uppercase tracking-wide text-gray-400">Tag</label>
                             <select id="tag-filter" class="mt-1 w-full bg-[#1e1f20] border gemini-border rounded-md text-sm p-2 focus:outline-none">
@@ -1381,10 +1383,14 @@
                     const list = this.elements.lessonList;
                     list.innerHTML = '';
                     let view = this.lessons || [];
-                    if (this.lessonFilter === 'fundamentals') {
-                        view = view.filter(l => (typeof l.id === 'number') ? l.id <= 100 : true);
+                    if (this.lessonFilter === 'beginner') {
+                        view = view.filter(l => (typeof l.id === 'number') ? (l.id >= 1 && l.id <= 100) : true);
+                    } else if (this.lessonFilter === 'intermediate') {
+                        view = view.filter(l => (typeof l.id === 'number') ? (l.id >= 101 && l.id <= 200) : false);
                     } else if (this.lessonFilter === 'advanced') {
-                        view = view.filter(l => (typeof l.id === 'number') ? l.id >= 101 : false);
+                        view = view.filter(l => (typeof l.id === 'number') ? (l.id >= 201 && l.id <= 350) : false);
+                    } else if (this.lessonFilter === 'expert') {
+                        view = view.filter(l => (typeof l.id === 'number') ? (l.id >= 351 && l.id <= 500) : false);
                     }
                     // Tag filter
                     const selectedTag = this.tagFilter || 'all';
@@ -1408,7 +1414,7 @@
                         item.href = '#';
                         item.className = `sidebar-lesson-item flex items-center justify-between p-3 rounded-md text-sm transition-colors hover:bg-gemini-bg-tertiary ${isActive ? 'active' : ''}`;
                         item.innerHTML = `
-                            <span class="truncate">${lesson.title}</span>
+                            <span class="truncate"><span class="text-gray-400 mr-2">${lesson.id}.</span>${lesson.title}</span>
                             ${isCompleted ? '<i class="fa-solid fa-circle-check text-emerald-400 ml-2 flex-shrink-0"></i>' : ''}
                         `;
                         item.addEventListener('click', (e) => {
@@ -1424,7 +1430,8 @@
                     if (!sel) return;
                     const key = `lessonFilter-${this.currentTrack}`;
                     const saved = localStorage.getItem(key) || this.lessonFilter || 'all';
-                    sel.value = ['all','fundamentals','advanced'].includes(saved) ? saved : 'all';
+                    const validFilters = ['all', 'beginner', 'intermediate', 'advanced', 'expert'];
+                    sel.value = validFilters.includes(saved) ? saved : 'all';
                     this.lessonFilter = sel.value;
                 }
                 

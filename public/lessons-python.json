@@ -9662,7 +9662,7 @@
     {
       "id": 606,
       "title": "YouTube Streaming",
-      "description": "Video transcoding",
+      "description": "Design YouTube's video streaming architecture with adaptive bitrate, CDN distribution, view count aggregation, and transcoding pipeline. Handle 500M+ views/day with low latency.",
       "language": "python",
       "initialCode": "// YouTube Streaming Service\nimport java.util.*;\n\nclass Main {\n    static class Video {\n        String id, title;\n        int views;\n\n        Video(String id, String title) {\n            this.id = id;\n            this.title = title;\n            this.views = 0;\n        }\n    }\n\n    static class StreamingService {\n        Map<String, Video> videos = new HashMap<>();\n\n        // TODO: Implement uploadVideo method\n\n        // TODO: Implement streamVideo method\n\n        // TODO: Implement getViews method\n    }\n\n    public static void main(String[] args) {\n        StreamingService youtube = new StreamingService();\n        // TODO: Test your implementation\n    }\n}",
       "fullSolution": "// YouTube Streaming Service\nimport java.util.*;\n\nclass Main {\n    static class Video {\n        String id, title;\n        int views;\n\n        Video(String id, String title) {\n            this.id = id;\n            this.title = title;\n            this.views = 0;\n        }\n    }\n\n    static class StreamingService {\n        Map<String, Video> videos = new HashMap<>();\n        Map<String, Integer> viewCache = new HashMap<>(); // Simulates Redis\n\n        void uploadVideo(String id, String title) {\n            videos.put(id, new Video(id, title));\n            System.out.println(\"Uploaded: \" + title);\n        }\n\n        String streamVideo(String videoId, String resolution) {\n            Video video = videos.get(videoId);\n            if (video == null) return \"Video not found\";\n\n            video.views++;\n            viewCache.put(videoId, video.views);\n\n            return String.format(\"Streaming '%s' at %s\", video.title, resolution);\n        }\n\n        int getViews(String videoId) {\n            return viewCache.getOrDefault(videoId, 0);\n        }\n    }\n\n    public static void main(String[] args) {\n        StreamingService youtube = new StreamingService();\n\n        youtube.uploadVideo(\"v1\", \"Learn System Design\");\n        System.out.println(youtube.streamVideo(\"v1\", \"720p\"));\n        System.out.println(youtube.streamVideo(\"v1\", \"1080p\"));\n        System.out.println(\"Total views: \" + youtube.getViews(\"v1\"));\n    }\n}",
@@ -9676,7 +9676,7 @@
     {
       "id": 607,
       "title": "Uber Ride Sharing",
-      "description": "Geospatial matching",
+      "description": "Design Uber's ride-matching system with geospatial indexing, real-time driver tracking, surge pricing algorithm, and ETA calculation. Match riders with nearest drivers in <5 seconds.",
       "language": "python",
       "initialCode": "// Uber Ride Matching System\nimport java.util.*;\n\nclass Main {\n    static class Driver {\n        String id;\n        double lat, lon;\n        boolean available;\n\n        Driver(String id, double lat, double lon) {\n            this.id = id;\n            this.lat = lat;\n            this.lon = lon;\n            this.available = true;\n        }\n    }\n\n    static class RideService {\n        List<Driver> drivers = new ArrayList<>();\n\n        // TODO: Implement addDriver method\n\n        // TODO: Implement findNearestDriver method\n\n        // TODO: Implement requestRide method\n    }\n\n    public static void main(String[] args) {\n        // TODO: Test your ride matching system\n    }\n}",
       "fullSolution": "// Uber Ride Matching System\nimport java.util.*;\n\nclass Main {\n    static class Driver {\n        String id;\n        double lat, lon;\n        boolean available;\n\n        Driver(String id, double lat, double lon) {\n            this.id = id;\n            this.lat = lat;\n            this.lon = lon;\n            this.available = true;\n        }\n\n        double distanceTo(double lat, double lon) {\n            double dlat = Math.abs(this.lat - lat);\n            double dlon = Math.abs(this.lon - lon);\n            return Math.sqrt(dlat * dlat + dlon * dlon);\n        }\n    }\n\n    static class RideService {\n        List<Driver> drivers = new ArrayList<>();\n\n        void addDriver(String id, double lat, double lon) {\n            drivers.add(new Driver(id, lat, lon));\n        }\n\n        Driver findNearestDriver(double riderLat, double riderLon) {\n            Driver nearest = null;\n            double minDist = Double.MAX_VALUE;\n\n            for (Driver d : drivers) {\n                if (d.available) {\n                    double dist = d.distanceTo(riderLat, riderLon);\n                    if (dist < minDist) {\n                        minDist = dist;\n                        nearest = d;\n                    }\n                }\n            }\n            return nearest;\n        }\n\n        String requestRide(double lat, double lon) {\n            Driver driver = findNearestDriver(lat, lon);\n            if (driver == null) return \"No drivers available\";\n            driver.available = false;\n            return \"Matched with driver: \" + driver.id;\n        }\n    }\n\n    public static void main(String[] args) {\n        RideService uber = new RideService();\n        uber.addDriver(\"D1\", 37.7749, -122.4194);\n        uber.addDriver(\"D2\", 37.7849, -122.4094);\n\n        System.out.println(uber.requestRide(37.7750, -122.4195));\n        System.out.println(uber.requestRide(37.7850, -122.4090));\n    }\n}",
@@ -9690,7 +9690,7 @@
     {
       "id": 608,
       "title": "Netflix CDN",
-      "description": "Content delivery",
+      "description": "Design Netflix's CDN architecture for video streaming with edge caching, origin servers, and cache invalidation strategies. Optimize for global content delivery and bandwidth costs.",
       "language": "python",
       "initialCode": "// Netflix CDN System\nfrom typing import List, Dict, Set\nfrom collections import deque\nimport heapq\n\n// TODO: Complete the implementation\n\n    class CDN:\n        Map<str, str> edgeCache = {}\n\n        str getContent(str contentId):\n            if (edgeCache in contentId)):\n                return \"[Cache Hit] \" + edgeCache[contentId)\n                // TODO: Implement methods\n\n            str content = \"Video: \" + contentId\n            edgeCache[contentId, content)\n            return \"[Origin] \" + content\n\n    def main(str[] args):\n        CDN cdn = new CDN()\n        print(cdn.getContent(\"movie123\"))\n        print(cdn.getContent(\"movie123\"))",
       "fullSolution": "// Netflix CDN System\nfrom typing import List, Dict, Set\nfrom collections import deque\nimport heapq\n\n    class CDN:\n        Map<str, str> edgeCache = {}\n\n        str getContent(str contentId):\n            if (edgeCache in contentId)):\n                return \"[Cache Hit] \" + edgeCache[contentId)\n\n            str content = \"Video: \" + contentId\n            edgeCache[contentId, content)\n            return \"[Origin] \" + content\n\n    def main(str[] args):\n        CDN cdn = new CDN()\n        print(cdn.getContent(\"movie123\"))\n        print(cdn.getContent(\"movie123\"))",
@@ -9704,7 +9704,7 @@
     {
       "id": 609,
       "title": "WhatsApp Chat",
-      "description": "Message delivery",
+      "description": "Design WhatsApp's messaging system with real-time chat, message queuing, delivery receipts, and end-to-end encryption. Handle billions of messages per day with low latency.",
       "language": "python",
       "initialCode": "// WhatsApp Messaging System\nfrom typing import List, Dict, Set\nfrom collections import deque\nimport heapq\n\n// TODO: Complete the implementation\n\n    class Chat:\n        List<str> messages = []\n\n        void sendMessage(str user, str msg):\n            str formatted = user + \": \" + msg\n            messages.append(formatted)\n            print(\"Sent - \" + formatted)\n            // TODO: Implement methods\n\n        void showMessages():\n            print(\"Chat history:\")\n            for (str msg : messages):\n                print(\"  \" + msg)\n\n    def main(str[] args):\n        Chat chat = new Chat()\n        chat.sendMessage(\"Alice\", \"Hello!\")\n        chat.sendMessage(\"Bob\", \"Hi Alice!\")",
       "fullSolution": "// WhatsApp Messaging System\nfrom typing import List, Dict, Set\nfrom collections import deque\nimport heapq\n\n    class Chat:\n        List<str> messages = []\n\n        void sendMessage(str user, str msg):\n            str formatted = user + \": \" + msg\n            messages.append(formatted)\n            print(\"Sent - \" + formatted)\n\n        void showMessages():\n            print(\"Chat history:\")\n            for (str msg : messages):\n                print(\"  \" + msg)\n\n    def main(str[] args):\n        Chat chat = new Chat()\n        chat.sendMessage(\"Alice\", \"Hello!\")\n        chat.sendMessage(\"Bob\", \"Hi Alice!\")",
@@ -9718,7 +9718,7 @@
     {
       "id": 610,
       "title": "Dropbox Storage",
-      "description": "File sync",
+      "description": "Design Dropbox's file storage and synchronization system with chunking, deduplication, version control, and conflict resolution. Sync files across multiple devices efficiently.",
       "language": "python",
       "initialCode": "// Dropbox File Storage\nfrom typing import List, Dict, Set\nfrom collections import deque\nimport heapq\n\n// TODO: Complete the implementation\n\n    class Storage:\n        Map<str, byte[]> files = {}\n\n        void upload(str filename, str content):\n            files[filename, content.getBytes())\n            print(\"Uploaded: \" + filename + \" (\" + content(len()) + \" bytes)\")\n            // TODO: Implement methods\n\n        str download(str filename):\n            if (!files in filename)):\n                return \"File not found\"\n\n            return new str(files[filename))\n\n    def main(str[] args):\n        Storage dropbox = new Storage()\n        dropbox.upload(\"doc.txt\", \"Hello World\")\n        print(\"Downloaded: \" + dropbox.download(\"doc.txt\"))",
       "fullSolution": "// Dropbox File Storage\nfrom typing import List, Dict, Set\nfrom collections import deque\nimport heapq\n\n    class Storage:\n        Map<str, byte[]> files = {}\n\n        void upload(str filename, str content):\n            files[filename, content.getBytes())\n            print(\"Uploaded: \" + filename + \" (\" + content(len()) + \" bytes)\")\n\n        str download(str filename):\n            if (!files in filename)):\n                return \"File not found\"\n\n            return new str(files[filename))\n\n    def main(str[] args):\n        Storage dropbox = new Storage()\n        dropbox.upload(\"doc.txt\", \"Hello World\")\n        print(\"Downloaded: \" + dropbox.download(\"doc.txt\"))",
@@ -9732,7 +9732,7 @@
     {
       "id": 611,
       "title": "Web Crawler",
-      "description": "BFS traversal",
+      "description": "Design a web crawler like Googlebot with URL frontier management, politeness policy, deduplication, and distributed crawling. Crawl billions of pages while respecting robots.txt.",
       "language": "python",
       "initialCode": "// Web Crawler\nfrom typing import List, Dict, Set\nfrom collections import deque\nimport heapq\n\n// TODO: Complete the implementation\n\n    class Crawler:\n        Set<str> visited = set()\n        Queue<str> queue = deque()\n\n        void crawl(str startUrl, maxPages):\n            queue.append(startUrl)\n            count = 0\n\n            while (!queue == [] && count < maxPages):\n                str url = queue.poll()\n                if (visited.contains(url)) continue\n\n                visited.append(url)\n                print(\"Crawled: \" + url)\n                count++\n\n                // Simulate finding links\n                if (count < maxPages):\n                    queue.append(url + \"/page\" + count)\n                    // TODO: Implement methods\n\n    def main(str[] args):\n        Crawler crawler = new Crawler()\n        crawler.crawl(\"example.com\", 3)",
       "fullSolution": "// Web Crawler\nfrom typing import List, Dict, Set\nfrom collections import deque\nimport heapq\n\n    class Crawler:\n        Set<str> visited = set()\n        Queue<str> queue = deque()\n\n        void crawl(str startUrl, maxPages):\n            queue.append(startUrl)\n            count = 0\n\n            while (!queue == [] && count < maxPages):\n                str url = queue.poll()\n                if (visited.contains(url)) continue\n\n                visited.append(url)\n                print(\"Crawled: \" + url)\n                count++\n\n                // Simulate finding links\n                if (count < maxPages):\n                    queue.append(url + \"/page\" + count)\n\n    def main(str[] args):\n        Crawler crawler = new Crawler()\n        crawler.crawl(\"example.com\", 3)",
@@ -9746,7 +9746,7 @@
     {
       "id": 612,
       "title": "Search Autocomplete",
-      "description": "Trie structure",
+      "description": "Design a search autocomplete system like Google Search with trie data structure, prefix matching, ranking by popularity, and caching. Provide suggestions in <100ms.",
       "language": "python",
       "initialCode": "// Search Autocomplete\nfrom typing import List, Dict, Set\nfrom collections import deque\nimport heapq\n\n// TODO: Complete the implementation\n\n    class Autocomplete:\n        List<str> dictionary = Arrays.asList(\"apple\", \"application\", \"apply\", \"banana\", \"band\")\n\n        List<str> suggest(str prefix):\n            List<str> results = []\n            for (str word : dictionary):\n                if (word.startsWith(prefix)):\n                    results.append(word)\n                    // TODO: Implement methods\n\n            return results\n\n    def main(str[] args):\n        Autocomplete ac = new Autocomplete()\n        print(\"Suggestions for 'app': \" + ac.suggest(\"app\"))\n        print(\"Suggestions for 'ban': \" + ac.suggest(\"ban\"))",
       "fullSolution": "// Search Autocomplete\nfrom typing import List, Dict, Set\nfrom collections import deque\nimport heapq\n\n    class Autocomplete:\n        List<str> dictionary = Arrays.asList(\"apple\", \"application\", \"apply\", \"banana\", \"band\")\n\n        List<str> suggest(str prefix):\n            List<str> results = []\n            for (str word : dictionary):\n                if (word.startsWith(prefix)):\n                    results.append(word)\n\n            return results\n\n    def main(str[] args):\n        Autocomplete ac = new Autocomplete()\n        print(\"Suggestions for 'app': \" + ac.suggest(\"app\"))\n        print(\"Suggestions for 'ban': \" + ac.suggest(\"ban\"))",
@@ -9760,7 +9760,7 @@
     {
       "id": 613,
       "title": "Notification System",
-      "description": "Multi-channel",
+      "description": "Design a notification system supporting push, email, and SMS with priority queuing, retry logic, rate limiting, and user preference management. Handle millions of notifications per minute.",
       "language": "python",
       "initialCode": "// Notification System\nfrom typing import List, Dict, Set\nfrom collections import deque\nimport heapq\n\n// TODO: Complete the implementation\n\n    class NotificationService:\n        Map<str, List<str>> userNotifications = {}\n\n        void send(str userId, str message):\n            userNotifications.computeIfAbsent(userId, k -> []).append(message)\n            print(\"Notification sent to \" + userId + \": \" + message)\n            // TODO: Implement methods\n\n        List<str> getNotifications(str userId):\n            return userNotifications.get(userId, [])\n\n    def main(str[] args):\n        NotificationService ns = new NotificationService()\n        ns.send(\"user1\", \"New message from Alice\")\n        ns.send(\"user1\", \"Your order shipped\")\n        print(\"Total notifications: \" + ns.getNotifications(\"user1\")(len()))",
       "fullSolution": "// Notification System\nfrom typing import List, Dict, Set\nfrom collections import deque\nimport heapq\n\n    class NotificationService:\n        Map<str, List<str>> userNotifications = {}\n\n        void send(str userId, str message):\n            userNotifications.computeIfAbsent(userId, k -> []).append(message)\n            print(\"Notification sent to \" + userId + \": \" + message)\n\n        List<str> getNotifications(str userId):\n            return userNotifications.get(userId, [])\n\n    def main(str[] args):\n        NotificationService ns = new NotificationService()\n        ns.send(\"user1\", \"New message from Alice\")\n        ns.send(\"user1\", \"Your order shipped\")\n        print(\"Total notifications: \" + ns.getNotifications(\"user1\")(len()))",
@@ -9774,7 +9774,7 @@
     {
       "id": 614,
       "title": "Newsfeed Ranking",
-      "description": "ML scoring",
+      "description": "Design a newsfeed ranking algorithm like Facebook with engagement scoring, edge rank, personalization, and A/B testing. Show relevant content to users based on interactions.",
       "language": "python",
       "initialCode": "// Newsfeed Ranking Algorithm\nfrom typing import List, Dict, Set\nfrom collections import deque\nimport heapq\n\n// TODO: Complete the implementation\n\n    class Post:\n        str content\n        likes, shares\n        long timestamp\n\n        Post(str content, likes, shares):\n            this.content = content\n            this.likes = likes\n            this.shares = shares\n            this.timestamp = System.currentTimeMillis()\n            // TODO: Implement methods\n\n        getScore():\n            return likes * 1.0 + shares * 2.0\n\n    class Feed:\n        List<Post> posts = []\n\n        void addPost(str content, likes, shares):\n            posts.append(new Post(content, likes, shares))\n\n        void showRanked():\n            posts.sort((a, b) -> Double.compare(b.getScore(), a.getScore()))\n            for (Post p : posts):\n                print(p.content + \" (score: \" + p.getScore() + \")\")\n\n    def main(str[] args):\n        Feed feed = new Feed()\n        feed.addPost(\"Post A\", 10, 2)\n        feed.addPost(\"Post B\", 5, 5)\n        feed.addPost(\"Post C\", 20, 1)\n        feed.showRanked()",
       "fullSolution": "// Newsfeed Ranking Algorithm\nfrom typing import List, Dict, Set\nfrom collections import deque\nimport heapq\n\n    class Post:\n        str content\n        likes, shares\n        long timestamp\n\n        Post(str content, likes, shares):\n            this.content = content\n            this.likes = likes\n            this.shares = shares\n            this.timestamp = System.currentTimeMillis()\n\n        getScore():\n            return likes * 1.0 + shares * 2.0\n\n    class Feed:\n        List<Post> posts = []\n\n        void addPost(str content, likes, shares):\n            posts.append(new Post(content, likes, shares))\n\n        void showRanked():\n            posts.sort((a, b) -> Double.compare(b.getScore(), a.getScore()))\n            for (Post p : posts):\n                print(p.content + \" (score: \" + p.getScore() + \")\")\n\n    def main(str[] args):\n        Feed feed = new Feed()\n        feed.addPost(\"Post A\", 10, 2)\n        feed.addPost(\"Post B\", 5, 5)\n        feed.addPost(\"Post C\", 20, 1)\n        feed.showRanked()",
@@ -9788,7 +9788,7 @@
     {
       "id": 615,
       "title": "E-commerce Checkout",
-      "description": "Payment flow",
+      "description": "Design an e-commerce checkout system with shopping cart, inventory management, payment processing, order fulfillment, and transaction consistency. Handle Black Friday scale traffic.",
       "language": "python",
       "initialCode": "// E-commerce Checkout System\nfrom typing import List, Dict, Set\nfrom collections import deque\nimport heapq\n\n// TODO: Complete the implementation\n\n    class Checkout:\n        subtotal = 0\n        tax = 0.10\n\n        void addItem(str item, price):\n            subtotal += price\n            print(\"Added: \" + item + \" - $\" + price)\n            // TODO: Implement methods\n\n        getTotal():\n            return subtotal * (1 + tax)\n\n        void processPayment():\n            print(\"Subtotal: $\" + str.format(\"%.2f\", subtotal))\n            print(\"Total: $\" + str.format(\"%.2f\", getTotal()))\n\n    def main(str[] args):\n        Checkout checkout = new Checkout()\n        checkout.addItem(\"Laptop\", 999.99)\n        checkout.addItem(\"Mouse\", 29.99)\n        checkout.processPayment()",
       "fullSolution": "// E-commerce Checkout System\nfrom typing import List, Dict, Set\nfrom collections import deque\nimport heapq\n\n    class Checkout:\n        subtotal = 0\n        tax = 0.10\n\n        void addItem(str item, price):\n            subtotal += price\n            print(\"Added: \" + item + \" - $\" + price)\n\n        getTotal():\n            return subtotal * (1 + tax)\n\n        void processPayment():\n            print(\"Subtotal: $\" + str.format(\"%.2f\", subtotal))\n            print(\"Total: $\" + str.format(\"%.2f\", getTotal()))\n\n    def main(str[] args):\n        Checkout checkout = new Checkout()\n        checkout.addItem(\"Laptop\", 999.99)\n        checkout.addItem(\"Mouse\", 29.99)\n        checkout.processPayment()",
@@ -9836,7 +9836,7 @@
     {
       "id": 618,
       "title": "Binary Search Rotated",
-      "description": "Modified search",
+      "description": "Implement binary search in a rotated sorted array. Find target element in O(log n) time by determining which half is sorted and adjusting search boundaries.",
       "language": "python",
       "initialCode": "// Binary Search in Rotated Sorted Array\nclass Main {\n    // TODO: Implement search method\n    // Find target in rotated sorted array\n    // Example: [4,5,6,7,0,1,2], target=0 -> index 4\n\n    public static void main(String[] args) {\n        int[] arr = {4, 5, 6, 7, 0, 1, 2};\n        int target = 0;\n        // TODO: Call your search method\n    }\n}",
       "fullSolution": "// Binary Search in Rotated Sorted Array\nclass Main {\n    public static int search(int[] nums, int target) {\n        int left = 0, right = nums.length - 1;\n\n        while (left <= right) {\n            int mid = left + (right - left) / 2;\n\n            if (nums[mid] == target) return mid;\n\n            // Determine which half is sorted\n            if (nums[left] <= nums[mid]) {\n                // Left half is sorted\n                if (target >= nums[left] && target < nums[mid]) {\n                    right = mid - 1;\n                } else {\n                    left = mid + 1;\n                }\n            } else {\n                // Right half is sorted\n                if (target > nums[mid] && target <= nums[right]) {\n                    left = mid + 1;\n                } else {\n                    right = mid - 1;\n                }\n            }\n        }\n\n        return -1; // Not found\n    }\n\n    public static void main(String[] args) {\n        int[] arr = {4, 5, 6, 7, 0, 1, 2};\n\n        System.out.println(\"Search 0: index \" + search(arr, 0));\n        System.out.println(\"Search 7: index \" + search(arr, 7));\n        System.out.println(\"Search 3: index \" + search(arr, 3));\n    }\n}",
@@ -9850,7 +9850,7 @@
     {
       "id": 619,
       "title": "DFS Island Count",
-      "description": "Grid traversal",
+      "description": "Count number of islands in a 2D grid using depth-first search (DFS). Mark connected components of land cells by recursively visiting neighbors in all 4 directions.",
       "language": "python",
       "initialCode": "// Count Islands using DFS\nclass Main {\n    // TODO: Implement numIslands method using DFS\n    // Count number of islands in grid (1=land, 0=water)\n\n    public static void main(String[] args) {\n        char[][] grid = {\n            {'1','1','0','0','0'},\n            {'1','1','0','0','0'},\n            {'0','0','1','0','0'},\n            {'0','0','0','1','1'}\n        };\n        // TODO: Count islands\n    }\n}",
       "fullSolution": "// Count Islands using DFS\nclass Main {\n    public static int numIslands(char[][] grid) {\n        if (grid == null || grid.length == 0) return 0;\n\n        int count = 0;\n        int rows = grid.length;\n        int cols = grid[0].length;\n\n        for (int i = 0; i < rows; i++) {\n            for (int j = 0; j < cols; j++) {\n                if (grid[i][j] == '1') {\n                    count++;\n                    dfs(grid, i, j);\n                }\n            }\n        }\n\n        return count;\n    }\n\n    private static void dfs(char[][] grid, int i, int j) {\n        if (i < 0 || i >= grid.length || j < 0 || j >= grid[0].length || grid[i][j] == '0') {\n            return;\n        }\n\n        grid[i][j] = '0'; // Mark as visited\n\n        // Explore 4 directions\n        dfs(grid, i + 1, j);\n        dfs(grid, i - 1, j);\n        dfs(grid, i, j + 1);\n        dfs(grid, i, j - 1);\n    }\n\n    public static void main(String[] args) {\n        char[][] grid = {\n            {'1','1','0','0','0'},\n            {'1','1','0','0','0'},\n            {'0','0','1','0','0'},\n            {'0','0','0','1','1'}\n        };\n\n        System.out.println(\"Number of islands: \" + numIslands(grid));\n    }\n}",
@@ -9864,7 +9864,7 @@
     {
       "id": 620,
       "title": "BFS Shortest Path",
-      "description": "Level order",
+      "description": "Find shortest path in unweighted graph using breadth-first search (BFS). Use queue for level-order traversal and track distance from start node to destination.",
       "language": "python",
       "initialCode": "// BFS Shortest Path - TODO\n\n    // TODO: Implement the algorithm\n    \n    def main(str[] args):\n        print(\"TODO\")",
       "fullSolution": "// BFS Shortest Path\nfrom typing import List, Dict, Set\nfrom collections import deque\nimport heapq\n\n    def bfs(List[int][] graph, start, end):\n        Queue<List[int]> queue = deque()\n        boolean[] visited = new boolean[graph.length]\n\n        queue.offer(new List[int]{start, 0})\n        visited[start] = true\n\n        while (!queue == []):\n            List[int] current = queue.poll()\n            node = current[0]\n            dist = current[1]\n\n            if (node == end) return dist\n\n            for (neighbor : graph[node]):\n                if (!visited[neighbor]):\n                    visited[neighbor] = true\n                    queue.offer(new List[int]{neighbor, dist + 1})\n\n        return -1\n\n    def main(str[] args):\n        List[int][] graph = {{1, 2}, {0, 3}, {0, 3}, {1, 2}}\n        print(\"Shortest path 0->3: \" + bfs(graph, 0, 3))",
@@ -9878,7 +9878,7 @@
     {
       "id": 621,
       "title": "DP Coin Change",
-      "description": "Min coins",
+      "description": "Solve coin change problem using dynamic programming. Find minimum number of coins needed to make amount with DP table tracking optimal subproblem solutions.",
       "language": "python",
       "initialCode": "// Coin Change using Dynamic Programming\nclass Main {\n    // TODO: Implement coinChange method\n    // Find minimum coins needed to make amount\n    // Return -1 if impossible\n\n    public static void main(String[] args) {\n        int[] coins = {1, 2, 5};\n        int amount = 11;\n        // TODO: Calculate minimum coins\n    }\n}",
       "fullSolution": "// Coin Change using Dynamic Programming\nimport java.util.Arrays;\n\nclass Main {\n    public static int coinChange(int[] coins, int amount) {\n        int[] dp = new int[amount + 1];\n        Arrays.fill(dp, amount + 1);\n        dp[0] = 0;\n\n        for (int i = 1; i <= amount; i++) {\n            for (int coin : coins) {\n                if (coin <= i) {\n                    dp[i] = Math.min(dp[i], dp[i - coin] + 1);\n                }\n            }\n        }\n\n        return dp[amount] > amount ? -1 : dp[amount];\n    }\n\n    public static void main(String[] args) {\n        int[] coins = {1, 2, 5};\n\n        System.out.println(\"Amount 11: \" + coinChange(coins, 11) + \" coins\");\n        System.out.println(\"Amount 3: \" + coinChange(coins, 3) + \" coins\");\n        System.out.println(\"Amount 7: \" + coinChange(coins, 7) + \" coins\");\n    }\n}",
@@ -9892,7 +9892,7 @@
     {
       "id": 622,
       "title": "DP LCS",
-      "description": "Sequence matching",
+      "description": "Find longest common subsequence (LCS) between two strings using dynamic programming. Build 2D DP table comparing characters and choosing optimal subproblem.",
       "language": "python",
       "initialCode": "// DP LCS - TODO\n\n    // TODO: Implement the algorithm\n    \n    def main(str[] args):\n        print(\"TODO\")",
       "fullSolution": "// Longest Common Subsequence\n\n    def lcs(str s1, str s2):\n        m = s1(len()), n = s2(len())\n        List[int][] dp = new int[m + 1][n + 1]\n\n        for (i = 1 i <= m i++):\n            for (j = 1 j <= n j++):\n                if (s1[i - 1) == s2[j - 1)):\n                    dp[i][j] = dp[i - 1][j - 1] + 1\n                } else:\n                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1])\n\n        return dp[m][n]\n\n    def main(str[] args):\n        print(\"LCS('ABCDGH', 'AEDFHR'): \" + lcs(\"ABCDGH\", \"AEDFHR\"))\n        print(\"LCS('AGGTAB', 'GXTXAYB'): \" + lcs(\"AGGTAB\", \"GXTXAYB\"))",
@@ -9906,7 +9906,7 @@
     {
       "id": 623,
       "title": "Backtrack N-Queens",
-      "description": "Constraint satisfaction",
+      "description": "Solve N-Queens problem using backtracking. Place N queens on N×N board such that no two queens attack each other, checking constraints at each step.",
       "language": "python",
       "initialCode": "// N-Queens - TODO\n\n    // TODO: Implement the algorithm\n    \n    def main(str[] args):\n        print(\"TODO\")",
       "fullSolution": "// N-Queens Backtracking\nfrom typing import List, Dict, Set\nfrom collections import deque\nimport heapq\n\n    public static List<List<str>> solveNQueens(n):\n        List<List<str>> result = []\n        char[][] board = new char[n][n]\n        for (i = 0 i < n i++):\n            Arrays.fill(board[i], '.')\n\n        backtrack(result, board, 0)\n        return result\n\n    def backtrack(List<List<str>> result, char[][] board, row):\n        if (row == board.length):\n            result.append(construct(board))\n            return\n\n        for (col = 0 col < board.length col++):\n            if (isValid(board, row, col)):\n                board[row][col] = 'Q'\n                backtrack(result, board, row + 1)\n                board[row][col] = '.'\n\n    def isValid(char[][] board, row, col):\n        for (i = 0 i < row i++):\n            if (board[i][col] == 'Q') return false\n\n        for (i = row - 1, j = col - 1 i >= 0 && j >= 0 i--, j--):\n            if (board[i][j] == 'Q') return false\n\n        for (i = row - 1, j = col + 1 i >= 0 && j < board.length i--, j++):\n            if (board[i][j] == 'Q') return false\n\n        return true\n\n    private static List<str> construct(char[][] board):\n        List<str> res = []\n        for (char[] row : board):\n            res.append(new str(row))\n\n        return res\n\n    def main(str[] args):\n        List<List<str>> solutions = solveNQueens(4)\n        print(\"4-Queens solutions: \" + solutions(len()))\n        print(\"First solution:\")\n        for (str row : solutions[0)):\n            print(row)",
@@ -9920,7 +9920,7 @@
     {
       "id": 624,
       "title": "Greedy Intervals",
-      "description": "Max non-overlap",
+      "description": "Merge overlapping intervals using greedy algorithm. Sort intervals by start time, then merge consecutive overlapping intervals in single pass.",
       "language": "python",
       "initialCode": "// Greedy Intervals - TODO\n\n    // TODO: Implement the algorithm\n    \n    def main(str[] args):\n        print(\"TODO\")",
       "fullSolution": "// Merge Intervals (Greedy)\nfrom typing import List, Dict, Set\nfrom collections import deque\nimport heapq\n\n    public static List[int][] merge(List[int][] intervals):\n        if (intervals.length == 0) return new int[0][]\n\n        Arrays.sort(intervals, (a, b) -> a[0] - b[0])\n        List<List[int]> merged = []\n        List[int] current = intervals[0]\n        merged.append(current)\n\n        for (List[int] interval : intervals):\n            if (interval[0] <= current[1]):\n                current[1] = Math.max(current[1], interval[1])\n            } else:\n                current = interval\n                merged.append(current)\n\n        return merged.toArray(new int[merged(len())][])\n\n    def main(str[] args):\n        List[int][] intervals = {{1,3}, {2,6}, {8,10}, {15,18}}\n        List[int][] result = merge(intervals)\n\n        System.out.print(\"Merged intervals: \")\n        for (List[int] interval : result):\n            System.out.print(\"[\" + interval[0] + \",\" + interval[1] + \"] \")\n\n        print()",
@@ -9934,7 +9934,7 @@
     {
       "id": 625,
       "title": "Heap Merge K Lists",
-      "description": "Priority queue",
+      "description": "Merge K sorted lists using min-heap (priority queue). Extract minimum element from heap and add next element from same list. Time: O(N log K).",
       "language": "python",
       "initialCode": "// Merge K Lists - TODO\n\n    // TODO: Implement the algorithm\n    \n    def main(str[] args):\n        print(\"TODO\")",
       "fullSolution": "// Merge K Sorted Lists using Heap\nfrom typing import List, Dict, Set\nfrom collections import deque\nimport heapq\n\n    public static List[int] mergeKLists(List<List[int]> lists):\n        PriorityQueue<List[int]> heap = new PriorityQueue<>((a, b) -> a[0] - b[0])\n\n        for (i = 0 i < lists(len()) i++):\n            if (!lists[i) == []):\n                heap.offer(new List[int]{lists[i)[0), i, 0})\n\n        List[int] result = []\n\n        while (!heap == []):\n            List[int] current = heap.poll()\n            val = current[0], listIdx = current[1], elemIdx = current[2]\n            result.append(val)\n\n            if (elemIdx + 1 < lists[listIdx)(len())):\n                heap.offer(new List[int]{lists[listIdx)[elemIdx + 1), listIdx, elemIdx + 1})\n\n        return result\n\n    def main(str[] args):\n        List<List[int]> lists = Arrays.asList(\n            Arrays.asList(1, 4, 5),\n            Arrays.asList(1, 3, 4),\n            Arrays.asList(2, 6)\n        )\n        print(\"Merged: \" + mergeKLists(lists))",
@@ -9948,7 +9948,7 @@
     {
       "id": 626,
       "title": "Trie Word Search",
-      "description": "Dictionary lookup",
+      "description": "Implement trie (prefix tree) for word search with insert, search, and startsWith operations. Optimize for prefix matching and autocomplete use cases.",
       "language": "python",
       "initialCode": "// Trie Word Search - TODO\n\n    // TODO: Implement the algorithm\n    \n    def main(str[] args):\n        print(\"TODO\")",
       "fullSolution": "// Trie for Word Search\nfrom typing import List, Dict, Set\nfrom collections import deque\nimport heapq\n\n    class TrieNode:\n        Map<Character, TrieNode> children = {}\n        isWord = false\n\n    class Trie:\n        TrieNode root = new TrieNode()\n\n        void insert(str word):\n            TrieNode node = root\n            for (char c : word):\n                node.children.putIfAbsent(c, new TrieNode())\n                node = node.children[c)\n\n            node.isWord = true\n\n        search(str word):\n            TrieNode node = root\n            for (char c : word):\n                if (!node.children in c)) return false\n                node = node.children[c)\n\n            return node.isWord\n\n        startsWith(str prefix):\n            TrieNode node = root\n            for (char c : prefix):\n                if (!node.children in c)) return false\n                node = node.children[c)\n\n            return true\n\n    def main(str[] args):\n        Trie trie = new Trie()\n        trie.insert(\"apple\")\n        trie.insert(\"app\")\n\n        print(\"Search 'app': \" + trie.search(\"app\"))\n        print(\"Search 'apple': \" + trie.search(\"apple\"))\n        print(\"Prefix 'ap': \" + trie.startsWith(\"ap\"))",
@@ -9962,7 +9962,7 @@
     {
       "id": 627,
       "title": "Union-Find",
-      "description": "Connectivity",
+      "description": "Implement Union-Find (Disjoint Set) data structure with path compression and union by rank. Efficiently track connected components with near-constant time operations.",
       "language": "python",
       "initialCode": "// Union-Find - TODO\n\n    // TODO: Implement the algorithm\n    \n    def main(str[] args):\n        print(\"TODO\")",
       "fullSolution": "// Union-Find (DisjoSet)\n\n    class UnionFind:\n        List[int] parent, rank\n\n        UnionFind(n):\n            parent = new int[n]\n            rank = new int[n]\n            for (i = 0 i < n i++):\n                parent[i] = i\n\n        find(x):\n            if (parent[x] != x):\n                parent[x] = find(parent[x]) // Path compression\n\n            return parent[x]\n\n        void union(x, y):\n            rootX = find(x)\n            rootY = find(y)\n\n            if (rootX != rootY):\n                if (rank[rootX] < rank[rootY]):\n                    parent[rootX] = rootY\n                } else if (rank[rootX] > rank[rootY]):\n                    parent[rootY] = rootX\n                } else:\n                    parent[rootY] = rootX\n                    rank[rootX]++\n\n        connected(x, y):\n            return find(x) == find(y)\n\n    def main(str[] args):\n        UnionFind uf = new UnionFind(5)\n        uf.union(0, 1)\n        uf.union(1, 2)\n\n        print(\"0 and 2 connected: \" + uf.connected(0, 2))\n        print(\"0 and 3 connected: \" + uf.connected(0, 3))",
@@ -9976,7 +9976,7 @@
     {
       "id": 628,
       "title": "Bit Manipulation",
-      "description": "XOR trick",
+      "description": "Master bit manipulation techniques: count set bits, check power of two, find single number using XOR. Optimize solutions with bitwise operators.",
       "language": "python",
       "initialCode": "// Bit Manipulation - TODO\n\n    // TODO: Implement the algorithm\n    \n    def main(str[] args):\n        print(\"TODO\")",
       "fullSolution": "// Bit Manipulation Techniques\n\n    def countBits(n):\n        count = 0\n        while (n != 0):\n            count++\n            n &= (n - 1) // Remove rightmost 1 bit\n\n        return count\n\n    def isPowerOfTwo(n):\n        return n > 0 && (n & (n - 1)) == 0\n\n    def singleNumber(List[int] nums):\n        result = 0\n        for (num : nums):\n            result ^= num // XOR cancels out duplicates\n\n        return result\n\n    def main(str[] args):\n        print(\"Count bits in 7: \" + countBits(7))\n        print(\"Is 8 power of 2: \" + isPowerOfTwo(8))\n        print(\"Single number in [2,2,1]: \" + singleNumber(new List[int]{2, 2, 1}))",
@@ -9990,7 +9990,7 @@
     {
       "id": 629,
       "title": "Topological Sort",
-      "description": "Dependency order",
+      "description": "Implement topological sort using DFS. Order vertices in directed acyclic graph (DAG) such that for every edge u→v, u comes before v in ordering.",
       "language": "python",
       "initialCode": "// Topological Sort - TODO\n\n    // TODO: Implement the algorithm\n    \n    def main(str[] args):\n        print(\"TODO\")",
       "fullSolution": "// Topological Sort using DFS\nfrom typing import List, Dict, Set\nfrom collections import deque\nimport heapq\n\n    public static List[int] topologicalSort(n, List[int][] edges):\n        List<List[int]> graph = []\n        for (i = 0 i < n i++):\n            graph.append([])\n\n        for (List[int] edge : edges):\n            graph[edge[0]).append(edge[1])\n\n        boolean[] visited = new boolean[n]\n        Stack<Integer> stack = new Stack<>()\n\n        for (i = 0 i < n i++):\n            if (!visited[i]):\n                dfs(graph, i, visited, stack)\n\n        List[int] result = []\n        while (!stack == []):\n            result.append(stack.pop())\n\n        return result\n\n    def dfs(List<List[int]> graph, node, boolean[] visited, Stack<Integer> stack):\n        visited[node] = true\n        for (neighbor : graph[node)):\n            if (!visited[neighbor]):\n                dfs(graph, neighbor, visited, stack)\n\n        stack.push(node)\n\n    def main(str[] args):\n        List[int][] edges = {{0, 1}, {0, 2}, {1, 3}, {2, 3}}\n        print(\"Topological order: \" + topologicalSort(4, edges))",
@@ -10004,7 +10004,7 @@
     {
       "id": 630,
       "title": "Dijkstra Algorithm",
-      "description": "Shortest path",
+      "description": "Implement Dijkstra's shortest path algorithm using priority queue. Find shortest paths from source to all vertices in weighted graph with non-negative edges.",
       "language": "python",
       "initialCode": "// Dijkstra - TODO\n\n    // TODO: Implement the algorithm\n    \n    def main(str[] args):\n        print(\"TODO\")",
       "fullSolution": "// Dijkstra's Shortest Path\nfrom typing import List, Dict, Set\nfrom collections import deque\nimport heapq\n\n    public static List[int] dijkstra(List[int][] graph, start):\n        n = graph.length\n        List[int] dist = new int[n]\n        Arrays.fill(dist, Integer.MAX_VALUE)\n        dist[start] = 0\n\n        PriorityQueue<List[int]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1])\n        pq.offer(new List[int]{start, 0})\n\n        while (!pq == []):\n            List[int] current = pq.poll()\n            node = current[0]\n            d = current[1]\n\n            if (d > dist[node]) continue\n\n            for (neighbor = 0 neighbor < n neighbor++):\n                if (graph[node][neighbor] > 0):\n                    newDist = dist[node] + graph[node][neighbor]\n                    if (newDist < dist[neighbor]):\n                        dist[neighbor] = newDist\n                        pq.offer(new List[int]{neighbor, newDist})\n\n        return dist\n\n    def main(str[] args):\n        List[int][] graph =:\n            {0, 4, 0, 0, 0},\n            {4, 0, 8, 0, 0},\n            {0, 8, 0, 7, 9},\n            {0, 0, 7, 0, 10},\n            {0, 0, 9, 10, 0}\n\n        List[int] distances = dijkstra(graph, 0)\n        print(\"Distances from node 0: \" + Arrays.tostr(distances))",
@@ -10052,7 +10052,7 @@
     {
       "id": 633,
       "title": "CSRF Tokens",
-      "description": "Request forgery prevention",
+      "description": "Prevent Cross-Site Request Forgery (CSRF) attacks using synchronizer tokens. Generate unique token per session and validate on state-changing requests.",
       "language": "python",
       "initialCode": "# CSRF Tokens\n\nif __name__ == \"__main__\":\n    print(\"=== CSRF Tokens ===\")\n    print(\"See tutorial for implementation details\")\n    print(\"This lesson focuses on concepts and best practices\")\n",
       "fullSolution": "# CSRF Tokens\n\nif __name__ == \"__main__\":\n    print(\"=== CSRF Tokens ===\")\n    print(\"See tutorial for implementation details\")\n    print(\"This lesson focuses on concepts and best practices\")\n",
@@ -10066,7 +10066,7 @@
     {
       "id": 634,
       "title": "Password Hashing",
-      "description": "bcrypt/Argon2",
+      "description": "Secure password storage using bcrypt, Argon2, or PBKDF2 hashing algorithms. Never store plaintext passwords, use salts, and choose appropriate work factors.",
       "language": "python",
       "initialCode": "# Password Hashing\n\nif __name__ == \"__main__\":\n    print(\"=== Password Hashing ===\")\n    print(\"See tutorial for implementation details\")\n    print(\"This lesson focuses on concepts and best practices\")\n",
       "fullSolution": "# Password Hashing\n\nif __name__ == \"__main__\":\n    print(\"=== Password Hashing ===\")\n    print(\"See tutorial for implementation details\")\n    print(\"This lesson focuses on concepts and best practices\")\n",
@@ -10080,7 +10080,7 @@
     {
       "id": 635,
       "title": "HTTPS/TLS",
-      "description": "Certificate management",
+      "description": "Implement HTTPS/TLS for encrypted communication. Configure certificates, enforce HTTPS redirection, and use HSTS headers to prevent man-in-the-middle attacks.",
       "language": "python",
       "initialCode": "# HTTPS/TLS\n\nif __name__ == \"__main__\":\n    print(\"=== HTTPS/TLS ===\")\n    print(\"See tutorial for implementation details\")\n    print(\"This lesson focuses on concepts and best practices\")\n",
       "fullSolution": "# HTTPS/TLS\n\nif __name__ == \"__main__\":\n    print(\"=== HTTPS/TLS ===\")\n    print(\"See tutorial for implementation details\")\n    print(\"This lesson focuses on concepts and best practices\")\n",
@@ -10094,7 +10094,7 @@
     {
       "id": 636,
       "title": "Security Headers",
-      "description": "HSTS, CSP",
+      "description": "Configure security headers: Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, HSTS. Protect against XSS, clickjacking, and MIME sniffing attacks.",
       "language": "python",
       "initialCode": "# Security Headers\n\nif __name__ == \"__main__\":\n    print(\"=== Security Headers ===\")\n    print(\"See tutorial for implementation details\")\n    print(\"This lesson focuses on concepts and best practices\")\n",
       "fullSolution": "# Security Headers\n\nif __name__ == \"__main__\":\n    print(\"=== Security Headers ===\")\n    print(\"See tutorial for implementation details\")\n    print(\"This lesson focuses on concepts and best practices\")\n",
@@ -10108,7 +10108,7 @@
     {
       "id": 637,
       "title": "Input Validation",
-      "description": "Sanitization",
+      "description": "Implement input validation and sanitization to prevent injection attacks. Whitelist validation, escape special characters, and validate data types and ranges.",
       "language": "python",
       "initialCode": "# Input Validation\n\nif __name__ == \"__main__\":\n    print(\"=== Input Validation ===\")\n    print(\"See tutorial for implementation details\")\n    print(\"This lesson focuses on concepts and best practices\")\n",
       "fullSolution": "# Input Validation\n\nif __name__ == \"__main__\":\n    print(\"=== Input Validation ===\")\n    print(\"See tutorial for implementation details\")\n    print(\"This lesson focuses on concepts and best practices\")\n",
@@ -10122,7 +10122,7 @@
     {
       "id": 638,
       "title": "CORS Setup",
-      "description": "Cross-origin config",
+      "description": "Configure Cross-Origin Resource Sharing (CORS) to control which domains can access your API. Set Access-Control-Allow-Origin and other CORS headers properly.",
       "language": "python",
       "initialCode": "# CORS Setup\n\nif __name__ == \"__main__\":\n    print(\"=== CORS Setup ===\")\n    print(\"See tutorial for implementation details\")\n    print(\"This lesson focuses on concepts and best practices\")\n",
       "fullSolution": "# CORS Setup\n\nif __name__ == \"__main__\":\n    print(\"=== CORS Setup ===\")\n    print(\"See tutorial for implementation details\")\n    print(\"This lesson focuses on concepts and best practices\")\n",
@@ -10136,7 +10136,7 @@
     {
       "id": 639,
       "title": "Secrets Management",
-      "description": "Environment vars",
+      "description": "Manage secrets securely using environment variables, secret vaults (HashiCorp Vault, AWS Secrets Manager), and encryption. Never commit secrets to version control.",
       "language": "python",
       "initialCode": "# Secrets Management\n\nif __name__ == \"__main__\":\n    print(\"=== Secrets Management ===\")\n    print(\"See tutorial for implementation details\")\n    print(\"This lesson focuses on concepts and best practices\")\n",
       "fullSolution": "# Secrets Management\n\nif __name__ == \"__main__\":\n    print(\"=== Secrets Management ===\")\n    print(\"See tutorial for implementation details\")\n    print(\"This lesson focuses on concepts and best practices\")\n",
@@ -10150,7 +10150,7 @@
     {
       "id": 640,
       "title": "Vulnerability Scanning",
-      "description": "Dependency check",
+      "description": "Implement vulnerability scanning in CI/CD pipeline. Use tools like OWASP Dependency-Check, Snyk, or npm audit to detect security issues in dependencies.",
       "language": "python",
       "initialCode": "# Vulnerability Scanning\n\nif __name__ == \"__main__\":\n    print(\"=== Vulnerability Scanning ===\")\n    print(\"See tutorial for implementation details\")\n    print(\"This lesson focuses on concepts and best practices\")\n",
       "fullSolution": "# Vulnerability Scanning\n\nif __name__ == \"__main__\":\n    print(\"=== Vulnerability Scanning ===\")\n    print(\"See tutorial for implementation details\")\n    print(\"This lesson focuses on concepts and best practices\")\n",
@@ -10197,7 +10197,7 @@
     {
       "id": 643,
       "title": "Debugging Strategies",
-      "description": "Systematic approach",
+      "description": "Master debugging strategies: use debugger breakpoints, add logging, reproduce bugs, use binary search to isolate issues, and read stack traces effectively.",
       "language": "python",
       "initialCode": "// Debugging Example: Find and Fix Bug\nclass Main {\n    // This function has a bug! Can you find it?\n    public static int calculateDiscount(int price, int percent) {\n        return price * percent / 100;  // Bug here!\n    }\n\n    public static void main(String[] args) {\n        // TODO: Test with different values and find the bug\n        System.out.println(\"Discount for $100 at 15%: $\" + calculateDiscount(100, 15));\n        System.out.println(\"Discount for $10 at 15%: $\" + calculateDiscount(10, 15));\n    }\n}",
       "fullSolution": "// Debugging Example: Bug Fixed\nclass Main {\n    // FIXED: Use double for accurate calculation\n    public static double calculateDiscount(int price, int percent) {\n        return price * percent / 100.0;  // Fixed: 100.0 ensures float division\n    }\n\n    public static void main(String[] args) {\n        System.out.println(\"Discount for $100 at 15%: $\" + calculateDiscount(100, 15));\n        System.out.println(\"Discount for $10 at 15%: $\" + calculateDiscount(10, 15));\n        System.out.println(\"Bug fixed: Now returns 1.5 instead of 1 for $10 at 15%\");\n    }\n}",
@@ -10211,7 +10211,7 @@
     {
       "id": 644,
       "title": "Git Workflow",
-      "description": "Feature branches",
+      "description": "Implement professional Git workflow with feature branches, pull requests, code review, and merge strategies. Use git rebase, cherry-pick, and interactive rebase when appropriate.",
       "language": "python",
       "initialCode": "# Git Workflow\n\nif __name__ == \"__main__\":\n    print(\"=== Git Workflow ===\")\n    print(\"See tutorial for implementation details\")\n    print(\"This lesson focuses on concepts and best practices\")\n",
       "fullSolution": "# Git Workflow\n\nif __name__ == \"__main__\":\n    print(\"=== Git Workflow ===\")\n    print(\"See tutorial for implementation details\")\n    print(\"This lesson focuses on concepts and best practices\")\n",
@@ -10225,7 +10225,7 @@
     {
       "id": 645,
       "title": "Performance Profiling",
-      "description": "CPU/memory analysis",
+      "description": "Profile application performance using tools like JProfiler, YourKit, or Chrome DevTools. Identify bottlenecks, optimize database queries, and reduce memory usage.",
       "language": "python",
       "initialCode": "# Performance Profiling\n\nif __name__ == \"__main__\":\n    print(\"=== Performance Profiling ===\")\n    print(\"See tutorial for implementation details\")\n    print(\"This lesson focuses on concepts and best practices\")\n",
       "fullSolution": "# Performance Profiling\n\nif __name__ == \"__main__\":\n    print(\"=== Performance Profiling ===\")\n    print(\"See tutorial for implementation details\")\n    print(\"This lesson focuses on concepts and best practices\")\n",
@@ -10239,7 +10239,7 @@
     {
       "id": 646,
       "title": "Stack Traces",
-      "description": "Error diagnosis",
+      "description": "Read and interpret stack traces to debug exceptions. Understand call chain, identify root cause, and trace execution flow from exception to source.",
       "language": "python",
       "initialCode": "# Stack Traces\n\nif __name__ == \"__main__\":\n    print(\"=== Stack Traces ===\")\n    print(\"See tutorial for implementation details\")\n    print(\"This lesson focuses on concepts and best practices\")\n",
       "fullSolution": "# Stack Traces\n\nif __name__ == \"__main__\":\n    print(\"=== Stack Traces ===\")\n    print(\"See tutorial for implementation details\")\n    print(\"This lesson focuses on concepts and best practices\")\n",
@@ -10253,7 +10253,7 @@
     {
       "id": 647,
       "title": "Story Point Estimation",
-      "description": "Agile sizing",
+      "description": "Estimate work using story points and Fibonacci scale (1, 2, 3, 5, 8, 13). Break down tasks, consider complexity and unknowns, and track velocity across sprints.",
       "language": "python",
       "initialCode": "# Story Point Estimation\n\nif __name__ == \"__main__\":\n    print(\"=== Story Point Estimation ===\")\n    print(\"See tutorial for implementation details\")\n    print(\"This lesson focuses on concepts and best practices\")\n",
       "fullSolution": "# Story Point Estimation\n\nif __name__ == \"__main__\":\n    print(\"=== Story Point Estimation ===\")\n    print(\"See tutorial for implementation details\")\n    print(\"This lesson focuses on concepts and best practices\")\n",
@@ -10267,7 +10267,7 @@
     {
       "id": 648,
       "title": "Agile/Scrum",
-      "description": "Sprint planning",
+      "description": "Practice Agile/Scrum methodology with sprint planning, daily standups, sprint review, and retrospectives. Use iterative development and continuous improvement.",
       "language": "python",
       "initialCode": "# Agile/Scrum\n\nif __name__ == \"__main__\":\n    print(\"=== Agile/Scrum ===\")\n    print(\"See tutorial for implementation details\")\n    print(\"This lesson focuses on concepts and best practices\")\n",
       "fullSolution": "# Agile/Scrum\n\nif __name__ == \"__main__\":\n    print(\"=== Agile/Scrum ===\")\n    print(\"See tutorial for implementation details\")\n    print(\"This lesson focuses on concepts and best practices\")\n",
@@ -10281,7 +10281,7 @@
     {
       "id": 649,
       "title": "Stakeholder Communication",
-      "description": "Business translation",
+      "description": "Communicate effectively with stakeholders through status updates, technical documentation, and presentations. Translate technical concepts for non-technical audiences.",
       "language": "python",
       "initialCode": "# Stakeholder Communication\n\nif __name__ == \"__main__\":\n    print(\"=== Stakeholder Communication ===\")\n    print(\"See tutorial for implementation details\")\n    print(\"This lesson focuses on concepts and best practices\")\n",
       "fullSolution": "# Stakeholder Communication\n\nif __name__ == \"__main__\":\n    print(\"=== Stakeholder Communication ===\")\n    print(\"See tutorial for implementation details\")\n    print(\"This lesson focuses on concepts and best practices\")\n",
@@ -10295,7 +10295,7 @@
     {
       "id": 650,
       "title": "Building Portfolio",
-      "description": "GitHub showcase",
+      "description": "Build professional portfolio with GitHub projects, live demos, comprehensive README files, and clean code. Showcase full-stack projects that demonstrate your skills.",
       "language": "python",
       "initialCode": "# Building Portfolio\n\nif __name__ == \"__main__\":\n    print(\"=== Building Portfolio ===\")\n    print(\"See tutorial for implementation details\")\n    print(\"This lesson focuses on concepts and best practices\")\n",
       "fullSolution": "# Building Portfolio\n\nif __name__ == \"__main__\":\n    print(\"=== Building Portfolio ===\")\n    print(\"See tutorial for implementation details\")\n    print(\"This lesson focuses on concepts and best practices\")\n",

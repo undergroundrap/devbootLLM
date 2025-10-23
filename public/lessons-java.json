@@ -9849,7 +9849,7 @@
     {
       "id": 606,
       "title": "YouTube Streaming",
-      "description": "Video transcoding",
+      "description": "Design YouTube's video streaming architecture with adaptive bitrate, CDN distribution, view count aggregation, and transcoding pipeline. Handle 500M+ views/day with low latency.",
       "language": "java",
       "initialCode": "// YouTube Streaming Service\nimport java.util.*;\n\npublic class Main {\n    static class Video {\n        String id, title;\n        int views;\n\n        Video(String id, String title) {\n            this.id = id;\n            this.title = title;\n            this.views = 0;\n        }\n    }\n\n    static class StreamingService {\n        Map<String, Video> videos = new HashMap<>();\n\n        // TODO: Implement uploadVideo method\n\n        // TODO: Implement streamVideo method\n\n        // TODO: Implement getViews method\n    }\n\n    public static void main(String[] args) {\n        StreamingService youtube = new StreamingService();\n        // TODO: Test your implementation\n    }\n}",
       "fullSolution": "// YouTube Streaming Service\nimport java.util.*;\n\npublic class Main {\n    static class Video {\n        String id, title;\n        int views;\n\n        Video(String id, String title) {\n            this.id = id;\n            this.title = title;\n            this.views = 0;\n        }\n    }\n\n    static class StreamingService {\n        Map<String, Video> videos = new HashMap<>();\n        Map<String, Integer> viewCache = new HashMap<>(); // Simulates Redis\n\n        void uploadVideo(String id, String title) {\n            videos.put(id, new Video(id, title));\n            System.out.println(\"Uploaded: \" + title);\n        }\n\n        String streamVideo(String videoId, String resolution) {\n            Video video = videos.get(videoId);\n            if (video == null) return \"Video not found\";\n\n            video.views++;\n            viewCache.put(videoId, video.views);\n\n            return String.format(\"Streaming '%s' at %s\", video.title, resolution);\n        }\n\n        int getViews(String videoId) {\n            return viewCache.getOrDefault(videoId, 0);\n        }\n    }\n\n    public static void main(String[] args) {\n        StreamingService youtube = new StreamingService();\n\n        youtube.uploadVideo(\"v1\", \"Learn System Design\");\n        System.out.println(youtube.streamVideo(\"v1\", \"720p\"));\n        System.out.println(youtube.streamVideo(\"v1\", \"1080p\"));\n        System.out.println(\"Total views: \" + youtube.getViews(\"v1\"));\n    }\n}",
@@ -9863,7 +9863,7 @@
     {
       "id": 607,
       "title": "Uber Ride Sharing",
-      "description": "Geospatial matching",
+      "description": "Design Uber's ride-matching system with geospatial indexing, real-time driver tracking, surge pricing algorithm, and ETA calculation. Match riders with nearest drivers in <5 seconds.",
       "language": "java",
       "initialCode": "// Uber Ride Matching System\nimport java.util.*;\n\npublic class Main {\n    static class Driver {\n        String id;\n        double lat, lon;\n        boolean available;\n\n        Driver(String id, double lat, double lon) {\n            this.id = id;\n            this.lat = lat;\n            this.lon = lon;\n            this.available = true;\n        }\n    }\n\n    static class RideService {\n        List<Driver> drivers = new ArrayList<>();\n\n        // TODO: Implement addDriver method\n\n        // TODO: Implement findNearestDriver method\n\n        // TODO: Implement requestRide method\n    }\n\n    public static void main(String[] args) {\n        // TODO: Test your ride matching system\n    }\n}",
       "fullSolution": "// Uber Ride Matching System\nimport java.util.*;\n\npublic class Main {\n    static class Driver {\n        String id;\n        double lat, lon;\n        boolean available;\n\n        Driver(String id, double lat, double lon) {\n            this.id = id;\n            this.lat = lat;\n            this.lon = lon;\n            this.available = true;\n        }\n\n        double distanceTo(double lat, double lon) {\n            double dlat = Math.abs(this.lat - lat);\n            double dlon = Math.abs(this.lon - lon);\n            return Math.sqrt(dlat * dlat + dlon * dlon);\n        }\n    }\n\n    static class RideService {\n        List<Driver> drivers = new ArrayList<>();\n\n        void addDriver(String id, double lat, double lon) {\n            drivers.add(new Driver(id, lat, lon));\n        }\n\n        Driver findNearestDriver(double riderLat, double riderLon) {\n            Driver nearest = null;\n            double minDist = Double.MAX_VALUE;\n\n            for (Driver d : drivers) {\n                if (d.available) {\n                    double dist = d.distanceTo(riderLat, riderLon);\n                    if (dist < minDist) {\n                        minDist = dist;\n                        nearest = d;\n                    }\n                }\n            }\n            return nearest;\n        }\n\n        String requestRide(double lat, double lon) {\n            Driver driver = findNearestDriver(lat, lon);\n            if (driver == null) return \"No drivers available\";\n            driver.available = false;\n            return \"Matched with driver: \" + driver.id;\n        }\n    }\n\n    public static void main(String[] args) {\n        RideService uber = new RideService();\n        uber.addDriver(\"D1\", 37.7749, -122.4194);\n        uber.addDriver(\"D2\", 37.7849, -122.4094);\n\n        System.out.println(uber.requestRide(37.7750, -122.4195));\n        System.out.println(uber.requestRide(37.7850, -122.4090));\n    }\n}",
@@ -9877,7 +9877,7 @@
     {
       "id": 608,
       "title": "Netflix CDN",
-      "description": "Content delivery",
+      "description": "Design Netflix's CDN architecture for video streaming with edge caching, origin servers, and cache invalidation strategies. Optimize for global content delivery and bandwidth costs.",
       "language": "java",
       "initialCode": "// Netflix CDN System\nimport java.util.*;\n\n// TODO: Complete the implementation\n\npublic class Main {\n    static class CDN {\n        Map<String, String> edgeCache = new HashMap<>();\n\n        String getContent(String contentId) {\n            if (edgeCache.containsKey(contentId)) {\n                return \"[Cache Hit] \" + edgeCache.get(contentId);\n                // TODO: Implement methods\n}\n            String content = \"Video: \" + contentId;\n            edgeCache.put(contentId, content);\n            return \"[Origin] \" + content;\n        }\n    }\n\n    public static void main(String[] args) {\n        CDN cdn = new CDN();\n        System.out.println(cdn.getContent(\"movie123\"));\n        System.out.println(cdn.getContent(\"movie123\"));\n    }\n}",
       "fullSolution": "// Netflix CDN System\nimport java.util.*;\n\npublic class Main {\n    static class CDN {\n        Map<String, String> edgeCache = new HashMap<>();\n\n        String getContent(String contentId) {\n            if (edgeCache.containsKey(contentId)) {\n                return \"[Cache Hit] \" + edgeCache.get(contentId);\n            }\n            String content = \"Video: \" + contentId;\n            edgeCache.put(contentId, content);\n            return \"[Origin] \" + content;\n        }\n    }\n\n    public static void main(String[] args) {\n        CDN cdn = new CDN();\n        System.out.println(cdn.getContent(\"movie123\"));\n        System.out.println(cdn.getContent(\"movie123\"));\n    }\n}",
@@ -9891,7 +9891,7 @@
     {
       "id": 609,
       "title": "WhatsApp Chat",
-      "description": "Message delivery",
+      "description": "Design WhatsApp's messaging system with real-time chat, message queuing, delivery receipts, and end-to-end encryption. Handle billions of messages per day with low latency.",
       "language": "java",
       "initialCode": "// WhatsApp Messaging System\nimport java.util.*;\n\n// TODO: Complete the implementation\n\npublic class Main {\n    static class Chat {\n        List<String> messages = new ArrayList<>();\n\n        void sendMessage(String user, String msg) {\n            String formatted = user + \": \" + msg;\n            messages.add(formatted);\n            System.out.println(\"Sent - \" + formatted);\n            // TODO: Implement methods\n}\n\n        void showMessages() {\n            System.out.println(\"Chat history:\");\n            for (String msg : messages) {\n                System.out.println(\"  \" + msg);\n            }\n        }\n    }\n\n    public static void main(String[] args) {\n        Chat chat = new Chat();\n        chat.sendMessage(\"Alice\", \"Hello!\");\n        chat.sendMessage(\"Bob\", \"Hi Alice!\");\n    }\n}",
       "fullSolution": "// WhatsApp Messaging System\nimport java.util.*;\n\npublic class Main {\n    static class Chat {\n        List<String> messages = new ArrayList<>();\n\n        void sendMessage(String user, String msg) {\n            String formatted = user + \": \" + msg;\n            messages.add(formatted);\n            System.out.println(\"Sent - \" + formatted);\n        }\n\n        void showMessages() {\n            System.out.println(\"Chat history:\");\n            for (String msg : messages) {\n                System.out.println(\"  \" + msg);\n            }\n        }\n    }\n\n    public static void main(String[] args) {\n        Chat chat = new Chat();\n        chat.sendMessage(\"Alice\", \"Hello!\");\n        chat.sendMessage(\"Bob\", \"Hi Alice!\");\n    }\n}",
@@ -9905,7 +9905,7 @@
     {
       "id": 610,
       "title": "Dropbox Storage",
-      "description": "File sync",
+      "description": "Design Dropbox's file storage and synchronization system with chunking, deduplication, version control, and conflict resolution. Sync files across multiple devices efficiently.",
       "language": "java",
       "initialCode": "// Dropbox File Storage\nimport java.util.*;\n\n// TODO: Complete the implementation\n\npublic class Main {\n    static class Storage {\n        Map<String, byte[]> files = new HashMap<>();\n\n        void upload(String filename, String content) {\n            files.put(filename, content.getBytes());\n            System.out.println(\"Uploaded: \" + filename + \" (\" + content.length() + \" bytes)\");\n            // TODO: Implement methods\n}\n\n        String download(String filename) {\n            if (!files.containsKey(filename)) {\n                return \"File not found\";\n            }\n            return new String(files.get(filename));\n        }\n    }\n\n    public static void main(String[] args) {\n        Storage dropbox = new Storage();\n        dropbox.upload(\"doc.txt\", \"Hello World\");\n        System.out.println(\"Downloaded: \" + dropbox.download(\"doc.txt\"));\n    }\n}",
       "fullSolution": "// Dropbox File Storage\nimport java.util.*;\n\npublic class Main {\n    static class Storage {\n        Map<String, byte[]> files = new HashMap<>();\n\n        void upload(String filename, String content) {\n            files.put(filename, content.getBytes());\n            System.out.println(\"Uploaded: \" + filename + \" (\" + content.length() + \" bytes)\");\n        }\n\n        String download(String filename) {\n            if (!files.containsKey(filename)) {\n                return \"File not found\";\n            }\n            return new String(files.get(filename));\n        }\n    }\n\n    public static void main(String[] args) {\n        Storage dropbox = new Storage();\n        dropbox.upload(\"doc.txt\", \"Hello World\");\n        System.out.println(\"Downloaded: \" + dropbox.download(\"doc.txt\"));\n    }\n}",
@@ -9919,7 +9919,7 @@
     {
       "id": 611,
       "title": "Web Crawler",
-      "description": "BFS traversal",
+      "description": "Design a web crawler like Googlebot with URL frontier management, politeness policy, deduplication, and distributed crawling. Crawl billions of pages while respecting robots.txt.",
       "language": "java",
       "initialCode": "// Web Crawler\nimport java.util.*;\n\n// TODO: Complete the implementation\n\npublic class Main {\n    static class Crawler {\n        Set<String> visited = new HashSet<>();\n        Queue<String> queue = new LinkedList<>();\n\n        void crawl(String startUrl, int maxPages) {\n            queue.add(startUrl);\n            int count = 0;\n\n            while (!queue.isEmpty() && count < maxPages) {\n                String url = queue.poll();\n                if (visited.contains(url)) continue;\n\n                visited.add(url);\n                System.out.println(\"Crawled: \" + url);\n                count++;\n\n                // Simulate finding links\n                if (count < maxPages) {\n                    queue.add(url + \"/page\" + count);\n                    // TODO: Implement methods\n}\n            }\n        }\n    }\n\n    public static void main(String[] args) {\n        Crawler crawler = new Crawler();\n        crawler.crawl(\"example.com\", 3);\n    }\n}",
       "fullSolution": "// Web Crawler\nimport java.util.*;\n\npublic class Main {\n    static class Crawler {\n        Set<String> visited = new HashSet<>();\n        Queue<String> queue = new LinkedList<>();\n\n        void crawl(String startUrl, int maxPages) {\n            queue.add(startUrl);\n            int count = 0;\n\n            while (!queue.isEmpty() && count < maxPages) {\n                String url = queue.poll();\n                if (visited.contains(url)) continue;\n\n                visited.add(url);\n                System.out.println(\"Crawled: \" + url);\n                count++;\n\n                // Simulate finding links\n                if (count < maxPages) {\n                    queue.add(url + \"/page\" + count);\n                }\n            }\n        }\n    }\n\n    public static void main(String[] args) {\n        Crawler crawler = new Crawler();\n        crawler.crawl(\"example.com\", 3);\n    }\n}",
@@ -9933,7 +9933,7 @@
     {
       "id": 612,
       "title": "Search Autocomplete",
-      "description": "Trie structure",
+      "description": "Design a search autocomplete system like Google Search with trie data structure, prefix matching, ranking by popularity, and caching. Provide suggestions in <100ms.",
       "language": "java",
       "initialCode": "// Search Autocomplete\nimport java.util.*;\n\n// TODO: Complete the implementation\n\npublic class Main {\n    static class Autocomplete {\n        List<String> dictionary = Arrays.asList(\"apple\", \"application\", \"apply\", \"banana\", \"band\");\n\n        List<String> suggest(String prefix) {\n            List<String> results = new ArrayList<>();\n            for (String word : dictionary) {\n                if (word.startsWith(prefix)) {\n                    results.add(word);\n                    // TODO: Implement methods\n}\n            }\n            return results;\n        }\n    }\n\n    public static void main(String[] args) {\n        Autocomplete ac = new Autocomplete();\n        System.out.println(\"Suggestions for 'app': \" + ac.suggest(\"app\"));\n        System.out.println(\"Suggestions for 'ban': \" + ac.suggest(\"ban\"));\n    }\n}",
       "fullSolution": "// Search Autocomplete\nimport java.util.*;\n\npublic class Main {\n    static class Autocomplete {\n        List<String> dictionary = Arrays.asList(\"apple\", \"application\", \"apply\", \"banana\", \"band\");\n\n        List<String> suggest(String prefix) {\n            List<String> results = new ArrayList<>();\n            for (String word : dictionary) {\n                if (word.startsWith(prefix)) {\n                    results.add(word);\n                }\n            }\n            return results;\n        }\n    }\n\n    public static void main(String[] args) {\n        Autocomplete ac = new Autocomplete();\n        System.out.println(\"Suggestions for 'app': \" + ac.suggest(\"app\"));\n        System.out.println(\"Suggestions for 'ban': \" + ac.suggest(\"ban\"));\n    }\n}",
@@ -9947,7 +9947,7 @@
     {
       "id": 613,
       "title": "Notification System",
-      "description": "Multi-channel",
+      "description": "Design a notification system supporting push, email, and SMS with priority queuing, retry logic, rate limiting, and user preference management. Handle millions of notifications per minute.",
       "language": "java",
       "initialCode": "// Notification System\nimport java.util.*;\n\n// TODO: Complete the implementation\n\npublic class Main {\n    static class NotificationService {\n        Map<String, List<String>> userNotifications = new HashMap<>();\n\n        void send(String userId, String message) {\n            userNotifications.computeIfAbsent(userId, k -> new ArrayList<>()).add(message);\n            System.out.println(\"Notification sent to \" + userId + \": \" + message);\n            // TODO: Implement methods\n}\n\n        List<String> getNotifications(String userId) {\n            return userNotifications.getOrDefault(userId, new ArrayList<>());\n        }\n    }\n\n    public static void main(String[] args) {\n        NotificationService ns = new NotificationService();\n        ns.send(\"user1\", \"New message from Alice\");\n        ns.send(\"user1\", \"Your order shipped\");\n        System.out.println(\"Total notifications: \" + ns.getNotifications(\"user1\").size());\n    }\n}",
       "fullSolution": "// Notification System\nimport java.util.*;\n\npublic class Main {\n    static class NotificationService {\n        Map<String, List<String>> userNotifications = new HashMap<>();\n\n        void send(String userId, String message) {\n            userNotifications.computeIfAbsent(userId, k -> new ArrayList<>()).add(message);\n            System.out.println(\"Notification sent to \" + userId + \": \" + message);\n        }\n\n        List<String> getNotifications(String userId) {\n            return userNotifications.getOrDefault(userId, new ArrayList<>());\n        }\n    }\n\n    public static void main(String[] args) {\n        NotificationService ns = new NotificationService();\n        ns.send(\"user1\", \"New message from Alice\");\n        ns.send(\"user1\", \"Your order shipped\");\n        System.out.println(\"Total notifications: \" + ns.getNotifications(\"user1\").size());\n    }\n}",
@@ -9961,7 +9961,7 @@
     {
       "id": 614,
       "title": "Newsfeed Ranking",
-      "description": "ML scoring",
+      "description": "Design a newsfeed ranking algorithm like Facebook with engagement scoring, edge rank, personalization, and A/B testing. Show relevant content to users based on interactions.",
       "language": "java",
       "initialCode": "// Newsfeed Ranking Algorithm\nimport java.util.*;\n\n// TODO: Complete the implementation\n\npublic class Main {\n    static class Post {\n        String content;\n        int likes, shares;\n        long timestamp;\n\n        Post(String content, int likes, int shares) {\n            this.content = content;\n            this.likes = likes;\n            this.shares = shares;\n            this.timestamp = System.currentTimeMillis();\n            // TODO: Implement methods\n}\n\n        double getScore() {\n            return likes * 1.0 + shares * 2.0;\n        }\n    }\n\n    static class Feed {\n        List<Post> posts = new ArrayList<>();\n\n        void addPost(String content, int likes, int shares) {\n            posts.add(new Post(content, likes, shares));\n        }\n\n        void showRanked() {\n            posts.sort((a, b) -> Double.compare(b.getScore(), a.getScore()));\n            for (Post p : posts) {\n                System.out.println(p.content + \" (score: \" + p.getScore() + \")\");\n            }\n        }\n    }\n\n    public static void main(String[] args) {\n        Feed feed = new Feed();\n        feed.addPost(\"Post A\", 10, 2);\n        feed.addPost(\"Post B\", 5, 5);\n        feed.addPost(\"Post C\", 20, 1);\n        feed.showRanked();\n    }\n}",
       "fullSolution": "// Newsfeed Ranking Algorithm\nimport java.util.*;\n\npublic class Main {\n    static class Post {\n        String content;\n        int likes, shares;\n        long timestamp;\n\n        Post(String content, int likes, int shares) {\n            this.content = content;\n            this.likes = likes;\n            this.shares = shares;\n            this.timestamp = System.currentTimeMillis();\n        }\n\n        double getScore() {\n            return likes * 1.0 + shares * 2.0;\n        }\n    }\n\n    static class Feed {\n        List<Post> posts = new ArrayList<>();\n\n        void addPost(String content, int likes, int shares) {\n            posts.add(new Post(content, likes, shares));\n        }\n\n        void showRanked() {\n            posts.sort((a, b) -> Double.compare(b.getScore(), a.getScore()));\n            for (Post p : posts) {\n                System.out.println(p.content + \" (score: \" + p.getScore() + \")\");\n            }\n        }\n    }\n\n    public static void main(String[] args) {\n        Feed feed = new Feed();\n        feed.addPost(\"Post A\", 10, 2);\n        feed.addPost(\"Post B\", 5, 5);\n        feed.addPost(\"Post C\", 20, 1);\n        feed.showRanked();\n    }\n}",
@@ -9975,7 +9975,7 @@
     {
       "id": 615,
       "title": "E-commerce Checkout",
-      "description": "Payment flow",
+      "description": "Design an e-commerce checkout system with shopping cart, inventory management, payment processing, order fulfillment, and transaction consistency. Handle Black Friday scale traffic.",
       "language": "java",
       "initialCode": "// E-commerce Checkout System\nimport java.util.*;\n\n// TODO: Complete the implementation\n\npublic class Main {\n    static class Checkout {\n        double subtotal = 0;\n        double tax = 0.10;\n\n        void addItem(String item, double price) {\n            subtotal += price;\n            System.out.println(\"Added: \" + item + \" - $\" + price);\n            // TODO: Implement methods\n}\n\n        double getTotal() {\n            return subtotal * (1 + tax);\n        }\n\n        void processPayment() {\n            System.out.println(\"Subtotal: $\" + String.format(\"%.2f\", subtotal));\n            System.out.println(\"Total: $\" + String.format(\"%.2f\", getTotal()));\n        }\n    }\n\n    public static void main(String[] args) {\n        Checkout checkout = new Checkout();\n        checkout.addItem(\"Laptop\", 999.99);\n        checkout.addItem(\"Mouse\", 29.99);\n        checkout.processPayment();\n    }\n}",
       "fullSolution": "// E-commerce Checkout System\nimport java.util.*;\n\npublic class Main {\n    static class Checkout {\n        double subtotal = 0;\n        double tax = 0.10;\n\n        void addItem(String item, double price) {\n            subtotal += price;\n            System.out.println(\"Added: \" + item + \" - $\" + price);\n        }\n\n        double getTotal() {\n            return subtotal * (1 + tax);\n        }\n\n        void processPayment() {\n            System.out.println(\"Subtotal: $\" + String.format(\"%.2f\", subtotal));\n            System.out.println(\"Total: $\" + String.format(\"%.2f\", getTotal()));\n        }\n    }\n\n    public static void main(String[] args) {\n        Checkout checkout = new Checkout();\n        checkout.addItem(\"Laptop\", 999.99);\n        checkout.addItem(\"Mouse\", 29.99);\n        checkout.processPayment();\n    }\n}",
@@ -10023,7 +10023,7 @@
     {
       "id": 618,
       "title": "Binary Search Rotated",
-      "description": "Modified search",
+      "description": "Implement binary search in a rotated sorted array. Find target element in O(log n) time by determining which half is sorted and adjusting search boundaries.",
       "language": "java",
       "initialCode": "// Binary Search in Rotated Sorted Array\npublic class Main {\n    // TODO: Implement search method\n    // Find target in rotated sorted array\n    // Example: [4,5,6,7,0,1,2], target=0 -> index 4\n\n    public static void main(String[] args) {\n        int[] arr = {4, 5, 6, 7, 0, 1, 2};\n        int target = 0;\n        // TODO: Call your search method\n    }\n}",
       "fullSolution": "// Binary Search in Rotated Sorted Array\npublic class Main {\n    public static int search(int[] nums, int target) {\n        int left = 0, right = nums.length - 1;\n\n        while (left <= right) {\n            int mid = left + (right - left) / 2;\n\n            if (nums[mid] == target) return mid;\n\n            // Determine which half is sorted\n            if (nums[left] <= nums[mid]) {\n                // Left half is sorted\n                if (target >= nums[left] && target < nums[mid]) {\n                    right = mid - 1;\n                } else {\n                    left = mid + 1;\n                }\n            } else {\n                // Right half is sorted\n                if (target > nums[mid] && target <= nums[right]) {\n                    left = mid + 1;\n                } else {\n                    right = mid - 1;\n                }\n            }\n        }\n\n        return -1; // Not found\n    }\n\n    public static void main(String[] args) {\n        int[] arr = {4, 5, 6, 7, 0, 1, 2};\n\n        System.out.println(\"Search 0: index \" + search(arr, 0));\n        System.out.println(\"Search 7: index \" + search(arr, 7));\n        System.out.println(\"Search 3: index \" + search(arr, 3));\n    }\n}",
@@ -10037,7 +10037,7 @@
     {
       "id": 619,
       "title": "DFS Island Count",
-      "description": "Grid traversal",
+      "description": "Count number of islands in a 2D grid using depth-first search (DFS). Mark connected components of land cells by recursively visiting neighbors in all 4 directions.",
       "language": "java",
       "initialCode": "// Count Islands using DFS\npublic class Main {\n    // TODO: Implement numIslands method using DFS\n    // Count number of islands in grid (1=land, 0=water)\n\n    public static void main(String[] args) {\n        char[][] grid = {\n            {'1','1','0','0','0'},\n            {'1','1','0','0','0'},\n            {'0','0','1','0','0'},\n            {'0','0','0','1','1'}\n        };\n        // TODO: Count islands\n    }\n}",
       "fullSolution": "// Count Islands using DFS\npublic class Main {\n    public static int numIslands(char[][] grid) {\n        if (grid == null || grid.length == 0) return 0;\n\n        int count = 0;\n        int rows = grid.length;\n        int cols = grid[0].length;\n\n        for (int i = 0; i < rows; i++) {\n            for (int j = 0; j < cols; j++) {\n                if (grid[i][j] == '1') {\n                    count++;\n                    dfs(grid, i, j);\n                }\n            }\n        }\n\n        return count;\n    }\n\n    private static void dfs(char[][] grid, int i, int j) {\n        if (i < 0 || i >= grid.length || j < 0 || j >= grid[0].length || grid[i][j] == '0') {\n            return;\n        }\n\n        grid[i][j] = '0'; // Mark as visited\n\n        // Explore 4 directions\n        dfs(grid, i + 1, j);\n        dfs(grid, i - 1, j);\n        dfs(grid, i, j + 1);\n        dfs(grid, i, j - 1);\n    }\n\n    public static void main(String[] args) {\n        char[][] grid = {\n            {'1','1','0','0','0'},\n            {'1','1','0','0','0'},\n            {'0','0','1','0','0'},\n            {'0','0','0','1','1'}\n        };\n\n        System.out.println(\"Number of islands: \" + numIslands(grid));\n    }\n}",
@@ -10051,7 +10051,7 @@
     {
       "id": 620,
       "title": "BFS Shortest Path",
-      "description": "Level order",
+      "description": "Find shortest path in unweighted graph using breadth-first search (BFS). Use queue for level-order traversal and track distance from start node to destination.",
       "language": "java",
       "initialCode": "// BFS Shortest Path - TODO\npublic class Main {\n    // TODO: Implement the algorithm\n    \n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
       "fullSolution": "// BFS Shortest Path\nimport java.util.*;\n\npublic class Main {\n    public static int bfs(int[][] graph, int start, int end) {\n        Queue<int[]> queue = new LinkedList<>();\n        boolean[] visited = new boolean[graph.length];\n\n        queue.offer(new int[]{start, 0});\n        visited[start] = true;\n\n        while (!queue.isEmpty()) {\n            int[] current = queue.poll();\n            int node = current[0];\n            int dist = current[1];\n\n            if (node == end) return dist;\n\n            for (int neighbor : graph[node]) {\n                if (!visited[neighbor]) {\n                    visited[neighbor] = true;\n                    queue.offer(new int[]{neighbor, dist + 1});\n                }\n            }\n        }\n        return -1;\n    }\n\n    public static void main(String[] args) {\n        int[][] graph = {{1, 2}, {0, 3}, {0, 3}, {1, 2}};\n        System.out.println(\"Shortest path 0->3: \" + bfs(graph, 0, 3));\n    }\n}",
@@ -10065,7 +10065,7 @@
     {
       "id": 621,
       "title": "DP Coin Change",
-      "description": "Min coins",
+      "description": "Solve coin change problem using dynamic programming. Find minimum number of coins needed to make amount with DP table tracking optimal subproblem solutions.",
       "language": "java",
       "initialCode": "// Coin Change using Dynamic Programming\npublic class Main {\n    // TODO: Implement coinChange method\n    // Find minimum coins needed to make amount\n    // Return -1 if impossible\n\n    public static void main(String[] args) {\n        int[] coins = {1, 2, 5};\n        int amount = 11;\n        // TODO: Calculate minimum coins\n    }\n}",
       "fullSolution": "// Coin Change using Dynamic Programming\nimport java.util.Arrays;\n\npublic class Main {\n    public static int coinChange(int[] coins, int amount) {\n        int[] dp = new int[amount + 1];\n        Arrays.fill(dp, amount + 1);\n        dp[0] = 0;\n\n        for (int i = 1; i <= amount; i++) {\n            for (int coin : coins) {\n                if (coin <= i) {\n                    dp[i] = Math.min(dp[i], dp[i - coin] + 1);\n                }\n            }\n        }\n\n        return dp[amount] > amount ? -1 : dp[amount];\n    }\n\n    public static void main(String[] args) {\n        int[] coins = {1, 2, 5};\n\n        System.out.println(\"Amount 11: \" + coinChange(coins, 11) + \" coins\");\n        System.out.println(\"Amount 3: \" + coinChange(coins, 3) + \" coins\");\n        System.out.println(\"Amount 7: \" + coinChange(coins, 7) + \" coins\");\n    }\n}",
@@ -10079,7 +10079,7 @@
     {
       "id": 622,
       "title": "DP LCS",
-      "description": "Sequence matching",
+      "description": "Find longest common subsequence (LCS) between two strings using dynamic programming. Build 2D DP table comparing characters and choosing optimal subproblem.",
       "language": "java",
       "initialCode": "// DP LCS - TODO\npublic class Main {\n    // TODO: Implement the algorithm\n    \n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
       "fullSolution": "// Longest Common Subsequence\npublic class Main {\n    public static int lcs(String s1, String s2) {\n        int m = s1.length(), n = s2.length();\n        int[][] dp = new int[m + 1][n + 1];\n\n        for (int i = 1; i <= m; i++) {\n            for (int j = 1; j <= n; j++) {\n                if (s1.charAt(i - 1) == s2.charAt(j - 1)) {\n                    dp[i][j] = dp[i - 1][j - 1] + 1;\n                } else {\n                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);\n                }\n            }\n        }\n        return dp[m][n];\n    }\n\n    public static void main(String[] args) {\n        System.out.println(\"LCS('ABCDGH', 'AEDFHR'): \" + lcs(\"ABCDGH\", \"AEDFHR\"));\n        System.out.println(\"LCS('AGGTAB', 'GXTXAYB'): \" + lcs(\"AGGTAB\", \"GXTXAYB\"));\n    }\n}",
@@ -10093,7 +10093,7 @@
     {
       "id": 623,
       "title": "Backtrack N-Queens",
-      "description": "Constraint satisfaction",
+      "description": "Solve N-Queens problem using backtracking. Place N queens on N×N board such that no two queens attack each other, checking constraints at each step.",
       "language": "java",
       "initialCode": "// N-Queens - TODO\npublic class Main {\n    // TODO: Implement the algorithm\n    \n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
       "fullSolution": "// N-Queens Backtracking\nimport java.util.*;\n\npublic class Main {\n    public static List<List<String>> solveNQueens(int n) {\n        List<List<String>> result = new ArrayList<>();\n        char[][] board = new char[n][n];\n        for (int i = 0; i < n; i++) {\n            Arrays.fill(board[i], '.');\n        }\n        backtrack(result, board, 0);\n        return result;\n    }\n\n    private static void backtrack(List<List<String>> result, char[][] board, int row) {\n        if (row == board.length) {\n            result.add(construct(board));\n            return;\n        }\n\n        for (int col = 0; col < board.length; col++) {\n            if (isValid(board, row, col)) {\n                board[row][col] = 'Q';\n                backtrack(result, board, row + 1);\n                board[row][col] = '.';\n            }\n        }\n    }\n\n    private static boolean isValid(char[][] board, int row, int col) {\n        for (int i = 0; i < row; i++) {\n            if (board[i][col] == 'Q') return false;\n        }\n        for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {\n            if (board[i][j] == 'Q') return false;\n        }\n        for (int i = row - 1, j = col + 1; i >= 0 && j < board.length; i--, j++) {\n            if (board[i][j] == 'Q') return false;\n        }\n        return true;\n    }\n\n    private static List<String> construct(char[][] board) {\n        List<String> res = new ArrayList<>();\n        for (char[] row : board) {\n            res.add(new String(row));\n        }\n        return res;\n    }\n\n    public static void main(String[] args) {\n        List<List<String>> solutions = solveNQueens(4);\n        System.out.println(\"4-Queens solutions: \" + solutions.size());\n        System.out.println(\"First solution:\");\n        for (String row : solutions.get(0)) {\n            System.out.println(row);\n        }\n    }\n}",
@@ -10107,7 +10107,7 @@
     {
       "id": 624,
       "title": "Greedy Intervals",
-      "description": "Max non-overlap",
+      "description": "Merge overlapping intervals using greedy algorithm. Sort intervals by start time, then merge consecutive overlapping intervals in single pass.",
       "language": "java",
       "initialCode": "// Greedy Intervals - TODO\npublic class Main {\n    // TODO: Implement the algorithm\n    \n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
       "fullSolution": "// Merge Intervals (Greedy)\nimport java.util.*;\n\npublic class Main {\n    public static int[][] merge(int[][] intervals) {\n        if (intervals.length == 0) return new int[0][];\n\n        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);\n        List<int[]> merged = new ArrayList<>();\n        int[] current = intervals[0];\n        merged.add(current);\n\n        for (int[] interval : intervals) {\n            if (interval[0] <= current[1]) {\n                current[1] = Math.max(current[1], interval[1]);\n            } else {\n                current = interval;\n                merged.add(current);\n            }\n        }\n\n        return merged.toArray(new int[merged.size()][]);\n    }\n\n    public static void main(String[] args) {\n        int[][] intervals = {{1,3}, {2,6}, {8,10}, {15,18}};\n        int[][] result = merge(intervals);\n\n        System.out.print(\"Merged intervals: \");\n        for (int[] interval : result) {\n            System.out.print(\"[\" + interval[0] + \",\" + interval[1] + \"] \");\n        }\n        System.out.println();\n    }\n}",
@@ -10121,7 +10121,7 @@
     {
       "id": 625,
       "title": "Heap Merge K Lists",
-      "description": "Priority queue",
+      "description": "Merge K sorted lists using min-heap (priority queue). Extract minimum element from heap and add next element from same list. Time: O(N log K).",
       "language": "java",
       "initialCode": "// Merge K Lists - TODO\npublic class Main {\n    // TODO: Implement the algorithm\n    \n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
       "fullSolution": "// Merge K Sorted Lists using Heap\nimport java.util.*;\n\npublic class Main {\n    public static List<Integer> mergeKLists(List<List<Integer>> lists) {\n        PriorityQueue<int[]> heap = new PriorityQueue<>((a, b) -> a[0] - b[0]);\n\n        for (int i = 0; i < lists.size(); i++) {\n            if (!lists.get(i).isEmpty()) {\n                heap.offer(new int[]{lists.get(i).get(0), i, 0});\n            }\n        }\n\n        List<Integer> result = new ArrayList<>();\n\n        while (!heap.isEmpty()) {\n            int[] current = heap.poll();\n            int val = current[0], listIdx = current[1], elemIdx = current[2];\n            result.add(val);\n\n            if (elemIdx + 1 < lists.get(listIdx).size()) {\n                heap.offer(new int[]{lists.get(listIdx).get(elemIdx + 1), listIdx, elemIdx + 1});\n            }\n        }\n\n        return result;\n    }\n\n    public static void main(String[] args) {\n        List<List<Integer>> lists = Arrays.asList(\n            Arrays.asList(1, 4, 5),\n            Arrays.asList(1, 3, 4),\n            Arrays.asList(2, 6)\n        );\n        System.out.println(\"Merged: \" + mergeKLists(lists));\n    }\n}",
@@ -10135,7 +10135,7 @@
     {
       "id": 626,
       "title": "Trie Word Search",
-      "description": "Dictionary lookup",
+      "description": "Implement trie (prefix tree) for word search with insert, search, and startsWith operations. Optimize for prefix matching and autocomplete use cases.",
       "language": "java",
       "initialCode": "// Trie Word Search - TODO\npublic class Main {\n    // TODO: Implement the algorithm\n    \n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
       "fullSolution": "// Trie for Word Search\nimport java.util.*;\n\npublic class Main {\n    static class TrieNode {\n        Map<Character, TrieNode> children = new HashMap<>();\n        boolean isWord = false;\n    }\n\n    static class Trie {\n        TrieNode root = new TrieNode();\n\n        void insert(String word) {\n            TrieNode node = root;\n            for (char c : word.toCharArray()) {\n                node.children.putIfAbsent(c, new TrieNode());\n                node = node.children.get(c);\n            }\n            node.isWord = true;\n        }\n\n        boolean search(String word) {\n            TrieNode node = root;\n            for (char c : word.toCharArray()) {\n                if (!node.children.containsKey(c)) return false;\n                node = node.children.get(c);\n            }\n            return node.isWord;\n        }\n\n        boolean startsWith(String prefix) {\n            TrieNode node = root;\n            for (char c : prefix.toCharArray()) {\n                if (!node.children.containsKey(c)) return false;\n                node = node.children.get(c);\n            }\n            return true;\n        }\n    }\n\n    public static void main(String[] args) {\n        Trie trie = new Trie();\n        trie.insert(\"apple\");\n        trie.insert(\"app\");\n\n        System.out.println(\"Search 'app': \" + trie.search(\"app\"));\n        System.out.println(\"Search 'apple': \" + trie.search(\"apple\"));\n        System.out.println(\"Prefix 'ap': \" + trie.startsWith(\"ap\"));\n    }\n}",
@@ -10149,7 +10149,7 @@
     {
       "id": 627,
       "title": "Union-Find",
-      "description": "Connectivity",
+      "description": "Implement Union-Find (Disjoint Set) data structure with path compression and union by rank. Efficiently track connected components with near-constant time operations.",
       "language": "java",
       "initialCode": "// Union-Find - TODO\npublic class Main {\n    // TODO: Implement the algorithm\n    \n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
       "fullSolution": "// Union-Find (Disjoint Set)\npublic class Main {\n    static class UnionFind {\n        int[] parent, rank;\n\n        UnionFind(int n) {\n            parent = new int[n];\n            rank = new int[n];\n            for (int i = 0; i < n; i++) {\n                parent[i] = i;\n            }\n        }\n\n        int find(int x) {\n            if (parent[x] != x) {\n                parent[x] = find(parent[x]); // Path compression\n            }\n            return parent[x];\n        }\n\n        void union(int x, int y) {\n            int rootX = find(x);\n            int rootY = find(y);\n\n            if (rootX != rootY) {\n                if (rank[rootX] < rank[rootY]) {\n                    parent[rootX] = rootY;\n                } else if (rank[rootX] > rank[rootY]) {\n                    parent[rootY] = rootX;\n                } else {\n                    parent[rootY] = rootX;\n                    rank[rootX]++;\n                }\n            }\n        }\n\n        boolean connected(int x, int y) {\n            return find(x) == find(y);\n        }\n    }\n\n    public static void main(String[] args) {\n        UnionFind uf = new UnionFind(5);\n        uf.union(0, 1);\n        uf.union(1, 2);\n\n        System.out.println(\"0 and 2 connected: \" + uf.connected(0, 2));\n        System.out.println(\"0 and 3 connected: \" + uf.connected(0, 3));\n    }\n}",
@@ -10163,7 +10163,7 @@
     {
       "id": 628,
       "title": "Bit Manipulation",
-      "description": "XOR trick",
+      "description": "Master bit manipulation techniques: count set bits, check power of two, find single number using XOR. Optimize solutions with bitwise operators.",
       "language": "java",
       "initialCode": "// Bit Manipulation - TODO\npublic class Main {\n    // TODO: Implement the algorithm\n    \n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
       "fullSolution": "// Bit Manipulation Techniques\npublic class Main {\n    public static int countBits(int n) {\n        int count = 0;\n        while (n != 0) {\n            count++;\n            n &= (n - 1); // Remove rightmost 1 bit\n        }\n        return count;\n    }\n\n    public static boolean isPowerOfTwo(int n) {\n        return n > 0 && (n & (n - 1)) == 0;\n    }\n\n    public static int singleNumber(int[] nums) {\n        int result = 0;\n        for (int num : nums) {\n            result ^= num; // XOR cancels out duplicates\n        }\n        return result;\n    }\n\n    public static void main(String[] args) {\n        System.out.println(\"Count bits in 7: \" + countBits(7));\n        System.out.println(\"Is 8 power of 2: \" + isPowerOfTwo(8));\n        System.out.println(\"Single number in [2,2,1]: \" + singleNumber(new int[]{2, 2, 1}));\n    }\n}",
@@ -10177,7 +10177,7 @@
     {
       "id": 629,
       "title": "Topological Sort",
-      "description": "Dependency order",
+      "description": "Implement topological sort using DFS. Order vertices in directed acyclic graph (DAG) such that for every edge u→v, u comes before v in ordering.",
       "language": "java",
       "initialCode": "// Topological Sort - TODO\npublic class Main {\n    // TODO: Implement the algorithm\n    \n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
       "fullSolution": "// Topological Sort using DFS\nimport java.util.*;\n\npublic class Main {\n    public static List<Integer> topologicalSort(int n, int[][] edges) {\n        List<List<Integer>> graph = new ArrayList<>();\n        for (int i = 0; i < n; i++) {\n            graph.add(new ArrayList<>());\n        }\n\n        for (int[] edge : edges) {\n            graph.get(edge[0]).add(edge[1]);\n        }\n\n        boolean[] visited = new boolean[n];\n        Stack<Integer> stack = new Stack<>();\n\n        for (int i = 0; i < n; i++) {\n            if (!visited[i]) {\n                dfs(graph, i, visited, stack);\n            }\n        }\n\n        List<Integer> result = new ArrayList<>();\n        while (!stack.isEmpty()) {\n            result.add(stack.pop());\n        }\n        return result;\n    }\n\n    private static void dfs(List<List<Integer>> graph, int node, boolean[] visited, Stack<Integer> stack) {\n        visited[node] = true;\n        for (int neighbor : graph.get(node)) {\n            if (!visited[neighbor]) {\n                dfs(graph, neighbor, visited, stack);\n            }\n        }\n        stack.push(node);\n    }\n\n    public static void main(String[] args) {\n        int[][] edges = {{0, 1}, {0, 2}, {1, 3}, {2, 3}};\n        System.out.println(\"Topological order: \" + topologicalSort(4, edges));\n    }\n}",
@@ -10191,7 +10191,7 @@
     {
       "id": 630,
       "title": "Dijkstra Algorithm",
-      "description": "Shortest path",
+      "description": "Implement Dijkstra's shortest path algorithm using priority queue. Find shortest paths from source to all vertices in weighted graph with non-negative edges.",
       "language": "java",
       "initialCode": "// Dijkstra - TODO\npublic class Main {\n    // TODO: Implement the algorithm\n    \n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
       "fullSolution": "// Dijkstra's Shortest Path\nimport java.util.*;\n\npublic class Main {\n    public static int[] dijkstra(int[][] graph, int start) {\n        int n = graph.length;\n        int[] dist = new int[n];\n        Arrays.fill(dist, Integer.MAX_VALUE);\n        dist[start] = 0;\n\n        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]);\n        pq.offer(new int[]{start, 0});\n\n        while (!pq.isEmpty()) {\n            int[] current = pq.poll();\n            int node = current[0];\n            int d = current[1];\n\n            if (d > dist[node]) continue;\n\n            for (int neighbor = 0; neighbor < n; neighbor++) {\n                if (graph[node][neighbor] > 0) {\n                    int newDist = dist[node] + graph[node][neighbor];\n                    if (newDist < dist[neighbor]) {\n                        dist[neighbor] = newDist;\n                        pq.offer(new int[]{neighbor, newDist});\n                    }\n                }\n            }\n        }\n\n        return dist;\n    }\n\n    public static void main(String[] args) {\n        int[][] graph = {\n            {0, 4, 0, 0, 0},\n            {4, 0, 8, 0, 0},\n            {0, 8, 0, 7, 9},\n            {0, 0, 7, 0, 10},\n            {0, 0, 9, 10, 0}\n        };\n\n        int[] distances = dijkstra(graph, 0);\n        System.out.println(\"Distances from node 0: \" + Arrays.toString(distances));\n    }\n}",
@@ -10239,7 +10239,7 @@
     {
       "id": 633,
       "title": "CSRF Tokens",
-      "description": "Request forgery prevention",
+      "description": "Prevent Cross-Site Request Forgery (CSRF) attacks using synchronizer tokens. Generate unique token per session and validate on state-changing requests.",
       "language": "java",
       "initialCode": "// CSRF Tokens\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"=== CSRF Tokens ===\");\n        System.out.println(\"See tutorial for implementation details\");\n        System.out.println(\"This lesson focuses on concepts and best practices\");\n    }\n}",
       "fullSolution": "// CSRF Tokens\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"=== CSRF Tokens ===\");\n        System.out.println(\"See tutorial for implementation details\");\n        System.out.println(\"This lesson focuses on concepts and best practices\");\n    }\n}",
@@ -10253,7 +10253,7 @@
     {
       "id": 634,
       "title": "Password Hashing",
-      "description": "bcrypt/Argon2",
+      "description": "Secure password storage using bcrypt, Argon2, or PBKDF2 hashing algorithms. Never store plaintext passwords, use salts, and choose appropriate work factors.",
       "language": "java",
       "initialCode": "// Password Hashing\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"=== Password Hashing ===\");\n        System.out.println(\"See tutorial for implementation details\");\n        System.out.println(\"This lesson focuses on concepts and best practices\");\n    }\n}",
       "fullSolution": "// Password Hashing\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"=== Password Hashing ===\");\n        System.out.println(\"See tutorial for implementation details\");\n        System.out.println(\"This lesson focuses on concepts and best practices\");\n    }\n}",
@@ -10267,7 +10267,7 @@
     {
       "id": 635,
       "title": "HTTPS/TLS",
-      "description": "Certificate management",
+      "description": "Implement HTTPS/TLS for encrypted communication. Configure certificates, enforce HTTPS redirection, and use HSTS headers to prevent man-in-the-middle attacks.",
       "language": "java",
       "initialCode": "// HTTPS/TLS\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"=== HTTPS/TLS ===\");\n        System.out.println(\"See tutorial for implementation details\");\n        System.out.println(\"This lesson focuses on concepts and best practices\");\n    }\n}",
       "fullSolution": "// HTTPS/TLS\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"=== HTTPS/TLS ===\");\n        System.out.println(\"See tutorial for implementation details\");\n        System.out.println(\"This lesson focuses on concepts and best practices\");\n    }\n}",
@@ -10281,7 +10281,7 @@
     {
       "id": 636,
       "title": "Security Headers",
-      "description": "HSTS, CSP",
+      "description": "Configure security headers: Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, HSTS. Protect against XSS, clickjacking, and MIME sniffing attacks.",
       "language": "java",
       "initialCode": "// Security Headers\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"=== Security Headers ===\");\n        System.out.println(\"See tutorial for implementation details\");\n        System.out.println(\"This lesson focuses on concepts and best practices\");\n    }\n}",
       "fullSolution": "// Security Headers\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"=== Security Headers ===\");\n        System.out.println(\"See tutorial for implementation details\");\n        System.out.println(\"This lesson focuses on concepts and best practices\");\n    }\n}",
@@ -10295,7 +10295,7 @@
     {
       "id": 637,
       "title": "Input Validation",
-      "description": "Sanitization",
+      "description": "Implement input validation and sanitization to prevent injection attacks. Whitelist validation, escape special characters, and validate data types and ranges.",
       "language": "java",
       "initialCode": "// Input Validation\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"=== Input Validation ===\");\n        System.out.println(\"See tutorial for implementation details\");\n        System.out.println(\"This lesson focuses on concepts and best practices\");\n    }\n}",
       "fullSolution": "// Input Validation\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"=== Input Validation ===\");\n        System.out.println(\"See tutorial for implementation details\");\n        System.out.println(\"This lesson focuses on concepts and best practices\");\n    }\n}",
@@ -10309,7 +10309,7 @@
     {
       "id": 638,
       "title": "CORS Setup",
-      "description": "Cross-origin config",
+      "description": "Configure Cross-Origin Resource Sharing (CORS) to control which domains can access your API. Set Access-Control-Allow-Origin and other CORS headers properly.",
       "language": "java",
       "initialCode": "// CORS Setup\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"=== CORS Setup ===\");\n        System.out.println(\"See tutorial for implementation details\");\n        System.out.println(\"This lesson focuses on concepts and best practices\");\n    }\n}",
       "fullSolution": "// CORS Setup\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"=== CORS Setup ===\");\n        System.out.println(\"See tutorial for implementation details\");\n        System.out.println(\"This lesson focuses on concepts and best practices\");\n    }\n}",
@@ -10323,7 +10323,7 @@
     {
       "id": 639,
       "title": "Secrets Management",
-      "description": "Environment vars",
+      "description": "Manage secrets securely using environment variables, secret vaults (HashiCorp Vault, AWS Secrets Manager), and encryption. Never commit secrets to version control.",
       "language": "java",
       "initialCode": "// Secrets Management\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"=== Secrets Management ===\");\n        System.out.println(\"See tutorial for implementation details\");\n        System.out.println(\"This lesson focuses on concepts and best practices\");\n    }\n}",
       "fullSolution": "// Secrets Management\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"=== Secrets Management ===\");\n        System.out.println(\"See tutorial for implementation details\");\n        System.out.println(\"This lesson focuses on concepts and best practices\");\n    }\n}",
@@ -10337,7 +10337,7 @@
     {
       "id": 640,
       "title": "Vulnerability Scanning",
-      "description": "Dependency check",
+      "description": "Implement vulnerability scanning in CI/CD pipeline. Use tools like OWASP Dependency-Check, Snyk, or npm audit to detect security issues in dependencies.",
       "language": "java",
       "initialCode": "// Vulnerability Scanning\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"=== Vulnerability Scanning ===\");\n        System.out.println(\"See tutorial for implementation details\");\n        System.out.println(\"This lesson focuses on concepts and best practices\");\n    }\n}",
       "fullSolution": "// Vulnerability Scanning\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"=== Vulnerability Scanning ===\");\n        System.out.println(\"See tutorial for implementation details\");\n        System.out.println(\"This lesson focuses on concepts and best practices\");\n    }\n}",
@@ -10384,7 +10384,7 @@
     {
       "id": 643,
       "title": "Debugging Strategies",
-      "description": "Systematic approach",
+      "description": "Master debugging strategies: use debugger breakpoints, add logging, reproduce bugs, use binary search to isolate issues, and read stack traces effectively.",
       "language": "java",
       "initialCode": "// Debugging Example: Find and Fix Bug\npublic class Main {\n    // This function has a bug! Can you find it?\n    public static int calculateDiscount(int price, int percent) {\n        return price * percent / 100;  // Bug here!\n    }\n\n    public static void main(String[] args) {\n        // TODO: Test with different values and find the bug\n        System.out.println(\"Discount for $100 at 15%: $\" + calculateDiscount(100, 15));\n        System.out.println(\"Discount for $10 at 15%: $\" + calculateDiscount(10, 15));\n    }\n}",
       "fullSolution": "// Debugging Example: Bug Fixed\npublic class Main {\n    // FIXED: Use double for accurate calculation\n    public static double calculateDiscount(int price, int percent) {\n        return price * percent / 100.0;  // Fixed: 100.0 ensures float division\n    }\n\n    public static void main(String[] args) {\n        System.out.println(\"Discount for $100 at 15%: $\" + calculateDiscount(100, 15));\n        System.out.println(\"Discount for $10 at 15%: $\" + calculateDiscount(10, 15));\n        System.out.println(\"Bug fixed: Now returns 1.5 instead of 1 for $10 at 15%\");\n    }\n}",
@@ -10398,7 +10398,7 @@
     {
       "id": 644,
       "title": "Git Workflow",
-      "description": "Feature branches",
+      "description": "Implement professional Git workflow with feature branches, pull requests, code review, and merge strategies. Use git rebase, cherry-pick, and interactive rebase when appropriate.",
       "language": "java",
       "initialCode": "// Git Workflow\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"=== Git Workflow ===\");\n        System.out.println(\"See tutorial for implementation details\");\n        System.out.println(\"This lesson focuses on concepts and best practices\");\n    }\n}",
       "fullSolution": "// Git Workflow\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"=== Git Workflow ===\");\n        System.out.println(\"See tutorial for implementation details\");\n        System.out.println(\"This lesson focuses on concepts and best practices\");\n    }\n}",
@@ -10412,7 +10412,7 @@
     {
       "id": 645,
       "title": "Performance Profiling",
-      "description": "CPU/memory analysis",
+      "description": "Profile application performance using tools like JProfiler, YourKit, or Chrome DevTools. Identify bottlenecks, optimize database queries, and reduce memory usage.",
       "language": "java",
       "initialCode": "// Performance Profiling\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"=== Performance Profiling ===\");\n        System.out.println(\"See tutorial for implementation details\");\n        System.out.println(\"This lesson focuses on concepts and best practices\");\n    }\n}",
       "fullSolution": "// Performance Profiling\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"=== Performance Profiling ===\");\n        System.out.println(\"See tutorial for implementation details\");\n        System.out.println(\"This lesson focuses on concepts and best practices\");\n    }\n}",
@@ -10426,7 +10426,7 @@
     {
       "id": 646,
       "title": "Stack Traces",
-      "description": "Error diagnosis",
+      "description": "Read and interpret stack traces to debug exceptions. Understand call chain, identify root cause, and trace execution flow from exception to source.",
       "language": "java",
       "initialCode": "// Stack Traces\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"=== Stack Traces ===\");\n        System.out.println(\"See tutorial for implementation details\");\n        System.out.println(\"This lesson focuses on concepts and best practices\");\n    }\n}",
       "fullSolution": "// Stack Traces\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"=== Stack Traces ===\");\n        System.out.println(\"See tutorial for implementation details\");\n        System.out.println(\"This lesson focuses on concepts and best practices\");\n    }\n}",
@@ -10440,7 +10440,7 @@
     {
       "id": 647,
       "title": "Story Point Estimation",
-      "description": "Agile sizing",
+      "description": "Estimate work using story points and Fibonacci scale (1, 2, 3, 5, 8, 13). Break down tasks, consider complexity and unknowns, and track velocity across sprints.",
       "language": "java",
       "initialCode": "// Story Point Estimation\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"=== Story Point Estimation ===\");\n        System.out.println(\"See tutorial for implementation details\");\n        System.out.println(\"This lesson focuses on concepts and best practices\");\n    }\n}",
       "fullSolution": "// Story Point Estimation\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"=== Story Point Estimation ===\");\n        System.out.println(\"See tutorial for implementation details\");\n        System.out.println(\"This lesson focuses on concepts and best practices\");\n    }\n}",
@@ -10454,7 +10454,7 @@
     {
       "id": 648,
       "title": "Agile/Scrum",
-      "description": "Sprint planning",
+      "description": "Practice Agile/Scrum methodology with sprint planning, daily standups, sprint review, and retrospectives. Use iterative development and continuous improvement.",
       "language": "java",
       "initialCode": "// Agile/Scrum\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"=== Agile/Scrum ===\");\n        System.out.println(\"See tutorial for implementation details\");\n        System.out.println(\"This lesson focuses on concepts and best practices\");\n    }\n}",
       "fullSolution": "// Agile/Scrum\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"=== Agile/Scrum ===\");\n        System.out.println(\"See tutorial for implementation details\");\n        System.out.println(\"This lesson focuses on concepts and best practices\");\n    }\n}",
@@ -10468,7 +10468,7 @@
     {
       "id": 649,
       "title": "Stakeholder Communication",
-      "description": "Business translation",
+      "description": "Communicate effectively with stakeholders through status updates, technical documentation, and presentations. Translate technical concepts for non-technical audiences.",
       "language": "java",
       "initialCode": "// Stakeholder Communication\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"=== Stakeholder Communication ===\");\n        System.out.println(\"See tutorial for implementation details\");\n        System.out.println(\"This lesson focuses on concepts and best practices\");\n    }\n}",
       "fullSolution": "// Stakeholder Communication\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"=== Stakeholder Communication ===\");\n        System.out.println(\"See tutorial for implementation details\");\n        System.out.println(\"This lesson focuses on concepts and best practices\");\n    }\n}",
@@ -10482,7 +10482,7 @@
     {
       "id": 650,
       "title": "Building Portfolio",
-      "description": "GitHub showcase",
+      "description": "Build professional portfolio with GitHub projects, live demos, comprehensive README files, and clean code. Showcase full-stack projects that demonstrate your skills.",
       "language": "java",
       "initialCode": "// Building Portfolio\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"=== Building Portfolio ===\");\n        System.out.println(\"See tutorial for implementation details\");\n        System.out.println(\"This lesson focuses on concepts and best practices\");\n    }\n}",
       "fullSolution": "// Building Portfolio\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"=== Building Portfolio ===\");\n        System.out.println(\"See tutorial for implementation details\");\n        System.out.println(\"This lesson focuses on concepts and best practices\");\n    }\n}",

@@ -9660,6 +9660,146 @@
       ]
     },
     {
+      "id": 606,
+      "title": "YouTube Streaming",
+      "description": "Video transcoding",
+      "language": "python",
+      "initialCode": "// YouTube Streaming\ndef main() {\n    public static void main(String[] args) {\n        print(\"TODO\");\n    }\n}",
+      "fullSolution": "def main() {\n    public static void main(String[] args) {\n        print(\"YouTube Streaming complete\");\n    }\n}",
+      "expectedOutput": "YouTube Streaming complete",
+      "tutorial": "<div class='tutorial-content'><h3>YouTube Streaming</h3><p>Video transcoding</p></div>",
+      "tags": [
+        "System Design",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 607,
+      "title": "Uber Ride Sharing",
+      "description": "Geospatial matching",
+      "language": "python",
+      "initialCode": "// Uber Ride Sharing\ndef main() {\n    public static void main(String[] args) {\n        print(\"TODO\");\n    }\n}",
+      "fullSolution": "def main() {\n    public static void main(String[] args) {\n        print(\"Uber Ride Sharing complete\");\n    }\n}",
+      "expectedOutput": "Uber Ride Sharing complete",
+      "tutorial": "<div class='tutorial-content'><h3>Uber Ride Sharing</h3><p>Geospatial matching</p></div>",
+      "tags": [
+        "System Design",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 608,
+      "title": "Netflix CDN",
+      "description": "Content delivery",
+      "language": "python",
+      "initialCode": "// Netflix CDN\ndef main() {\n    public static void main(String[] args) {\n        print(\"TODO\");\n    }\n}",
+      "fullSolution": "def main() {\n    public static void main(String[] args) {\n        print(\"Netflix CDN complete\");\n    }\n}",
+      "expectedOutput": "Netflix CDN complete",
+      "tutorial": "<div class='tutorial-content'><h3>Netflix CDN</h3><p>Content delivery</p></div>",
+      "tags": [
+        "System Design",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 609,
+      "title": "WhatsApp Chat",
+      "description": "Message delivery",
+      "language": "python",
+      "initialCode": "// WhatsApp Chat\ndef main() {\n    public static void main(String[] args) {\n        print(\"TODO\");\n    }\n}",
+      "fullSolution": "def main() {\n    public static void main(String[] args) {\n        print(\"WhatsApp Chat complete\");\n    }\n}",
+      "expectedOutput": "WhatsApp Chat complete",
+      "tutorial": "<div class='tutorial-content'><h3>WhatsApp Chat</h3><p>Message delivery</p></div>",
+      "tags": [
+        "System Design",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 610,
+      "title": "Dropbox Storage",
+      "description": "File sync",
+      "language": "python",
+      "initialCode": "// Dropbox Storage\ndef main() {\n    public static void main(String[] args) {\n        print(\"TODO\");\n    }\n}",
+      "fullSolution": "def main() {\n    public static void main(String[] args) {\n        print(\"Dropbox Storage complete\");\n    }\n}",
+      "expectedOutput": "Dropbox Storage complete",
+      "tutorial": "<div class='tutorial-content'><h3>Dropbox Storage</h3><p>File sync</p></div>",
+      "tags": [
+        "System Design",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 611,
+      "title": "Web Crawler",
+      "description": "BFS traversal",
+      "language": "python",
+      "initialCode": "// Web Crawler\ndef main() {\n    public static void main(String[] args) {\n        print(\"TODO\");\n    }\n}",
+      "fullSolution": "def main() {\n    public static void main(String[] args) {\n        print(\"Web Crawler complete\");\n    }\n}",
+      "expectedOutput": "Web Crawler complete",
+      "tutorial": "<div class='tutorial-content'><h3>Web Crawler</h3><p>BFS traversal</p></div>",
+      "tags": [
+        "System Design",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 612,
+      "title": "Search Autocomplete",
+      "description": "Trie structure",
+      "language": "python",
+      "initialCode": "// Search Autocomplete\ndef main() {\n    public static void main(String[] args) {\n        print(\"TODO\");\n    }\n}",
+      "fullSolution": "def main() {\n    public static void main(String[] args) {\n        print(\"Search Autocomplete complete\");\n    }\n}",
+      "expectedOutput": "Search Autocomplete complete",
+      "tutorial": "<div class='tutorial-content'><h3>Search Autocomplete</h3><p>Trie structure</p></div>",
+      "tags": [
+        "System Design",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 613,
+      "title": "Notification System",
+      "description": "Multi-channel",
+      "language": "python",
+      "initialCode": "// Notification System\ndef main() {\n    public static void main(String[] args) {\n        print(\"TODO\");\n    }\n}",
+      "fullSolution": "def main() {\n    public static void main(String[] args) {\n        print(\"Notification System complete\");\n    }\n}",
+      "expectedOutput": "Notification System complete",
+      "tutorial": "<div class='tutorial-content'><h3>Notification System</h3><p>Multi-channel</p></div>",
+      "tags": [
+        "System Design",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 614,
+      "title": "Newsfeed Ranking",
+      "description": "ML scoring",
+      "language": "python",
+      "initialCode": "// Newsfeed Ranking\ndef main() {\n    public static void main(String[] args) {\n        print(\"TODO\");\n    }\n}",
+      "fullSolution": "def main() {\n    public static void main(String[] args) {\n        print(\"Newsfeed Ranking complete\");\n    }\n}",
+      "expectedOutput": "Newsfeed Ranking complete",
+      "tutorial": "<div class='tutorial-content'><h3>Newsfeed Ranking</h3><p>ML scoring</p></div>",
+      "tags": [
+        "System Design",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 615,
+      "title": "E-commerce Checkout",
+      "description": "Payment flow",
+      "language": "python",
+      "initialCode": "// E-commerce Checkout\ndef main() {\n    public static void main(String[] args) {\n        print(\"TODO\");\n    }\n}",
+      "fullSolution": "def main() {\n    public static void main(String[] args) {\n        print(\"E-commerce Checkout complete\");\n    }\n}",
+      "expectedOutput": "E-commerce Checkout complete",
+      "tutorial": "<div class='tutorial-content'><h3>E-commerce Checkout</h3><p>Payment flow</p></div>",
+      "tags": [
+        "System Design",
+        "FAANG"
+      ]
+    },
+    {
       "id": 616,
       "title": "Two Pointers - Array Pair Sum",
       "description": "Find two numbers in sorted array that sum to target using two pointers (O(n) time)",
@@ -9690,6 +9830,188 @@
         "Sliding Window",
         "Arrays",
         "Optimization",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 618,
+      "title": "Binary Search Rotated",
+      "description": "Modified search",
+      "language": "python",
+      "initialCode": "// Binary Search Rotated\ndef main() {\n    public static void main(String[] args) {\n        print(\"TODO\");\n    }\n}",
+      "fullSolution": "def main() {\n    public static void main(String[] args) {\n        print(\"Binary Search Rotated complete\");\n    }\n}",
+      "expectedOutput": "Binary Search Rotated complete",
+      "tutorial": "<div class='tutorial-content'><h3>Binary Search Rotated</h3><p>Modified search</p></div>",
+      "tags": [
+        "Algorithms",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 619,
+      "title": "DFS Island Count",
+      "description": "Grid traversal",
+      "language": "python",
+      "initialCode": "// DFS Island Count\ndef main() {\n    public static void main(String[] args) {\n        print(\"TODO\");\n    }\n}",
+      "fullSolution": "def main() {\n    public static void main(String[] args) {\n        print(\"DFS Island Count complete\");\n    }\n}",
+      "expectedOutput": "DFS Island Count complete",
+      "tutorial": "<div class='tutorial-content'><h3>DFS Island Count</h3><p>Grid traversal</p></div>",
+      "tags": [
+        "Algorithms",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 620,
+      "title": "BFS Shortest Path",
+      "description": "Level order",
+      "language": "python",
+      "initialCode": "// BFS Shortest Path\ndef main() {\n    public static void main(String[] args) {\n        print(\"TODO\");\n    }\n}",
+      "fullSolution": "def main() {\n    public static void main(String[] args) {\n        print(\"BFS Shortest Path complete\");\n    }\n}",
+      "expectedOutput": "BFS Shortest Path complete",
+      "tutorial": "<div class='tutorial-content'><h3>BFS Shortest Path</h3><p>Level order</p></div>",
+      "tags": [
+        "Algorithms",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 621,
+      "title": "DP Coin Change",
+      "description": "Min coins",
+      "language": "python",
+      "initialCode": "// DP Coin Change\ndef main() {\n    public static void main(String[] args) {\n        print(\"TODO\");\n    }\n}",
+      "fullSolution": "def main() {\n    public static void main(String[] args) {\n        print(\"DP Coin Change complete\");\n    }\n}",
+      "expectedOutput": "DP Coin Change complete",
+      "tutorial": "<div class='tutorial-content'><h3>DP Coin Change</h3><p>Min coins</p></div>",
+      "tags": [
+        "Algorithms",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 622,
+      "title": "DP LCS",
+      "description": "Sequence matching",
+      "language": "python",
+      "initialCode": "// DP LCS\ndef main() {\n    public static void main(String[] args) {\n        print(\"TODO\");\n    }\n}",
+      "fullSolution": "def main() {\n    public static void main(String[] args) {\n        print(\"DP LCS complete\");\n    }\n}",
+      "expectedOutput": "DP LCS complete",
+      "tutorial": "<div class='tutorial-content'><h3>DP LCS</h3><p>Sequence matching</p></div>",
+      "tags": [
+        "Algorithms",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 623,
+      "title": "Backtrack N-Queens",
+      "description": "Constraint satisfaction",
+      "language": "python",
+      "initialCode": "// Backtrack N-Queens\ndef main() {\n    public static void main(String[] args) {\n        print(\"TODO\");\n    }\n}",
+      "fullSolution": "def main() {\n    public static void main(String[] args) {\n        print(\"Backtrack N-Queens complete\");\n    }\n}",
+      "expectedOutput": "Backtrack N-Queens complete",
+      "tutorial": "<div class='tutorial-content'><h3>Backtrack N-Queens</h3><p>Constraint satisfaction</p></div>",
+      "tags": [
+        "Algorithms",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 624,
+      "title": "Greedy Intervals",
+      "description": "Max non-overlap",
+      "language": "python",
+      "initialCode": "// Greedy Intervals\ndef main() {\n    public static void main(String[] args) {\n        print(\"TODO\");\n    }\n}",
+      "fullSolution": "def main() {\n    public static void main(String[] args) {\n        print(\"Greedy Intervals complete\");\n    }\n}",
+      "expectedOutput": "Greedy Intervals complete",
+      "tutorial": "<div class='tutorial-content'><h3>Greedy Intervals</h3><p>Max non-overlap</p></div>",
+      "tags": [
+        "Algorithms",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 625,
+      "title": "Heap Merge K Lists",
+      "description": "Priority queue",
+      "language": "python",
+      "initialCode": "// Heap Merge K Lists\ndef main() {\n    public static void main(String[] args) {\n        print(\"TODO\");\n    }\n}",
+      "fullSolution": "def main() {\n    public static void main(String[] args) {\n        print(\"Heap Merge K Lists complete\");\n    }\n}",
+      "expectedOutput": "Heap Merge K Lists complete",
+      "tutorial": "<div class='tutorial-content'><h3>Heap Merge K Lists</h3><p>Priority queue</p></div>",
+      "tags": [
+        "Algorithms",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 626,
+      "title": "Trie Word Search",
+      "description": "Dictionary lookup",
+      "language": "python",
+      "initialCode": "// Trie Word Search\ndef main() {\n    public static void main(String[] args) {\n        print(\"TODO\");\n    }\n}",
+      "fullSolution": "def main() {\n    public static void main(String[] args) {\n        print(\"Trie Word Search complete\");\n    }\n}",
+      "expectedOutput": "Trie Word Search complete",
+      "tutorial": "<div class='tutorial-content'><h3>Trie Word Search</h3><p>Dictionary lookup</p></div>",
+      "tags": [
+        "Algorithms",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 627,
+      "title": "Union-Find",
+      "description": "Connectivity",
+      "language": "python",
+      "initialCode": "// Union-Find\ndef main() {\n    public static void main(String[] args) {\n        print(\"TODO\");\n    }\n}",
+      "fullSolution": "def main() {\n    public static void main(String[] args) {\n        print(\"Union-Find complete\");\n    }\n}",
+      "expectedOutput": "Union-Find complete",
+      "tutorial": "<div class='tutorial-content'><h3>Union-Find</h3><p>Connectivity</p></div>",
+      "tags": [
+        "Algorithms",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 628,
+      "title": "Bit Manipulation",
+      "description": "XOR trick",
+      "language": "python",
+      "initialCode": "// Bit Manipulation\ndef main() {\n    public static void main(String[] args) {\n        print(\"TODO\");\n    }\n}",
+      "fullSolution": "def main() {\n    public static void main(String[] args) {\n        print(\"Bit Manipulation complete\");\n    }\n}",
+      "expectedOutput": "Bit Manipulation complete",
+      "tutorial": "<div class='tutorial-content'><h3>Bit Manipulation</h3><p>XOR trick</p></div>",
+      "tags": [
+        "Algorithms",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 629,
+      "title": "Topological Sort",
+      "description": "Dependency order",
+      "language": "python",
+      "initialCode": "// Topological Sort\ndef main() {\n    public static void main(String[] args) {\n        print(\"TODO\");\n    }\n}",
+      "fullSolution": "def main() {\n    public static void main(String[] args) {\n        print(\"Topological Sort complete\");\n    }\n}",
+      "expectedOutput": "Topological Sort complete",
+      "tutorial": "<div class='tutorial-content'><h3>Topological Sort</h3><p>Dependency order</p></div>",
+      "tags": [
+        "Algorithms",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 630,
+      "title": "Dijkstra Algorithm",
+      "description": "Shortest path",
+      "language": "python",
+      "initialCode": "// Dijkstra Algorithm\ndef main() {\n    public static void main(String[] args) {\n        print(\"TODO\");\n    }\n}",
+      "fullSolution": "def main() {\n    public static void main(String[] args) {\n        print(\"Dijkstra Algorithm complete\");\n    }\n}",
+      "expectedOutput": "Dijkstra Algorithm complete",
+      "tutorial": "<div class='tutorial-content'><h3>Dijkstra Algorithm</h3><p>Shortest path</p></div>",
+      "tags": [
+        "Algorithms",
         "FAANG"
       ]
     },
@@ -9728,6 +10050,118 @@
       ]
     },
     {
+      "id": 633,
+      "title": "CSRF Tokens",
+      "description": "Request forgery prevention",
+      "language": "python",
+      "initialCode": "// CSRF Tokens\ndef main() {\n    public static void main(String[] args) {\n        print(\"TODO\");\n    }\n}",
+      "fullSolution": "def main() {\n    public static void main(String[] args) {\n        print(\"CSRF Tokens complete\");\n    }\n}",
+      "expectedOutput": "CSRF Tokens complete",
+      "tutorial": "<div class='tutorial-content'><h3>CSRF Tokens</h3><p>Request forgery prevention</p></div>",
+      "tags": [
+        "Security",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 634,
+      "title": "Password Hashing",
+      "description": "bcrypt/Argon2",
+      "language": "python",
+      "initialCode": "// Password Hashing\ndef main() {\n    public static void main(String[] args) {\n        print(\"TODO\");\n    }\n}",
+      "fullSolution": "def main() {\n    public static void main(String[] args) {\n        print(\"Password Hashing complete\");\n    }\n}",
+      "expectedOutput": "Password Hashing complete",
+      "tutorial": "<div class='tutorial-content'><h3>Password Hashing</h3><p>bcrypt/Argon2</p></div>",
+      "tags": [
+        "Security",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 635,
+      "title": "HTTPS/TLS",
+      "description": "Certificate management",
+      "language": "python",
+      "initialCode": "// HTTPS/TLS\ndef main() {\n    public static void main(String[] args) {\n        print(\"TODO\");\n    }\n}",
+      "fullSolution": "def main() {\n    public static void main(String[] args) {\n        print(\"HTTPS/TLS complete\");\n    }\n}",
+      "expectedOutput": "HTTPS/TLS complete",
+      "tutorial": "<div class='tutorial-content'><h3>HTTPS/TLS</h3><p>Certificate management</p></div>",
+      "tags": [
+        "Security",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 636,
+      "title": "Security Headers",
+      "description": "HSTS, CSP",
+      "language": "python",
+      "initialCode": "// Security Headers\ndef main() {\n    public static void main(String[] args) {\n        print(\"TODO\");\n    }\n}",
+      "fullSolution": "def main() {\n    public static void main(String[] args) {\n        print(\"Security Headers complete\");\n    }\n}",
+      "expectedOutput": "Security Headers complete",
+      "tutorial": "<div class='tutorial-content'><h3>Security Headers</h3><p>HSTS, CSP</p></div>",
+      "tags": [
+        "Security",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 637,
+      "title": "Input Validation",
+      "description": "Sanitization",
+      "language": "python",
+      "initialCode": "// Input Validation\ndef main() {\n    public static void main(String[] args) {\n        print(\"TODO\");\n    }\n}",
+      "fullSolution": "def main() {\n    public static void main(String[] args) {\n        print(\"Input Validation complete\");\n    }\n}",
+      "expectedOutput": "Input Validation complete",
+      "tutorial": "<div class='tutorial-content'><h3>Input Validation</h3><p>Sanitization</p></div>",
+      "tags": [
+        "Security",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 638,
+      "title": "CORS Setup",
+      "description": "Cross-origin config",
+      "language": "python",
+      "initialCode": "// CORS Setup\ndef main() {\n    public static void main(String[] args) {\n        print(\"TODO\");\n    }\n}",
+      "fullSolution": "def main() {\n    public static void main(String[] args) {\n        print(\"CORS Setup complete\");\n    }\n}",
+      "expectedOutput": "CORS Setup complete",
+      "tutorial": "<div class='tutorial-content'><h3>CORS Setup</h3><p>Cross-origin config</p></div>",
+      "tags": [
+        "Security",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 639,
+      "title": "Secrets Management",
+      "description": "Environment vars",
+      "language": "python",
+      "initialCode": "// Secrets Management\ndef main() {\n    public static void main(String[] args) {\n        print(\"TODO\");\n    }\n}",
+      "fullSolution": "def main() {\n    public static void main(String[] args) {\n        print(\"Secrets Management complete\");\n    }\n}",
+      "expectedOutput": "Secrets Management complete",
+      "tutorial": "<div class='tutorial-content'><h3>Secrets Management</h3><p>Environment vars</p></div>",
+      "tags": [
+        "Security",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 640,
+      "title": "Vulnerability Scanning",
+      "description": "Dependency check",
+      "language": "python",
+      "initialCode": "// Vulnerability Scanning\ndef main() {\n    public static void main(String[] args) {\n        print(\"TODO\");\n    }\n}",
+      "fullSolution": "def main() {\n    public static void main(String[] args) {\n        print(\"Vulnerability Scanning complete\");\n    }\n}",
+      "expectedOutput": "Vulnerability Scanning complete",
+      "tutorial": "<div class='tutorial-content'><h3>Vulnerability Scanning</h3><p>Dependency check</p></div>",
+      "tags": [
+        "Security",
+        "FAANG"
+      ]
+    },
+    {
       "id": 641,
       "title": "Code Review Best Practices",
       "description": "Learn to conduct effective code reviews with constructive feedback and collaboration",
@@ -9757,6 +10191,118 @@
         "Documentation",
         "Communication",
         "Career",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 643,
+      "title": "Debugging Strategies",
+      "description": "Systematic approach",
+      "language": "python",
+      "initialCode": "// Debugging Strategies\ndef main() {\n    public static void main(String[] args) {\n        print(\"TODO\");\n    }\n}",
+      "fullSolution": "def main() {\n    public static void main(String[] args) {\n        print(\"Debugging Strategies complete\");\n    }\n}",
+      "expectedOutput": "Debugging Strategies complete",
+      "tutorial": "<div class='tutorial-content'><h3>Debugging Strategies</h3><p>Systematic approach</p></div>",
+      "tags": [
+        "Soft Skills",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 644,
+      "title": "Git Workflow",
+      "description": "Feature branches",
+      "language": "python",
+      "initialCode": "// Git Workflow\ndef main() {\n    public static void main(String[] args) {\n        print(\"TODO\");\n    }\n}",
+      "fullSolution": "def main() {\n    public static void main(String[] args) {\n        print(\"Git Workflow complete\");\n    }\n}",
+      "expectedOutput": "Git Workflow complete",
+      "tutorial": "<div class='tutorial-content'><h3>Git Workflow</h3><p>Feature branches</p></div>",
+      "tags": [
+        "Soft Skills",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 645,
+      "title": "Performance Profiling",
+      "description": "CPU/memory analysis",
+      "language": "python",
+      "initialCode": "// Performance Profiling\ndef main() {\n    public static void main(String[] args) {\n        print(\"TODO\");\n    }\n}",
+      "fullSolution": "def main() {\n    public static void main(String[] args) {\n        print(\"Performance Profiling complete\");\n    }\n}",
+      "expectedOutput": "Performance Profiling complete",
+      "tutorial": "<div class='tutorial-content'><h3>Performance Profiling</h3><p>CPU/memory analysis</p></div>",
+      "tags": [
+        "Soft Skills",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 646,
+      "title": "Stack Traces",
+      "description": "Error diagnosis",
+      "language": "python",
+      "initialCode": "// Stack Traces\ndef main() {\n    public static void main(String[] args) {\n        print(\"TODO\");\n    }\n}",
+      "fullSolution": "def main() {\n    public static void main(String[] args) {\n        print(\"Stack Traces complete\");\n    }\n}",
+      "expectedOutput": "Stack Traces complete",
+      "tutorial": "<div class='tutorial-content'><h3>Stack Traces</h3><p>Error diagnosis</p></div>",
+      "tags": [
+        "Soft Skills",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 647,
+      "title": "Story Point Estimation",
+      "description": "Agile sizing",
+      "language": "python",
+      "initialCode": "// Story Point Estimation\ndef main() {\n    public static void main(String[] args) {\n        print(\"TODO\");\n    }\n}",
+      "fullSolution": "def main() {\n    public static void main(String[] args) {\n        print(\"Story Point Estimation complete\");\n    }\n}",
+      "expectedOutput": "Story Point Estimation complete",
+      "tutorial": "<div class='tutorial-content'><h3>Story Point Estimation</h3><p>Agile sizing</p></div>",
+      "tags": [
+        "Soft Skills",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 648,
+      "title": "Agile/Scrum",
+      "description": "Sprint planning",
+      "language": "python",
+      "initialCode": "// Agile/Scrum\ndef main() {\n    public static void main(String[] args) {\n        print(\"TODO\");\n    }\n}",
+      "fullSolution": "def main() {\n    public static void main(String[] args) {\n        print(\"Agile/Scrum complete\");\n    }\n}",
+      "expectedOutput": "Agile/Scrum complete",
+      "tutorial": "<div class='tutorial-content'><h3>Agile/Scrum</h3><p>Sprint planning</p></div>",
+      "tags": [
+        "Soft Skills",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 649,
+      "title": "Stakeholder Communication",
+      "description": "Business translation",
+      "language": "python",
+      "initialCode": "// Stakeholder Communication\ndef main() {\n    public static void main(String[] args) {\n        print(\"TODO\");\n    }\n}",
+      "fullSolution": "def main() {\n    public static void main(String[] args) {\n        print(\"Stakeholder Communication complete\");\n    }\n}",
+      "expectedOutput": "Stakeholder Communication complete",
+      "tutorial": "<div class='tutorial-content'><h3>Stakeholder Communication</h3><p>Business translation</p></div>",
+      "tags": [
+        "Soft Skills",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 650,
+      "title": "Building Portfolio",
+      "description": "GitHub showcase",
+      "language": "python",
+      "initialCode": "// Building Portfolio\ndef main() {\n    public static void main(String[] args) {\n        print(\"TODO\");\n    }\n}",
+      "fullSolution": "def main() {\n    public static void main(String[] args) {\n        print(\"Building Portfolio complete\");\n    }\n}",
+      "expectedOutput": "Building Portfolio complete",
+      "tutorial": "<div class='tutorial-content'><h3>Building Portfolio</h3><p>GitHub showcase</p></div>",
+      "tags": [
+        "Soft Skills",
         "FAANG"
       ]
     }

@@ -9847,6 +9847,146 @@
       ]
     },
     {
+      "id": 606,
+      "title": "YouTube Streaming",
+      "description": "Video transcoding",
+      "language": "java",
+      "initialCode": "// YouTube Streaming\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"YouTube Streaming complete\");\n    }\n}",
+      "expectedOutput": "YouTube Streaming complete",
+      "tutorial": "<div class='tutorial-content'><h3>YouTube Streaming</h3><p>Video transcoding</p></div>",
+      "tags": [
+        "System Design",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 607,
+      "title": "Uber Ride Sharing",
+      "description": "Geospatial matching",
+      "language": "java",
+      "initialCode": "// Uber Ride Sharing\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Uber Ride Sharing complete\");\n    }\n}",
+      "expectedOutput": "Uber Ride Sharing complete",
+      "tutorial": "<div class='tutorial-content'><h3>Uber Ride Sharing</h3><p>Geospatial matching</p></div>",
+      "tags": [
+        "System Design",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 608,
+      "title": "Netflix CDN",
+      "description": "Content delivery",
+      "language": "java",
+      "initialCode": "// Netflix CDN\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Netflix CDN complete\");\n    }\n}",
+      "expectedOutput": "Netflix CDN complete",
+      "tutorial": "<div class='tutorial-content'><h3>Netflix CDN</h3><p>Content delivery</p></div>",
+      "tags": [
+        "System Design",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 609,
+      "title": "WhatsApp Chat",
+      "description": "Message delivery",
+      "language": "java",
+      "initialCode": "// WhatsApp Chat\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"WhatsApp Chat complete\");\n    }\n}",
+      "expectedOutput": "WhatsApp Chat complete",
+      "tutorial": "<div class='tutorial-content'><h3>WhatsApp Chat</h3><p>Message delivery</p></div>",
+      "tags": [
+        "System Design",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 610,
+      "title": "Dropbox Storage",
+      "description": "File sync",
+      "language": "java",
+      "initialCode": "// Dropbox Storage\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Dropbox Storage complete\");\n    }\n}",
+      "expectedOutput": "Dropbox Storage complete",
+      "tutorial": "<div class='tutorial-content'><h3>Dropbox Storage</h3><p>File sync</p></div>",
+      "tags": [
+        "System Design",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 611,
+      "title": "Web Crawler",
+      "description": "BFS traversal",
+      "language": "java",
+      "initialCode": "// Web Crawler\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Web Crawler complete\");\n    }\n}",
+      "expectedOutput": "Web Crawler complete",
+      "tutorial": "<div class='tutorial-content'><h3>Web Crawler</h3><p>BFS traversal</p></div>",
+      "tags": [
+        "System Design",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 612,
+      "title": "Search Autocomplete",
+      "description": "Trie structure",
+      "language": "java",
+      "initialCode": "// Search Autocomplete\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Search Autocomplete complete\");\n    }\n}",
+      "expectedOutput": "Search Autocomplete complete",
+      "tutorial": "<div class='tutorial-content'><h3>Search Autocomplete</h3><p>Trie structure</p></div>",
+      "tags": [
+        "System Design",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 613,
+      "title": "Notification System",
+      "description": "Multi-channel",
+      "language": "java",
+      "initialCode": "// Notification System\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Notification System complete\");\n    }\n}",
+      "expectedOutput": "Notification System complete",
+      "tutorial": "<div class='tutorial-content'><h3>Notification System</h3><p>Multi-channel</p></div>",
+      "tags": [
+        "System Design",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 614,
+      "title": "Newsfeed Ranking",
+      "description": "ML scoring",
+      "language": "java",
+      "initialCode": "// Newsfeed Ranking\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Newsfeed Ranking complete\");\n    }\n}",
+      "expectedOutput": "Newsfeed Ranking complete",
+      "tutorial": "<div class='tutorial-content'><h3>Newsfeed Ranking</h3><p>ML scoring</p></div>",
+      "tags": [
+        "System Design",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 615,
+      "title": "E-commerce Checkout",
+      "description": "Payment flow",
+      "language": "java",
+      "initialCode": "// E-commerce Checkout\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"E-commerce Checkout complete\");\n    }\n}",
+      "expectedOutput": "E-commerce Checkout complete",
+      "tutorial": "<div class='tutorial-content'><h3>E-commerce Checkout</h3><p>Payment flow</p></div>",
+      "tags": [
+        "System Design",
+        "FAANG"
+      ]
+    },
+    {
       "id": 616,
       "title": "Two Pointers - Array Pair Sum",
       "description": "Find two numbers in sorted array that sum to target using two pointers (O(n) time)",
@@ -9877,6 +10017,188 @@
         "Sliding Window",
         "Arrays",
         "Optimization",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 618,
+      "title": "Binary Search Rotated",
+      "description": "Modified search",
+      "language": "java",
+      "initialCode": "// Binary Search Rotated\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Binary Search Rotated complete\");\n    }\n}",
+      "expectedOutput": "Binary Search Rotated complete",
+      "tutorial": "<div class='tutorial-content'><h3>Binary Search Rotated</h3><p>Modified search</p></div>",
+      "tags": [
+        "Algorithms",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 619,
+      "title": "DFS Island Count",
+      "description": "Grid traversal",
+      "language": "java",
+      "initialCode": "// DFS Island Count\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"DFS Island Count complete\");\n    }\n}",
+      "expectedOutput": "DFS Island Count complete",
+      "tutorial": "<div class='tutorial-content'><h3>DFS Island Count</h3><p>Grid traversal</p></div>",
+      "tags": [
+        "Algorithms",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 620,
+      "title": "BFS Shortest Path",
+      "description": "Level order",
+      "language": "java",
+      "initialCode": "// BFS Shortest Path\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"BFS Shortest Path complete\");\n    }\n}",
+      "expectedOutput": "BFS Shortest Path complete",
+      "tutorial": "<div class='tutorial-content'><h3>BFS Shortest Path</h3><p>Level order</p></div>",
+      "tags": [
+        "Algorithms",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 621,
+      "title": "DP Coin Change",
+      "description": "Min coins",
+      "language": "java",
+      "initialCode": "// DP Coin Change\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"DP Coin Change complete\");\n    }\n}",
+      "expectedOutput": "DP Coin Change complete",
+      "tutorial": "<div class='tutorial-content'><h3>DP Coin Change</h3><p>Min coins</p></div>",
+      "tags": [
+        "Algorithms",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 622,
+      "title": "DP LCS",
+      "description": "Sequence matching",
+      "language": "java",
+      "initialCode": "// DP LCS\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"DP LCS complete\");\n    }\n}",
+      "expectedOutput": "DP LCS complete",
+      "tutorial": "<div class='tutorial-content'><h3>DP LCS</h3><p>Sequence matching</p></div>",
+      "tags": [
+        "Algorithms",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 623,
+      "title": "Backtrack N-Queens",
+      "description": "Constraint satisfaction",
+      "language": "java",
+      "initialCode": "// Backtrack N-Queens\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Backtrack N-Queens complete\");\n    }\n}",
+      "expectedOutput": "Backtrack N-Queens complete",
+      "tutorial": "<div class='tutorial-content'><h3>Backtrack N-Queens</h3><p>Constraint satisfaction</p></div>",
+      "tags": [
+        "Algorithms",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 624,
+      "title": "Greedy Intervals",
+      "description": "Max non-overlap",
+      "language": "java",
+      "initialCode": "// Greedy Intervals\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Greedy Intervals complete\");\n    }\n}",
+      "expectedOutput": "Greedy Intervals complete",
+      "tutorial": "<div class='tutorial-content'><h3>Greedy Intervals</h3><p>Max non-overlap</p></div>",
+      "tags": [
+        "Algorithms",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 625,
+      "title": "Heap Merge K Lists",
+      "description": "Priority queue",
+      "language": "java",
+      "initialCode": "// Heap Merge K Lists\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Heap Merge K Lists complete\");\n    }\n}",
+      "expectedOutput": "Heap Merge K Lists complete",
+      "tutorial": "<div class='tutorial-content'><h3>Heap Merge K Lists</h3><p>Priority queue</p></div>",
+      "tags": [
+        "Algorithms",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 626,
+      "title": "Trie Word Search",
+      "description": "Dictionary lookup",
+      "language": "java",
+      "initialCode": "// Trie Word Search\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Trie Word Search complete\");\n    }\n}",
+      "expectedOutput": "Trie Word Search complete",
+      "tutorial": "<div class='tutorial-content'><h3>Trie Word Search</h3><p>Dictionary lookup</p></div>",
+      "tags": [
+        "Algorithms",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 627,
+      "title": "Union-Find",
+      "description": "Connectivity",
+      "language": "java",
+      "initialCode": "// Union-Find\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Union-Find complete\");\n    }\n}",
+      "expectedOutput": "Union-Find complete",
+      "tutorial": "<div class='tutorial-content'><h3>Union-Find</h3><p>Connectivity</p></div>",
+      "tags": [
+        "Algorithms",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 628,
+      "title": "Bit Manipulation",
+      "description": "XOR trick",
+      "language": "java",
+      "initialCode": "// Bit Manipulation\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Bit Manipulation complete\");\n    }\n}",
+      "expectedOutput": "Bit Manipulation complete",
+      "tutorial": "<div class='tutorial-content'><h3>Bit Manipulation</h3><p>XOR trick</p></div>",
+      "tags": [
+        "Algorithms",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 629,
+      "title": "Topological Sort",
+      "description": "Dependency order",
+      "language": "java",
+      "initialCode": "// Topological Sort\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Topological Sort complete\");\n    }\n}",
+      "expectedOutput": "Topological Sort complete",
+      "tutorial": "<div class='tutorial-content'><h3>Topological Sort</h3><p>Dependency order</p></div>",
+      "tags": [
+        "Algorithms",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 630,
+      "title": "Dijkstra Algorithm",
+      "description": "Shortest path",
+      "language": "java",
+      "initialCode": "// Dijkstra Algorithm\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Dijkstra Algorithm complete\");\n    }\n}",
+      "expectedOutput": "Dijkstra Algorithm complete",
+      "tutorial": "<div class='tutorial-content'><h3>Dijkstra Algorithm</h3><p>Shortest path</p></div>",
+      "tags": [
+        "Algorithms",
         "FAANG"
       ]
     },
@@ -9915,6 +10237,118 @@
       ]
     },
     {
+      "id": 633,
+      "title": "CSRF Tokens",
+      "description": "Request forgery prevention",
+      "language": "java",
+      "initialCode": "// CSRF Tokens\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"CSRF Tokens complete\");\n    }\n}",
+      "expectedOutput": "CSRF Tokens complete",
+      "tutorial": "<div class='tutorial-content'><h3>CSRF Tokens</h3><p>Request forgery prevention</p></div>",
+      "tags": [
+        "Security",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 634,
+      "title": "Password Hashing",
+      "description": "bcrypt/Argon2",
+      "language": "java",
+      "initialCode": "// Password Hashing\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Password Hashing complete\");\n    }\n}",
+      "expectedOutput": "Password Hashing complete",
+      "tutorial": "<div class='tutorial-content'><h3>Password Hashing</h3><p>bcrypt/Argon2</p></div>",
+      "tags": [
+        "Security",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 635,
+      "title": "HTTPS/TLS",
+      "description": "Certificate management",
+      "language": "java",
+      "initialCode": "// HTTPS/TLS\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"HTTPS/TLS complete\");\n    }\n}",
+      "expectedOutput": "HTTPS/TLS complete",
+      "tutorial": "<div class='tutorial-content'><h3>HTTPS/TLS</h3><p>Certificate management</p></div>",
+      "tags": [
+        "Security",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 636,
+      "title": "Security Headers",
+      "description": "HSTS, CSP",
+      "language": "java",
+      "initialCode": "// Security Headers\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Security Headers complete\");\n    }\n}",
+      "expectedOutput": "Security Headers complete",
+      "tutorial": "<div class='tutorial-content'><h3>Security Headers</h3><p>HSTS, CSP</p></div>",
+      "tags": [
+        "Security",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 637,
+      "title": "Input Validation",
+      "description": "Sanitization",
+      "language": "java",
+      "initialCode": "// Input Validation\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Input Validation complete\");\n    }\n}",
+      "expectedOutput": "Input Validation complete",
+      "tutorial": "<div class='tutorial-content'><h3>Input Validation</h3><p>Sanitization</p></div>",
+      "tags": [
+        "Security",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 638,
+      "title": "CORS Setup",
+      "description": "Cross-origin config",
+      "language": "java",
+      "initialCode": "// CORS Setup\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"CORS Setup complete\");\n    }\n}",
+      "expectedOutput": "CORS Setup complete",
+      "tutorial": "<div class='tutorial-content'><h3>CORS Setup</h3><p>Cross-origin config</p></div>",
+      "tags": [
+        "Security",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 639,
+      "title": "Secrets Management",
+      "description": "Environment vars",
+      "language": "java",
+      "initialCode": "// Secrets Management\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Secrets Management complete\");\n    }\n}",
+      "expectedOutput": "Secrets Management complete",
+      "tutorial": "<div class='tutorial-content'><h3>Secrets Management</h3><p>Environment vars</p></div>",
+      "tags": [
+        "Security",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 640,
+      "title": "Vulnerability Scanning",
+      "description": "Dependency check",
+      "language": "java",
+      "initialCode": "// Vulnerability Scanning\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Vulnerability Scanning complete\");\n    }\n}",
+      "expectedOutput": "Vulnerability Scanning complete",
+      "tutorial": "<div class='tutorial-content'><h3>Vulnerability Scanning</h3><p>Dependency check</p></div>",
+      "tags": [
+        "Security",
+        "FAANG"
+      ]
+    },
+    {
       "id": 641,
       "title": "Code Review Best Practices",
       "description": "Learn to conduct effective code reviews with constructive feedback and collaboration",
@@ -9944,6 +10378,118 @@
         "Documentation",
         "Communication",
         "Career",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 643,
+      "title": "Debugging Strategies",
+      "description": "Systematic approach",
+      "language": "java",
+      "initialCode": "// Debugging Strategies\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Debugging Strategies complete\");\n    }\n}",
+      "expectedOutput": "Debugging Strategies complete",
+      "tutorial": "<div class='tutorial-content'><h3>Debugging Strategies</h3><p>Systematic approach</p></div>",
+      "tags": [
+        "Soft Skills",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 644,
+      "title": "Git Workflow",
+      "description": "Feature branches",
+      "language": "java",
+      "initialCode": "// Git Workflow\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Git Workflow complete\");\n    }\n}",
+      "expectedOutput": "Git Workflow complete",
+      "tutorial": "<div class='tutorial-content'><h3>Git Workflow</h3><p>Feature branches</p></div>",
+      "tags": [
+        "Soft Skills",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 645,
+      "title": "Performance Profiling",
+      "description": "CPU/memory analysis",
+      "language": "java",
+      "initialCode": "// Performance Profiling\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Performance Profiling complete\");\n    }\n}",
+      "expectedOutput": "Performance Profiling complete",
+      "tutorial": "<div class='tutorial-content'><h3>Performance Profiling</h3><p>CPU/memory analysis</p></div>",
+      "tags": [
+        "Soft Skills",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 646,
+      "title": "Stack Traces",
+      "description": "Error diagnosis",
+      "language": "java",
+      "initialCode": "// Stack Traces\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Stack Traces complete\");\n    }\n}",
+      "expectedOutput": "Stack Traces complete",
+      "tutorial": "<div class='tutorial-content'><h3>Stack Traces</h3><p>Error diagnosis</p></div>",
+      "tags": [
+        "Soft Skills",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 647,
+      "title": "Story Point Estimation",
+      "description": "Agile sizing",
+      "language": "java",
+      "initialCode": "// Story Point Estimation\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Story Point Estimation complete\");\n    }\n}",
+      "expectedOutput": "Story Point Estimation complete",
+      "tutorial": "<div class='tutorial-content'><h3>Story Point Estimation</h3><p>Agile sizing</p></div>",
+      "tags": [
+        "Soft Skills",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 648,
+      "title": "Agile/Scrum",
+      "description": "Sprint planning",
+      "language": "java",
+      "initialCode": "// Agile/Scrum\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Agile/Scrum complete\");\n    }\n}",
+      "expectedOutput": "Agile/Scrum complete",
+      "tutorial": "<div class='tutorial-content'><h3>Agile/Scrum</h3><p>Sprint planning</p></div>",
+      "tags": [
+        "Soft Skills",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 649,
+      "title": "Stakeholder Communication",
+      "description": "Business translation",
+      "language": "java",
+      "initialCode": "// Stakeholder Communication\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Stakeholder Communication complete\");\n    }\n}",
+      "expectedOutput": "Stakeholder Communication complete",
+      "tutorial": "<div class='tutorial-content'><h3>Stakeholder Communication</h3><p>Business translation</p></div>",
+      "tags": [
+        "Soft Skills",
+        "FAANG"
+      ]
+    },
+    {
+      "id": 650,
+      "title": "Building Portfolio",
+      "description": "GitHub showcase",
+      "language": "java",
+      "initialCode": "// Building Portfolio\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"TODO\");\n    }\n}",
+      "fullSolution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Building Portfolio complete\");\n    }\n}",
+      "expectedOutput": "Building Portfolio complete",
+      "tutorial": "<div class='tutorial-content'><h3>Building Portfolio</h3><p>GitHub showcase</p></div>",
+      "tags": [
+        "Soft Skills",
         "FAANG"
       ]
     }

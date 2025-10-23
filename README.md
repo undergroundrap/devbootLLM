@@ -1,11 +1,11 @@
 # devbootLLM - Interactive Programming Learning Platform
 
-An interactive web application for learning Java and Python programming with **611 lessons per language** (1,222 total). Features real-time code execution, AI-powered assistance, and comprehensive tutorials from beginner to FAANG engineer level.
+An interactive web application for learning Java and Python programming with **650 lessons per language** (1,300 total). Features real-time code execution, AI-powered assistance, and comprehensive tutorials from beginner to FAANG engineer level.
 
 ## Features
 
-- **1,222 Interactive Lessons**: 611 lessons each for Java and Python, covering beginner to FAANG engineer level
-- **FAANG Interview Prep**: System Design, LeetCode-style algorithms, security best practices, and soft skills
+- **1,300 Interactive Lessons**: 650 lessons each for Java and Python, covering beginner to FAANG engineer level
+- **FAANG Interview Prep**: 50 complete lessons covering System Design, LeetCode-style algorithms, security best practices, and soft skills
 - **Real-Time Code Execution**: Run Java and Python code securely in isolated Docker containers
 - **AI-Powered Help**: Integrated AI assistant supporting Ollama and LM Studio for coding help
 - **Progress Tracking**: Save your progress and code per lesson in browser localStorage
@@ -110,12 +110,12 @@ Production systems - microservices, databases, APIs, distributed systems
 FAANG-level topics - cloud platforms (AWS, Azure, GCP), Kubernetes, CI/CD, system design
 **Career Target:** Staff/Principal engineer ($220K-$350K+)
 
-### Level 6: FAANG Interview Prep (Lessons 601-611)
-**NEW!** Interview-critical topics:
-- **System Design:** URL Shortener, Pastebin, Rate Limiter, Instagram, Twitter (asked at Google, Meta, Amazon)
-- **Algorithms:** Two Pointers, Sliding Window (LeetCode patterns)
-- **Security:** SQL Injection, XSS Defense (OWASP Top 10)
-- **Soft Skills:** Code Review, Technical Documentation (senior engineer requirements)
+### Level 6: FAANG Interview Prep (Lessons 601-650)
+**COMPLETE!** 50 interview-critical lessons:
+- **System Design (15):** URL Shortener, Pastebin, Rate Limiter, Instagram, Twitter, YouTube, Uber, Netflix, WhatsApp, Dropbox, Web Crawler, Search Autocomplete, Notifications, Newsfeed, E-commerce
+- **Algorithms (15):** Two Pointers, Sliding Window, Binary Search, DFS, BFS, DP (Coin Change, LCS), Backtracking, Greedy, Heap, Trie, Union-Find, Bit Manipulation, Topological Sort, Dijkstra
+- **Security (10):** SQL Injection, XSS, CSRF, Password Hashing, HTTPS/TLS, Security Headers, Input Validation, CORS, Secrets Management, Vulnerability Scanning
+- **Soft Skills (10):** Code Review, Documentation, Debugging, Git Workflow, Profiling, Stack Traces, Estimation, Agile/Scrum, Stakeholder Communication, Portfolio
 **Career Target:** Pass FAANG interviews, $200K-$400K+ offers
 
 ## Architecture

@@ -1,10 +1,10 @@
 # devbootLLM - Interactive Programming Learning Platform
 
-An interactive web application for learning Java and Python programming with **661 lessons per language** (1,322 total). Features real-time code execution, AI-powered assistance, and comprehensive tutorials from absolute beginner to job-ready professional.
+An interactive web application for learning Java and Python programming with **700 lessons per language** (1,400 total). Features real-time code execution, AI-powered assistance, and comprehensive tutorials from absolute beginner to job-ready professional.
 
 ## Features
 
-- **1,322 Interactive Lessons**: 661 lessons each for Java and Python, covering absolute beginner to job-ready level
+- **1,400 Interactive Lessons**: 700 lessons each for Java and Python, covering absolute beginner to job-ready level
 - **99% Job-Ready**: Complete path from "Hello World" to employed developer
 - **FAANG Interview Prep**: 50 complete lessons covering System Design, LeetCode-style algorithms, security best practices, and soft skills
 - **Real-Time Code Execution**: Run Java and Python code securely in isolated Docker containers
@@ -89,7 +89,7 @@ http://localhost:3000
 
 ## Learning Path
 
-The course is organized into 5 progressive levels:
+The course is organized into 7 progressive levels with 39 bridging lessons for smooth transitions:
 
 ### Level 1: Beginner (Lessons 1-100)
 Foundation programming skills - variables, loops, functions, basic OOP
@@ -129,6 +129,15 @@ FAANG-level topics - cloud platforms (AWS, Azure, GCP), Kubernetes, CI/CD, syste
 - **Final Capstone (1):** Complete task management system combining all skills
 - **Git Mastery (1):** 20 essential commands used daily by professional developers
 **Career Target:** Land your first developer job, $60K-$100K starting salary
+
+### Bridging Lessons (Lessons 697-735)
+**39 additional lessons** strategically placed to smooth curriculum transitions:
+- **Beginner Bridges (697-700):** String manipulation, array searching, input validation - reinforce fundamentals
+- **Intermediate Bridges (701-710):** HashMap internals, List comparison, Set operations, sorting algorithms - deepen core skills
+- **Advanced Bridges (711-720):** Design patterns (Strategy, Observer, Factory, Singleton, Decorator) - master OOP
+- **Expert Bridges (721-728):** Thread synchronization, concurrent collections, CompletableFuture, JVM tuning - production skills
+- **Enterprise Bridges (729-735):** REST APIs, connection pooling, logging, monitoring, circuit breakers - real-world systems
+**Purpose:** Fill knowledge gaps, provide smooth transitions between levels, ensure no topic is too steep
 
 ## Architecture
 

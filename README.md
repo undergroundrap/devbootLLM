@@ -1,10 +1,11 @@
 # devbootLLM - Interactive Programming Learning Platform
 
-An interactive web application for learning Java and Python programming with **650 lessons per language** (1,300 total). Features real-time code execution, AI-powered assistance, and comprehensive tutorials from beginner to FAANG engineer level.
+An interactive web application for learning Java and Python programming with **661 lessons per language** (1,322 total). Features real-time code execution, AI-powered assistance, and comprehensive tutorials from absolute beginner to job-ready professional.
 
 ## Features
 
-- **1,300 Interactive Lessons**: 650 lessons each for Java and Python, covering beginner to FAANG engineer level
+- **1,322 Interactive Lessons**: 661 lessons each for Java and Python, covering absolute beginner to job-ready level
+- **99% Job-Ready**: Complete path from "Hello World" to employed developer
 - **FAANG Interview Prep**: 50 complete lessons covering System Design, LeetCode-style algorithms, security best practices, and soft skills
 - **Real-Time Code Execution**: Run Java and Python code securely in isolated Docker containers
 - **AI-Powered Help**: Integrated AI assistant supporting Ollama and LM Studio for coding help
@@ -117,6 +118,17 @@ FAANG-level topics - cloud platforms (AWS, Azure, GCP), Kubernetes, CI/CD, syste
 - **Security (10):** SQL Injection, XSS, CSRF, Password Hashing, HTTPS/TLS, Security Headers, Input Validation, CORS, Secrets Management, Vulnerability Scanning
 - **Soft Skills (10):** Code Review, Documentation, Debugging, Git Workflow, Profiling, Stack Traces, Estimation, Agile/Scrum, Stakeholder Communication, Portfolio
 **Career Target:** Pass FAANG interviews, $200K-$400K+ offers
+
+### Level 7: Job Readiness (Lessons 651-661)
+**NEW!** 11 portfolio and career development lessons:
+- **Portfolio Projects (5):** Todo REST API, Blog with Auth, E-Commerce Cart, Weather API, URL Shortener - showcase your skills
+- **Career Prep (1):** Resume, LinkedIn, GitHub optimization for maximum recruiter visibility
+- **Interview Mastery (1):** STAR method, live coding, behavioral questions, system design
+- **Debug Challenge (1):** Fix 5 production-like bugs (null pointers, off-by-one, race conditions)
+- **Code Review (1):** Professional standards, giving constructive feedback, code smells
+- **Final Capstone (1):** Complete task management system combining all skills
+- **Git Mastery (1):** 20 essential commands used daily by professional developers
+**Career Target:** Land your first developer job, $60K-$100K starting salary
 
 ## Architecture
 

@@ -2,7 +2,7 @@
 
 This directory contains utility scripts for maintaining and validating the devbootLLM platform.
 
-## Active Scripts
+## Active Maintenance Scripts
 
 ### Quality Validation
 
@@ -13,7 +13,7 @@ This directory contains utility scripts for maintaining and validating the devbo
   - Tutorial quality (length, depth, structure)
   - Code quality (length, syntax)
   - Concept coverage (all programming concepts covered)
-  - Tutorial depth (presence of Overview, Common Pitfalls, Best Practices sections)
+  - Tutorial depth (presence of 6 required sections)
   - Pacing (lesson distribution across difficulty levels)
 - **Output**: Comprehensive quality report with scores and recommendations
 - **When to run**: After adding new lessons or making bulk changes
@@ -34,41 +34,49 @@ This directory contains utility scripts for maintaining and validating the devbo
 - **Output**: Lists any duplicate IDs found
 - **When to run**: If you suspect duplicate IDs or after bulk imports
 
-### Lesson Creation
+**`analyze_all_lessons.py`**
+- **Purpose**: Comprehensive tutorial and tag analysis
+- **Usage**: `python scripts/analyze_all_lessons.py`
+- **What it checks**:
+  - Tutorial completeness (all 6 sections present)
+  - Tag coverage and consistency
+  - Tag frequency and distribution
+  - Identifies lessons needing improvements
+- **Output**: Detailed analysis report with specific lesson IDs
+- **When to run**: When auditing tutorial quality or tag consistency
 
-**`add_career_lessons.py`**
-- **Purpose**: Script used to create lessons 661-695 (career development lessons)
-- **Contains**: Templates and functions for:
-  - Career prep lessons (resume, LinkedIn, GitHub)
-  - Interview prep lessons (STAR method, live coding)
-  - Debugging challenges
-  - Code review practices
-  - Final capstone project
-- **Usage**: Reference for creating similar career-focused lessons
-- **Note**: This was used to create the final 5 job-readiness lessons
+### Maintenance & Improvement Scripts
 
-**`mirror_job_ready_to_python.py`**
-- **Purpose**: Converts Java lessons to Python versions
-- **Usage**: `python scripts/mirror_job_ready_to_python.py`
+**`fix_tutorial_sections.py`**
+- **Purpose**: Adds missing tutorial sections to specific lessons
+- **Usage**: `python scripts/fix_tutorial_sections.py`
 - **What it does**:
-  - Reads Java lessons (651-695)
-  - Converts Java syntax to Python
-  - Updates language tag to "python"
-  - Adds to Python lessons file
-- **When to run**: After adding new Java lessons that need Python versions
+  - Adds Best Practices sections to portfolio lessons
+  - Adds Common Pitfalls sections where missing
+  - Adds Real-World Applications sections
+- **When to run**: After identifying lessons with missing sections
+
+**`standardize_tags.py`**
+- **Purpose**: Standardizes and consolidates tags across all lessons
+- **Usage**: `python scripts/standardize_tags.py`
+- **What it does**:
+  - Fixes capitalization inconsistencies (enterprise → Enterprise)
+  - Consolidates duplicate tags (Basics/basics → Beginner)
+  - Standardizes common terms (api → API, oop → OOP)
+- **When to run**: After adding lessons with new tags or noticing inconsistencies
+
+**`reposition_bridging_lessons.py`**
+- **Purpose**: Repositions bridging lessons to their correct locations
+- **Usage**: `python scripts/reposition_bridging_lessons.py`
+- **What it does**:
+  - Shifts existing lesson IDs to make room for bridges
+  - Inserts bridging lessons between difficulty levels
+  - Validates no duplicate IDs created
+- **When to run**: When restructuring lesson organization (rarely needed)
 
 ## Workflow Examples
 
-### Adding New Lessons
-
-1. Create lessons in Java file first
-2. Run `python scripts/mirror_job_ready_to_python.py` to create Python versions
-3. Run `node scripts/find-dup-ids.mjs public/lessons-*.json` to check for duplicates
-4. Run `node scripts/validate-lessons.mjs` to validate structure
-5. Run `python scripts/comprehensive_quality_review.py` to check quality
-6. Commit if all checks pass
-
-### Quality Check Before Release
+### Quality Check Before Committing
 
 ```bash
 # Validate structure
@@ -81,28 +89,59 @@ node scripts/find-dup-ids.mjs public/lessons-java.json public/lessons-python.jso
 python scripts/comprehensive_quality_review.py
 ```
 
-## Historical Context
+### Improving Tutorial Quality
 
-The following scripts were removed in the cleanup (Oct 2025):
+```bash
+# 1. Analyze current state
+python scripts/analyze_all_lessons.py
 
-- `achieve_perfect_100.py` - One-time script to reach 100/100 tutorial depth
-- `add_job_readiness_lessons.py` - Superseded by add_career_lessons.py
-- `add_missing_sections.py` - Added Overview/Pitfalls sections (completed)
-- `complete_job_ready_content.py` - Incomplete, superseded
-- `comprehensive_validation.py` - Duplicate of comprehensive_quality_review.py
-- `create_job_ready_lessons.py` - Superseded by add_career_lessons.py
-- `enhance_tutorials.py` - One-time enhancement (completed)
-- `expand_short_descriptions.py` - Expanded descriptions (completed)
-- `fix_duplicate_titles.py` - Fixed duplicate titles (completed)
-- `perfect_tutorial_depth.py` - One-time depth improvement (completed)
-- `final_8_lessons.json` - Data file (no longer needed)
-- `job_readiness_content.json` - Data file (no longer needed)
+# 2. Fix identified issues
+python scripts/fix_tutorial_sections.py
 
-All one-time migration/improvement scripts were removed after successful completion to keep the repository clean.
+# 3. Validate improvements
+python scripts/comprehensive_quality_review.py
+```
 
-## Maintenance Notes
+### Tag System Maintenance
+
+```bash
+# 1. Analyze tag usage
+python scripts/analyze_all_lessons.py
+
+# 2. Standardize tags
+python scripts/standardize_tags.py
+
+# 3. Verify consistency
+python scripts/analyze_all_lessons.py
+```
+
+## Repository Cleanup History
+
+**Oct 27, 2024** - Removed obsolete one-time generation scripts:
+- `add_bonus_lessons.py` - Generated lesson 696 (completed)
+- `add_bridging_lessons.py` - Generated lessons 697-700 (completed)
+- `add_career_lessons.py` - Generated career lessons (completed)
+- `add_key_concepts.py` - Added Key Concepts sections (completed)
+- `add_key_concepts_v2.py` - Improved version (completed)
+- `add_remaining_35_lessons.py` - Generated lessons 701-702 (completed)
+- `complete_final_9_lessons.py` - Completed specific lessons (completed)
+- `find_incomplete_tutorials.py` - Superseded by analyze_all_lessons.py
+- `generate_final_33_lessons.py` - Generated lessons 703-735 (completed)
+- `mirror_job_ready_to_python.py` - Mirrored lessons (completed)
+
+All one-time scripts were archived after successful execution to maintain a clean repository.
+
+## Technical Requirements
 
 - **Python scripts**: Require Python 3.8+ (for f-strings and modern syntax)
 - **Node scripts**: Require Node.js 16+ (for ES modules)
 - **Dependencies**: None - all scripts use standard library only
-- **Encoding**: All scripts handle UTF-8 properly for special characters in lessons
+- **Encoding**: All scripts handle UTF-8 properly for special characters
+
+## Maintenance Notes
+
+- Scripts are production-quality and ready for repeated use
+- All scripts include error handling and validation
+- Output is formatted for readability in Windows/Linux terminals
+- JSON files are always formatted with 2-space indentation
+- Scripts automatically backup before making changes (when appropriate)

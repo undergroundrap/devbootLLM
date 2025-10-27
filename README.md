@@ -95,49 +95,65 @@ The course is organized into 7 progressive levels with 39 bridging lessons for s
 Foundation programming skills - variables, loops, functions, basic OOP
 **Career Target:** Entry-level developer ($50K-$80K)
 
-### Level 2: Intermediate (Lessons 101-200)
+### Beginner Bridges (Lessons 101-104)
+**4 transition lessons** between Beginner and Intermediate:
+- String Manipulation Mastery, Array Searching (Linear vs Binary), Multiple Array Operations, Input Validation
+**Purpose:** Reinforce fundamentals before advancing to intermediate topics
+
+### Level 2: Intermediate (Lessons 105-204)
 Core software engineering - advanced OOP, collections, streams, file I/O
 **Career Target:** Mid-level developer ($80K-$120K)
 
-### Level 3: Advanced (Lessons 201-300)
+### Intermediate Bridges (Lessons 205-214)
+**10 transition lessons** between Intermediate and Advanced:
+- HashMap Deep Dive, ArrayList vs LinkedList, TreeSet/TreeMap, Queue/Deque, Stack Applications, Set Operations, Sorting Comparison, Recursion Patterns, StringBuilder, Wrapper Classes
+**Purpose:** Deepen collection knowledge and prepare for advanced patterns
+
+### Level 3: Advanced (Lessons 215-364)
 Professional patterns - concurrency, design patterns, testing, optimization
 **Career Target:** Senior developer ($120K-$160K)
 
-### Level 4: Senior (Lessons 301-500)
+### Advanced Bridges (Lessons 365-374)
+**10 transition lessons** between Advanced and Expert:
+- Abstract vs Interface, Composition over Inheritance, Immutable Objects, Builder Pattern, Strategy Pattern, Observer Pattern, Factory Pattern, Singleton Pattern, Decorator Pattern, Template Method Pattern
+**Purpose:** Master design patterns before tackling production systems
+
+### Level 4: Expert (Lessons 375-524)
 Production systems - microservices, databases, APIs, distributed systems
 **Career Target:** Senior/Staff engineer ($160K-$220K)
 
-### Level 5: Enterprise (Lessons 501-600)
+### Expert Bridges (Lessons 525-532)
+**8 transition lessons** between Expert and Enterprise:
+- Thread Synchronization, Concurrent Collections, Executor Framework, CompletableFuture, Memory Management, GC Tuning, JVM Profiling, Caching Strategies
+**Purpose:** Build production-ready concurrency and performance skills
+
+### Level 5: Enterprise (Lessons 533-632)
 FAANG-level topics - cloud platforms (AWS, Azure, GCP), Kubernetes, CI/CD, system design
 **Career Target:** Staff/Principal engineer ($220K-$350K+)
 
-### Level 6: FAANG Interview Prep (Lessons 601-650)
-**COMPLETE!** 50 interview-critical lessons:
+### Enterprise Bridges (Lessons 633-639)
+**7 transition lessons** between Enterprise and FAANG Prep:
+- RESTful API Design, Connection Pooling, Logging (SLF4J), Configuration Management, Health Checks & Monitoring, Rate Limiting, Circuit Breaker Pattern
+**Purpose:** Master real-world enterprise patterns before interview prep
+
+### Level 6: FAANG Interview Prep (Lessons 640-689)
+**50 interview-critical lessons:**
 - **System Design (15):** URL Shortener, Pastebin, Rate Limiter, Instagram, Twitter, YouTube, Uber, Netflix, WhatsApp, Dropbox, Web Crawler, Search Autocomplete, Notifications, Newsfeed, E-commerce
 - **Algorithms (15):** Two Pointers, Sliding Window, Binary Search, DFS, BFS, DP (Coin Change, LCS), Backtracking, Greedy, Heap, Trie, Union-Find, Bit Manipulation, Topological Sort, Dijkstra
 - **Security (10):** SQL Injection, XSS, CSRF, Password Hashing, HTTPS/TLS, Security Headers, Input Validation, CORS, Secrets Management, Vulnerability Scanning
 - **Soft Skills (10):** Code Review, Documentation, Debugging, Git Workflow, Profiling, Stack Traces, Estimation, Agile/Scrum, Stakeholder Communication, Portfolio
 **Career Target:** Pass FAANG interviews, $200K-$400K+ offers
 
-### Level 7: Job Readiness (Lessons 651-661)
-**NEW!** 11 portfolio and career development lessons:
-- **Portfolio Projects (5):** Todo REST API, Blog with Auth, E-Commerce Cart, Weather API, URL Shortener - showcase your skills
-- **Career Prep (1):** Resume, LinkedIn, GitHub optimization for maximum recruiter visibility
-- **Interview Mastery (1):** STAR method, live coding, behavioral questions, system design
-- **Debug Challenge (1):** Fix 5 production-like bugs (null pointers, off-by-one, race conditions)
-- **Code Review (1):** Professional standards, giving constructive feedback, code smells
-- **Final Capstone (1):** Complete task management system combining all skills
-- **Git Mastery (1):** 20 essential commands used daily by professional developers
+### Level 7: Job Readiness (Lessons 690-700)
+**11 portfolio and career development lessons:**
+- **Portfolio Projects (5):** Todo REST API, Blog with Auth, E-Commerce Cart, Weather API, URL Shortener
+- **Career Prep (1):** Resume, LinkedIn, GitHub optimization
+- **Interview Mastery (1):** STAR method, live coding, behavioral questions
+- **Debug Challenge (1):** Fix 5 production bugs
+- **Code Review (1):** Professional standards and feedback
+- **Final Capstone (1):** Complete task management system
+- **Git Mastery (1):** 20 essential daily commands
 **Career Target:** Land your first developer job, $60K-$100K starting salary
-
-### Bridging Lessons (Lessons 697-735)
-**39 additional lessons** strategically placed to smooth curriculum transitions:
-- **Beginner Bridges (697-700):** String manipulation, array searching, input validation - reinforce fundamentals
-- **Intermediate Bridges (701-710):** HashMap internals, List comparison, Set operations, sorting algorithms - deepen core skills
-- **Advanced Bridges (711-720):** Design patterns (Strategy, Observer, Factory, Singleton, Decorator) - master OOP
-- **Expert Bridges (721-728):** Thread synchronization, concurrent collections, CompletableFuture, JVM tuning - production skills
-- **Enterprise Bridges (729-735):** REST APIs, connection pooling, logging, monitoring, circuit breakers - real-world systems
-**Purpose:** Fill knowledge gaps, provide smooth transitions between levels, ensure no topic is too steep
 
 ## Architecture
 

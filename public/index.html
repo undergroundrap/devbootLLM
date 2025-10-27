@@ -412,13 +412,14 @@
                             <h3 id="course-title" class="text-lg font-bold text-white">Java Fundamentals</h3>
                             <label for="lesson-filter" class="block mt-3 text-xs uppercase tracking-wide text-gray-400">Level Filter</label>
                             <select id="lesson-filter" class="mt-1 w-full bg-[#1e1f20] border gemini-border rounded-md text-sm p-2 focus:outline-none">
-                                <option value="all">All Lessons (1-650)</option>
-                                <option value="beginner">Beginner (1-100)</option>
-                                <option value="intermediate">Intermediate (101-200)</option>
-                                <option value="advanced">Advanced (201-350)</option>
-                                <option value="expert">Expert (351-500)</option>
-                                <option value="enterprise">Enterprise (501-600)</option>
-                                <option value="faang">FAANG Interview Prep (601-650)</option>
+                                <option value="all">All Lessons (1-700)</option>
+                                <option value="beginner">Beginner (1-104 + Bridges)</option>
+                                <option value="intermediate">Intermediate (105-214 + Bridges)</option>
+                                <option value="advanced">Advanced (215-374 + Bridges)</option>
+                                <option value="expert">Expert (375-532 + Bridges)</option>
+                                <option value="enterprise">Enterprise (533-639 + Bridges)</option>
+                                <option value="faang">FAANG Interview Prep (640-689)</option>
+                                <option value="jobready">Job Ready (690-700)</option>
                             </select>
                             <label for="tag-filter" class="block mt-3 text-xs uppercase tracking-wide text-gray-400">Tag</label>
                             <select id="tag-filter" class="mt-1 w-full bg-[#1e1f20] border gemini-border rounded-md text-sm p-2 focus:outline-none">
@@ -1388,19 +1389,21 @@
                     list.innerHTML = '';
                     let view = this.lessons || [];
 
-                    // Level filter
+                    // Level filter - updated for 700 lessons with bridging lessons
                     if (this.lessonFilter === 'beginner') {
-                        view = view.filter(l => (typeof l.id === 'number') ? (l.id >= 1 && l.id <= 100) : true);
+                        view = view.filter(l => (typeof l.id === 'number') ? (l.id >= 1 && l.id <= 104) : true);
                     } else if (this.lessonFilter === 'intermediate') {
-                        view = view.filter(l => (typeof l.id === 'number') ? (l.id >= 101 && l.id <= 200) : false);
+                        view = view.filter(l => (typeof l.id === 'number') ? (l.id >= 105 && l.id <= 214) : false);
                     } else if (this.lessonFilter === 'advanced') {
-                        view = view.filter(l => (typeof l.id === 'number') ? (l.id >= 201 && l.id <= 350) : false);
+                        view = view.filter(l => (typeof l.id === 'number') ? (l.id >= 215 && l.id <= 374) : false);
                     } else if (this.lessonFilter === 'expert') {
-                        view = view.filter(l => (typeof l.id === 'number') ? (l.id >= 351 && l.id <= 500) : false);
+                        view = view.filter(l => (typeof l.id === 'number') ? (l.id >= 375 && l.id <= 532) : false);
                     } else if (this.lessonFilter === 'enterprise') {
-                        view = view.filter(l => (typeof l.id === 'number') ? (l.id >= 501 && l.id <= 600) : false);
+                        view = view.filter(l => (typeof l.id === 'number') ? (l.id >= 533 && l.id <= 639) : false);
                     } else if (this.lessonFilter === 'faang') {
-                        view = view.filter(l => (typeof l.id === 'number') ? (l.id >= 601 && l.id <= 650) : false);
+                        view = view.filter(l => (typeof l.id === 'number') ? (l.id >= 640 && l.id <= 689) : false);
+                    } else if (this.lessonFilter === 'jobready') {
+                        view = view.filter(l => (typeof l.id === 'number') ? (l.id >= 690 && l.id <= 700) : false);
                     }
 
                     // Tag filter
@@ -1450,7 +1453,7 @@
                     if (!sel) return;
                     const key = `lessonFilter-${this.currentTrack}`;
                     const saved = localStorage.getItem(key) || this.lessonFilter || 'all';
-                    const validFilters = ['all', 'beginner', 'intermediate', 'advanced', 'expert'];
+                    const validFilters = ['all', 'beginner', 'intermediate', 'advanced', 'expert', 'enterprise', 'faang', 'jobready'];
                     sel.value = validFilters.includes(saved) ? saved : 'all';
                     this.lessonFilter = sel.value;
                 }

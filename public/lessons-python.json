@@ -48,7 +48,7 @@
   {
     "title": "Comparison Operators",
     "language": "python",
-    "description": "Increase the counter to 3 using the ++ operator, then print it. Practice this essential programming concept with hands-on examples.",
+    "description": "Increase the counter to 3 using the += 1 operator, then print it. Practice this essential programming concept with hands-on examples.",
     "initialCode": "score = 82\npassing_score = 70\n\n# Create a boolean is_passing using a comparison, then print it\n\n",
     "fullSolution": "score = 82\npassing_score = 70\n\nis_passing = score >= passing_score\nprint(is_passing)\n",
     "expectedOutput": "True",
@@ -3420,7 +3420,7 @@
   {
     "id": 205,
     "title": "HashMap Deep Dive: Hash Functions and Collisions",
-    "description": "Understand how HashMap works internally: hash functions, collision resolution with chaining, load factor, and rehashing - master the most-used data structure.",
+    "description": "Understand how dict works internally: hash functions, collision resolution with chaining, load factor, and rehashing - master the most-used data structure.",
     "initialCode": "# HashMap Deep Dive: Hash Functions and Collisions\n# TODO: Implement this lesson\n\ndef main():\n    print(\"This lesson needs implementation\")\n\nif __name__ == \"__main__\":\n    main()",
     "fullSolution": "# HashMap Deep Dive: Hash Functions and Collisions\n# Reference implementation\n\ndef main():\n    print(\"Lesson 205: HashMap Deep Dive: Hash Functions and Collisions\")\n    print(\"This bridging lesson demonstrates intermediate concepts.\")\n    # Add specific implementation based on lesson topic\n\nif __name__ == \"__main__\":\n    main()",
     "expectedOutput": "Lesson 205: HashMap Deep Dive: Hash Functions and Collisions\nThis bridging lesson demonstrates intermediate concepts.",
@@ -3438,7 +3438,7 @@
   {
     "id": 206,
     "title": "ArrayList vs LinkedList: Choosing the Right List",
-    "description": "Compare ArrayList and LinkedList performance characteristics: when to use each based on access patterns, insertions, and deletions - make informed data structure choices.",
+    "description": "Compare list and LinkedList performance characteristics: when to use each based on access patterns, insertions, and deletions - make informed data structure choices.",
     "initialCode": "# ArrayList vs LinkedList: Choosing the Right List\n# TODO: Implement this lesson\n\ndef main():\n    print(\"This lesson needs implementation\")\n\nif __name__ == \"__main__\":\n    main()",
     "fullSolution": "# ArrayList vs LinkedList: Choosing the Right List\n# Reference implementation\n\ndef main():\n    print(\"Lesson 206: ArrayList vs LinkedList: Choosing the Right List\")\n    print(\"This bridging lesson demonstrates intermediate concepts.\")\n    # Add specific implementation based on lesson topic\n\nif __name__ == \"__main__\":\n    main()",
     "expectedOutput": "Lesson 206: ArrayList vs LinkedList: Choosing the Right List\nThis bridging lesson demonstrates intermediate concepts.",
@@ -7722,7 +7722,7 @@
   {
     "id": 463,
     "title": "functools.lru_cache with maxsize",
-    "description": "Learn how to implement an LRU cache using LinkedHashMap Store and retrieve key-value pairs efficiently using hash-based data structures.",
+    "description": "Learn how to implement an LRU cache using Linkeddict Store and retrieve key-value pairs efficiently using hash-based data structures.",
     "initialCode": "from functools import lru_cache\n\n# TODO: Create function with lru_cache decorator\n# TODO: Set maxsize parameter\n# TODO: Test cache behavior\n",
     "fullSolution": "from functools import lru_cache\n\n# Create function with lru_cache decorator\n@lru_cache(maxsize=3)\ndef expensive_operation(n):\n    print(f\"Computing for {n}\")\n    return n * n\n\n# Test cache behavior\nprint(expensive_operation(1))\nprint(expensive_operation(2))\nprint(expensive_operation(3))\nprint(\"Cache info:\", expensive_operation.cache_info())\n\n# Hit cache\nprint(expensive_operation(1))  # Cache hit, no \"Computing\" message\nprint(\"Cache info:\", expensive_operation.cache_info())\n\n# Exceed maxsize\nprint(expensive_operation(4))  # Evicts least recently used\nprint(expensive_operation(1))  # Cache miss, recompute\nprint(\"Final cache info:\", expensive_operation.cache_info())\n",
     "expectedOutput": "Computing for 1\n1\nComputing for 2\n4\nComputing for 3\n9\nCache info: CacheInfo(hits=0, misses=3, maxsize=3, currsize=3)\n1\nCache info: CacheInfo(hits=1, misses=3, maxsize=3, currsize=3)\nComputing for 4\n16\nComputing for 1\n1\nFinal cache info: CacheInfo(hits=1, misses=5, maxsize=3, currsize=3)",
@@ -8733,7 +8733,7 @@
   {
     "id": 526,
     "title": "Concurrent Collections: Thread-Safe Data Structures",
-    "description": "Use ConcurrentHashMap, CopyOnWriteArrayList for high-performance concurrent access - avoid explicit synchronization.",
+    "description": "Use Concurrentdict, CopyOnWritelist for high-performance concurrent access - avoid explicit synchronization.",
     "initialCode": "# Concurrent Collections: Thread-Safe Data Structures\n# TODO: Implement this lesson\n\ndef main():\n    print(\"This lesson needs implementation\")\n\nif __name__ == \"__main__\":\n    main()",
     "fullSolution": "# Concurrent Collections: Thread-Safe Data Structures\n# Reference implementation\n\ndef main():\n    print(\"Lesson 526: Concurrent Collections: Thread-Safe Data Structures\")\n    print(\"This bridging lesson demonstrates intermediate concepts.\")\n    # Add specific implementation based on lesson topic\n\nif __name__ == \"__main__\":\n    main()",
     "expectedOutput": "Lesson 526: Concurrent Collections: Thread-Safe Data Structures\nThis bridging lesson demonstrates intermediate concepts.",

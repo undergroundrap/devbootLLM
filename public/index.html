@@ -550,6 +550,7 @@
                                          <button id="format-btn" class="btn btn-secondary !p-2.5" title="Format code (Shift+Alt+F)" aria-label="Format code"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
                                     </div>
                                     <div class="flex items-center space-x-4">
+                                        <button id="explain-code-btn" class="btn btn-info" title="Explain the highlighted code using AI" style="display: none;"><i class="fa-solid fa-comments"></i><span>Explain Selection</span></button>
                                         <button id="solve-btn" class="btn btn-warning" title="Show the solution for this lesson"><i class="fa-solid fa-lightbulb"></i><span>Solve Lesson</span></button>
                                         <button id="reset-btn" class="btn btn-secondary" title="Reset the code to its original state"><i class="fa-solid fa-arrow-rotate-left"></i><span>Reset Code</span></button>
                                         <button id="run-btn" class="btn btn-success text-lg py-2.5 px-8" title="Check your code (Ctrl+Enter)"><i class="fa-solid fa-play"></i><span>Check Code</span></button>
@@ -779,7 +780,7 @@
                         'confirm-modal-cancel-btn', 'confirm-modal-confirm-btn', 'toast-container',
                         'clear-console-btn', 'db-status-light', 'db-status-text', 'reset-progress-btn',
                         'left-panel', 'right-panel', 'resizer', 'lesson-sidebar', 'sidebar-toggle-btn',
-                        'lesson-list', 'confetti-canvas', 'solve-btn', 'ai-clear-btn', 'course-select', 'course-title', 'lesson-filter', 'tag-filter', 'lesson-search', 'lesson-tags'
+                        'lesson-list', 'confetti-canvas', 'solve-btn', 'ai-clear-btn', 'course-select', 'course-title', 'lesson-filter', 'tag-filter', 'lesson-search', 'lesson-tags', 'explain-code-btn'
                     ];
                     ids.forEach(id => {
                         const camelCaseId = id.replace(/-(\w)/g, (_, c) => c.toUpperCase());
@@ -870,6 +871,15 @@
                             this.saveState(false);
                         });
 
+                        // Listen for selection changes to show/hide the Explain Code button
+                        this.editor.onDidChangeCursorSelection(() => {
+                            const selection = this.editor.getSelection();
+                            const hasSelection = !selection.isEmpty();
+                            if (this.elements.explainCodeBtn) {
+                                this.elements.explainCodeBtn.style.display = hasSelection ? 'inline-flex' : 'none';
+                            }
+                        });
+
                         // Ensure editor reflects current lesson/track language immediately after init
                         if (this.lessons && this.lessons.length > 0) {
                             this.loadLesson(this.currentLessonIndex, { isReload: true });
@@ -898,6 +908,7 @@
                     }
                     
                     this.elements.runBtn.addEventListener('click', () => this.runCodeCheck());
+                    this.elements.explainCodeBtn.addEventListener('click', () => this.explainSelectedCode());
                     this.elements.solveBtn.addEventListener('click', () => {
                         this.showConfirmation(
                             'Load Solution?',
@@ -1240,6 +1251,46 @@
                     } else {
                         this.showToast("No solution available for this lesson.", "error");
                     }
+                }
+
+                explainSelectedCode() {
+                    if (!this.editor) return;
+
+                    const selection = this.editor.getSelection();
+                    if (!selection || selection.isEmpty()) {
+                        this.showToast('Please select some code to explain', 'warning');
+                        return;
+                    }
+
+                    const selectedText = this.editor.getModel().getValueInRange(selection);
+                    if (!selectedText || selectedText.trim().length === 0) {
+                        this.showToast('Please select some code to explain', 'warning');
+                        return;
+                    }
+
+                    // Get current lesson context
+                    const lesson = this.lessons[this.currentLessonIndex];
+                    const lessonContext = lesson ? `Current lesson: ${lesson.id}. ${lesson.title}` : '';
+
+                    // Open AI panel if not already open
+                    if (this.elements.rightPanel && this.elements.rightPanel.style.display === 'none') {
+                        // Auto-open the AI panel
+                        this.elements.rightPanel.style.display = 'flex';
+                    }
+
+                    // Prepare the prompt
+                    const prompt = `Please explain the following code:\n\n\`\`\`\n${selectedText}\n\`\`\`\n\n${lessonContext ? lessonContext + '\n\n' : ''}Please provide:\n1. What this code does\n2. How it works (step by step if it's multiple lines)\n3. Any important concepts or patterns used\n4. Common use cases or best practices`;
+
+                    // Set the prompt in the AI input and trigger sending
+                    if (this.elements.aiInput) {
+                        this.elements.aiInput.value = prompt;
+                        // Trigger the AI ask button
+                        if (this.elements.aiAskBtn) {
+                            this.elements.aiAskBtn.click();
+                        }
+                    }
+
+                    this.showToast('Asking AI to explain selected code...', 'info');
                 }
 
                 generateCommentedPythonSolution(code, lesson) {

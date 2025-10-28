@@ -28,6 +28,15 @@ This directory contains utility scripts for maintaining and validating the devbo
   - Proper language tags
 - **When to run**: Before committing lesson changes
 
+**`verify_database.js`**
+- **Purpose**: Verify SQLite database has correct lesson counts
+- **Usage**: `node scripts/verify_database.js`
+- **What it checks**:
+  - Java lessons count (should be 700)
+  - Python lessons count (should be 700)
+- **Output**: Reports if database needs rebuilding
+- **When to run**: After server restart or if lessons aren't loading correctly
+
 **`find-dup-ids.mjs`**
 - **Purpose**: Finds duplicate lesson IDs in lesson files
 - **Usage**: `node scripts/find-dup-ids.mjs public/lessons-java.json public/lessons-python.json`

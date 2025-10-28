@@ -1539,6 +1539,7 @@
                     try {
                         // Reset lessons first to avoid cross-course mixing
                         this.lessons = [];
+                        console.log(`[loadLessonsForTrack] Loading ${track} lessons...`);
 
                         // Try scalable API first (returns summary list); fall back to JSON files if unavailable
                         try {
@@ -1558,22 +1559,30 @@
                                         seen.add(key);
                                         return true;
                                     });
+                                    console.log(`[loadLessonsForTrack] Loaded ${this.lessons.length} ${track} lessons via API`);
                                     // lessons loaded via API; UI refresh handled in finally
                                     return; // success via API; skip JSON fallback
                                 }
                             }
                         } catch (_) { /* ignore and fall back */ }
+                        console.log(`[loadLessonsForTrack] API not available, falling back to JSON file`);
+
 
                         if (track === 'python') {
                             // Python lessons are expected in a separate JSON
                             const resp = await fetch('/lessons-python.json', { cache: 'no-cache' });
                             if (!resp.ok) {
+                                console.error('[loadLessonsForTrack] Failed to fetch lessons-python.json');
                                 this.showToast('Python lessons not found (lessons-python.json)', 'error');
                                 this.lessons = [];
                             } else {
                                 const data = await resp.json();
+                                console.log('[loadLessonsForTrack] Python JSON loaded, data type:', Array.isArray(data) ? 'array' : 'object');
                                 const list = Array.isArray(data) ? data : (Array.isArray(data.lessons) ? data.lessons : []);
+                                console.log('[loadLessonsForTrack] Python raw lessons count:', list.length);
                                 this.lessons = (list || []).filter(l => !l.language || String(l.language).toLowerCase() === 'python');
+                                console.log('[loadLessonsForTrack] Python filtered lessons count:', this.lessons.length);
+                                console.log('[loadLessonsForTrack] Sample Python lesson:', this.lessons[0]?.id, this.lessons[0]?.title, this.lessons[0]?.language);
                                 const issues = this.validateLessonsList(this.lessons, 'python');
                                 if (issues.length > 0) {
                                     console.warn('[lessons] validation issues (python):', issues);
@@ -1584,20 +1593,26 @@
                             try {
                                 const r = await fetch('/lessons-java.json', { cache: 'no-cache' });
                                 if (!r.ok) {
+                                    console.error('[loadLessonsForTrack] Failed to fetch lessons-java.json');
                                     this.showToast('Java lessons not found (lessons-java.json)', 'error');
                                     // Fallback to any built-in copy if present
                                     this.lessons = [];
                                 } else {
                                     const d = await r.json();
+                                    console.log('[loadLessonsForTrack] Java JSON loaded, data type:', Array.isArray(d) ? 'array' : 'object');
                                     const m = Array.isArray(d) ? 'replace' : (d.mode === 'replace' ? 'replace' : 'append');
                                     const incomingAll = Array.isArray(d) ? d : (Array.isArray(d.lessons) ? d.lessons : []);
+                                    console.log('[loadLessonsForTrack] Java raw lessons count:', incomingAll.length);
                                     const incoming = (incomingAll || []).filter(l => !l.language || String(l.language).toLowerCase() === 'java');
+                                    console.log('[loadLessonsForTrack] Java filtered lessons count:', incoming.length);
                                     if (m === 'replace') {
                                         this.lessons = incoming;
                                     } else {
                                         // Append to any built-in copy if non-empty
                                         this.lessons = [...(this.lessons || []), ...incoming];
                                     }
+                                    console.log('[loadLessonsForTrack] Java final lessons count:', this.lessons.length);
+                                    console.log('[loadLessonsForTrack] Sample Java lesson:', this.lessons[0]?.id, this.lessons[0]?.title, this.lessons[0]?.language);
                                     const issues = this.validateLessonsList(this.lessons, 'java');
                                     if (issues.length > 0) {
                                         console.warn('[lessons] validation issues (java):', issues);
@@ -1605,12 +1620,14 @@
                                 }
                             } catch (_) {
                                 // Network or parse error — fall back to built-in if available
+                                console.error('[loadLessonsForTrack] Exception loading Java lessons');
                                 this.lessons = [];
                             }
                         }
 
                         const seen = new Set();
                         const curTrack = (track === 'python') ? 'python' : 'java';
+                        console.log('[loadLessonsForTrack] Before deduplication:', this.lessons.length, 'lessons');
                         this.lessons = (this.lessons || []).filter(l => {
                             const lang = (l.language ? String(l.language) : curTrack).toLowerCase();
                             const key = `${lang}:${l.id}`;
@@ -1618,7 +1635,10 @@
                             seen.add(key);
                             return true;
                         });
+                        console.log('[loadLessonsForTrack] After deduplication:', this.lessons.length, 'lessons for', track);
+                        console.log('[loadLessonsForTrack] Final sample lesson:', this.lessons[0]?.id, this.lessons[0]?.title, this.lessons[0]?.language);
                     } catch (e) {
+                        console.error('[loadLessonsForTrack] Exception:', e);
                         this.showToast('Failed loading lessons for course', 'error');
                     } finally {
                         if (this.currentLessonIndex >= this.lessons.length) {
@@ -2113,11 +2133,13 @@
                 }
 
                 async switchCourse(track) {
+                    console.log('[switchCourse] Switching to:', track);
                     if (track !== 'python' && track !== 'java') return;
                     if (this.currentTrack === track) return;
                     // Persist selection
                     this.currentTrack = track;
                     localStorage.setItem('courseTrack', track);
+                    console.log('[switchCourse] Set currentTrack to:', this.currentTrack);
                     // Keep the course dropdown in sync when switched programmatically
                     if (this.elements && this.elements.courseSelect) {
                         this.elements.courseSelect.value = this.currentTrack;
@@ -2133,9 +2155,11 @@
                     // Point storage to the new track key and load saved state for it
                     if (this.storageService) {
                         this.storageService.storageKey = this.getStorageKey();
+                        console.log('[switchCourse] Updated storage key to:', this.storageService.storageKey);
                     }
                     // Load lessons for the track
                     await this.loadLessonsForTrack(track);
+                    console.log('[switchCourse] After loadLessonsForTrack, lessons count:', this.lessons.length);
                     // Load saved state for this track (if any)
                     if (this.storageService && typeof this.storageService.loadData === 'function') {
                         this.storageService.loadData();

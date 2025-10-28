@@ -479,22 +479,22 @@
                         <div class="p-4 border-b gemini-border">
                             <h3 id="course-title" class="text-lg font-bold text-white">Java Fundamentals</h3>
                             <label for="lesson-filter" class="block mt-3 text-xs uppercase tracking-wide text-gray-400">Level Filter</label>
-                            <select id="lesson-filter" class="mt-1 w-full bg-[#1e1f20] border gemini-border rounded-md text-sm p-2 focus:outline-none">
+                            <select id="lesson-filter" class="mt-1 w-full bg-[#1e1f20] border gemini-border rounded-md text-sm p-2 focus:outline-none" title="Filter lessons by difficulty level - Start with Beginner and progress through each level">
                                 <option value="all">All Lessons (1-700)</option>
-                                <option value="beginner">Beginner (1-104 + Bridges)</option>
-                                <option value="intermediate">Intermediate (105-214 + Bridges)</option>
-                                <option value="advanced">Advanced (215-374 + Bridges)</option>
-                                <option value="expert">Expert (375-532 + Bridges)</option>
-                                <option value="enterprise">Enterprise (533-639 + Bridges)</option>
-                                <option value="faang">FAANG Interview Prep (640-689)</option>
-                                <option value="jobready">Job Ready (690-700)</option>
+                                <option value="beginner" title="Foundation: Variables, loops, functions, basic OOP">Beginner (1-104 + Bridges)</option>
+                                <option value="intermediate" title="Building skills: Collections, file I/O, error handling, testing">Intermediate (105-214 + Bridges)</option>
+                                <option value="advanced" title="Professional: Design patterns, concurrency, databases, APIs">Advanced (215-374 + Bridges)</option>
+                                <option value="expert" title="Mastery: Advanced algorithms, system design, performance tuning">Expert (375-532 + Bridges)</option>
+                                <option value="enterprise" title="Production: Cloud, microservices, DevOps, security">Enterprise (533-639 + Bridges)</option>
+                                <option value="faang" title="FAANG-level algorithms and system design questions">FAANG Interview Prep (640-689)</option>
+                                <option value="jobready" title="Portfolio projects and career preparation">Job Ready (690-700)</option>
                             </select>
                             <label for="tag-filter" class="block mt-3 text-xs uppercase tracking-wide text-gray-400">Tag</label>
-                            <select id="tag-filter" class="mt-1 w-full bg-[#1e1f20] border gemini-border rounded-md text-sm p-2 focus:outline-none">
+                            <select id="tag-filter" class="mt-1 w-full bg-[#1e1f20] border gemini-border rounded-md text-sm p-2 focus:outline-none" title="Filter lessons by topic - Focus on specific programming concepts like OOP, Concurrency, I/O, etc.">
                                 <option value="all">All Tags</option>
                             </select>
                             <label for="lesson-search" class="block mt-3 text-xs uppercase tracking-wide text-gray-400">Search</label>
-                            <input id="lesson-search" type="text" placeholder="Search by title, description, or #number..." class="mt-1 w-full bg-[#1e1f20] border gemini-border rounded-md text-sm p-2 focus:outline-none" />
+                            <input id="lesson-search" type="text" placeholder="Search by title, description, or #number..." class="mt-1 w-full bg-[#1e1f20] border gemini-border rounded-md text-sm p-2 focus:outline-none" title="Search lessons by title, description, or lesson number (e.g., #42)" />
                         </div>
                         <nav id="lesson-list" class="flex-grow p-2 space-y-1"></nav>
                     </aside>
@@ -577,17 +577,17 @@
                                             <div class="flex items-center space-x-2">
                                                 <label for="ai-provider" class="mr-1">Provider:</label>
                                                 <div class="relative inline-block">
-                                                    <select id="ai-provider" class="appearance-none gemini-bg-tertiary border gemini-border text-gray-200 rounded-md px-3 py-2 pr-8 text-xs focus:outline-none focus:ring-1 focus:ring-violet-500 focus:border-violet-500 transition-colors"></select>
+                                                    <select id="ai-provider" class="appearance-none gemini-bg-tertiary border gemini-border text-gray-200 rounded-md px-3 py-2 pr-8 text-xs focus:outline-none focus:ring-1 focus:ring-violet-500 focus:border-violet-500 transition-colors" title="Choose AI provider: Ollama (local models) or LM Studio (local models with UI)"></select>
                                                     <i class="fa-solid fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
                                                 </div>
                                             </div>
                                             <div class="flex items-center space-x-2">
                                                 <label for="ai-model" class="mr-1">Model:</label>
                                                 <div class="relative inline-block">
-                                                    <select id="ai-model" class="appearance-none gemini-bg-tertiary border gemini-border text-gray-200 rounded-md px-3 py-2 pr-8 text-xs focus:outline-none focus:ring-1 focus:ring-violet-500 focus:border-violet-500 transition-colors"></select>
+                                                    <select id="ai-model" class="appearance-none gemini-bg-tertiary border gemini-border text-gray-200 rounded-md px-3 py-2 pr-8 text-xs focus:outline-none focus:ring-1 focus:ring-violet-500 focus:border-violet-500 transition-colors" title="Select AI model - Smaller models (7B) are faster, larger models (13B+) are more capable"></select>
                                                     <i class="fa-solid fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
                                                 </div>
-                                                <button id="ai-model-refresh-btn" class="text-gray-400 hover:text-gray-200" title="Refresh models" aria-label="Refresh models">
+                                                <button id="ai-model-refresh-btn" class="text-gray-400 hover:text-gray-200" title="Refresh available models from your AI provider" aria-label="Refresh models">
                                                     <i class="fa-solid fa-rotate"></i>
                                                 </button>
                                             </div>
@@ -595,16 +595,16 @@
                                     </div>
                                     <!-- Quick Action Buttons -->
                                     <div class="flex flex-wrap justify-center gap-2 mb-2">
-                                        <button class="quick-action-btn" id="hint-btn" title="Get a subtle hint">
+                                        <button class="quick-action-btn" id="hint-btn" title="Get a subtle hint without revealing the full solution - helps you think through the problem">
                                             <i class="fa-solid fa-lightbulb"></i>Hint
                                         </button>
-                                        <button class="quick-action-btn" id="explain-btn" title="Understand the core concept">
+                                        <button class="quick-action-btn" id="explain-btn" title="Understand the core concept being taught in this lesson with clear examples">
                                             <i class="fa-solid fa-book"></i>Explain
                                         </button>
-                                        <button class="quick-action-btn" id="debug-btn" title="Find issues in your code">
+                                        <button class="quick-action-btn" id="debug-btn" title="Get help finding and fixing issues in your current code">
                                             <i class="fa-solid fa-bug"></i>Debug
                                         </button>
-                                        <button class="quick-action-btn" id="best-practices-btn" title="Learn professional patterns">
+                                        <button class="quick-action-btn" id="best-practices-btn" title="Learn professional coding patterns and industry best practices for this topic">
                                             <i class="fa-solid fa-star"></i>Best Practices
                                         </button>
                                     </div>
@@ -1156,7 +1156,7 @@
                         // Render derived tags
                         try {
                             const tags = this.deriveTagsForLesson(lesson);
-                            const chips = (tags || []).map(t => `<span class="px-2 py-0.5 text-xs rounded-full bg-[#3c4043] text-gray-200 border border-[#4b5257]">${t}</span>`).join('');
+                            const chips = (tags || []).map(t => `<span class="px-2 py-0.5 text-xs rounded-full bg-[#3c4043] text-gray-200 border border-[#4b5257]" title="${this.getTagTooltip(t)}">${t}</span>`).join('');
                             if (this.elements.lessonTags) this.elements.lessonTags.innerHTML = chips;
                         } catch (_) { if (this.elements.lessonTags) this.elements.lessonTags.innerHTML = ''; }
                         
@@ -1476,6 +1476,24 @@
                     } catch (_) { return []; }
                 }
 
+                getTagTooltip(tag) {
+                    const tooltips = {
+                        'Streams': 'Functional programming with data streams - map, filter, reduce operations',
+                        'I/O': 'Input/Output operations - Reading and writing files, working with file systems',
+                        'Concurrency': 'Multi-threading and parallel processing - Async operations, locks, thread pools',
+                        'OOP': 'Object-Oriented Programming - Classes, inheritance, polymorphism, encapsulation',
+                        'Collections': 'Data structures - Lists, sets, maps, queues, and collection operations',
+                        'Regex': 'Regular Expressions - Pattern matching and text processing',
+                        'Optional': 'Handling nullable values safely - Avoiding null pointer exceptions',
+                        'Date/Time': 'Working with dates, times, and timestamps',
+                        'I/O': 'Input/Output - File operations, reading/writing data',
+                        'Recursion': 'Functions that call themselves - Used for tree traversal, divide & conquer',
+                        'Control Flow': 'Program flow control - If statements, loops, switch cases',
+                        'Basics': 'Fundamental programming concepts and syntax'
+                    };
+                    return tooltips[tag] || `${tag} - Core programming concept covered in this lesson`;
+                }
+
                 collectAvailableTags() {
                     const set = new Set();
                     (this.lessons || []).forEach(l => {
@@ -1562,6 +1580,7 @@
                         const item = document.createElement('a');
                         item.href = '#';
                         item.className = `sidebar-lesson-item flex items-center justify-between p-3 rounded-md text-sm transition-colors hover:bg-gemini-bg-tertiary ${isActive ? 'active' : ''}`;
+                        item.title = `${lesson.title}${isCompleted ? ' (Completed)' : ''}`;
                         item.innerHTML = `
                             <span class="truncate"><span class="text-gray-400 mr-2">${lesson.id}.</span>${lesson.title}</span>
                             ${isCompleted ? '<i class="fa-solid fa-circle-check text-emerald-400 ml-2 flex-shrink-0"></i>' : ''}

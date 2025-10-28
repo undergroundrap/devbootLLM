@@ -1152,7 +1152,11 @@
                                 </div>
                             </div>
                         `;
-                        this.elements.lessonDescription.textContent = lesson.description;
+                        // Process description to highlight backtick keywords
+                        let descriptionHTML = lesson.description;
+                        // Convert backticks to code tags if not already in HTML
+                        descriptionHTML = descriptionHTML.replace(/`([^`]+)`/g, '<code class="tutorial-keyword">$1</code>');
+                        this.elements.lessonDescription.innerHTML = descriptionHTML;
                         // Render derived tags
                         try {
                             const tags = this.deriveTagsForLesson(lesson);

@@ -145,6 +145,49 @@
             background-color: #7c3aed;
         }
 
+        /* AI Input Textarea Styling */
+        #ai-input {
+            min-height: 40px;
+            max-height: 150px;
+            overflow-y: auto;
+            line-height: 1.5;
+        }
+        #ai-input::-webkit-scrollbar {
+            width: 6px;
+        }
+        #ai-input::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 3px;
+        }
+        #ai-input::-webkit-scrollbar-thumb {
+            background: rgba(124, 58, 237, 0.5);
+            border-radius: 3px;
+        }
+        #ai-input::-webkit-scrollbar-thumb:hover {
+            background: rgba(124, 58, 237, 0.8);
+        }
+
+        /* Quick Action Buttons */
+        .quick-action-btn {
+            background: rgba(60, 64, 67, 0.5);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            color: #c4b5fd;
+            padding: 0.35rem 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+        .quick-action-btn:hover {
+            background: rgba(124, 58, 237, 0.2);
+            border-color: rgba(124, 58, 237, 0.6);
+            color: #ddd6fe;
+        }
+        .quick-action-btn i {
+            margin-right: 0.25rem;
+        }
+
         /* Markdown styling within chat bubbles */
         .markdown-body {
             color: #e5e7eb; /* gray-200 */
@@ -511,6 +554,21 @@
                                                 </button>
                                             </div>
                                         </div>
+                                    </div>
+                                    <!-- Quick Action Buttons -->
+                                    <div class="flex flex-wrap gap-2 mb-2">
+                                        <button class="quick-action-btn" onclick="app.askQuickQuestion('Give me a hint for this lesson')" title="Get a subtle hint">
+                                            <i class="fa-solid fa-lightbulb"></i>Hint
+                                        </button>
+                                        <button class="quick-action-btn" onclick="app.askQuickQuestion('Explain the concept in this lesson')" title="Understand the core concept">
+                                            <i class="fa-solid fa-book"></i>Explain
+                                        </button>
+                                        <button class="quick-action-btn" onclick="app.askQuickQuestion('Help me debug my code')" title="Find issues in your code">
+                                            <i class="fa-solid fa-bug"></i>Debug
+                                        </button>
+                                        <button class="quick-action-btn" onclick="app.askQuickQuestion('Show me best practices for this')" title="Learn professional patterns">
+                                            <i class="fa-solid fa-star"></i>Best Practices
+                                        </button>
                                     </div>
                                     <div class="flex items-start bg-gemini-bg-tertiary rounded-lg border gemini-border focus-within:border-violet-500 transition-colors">
                                         <textarea id="ai-input" class="flex-grow bg-transparent border-none p-3 focus:outline-none focus:ring-0 text-sm text-gray-200 resize-none" placeholder="Ask for a hint or explanation..." rows="1"></textarea>
@@ -1726,6 +1784,13 @@
                     this.populateLessonSidebar();
                 }
 
+                askQuickQuestion(question) {
+                    this.elements.aiInput.value = question;
+                    this.elements.aiInput.style.height = 'auto';
+                    this.elements.aiInput.style.height = (this.elements.aiInput.scrollHeight) + 'px';
+                    this.handleAIChat();
+                }
+
                 async handleAIChat() {
                     const userPrompt = this.elements.aiInput.value;
                     if (!userPrompt.trim()) return;
@@ -2074,13 +2139,25 @@
                 }
 
                 renderWelcomeChat() {
+                    const currentLesson = this.lessons[this.currentLessonIndex];
+                    const lessonInfo = currentLesson ? `**Lesson ${currentLesson.id}: ${currentLesson.title}**` : '';
+
                     const welcomeMessage = [
-                        "I'm your AI assistant. Stuck? Try the tutorial first, then ask me for a hint!",
+                        lessonInfo ? `Hi! I'm your AI tutor for ${lessonInfo}` : "Hi! I'm your AI assistant!",
                         "\n\n",
-                        "Tip: For blazing-fast local responses, try ",
-                        "**NVIDIA-Nemotron-Nano-12B-v2-GGUF**.",
-                        " If Ollama doesn't have it, you can load it via ",
-                        "[LM Studio](https://lmstudio.ai)."
+                        "I can help you with:",
+                        "\n",
+                        "- 💡 **Hints** when you're stuck",
+                        "\n",
+                        "- 🐛 **Debugging** your code",
+                        "\n",
+                        "- 📚 **Explaining** concepts",
+                        "\n",
+                        "- ✨ **Best practices** and patterns",
+                        "\n\n",
+                        "**Remember:** I'll guide you, not give you the answer! Use the quick action buttons below to get started.",
+                        "\n\n",
+                        "*Tip: For faster responses, try **NVIDIA-Nemotron-Nano-12B-v2-GGUF** via [LM Studio](https://lmstudio.ai).*"
                     ].join("");
                     const html = this.renderMarkdown(welcomeMessage);
                     this.elements.aiChat.innerHTML = `<div class=\"chat-bubble markdown-body p-3 rounded-lg bg-gemini-bg-tertiary self-start mr-auto\">${html}</div>`;

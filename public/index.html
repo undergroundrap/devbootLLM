@@ -556,17 +556,17 @@
                                         </div>
                                     </div>
                                     <!-- Quick Action Buttons -->
-                                    <div class="flex flex-wrap gap-2 mb-2">
-                                        <button class="quick-action-btn" onclick="app.askQuickQuestion('Give me a hint for this lesson')" title="Get a subtle hint">
+                                    <div class="flex flex-wrap justify-center gap-2 mb-2">
+                                        <button class="quick-action-btn" id="hint-btn" title="Get a subtle hint">
                                             <i class="fa-solid fa-lightbulb"></i>Hint
                                         </button>
-                                        <button class="quick-action-btn" onclick="app.askQuickQuestion('Explain the concept in this lesson')" title="Understand the core concept">
+                                        <button class="quick-action-btn" id="explain-btn" title="Understand the core concept">
                                             <i class="fa-solid fa-book"></i>Explain
                                         </button>
-                                        <button class="quick-action-btn" onclick="app.askQuickQuestion('Help me debug my code')" title="Find issues in your code">
+                                        <button class="quick-action-btn" id="debug-btn" title="Find issues in your code">
                                             <i class="fa-solid fa-bug"></i>Debug
                                         </button>
-                                        <button class="quick-action-btn" onclick="app.askQuickQuestion('Show me best practices for this')" title="Learn professional patterns">
+                                        <button class="quick-action-btn" id="best-practices-btn" title="Learn professional patterns">
                                             <i class="fa-solid fa-star"></i>Best Practices
                                         </button>
                                     </div>
@@ -891,6 +891,17 @@
                         e.target.style.height = 'auto';
                         e.target.style.height = (e.target.scrollHeight) + 'px';
                     });
+
+                    // Quick action buttons
+                    const hintBtn = document.getElementById('hint-btn');
+                    const explainBtn = document.getElementById('explain-btn');
+                    const debugBtn = document.getElementById('debug-btn');
+                    const bestPracticesBtn = document.getElementById('best-practices-btn');
+
+                    if (hintBtn) hintBtn.addEventListener('click', () => this.askQuickQuestion('Give me a hint for this lesson'));
+                    if (explainBtn) explainBtn.addEventListener('click', () => this.askQuickQuestion('Explain the concept in this lesson'));
+                    if (debugBtn) debugBtn.addEventListener('click', () => this.askQuickQuestion('Help me debug my code'));
+                    if (bestPracticesBtn) bestPracticesBtn.addEventListener('click', () => this.askQuickQuestion('Show me best practices for this'));
                     this.elements.viewTutorialBtn.addEventListener('click', () => this.openTutorial());
                     this.elements.closeTutorialBtn.addEventListener('click', () => this.closeModal('tutorial'));
                     this.elements.tutorialModalBg.addEventListener('click', () => this.closeModal('tutorial'));

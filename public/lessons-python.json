@@ -594,7 +594,7 @@
     "id": 38,
     "title": "Math Module",
     "language": "python",
-    "description": "Print: Max: 42 and Sqrt: 8.0",
+    "description": "Print: Max: 42 and Sqrt: 8.0.",
     "initialCode": "# Use max and math.sqrt\n\n",
     "fullSolution": "import math\nprint('Max:', max(25, 42))\nprint('Sqrt:', math.sqrt(64))\n",
     "expectedOutput": "Max: 42\nSqrt: 8.0",
@@ -10729,7 +10729,7 @@
   {
     "id": 640,
     "title": "Design URL Shortener (Bit.ly)",
-    "description": "Design a scalable URL shortening service with Base62 encoding, collision handling, and caching strategy",
+    "description": "Design a scalable URL shortening service with Base62 encoding, collision handling, and caching strategy.",
     "language": "python",
     "initialCode": "# Design URL Shortener (like Bit.ly)\n# Requirements: 100M URLs/day, <100ms latency\n# TODO: Implement generate_short_url() and get_long_url()\n\nclass URLShortener:\n    def __init__(self):\n        self.short_to_long = {}\n        self.long_to_short = {}\n        self.BASE62 = \"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\"\n        self.counter = 1000\n\n    def generate_short_url(self, long_url):\n        # TODO: Implement Base62 encoding\n        pass\n\n    def get_long_url(self, short_url):\n        # TODO: Lookup long URL\n        pass\n\nsh = URLShortener()\ns1 = sh.generate_short_url(\"https://www.google.com\")\nprint(f\"Short: {s1}\")\nprint(f\"Long: {sh.get_long_url(s1)}\")",
     "fullSolution": "class URLShortener:\n    def __init__(self):\n        self.short_to_long = {}\n        self.long_to_short = {}\n        self.BASE62 = \"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\"\n        self.counter = 1000\n\n    def generate_short_url(self, long_url):\n        if long_url in self.long_to_short:\n            return self.long_to_short[long_url]\n        short_url = self.encode_base62(self.counter)\n        self.counter += 1\n        self.short_to_long[short_url] = long_url\n        self.long_to_short[long_url] = short_url\n        return short_url\n\n    def get_long_url(self, short_url):\n        return self.short_to_long.get(short_url, \"Not found\")\n\n    def encode_base62(self, num):\n        if num == 0:\n            return \"0\"\n        result = []\n        while num > 0:\n            result.append(self.BASE62[num % 62])\n            num //= 62\n        return ''.join(reversed(result))\n\nsh = URLShortener()\ns1 = sh.generate_short_url(\"https://www.google.com\")\nprint(f\"Short: {s1}\")\nprint(f\"Long: {sh.get_long_url(s1)}\")\ns2 = sh.generate_short_url(\"https://www.facebook.com\")\nprint(f\"Short: {s2}\")\ns3 = sh.generate_short_url(\"https://www.google.com\")\nprint(f\"Duplicate: {s1 == s3}\")",
@@ -10751,7 +10751,7 @@
   {
     "id": 641,
     "title": "Design Pastebin (Text Sharing)",
-    "description": "Design a text sharing service with expiration, access control like Pastebin or GitHub Gists",
+    "description": "Design a text sharing service with expiration, access control like Pastebin or GitHub Gists.",
     "language": "python",
     "initialCode": "# Design Pastebin - text sharing with expiration\n# TODO: Implement create_paste() and get_paste() with TTL\n\nfrom datetime import datetime, timedelta\n\nclass Paste:\n    def __init__(self, paste_id, content, ttl_seconds):\n        self.id = paste_id\n        self.content = content\n        self.expires_at = datetime.now() + timedelta(seconds=ttl_seconds) if ttl_seconds > 0 else None\n\n    def is_expired(self):\n        # TODO: Check if expired\n        pass\n\nclass Pastebin:\n    def __init__(self):\n        self.pastes = {}\n        self.counter = 1000\n        self.BASE62 = \"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\"\n\n    def create_paste(self, content, ttl):\n        # TODO: Generate ID, store paste\n        pass\n\n    def get_paste(self, paste_id):\n        # TODO: Return content if not expired\n        pass\n\npb = Pastebin()\nid1 = pb.create_paste(\"Hello, World!\", 3600)\nprint(f\"ID: {id1}\")\nprint(f\"Content: {pb.get_paste(id1)}\")",
     "fullSolution": "from datetime import datetime, timedelta\n\nclass Paste:\n    def __init__(self, paste_id, content, ttl_seconds):\n        self.id = paste_id\n        self.content = content\n        self.expires_at = datetime.now() + timedelta(seconds=ttl_seconds) if ttl_seconds > 0 else None\n\n    def is_expired(self):\n        return self.expires_at is not None and datetime.now() > self.expires_at\n\nclass Pastebin:\n    def __init__(self):\n        self.pastes = {}\n        self.counter = 1000\n        self.BASE62 = \"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\"\n\n    def create_paste(self, content, ttl):\n        paste_id = self.encode_base62(self.counter)\n        self.counter += 1\n        paste = Paste(paste_id, content, ttl)\n        self.pastes[paste_id] = paste\n        return paste_id\n\n    def get_paste(self, paste_id):\n        paste = self.pastes.get(paste_id)\n        if paste is None:\n            return None\n        if paste.is_expired():\n            del self.pastes[paste_id]\n            return None\n        return paste.content\n\n    def encode_base62(self, num):\n        if num == 0:\n            return \"0\"\n        result = []\n        while num > 0:\n            result.append(self.BASE62[num % 62])\n            num //= 62\n        return ''.join(reversed(result))\n\npb = Pastebin()\nid1 = pb.create_paste(\"public class Hello {}\", 3600)\nprint(f\"Paste ID: {id1}\")\nprint(f\"Content: {pb.get_paste(id1)}\")\nid2 = pb.create_paste(\"def hello(): print('Hi')\", 10)\nprint(f\"Paste ID 2: {id2}\")\nprint(f\"Total pastes: 2\")",
@@ -10771,7 +10771,7 @@
   {
     "id": 642,
     "title": "Design Rate Limiter",
-    "description": "Implement token bucket rate limiting to control API request rates and prevent abuse",
+    "description": "Implement token bucket rate limiting to control API request rates and prevent abuse.",
     "language": "python",
     "initialCode": "# Design Rate Limiter using Token Bucket\n# TODO: Implement allow_request() with token bucket\n\nimport time\n\nclass RateLimiter:\n    def __init__(self, capacity, refill_rate):\n        self.capacity = capacity\n        self.tokens = capacity\n        self.refill_rate = refill_rate\n        self.last_refill = time.time()\n\n    def allow_request(self):\n        # TODO: Refill tokens based on time elapsed\n        # TODO: Check if token available\n        pass\n\nlimiter = RateLimiter(5, 1)\nfor i in range(7):\n    print(f\"Request {i+1}: {'Allowed' if limiter.allow_request() else 'Blocked'}\")",
     "fullSolution": "import time\n\nclass RateLimiter:\n    def __init__(self, capacity, refill_rate):\n        self.capacity = capacity\n        self.tokens = capacity\n        self.refill_rate = refill_rate\n        self.last_refill = time.time()\n\n    def allow_request(self):\n        self.refill_tokens()\n        if self.tokens > 0:\n            self.tokens -= 1\n            return True\n        return False\n\n    def refill_tokens(self):\n        now = time.time()\n        elapsed = now - self.last_refill\n        tokens_to_add = int(elapsed * self.refill_rate)\n        if tokens_to_add > 0:\n            self.tokens = min(self.capacity, self.tokens + tokens_to_add)\n            self.last_refill = now\n\nlimiter = RateLimiter(3, 1)\nfor i in range(5):\n    print(f\"Request {i+1}: {'Allowed' if limiter.allow_request() else 'Blocked'}\")\ntime.sleep(2)\nprint(f\"After 2s: {'Allowed' if limiter.allow_request() else 'Blocked'}\")",
@@ -10790,7 +10790,7 @@
   {
     "id": 643,
     "title": "Design Instagram/Image Service",
-    "description": "Design a photo sharing service with image upload, storage, thumbnails, and CDN delivery",
+    "description": "Design a photo sharing service with image upload, storage, thumbnails, and CDN delivery.",
     "language": "python",
     "initialCode": "# Design an image service like Instagram\n# Implement basic upload, retrieve, and feed functionality\n\nclass ImageService:\n    def __init__(self):\n        # Your code here\n        pass\n\n    def upload_image(self, user_id, image_url):\n        # Your code here\n        pass\n\n    def get_image(self, image_id):\n        # Your code here\n        pass\n\n    def get_user_feed(self, user_id):\n        # Your code here\n        pass\n\n# Test\nservice = ImageService()\nprint(\"Image service initialized\")\n",
     "fullSolution": "# Design an image service like Instagram\n\nfrom typing import List, Dict\nfrom collections import defaultdict\nimport time\n\nclass ImageService:\n    def __init__(self):\n        self.images = {}  # image_id -> {user_id, url, timestamp}\n        self.user_images = defaultdict(list)  # user_id -> [image_ids]\n        self.next_id = 1\n\n    def upload_image(self, user_id: str, image_url: str) -> str:\n        \"\"\"Upload an image and return image_id\"\"\"\n        image_id = f\"img_{self.next_id}\"\n        self.next_id += 1\n\n        self.images[image_id] = {\n            'user_id': user_id,\n            'url': image_url,\n            'timestamp': time.time()\n        }\n        self.user_images[user_id].append(image_id)\n        return image_id\n\n    def get_image(self, image_id: str) -> Dict:\n        \"\"\"Retrieve image by ID\"\"\"\n        return self.images.get(image_id, {})\n\n    def get_user_feed(self, user_id: str) -> List[Dict]:\n        \"\"\"Get all images for a user\"\"\"\n        image_ids = self.user_images.get(user_id, [])\n        return [self.images[img_id] for img_id in image_ids]\n\n# Test\nservice = ImageService()\nimg_id = service.upload_image(\"user1\", \"https://example.com/photo.jpg\")\nprint(f\"Uploaded: {img_id}\")\nprint(f\"Image: {service.get_image(img_id)}\")\nprint(f\"Feed: {service.get_user_feed('user1')}\")\n",
@@ -10810,7 +10810,7 @@
   {
     "id": 644,
     "title": "Design Twitter/Social Feed",
-    "description": "Design a social media feed with tweet posting, timeline generation, and fan-out strategies",
+    "description": "Design a social media feed with tweet posting, timeline generation, and fan-out strategies.",
     "language": "python",
     "initialCode": "# Design Twitter/Social Feed\n# System design lesson - implement key components\n\nclass Service:\n    def __init__(self):\n        # Initialize data structures\n        pass\n\n    def handle_request(self, data):\n        # Your code here\n        pass\n\n# Test\nservice = Service()\nprint(\"Service initialized\")\n",
     "fullSolution": "# Design Twitter/Social Feed\n# Reference implementation\n\nclass Service:\n    def __init__(self):\n        self.data = {}\n        print(f\"Initialized: Design Twitter/Social Feed\")\n\n    def handle_request(self, request_data):\n        \"\"\"Process request\"\"\"\n        # Store or retrieve data\n        if 'key' in request_data:\n            self.data[request_data['key']] = request_data.get('value')\n            return {'status': 'success'}\n        return {'status': 'error'}\n\n# Test\nservice = Service()\nresult = service.handle_request({'key': 'test', 'value': 'data'})\nprint(f\"Result: {result}\")\n",
@@ -11265,7 +11265,7 @@
   {
     "id": 670,
     "title": "SQL Injection Prevention",
-    "description": "Learn to prevent SQL injection attacks using parameterized queries and prepared statements",
+    "description": "Learn to prevent SQL injection attacks using parameterized queries and prepared statements.",
     "language": "python",
     "initialCode": "# SQL Injection Prevention\n# VULNERABLE: String formatting\n# SAFE: Parameterized queries\n\ndef unsafe_query(username):\n    # TODO: Show vulnerable query\n    pass\n\ndef safe_query(username):\n    # TODO: Use parameterized query (? or %s)\n    pass\n\nattack = \"admin' OR '1'='1\"\nprint(\"UNSAFE:\", unsafe_query(attack))\nprint(\"SAFE:\", safe_query(attack))",
     "fullSolution": "def unsafe_query(username):\n    return f\"SELECT * FROM users WHERE username='{username}'\"\n    # Attack: username = \"admin' OR '1'='1\"\n\ndef safe_query(username):\n    # Use parameterized query with ? or %s placeholder\n    return \"SELECT * FROM users WHERE username=?\"\n    # Database driver escapes the parameter\n\nattack = \"admin' OR '1'='1\"\n\nprint(\"SQL Injection Prevention Demo\")\nprint(\"=\" * 40)\nprint()\nprint(\"UNSAFE Query:\")\nprint(unsafe_query(attack))\nprint(\"Result: Bypasses authentication!\")\nprint()\nprint(\"SAFE Query:\")\nprint(safe_query(\"admin\"))\nprint(f\"Parameter: {attack}\")\nprint(\"Result: Treats input as literal string\")",
@@ -11284,7 +11284,7 @@
   {
     "id": 671,
     "title": "XSS (Cross-Site Scripting) Defense",
-    "description": "Prevent XSS attacks with output encoding, Content Security Policy, and input sanitization",
+    "description": "Prevent XSS attacks with output encoding, Content Security Policy, and input sanitization.",
     "language": "python",
     "initialCode": "# XSS (Cross-Site Scripting) Defense\n\ndef solve_problem(data):\n    # Your code here\n    pass\n\n# Test\nprint(solve_problem([1, 2, 3]))\n",
     "fullSolution": "# XSS (Cross-Site Scripting) Defense\n\ndef solve_problem(data):\n    \"\"\"Solve the problem\"\"\"\n    result = []\n    for item in data:\n        result.append(item * 2)\n    return result\n\n# Test\ntest_data = [1, 2, 3]\nprint(f\"Input: {test_data}\")\nprint(f\"Output: {solve_problem(test_data)}\")\n",
@@ -11436,7 +11436,7 @@
   {
     "id": 680,
     "title": "Code Review Best Practices",
-    "description": "Learn to conduct effective code reviews with constructive feedback and collaboration",
+    "description": "Learn to conduct effective code reviews with constructive feedback and collaboration.",
     "language": "python",
     "initialCode": "# Code Review Exercise\n# Review this code and identify improvements\n\ndef process_data(data):\n    for i in range(len(data)):\n        item=data[i]\n        if item!=None:\n            print(item.upper())\n\n# TODO: List code review comments\n\ndata = [\"apple\", \"banana\", None, \"cherry\"]\nprocess_data(data)",
     "fullSolution": "# ORIGINAL (with issues):\ndef process_data_old(data):\n    for i in range(len(data)):\n        item=data[i]\n        if item!=None:\n            print(item.upper())\n\n# IMPROVED (after code review):\ndef process_data(data):\n    if not data:\n        return\n\n    for item in data:        # Pythonic iteration\n        if item is not None:  # Use 'is not None'\n            print(item.upper())\n\ndata = [\"apple\", \"banana\", None, \"cherry\"]\n\nprint(\"Original:\")\nprocess_data_old(data)\n\nprint(\"\\nImproved:\")\nprocess_data(data)\n\nprint(\"\\nReview Comments:\")\nprint(\"1. Use direct iteration instead of range(len())\")\nprint(\"2. Use 'is not None' instead of '!=None'\")\nprint(\"3. Add spacing around operators\")\nprint(\"4. Add input validation\")",
@@ -11455,7 +11455,7 @@
   {
     "id": 681,
     "title": "Writing Technical Documentation",
-    "description": "Create clear, comprehensive technical documentation including README, API docs, and architecture guides",
+    "description": "Create clear, comprehensive technical documentation including README, API docs, and architecture guides.",
     "language": "python",
     "initialCode": "# Writing Technical Documentation\n\ndef solve_problem(data):\n    # Your code here\n    pass\n\n# Test\nprint(solve_problem([1, 2, 3]))\n",
     "fullSolution": "# Writing Technical Documentation\n\ndef solve_problem(data):\n    \"\"\"Solve the problem\"\"\"\n    result = []\n    for item in data:\n        result.append(item * 2)\n    return result\n\n# Test\ntest_data = [1, 2, 3]\nprint(f\"Input: {test_data}\")\nprint(f\"Output: {solve_problem(test_data)}\")\n",

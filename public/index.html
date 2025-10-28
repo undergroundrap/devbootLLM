@@ -381,7 +381,7 @@
                                 </button>
                             </div>
                             <div id="progress-container" class="flex-grow mx-8 lg:mx-16 flex items-center space-x-4">
-                                 <span id="progress-label" class="text-sm font-medium text-gray-400 whitespace-nowrap"></span>
+                                 <span id="progress-label" class="text-sm font-medium text-gray-400 whitespace-nowrap" title="700 total lessons (lesson IDs go up to 735 with intentional gaps for bridging lessons)"></span>
                                  <div class="w-full bg-[#3c4043] rounded-full h-2.5">
                                      <div id="progress-bar" class="bg-violet-500 h-2.5 rounded-full transition-all duration-500 ease-out"></div>
                                 </div>
@@ -1327,7 +1327,7 @@
                     const completedCount = Object.values(this.lessonCompletion).filter(Boolean).length;
                     const progress = (completedCount / this.lessons.length) * 100;
                     this.elements.progressBar.style.width = `${progress}%`;
-                    this.elements.progressLabel.textContent = `Progress: ${completedCount}/${this.lessons.length}`;
+                    this.elements.progressLabel.textContent = `Completed: ${completedCount}/${this.lessons.length} lessons`;
                 }
 
                 toggleSidebar() {

@@ -1641,7 +1641,10 @@
                         console.error('[loadLessonsForTrack] Exception:', e);
                         this.showToast('Failed loading lessons for course', 'error');
                     } finally {
-                        if (this.currentLessonIndex >= this.lessons.length) {
+                        // Ensure valid lesson index
+                        if (!this.lessons || this.lessons.length === 0) {
+                            this.currentLessonIndex = 0;
+                        } else if (this.currentLessonIndex < 0 || this.currentLessonIndex >= this.lessons.length) {
                             this.currentLessonIndex = 0;
                         }
                         if (this.elements && this.elements.lessonList) {
@@ -1649,7 +1652,8 @@
                             this.refreshTagFilterOptions();
                             this.initTagFilter();
                             this.populateLessonSidebar();
-                            this.loadLesson(this.currentLessonIndex, { isReload: true });
+                            // Don't load lesson here - let the caller decide
+                            // This prevents double-loading when switching tracks
                         }
                     }
                 }
@@ -1703,10 +1707,12 @@
                         this.currentLessonIndex = state.currentLessonIndex || 0;
                         this.userCode = state.userCode || {};
                         this.lessonCompletion = state.lessonCompletion || {};
+                        console.log('[loadStateFromDb] Loaded saved state, lesson index:', this.currentLessonIndex);
                     } else {
                         this.currentLessonIndex = 0;
                         this.userCode = {};
                         this.lessonCompletion = {};
+                        console.log('[loadStateFromDb] No saved state, starting at lesson 0');
                     }
                     this.loadLesson(this.currentLessonIndex, {isReload: true});
                     this.populateLessonSidebar();

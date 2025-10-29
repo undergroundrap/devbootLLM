@@ -4,14 +4,15 @@
 
 ### ✅ Fixed This Session - Final Push to 700/700
 
-All lessons fixed this session (6 total):
+All lessons fixed this session (7 total):
 
 1. **Lesson 334**: Windows shared_memory compatibility - Keep seed reference alive
-2. **Lesson 421**: Exception handling - Wrap in try-except to print traceback
-3. **Lesson 450**: Custom logging formatter - Mock time for consistent timestamps
-4. **Lesson 467**: Chain of Responsibility - Fix output formatting
-5. **Lesson 504**: Visitor Pattern - Update expected output to integers (24, 20)
-6. **Lesson 643**: Instagram design - Remove extra feed print statement
+2. **Lesson 392**: asyncio.wait race - Fix race condition for deterministic output
+3. **Lesson 421**: Exception handling - Wrap in try-except to print traceback
+4. **Lesson 450**: Custom logging formatter - Mock time for consistent timestamps
+5. **Lesson 467**: Chain of Responsibility - Fix output formatting
+6. **Lesson 504**: Visitor Pattern - Update expected output to integers (24, 20)
+7. **Lesson 643**: Instagram design - Remove extra feed print statement
 
 ### Previously Fixed (Earlier Sessions)
 

@@ -11,6 +11,7 @@ yarn-error.log
 # Optional editor directories
 .vscode/
 .idea/
+.claude/settings.local.json
 
 # OS generated files
 .DS_Store

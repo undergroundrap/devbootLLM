@@ -17,6 +17,11 @@
 - **Location**: `public/lessons-python.json` - Lesson ID 103
 - **Fix Applied**: Updated expected output to include both 3s (correct merge behavior)
 
+### ✅ Python Lesson 450: Custom logging formatter - FIXED
+- **Issue**: Runtime crash - TypeError from `logger.addHandler(logger)`
+- **Location**: `public/lessons-python.json` - Lesson ID 450
+- **Fix Applied**: Changed `logger.addHandler(logger)` → `logger.addHandler(handler)` AND StreamHandler() → StreamHandler(sys.stdout)
+
 ## Priority: MEDIUM - Test Environment (Not Code Bugs)
 
 ### Python Lesson 95: Logging
@@ -67,9 +72,9 @@
 ## Summary Statistics
 
 - **Total Python Lessons**: 700
-- **Critical bugs FIXED**: 3 ✅
+- **Critical bugs FIXED**: 4 ✅ (Lessons 58, 93, 103, 450)
 - **Lessons with environment issues**: 10-15 (~2%) - Not actual bugs
-- **Lessons working perfectly**: 685+ (~98%)
+- **Lessons working perfectly**: 686+ (~98%)
 
 ## Next Steps (Optional)
 

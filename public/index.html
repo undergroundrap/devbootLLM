@@ -1188,7 +1188,7 @@
                         // Render derived tags
                         try {
                             const tags = this.deriveTagsForLesson(lesson);
-                            const chips = (tags || []).map(t => `<span class="px-2 py-0.5 text-xs rounded-full ${this.getTagColor(t)} border" title="${this.getTagTooltip(t)}">${t}</span>`).join('');
+                            const chips = (tags || []).map(t => `<span class="px-2 py-0.5 text-xs rounded-full border" style="${this.getTagColor(t)}" title="${this.getTagTooltip(t)}">${t}</span>`).join('');
                             if (this.elements.lessonTags) this.elements.lessonTags.innerHTML = chips;
                         } catch (_) { if (this.elements.lessonTags) this.elements.lessonTags.innerHTML = ''; }
                         
@@ -1610,76 +1610,76 @@
                 }
 
                 getTagColor(tag) {
-                    // Category-based color coding for better visual identification
+                    // Returns inline style string for tag colors (using hex colors for reliability)
                     const colors = {
                         // Difficulty levels - Purple shades
-                        'Beginner': 'bg-purple-600/80 border-purple-500/60 text-purple-100',
-                        'Intermediate': 'bg-purple-500/80 border-purple-400/60 text-purple-100',
-                        'Advanced': 'bg-purple-700/80 border-purple-600/60 text-purple-100',
-                        'Expert': 'bg-purple-800/80 border-purple-700/60 text-purple-100',
-                        'Enterprise': 'bg-purple-900/80 border-purple-800/60 text-purple-100',
-                        'FAANG': 'bg-yellow-600/80 border-yellow-500/60 text-yellow-100',
+                        'Beginner': 'background: rgba(147, 51, 234, 0.8); border-color: rgba(168, 85, 247, 0.6); color: #e9d5ff;',
+                        'Intermediate': 'background: rgba(168, 85, 247, 0.8); border-color: rgba(192, 132, 252, 0.6); color: #e9d5ff;',
+                        'Advanced': 'background: rgba(126, 34, 206, 0.8); border-color: rgba(147, 51, 234, 0.6); color: #e9d5ff;',
+                        'Expert': 'background: rgba(107, 33, 168, 0.8); border-color: rgba(126, 34, 206, 0.6); color: #e9d5ff;',
+                        'Enterprise': 'background: rgba(88, 28, 135, 0.8); border-color: rgba(107, 33, 168, 0.6); color: #e9d5ff;',
+                        'FAANG': 'background: rgba(202, 138, 4, 0.8); border-color: rgba(234, 179, 8, 0.6); color: #fef3c7;',
 
                         // Core Concepts - Blue shades
-                        'OOP': 'bg-blue-600/80 border-blue-500/60 text-blue-100',
-                        'Functional': 'bg-blue-500/80 border-blue-400/60 text-blue-100',
-                        'Control Flow': 'bg-cyan-600/80 border-cyan-500/60 text-cyan-100',
-                        'Basics': 'bg-sky-600/80 border-sky-500/60 text-sky-100',
+                        'OOP': 'background: rgba(37, 99, 235, 0.8); border-color: rgba(59, 130, 246, 0.6); color: #dbeafe;',
+                        'Functional': 'background: rgba(59, 130, 246, 0.8); border-color: rgba(96, 165, 250, 0.6); color: #dbeafe;',
+                        'Control Flow': 'background: rgba(8, 145, 178, 0.8); border-color: rgba(6, 182, 212, 0.6); color: #cffafe;',
+                        'Basics': 'background: rgba(3, 105, 161, 0.8); border-color: rgba(14, 165, 233, 0.6); color: #e0f2fe;',
 
                         // Data Structures - Green shades
-                        'Collections': 'bg-green-600/80 border-green-500/60 text-green-100',
-                        'HashMap': 'bg-green-500/80 border-green-400/60 text-green-100',
-                        'HashSet': 'bg-green-400/80 border-green-300/60 text-green-100',
-                        'Arrays': 'bg-emerald-600/80 border-emerald-500/60 text-emerald-100',
-                        'Lists': 'bg-emerald-500/80 border-emerald-400/60 text-emerald-100',
-                        'Strings': 'bg-teal-600/80 border-teal-500/60 text-teal-100',
-                        'Queue': 'bg-emerald-700/80 border-emerald-600/60 text-emerald-100',
-                        'Stack': 'bg-emerald-800/80 border-emerald-700/60 text-emerald-100',
-                        'Tree': 'bg-lime-600/80 border-lime-500/60 text-lime-100',
-                        'Trie': 'bg-lime-700/80 border-lime-600/60 text-lime-100',
+                        'Collections': 'background: rgba(22, 163, 74, 0.8); border-color: rgba(34, 197, 94, 0.6); color: #dcfce7;',
+                        'HashMap': 'background: rgba(34, 197, 94, 0.8); border-color: rgba(74, 222, 128, 0.6); color: #dcfce7;',
+                        'HashSet': 'background: rgba(74, 222, 128, 0.8); border-color: rgba(134, 239, 172, 0.6); color: #dcfce7;',
+                        'Arrays': 'background: rgba(5, 150, 105, 0.8); border-color: rgba(16, 185, 129, 0.6); color: #d1fae5;',
+                        'Lists': 'background: rgba(16, 185, 129, 0.8); border-color: rgba(52, 211, 153, 0.6); color: #d1fae5;',
+                        'Strings': 'background: rgba(13, 148, 136, 0.8); border-color: rgba(20, 184, 166, 0.6); color: #ccfbf1;',
+                        'Queue': 'background: rgba(4, 120, 87, 0.8); border-color: rgba(5, 150, 105, 0.6); color: #d1fae5;',
+                        'Stack': 'background: rgba(6, 95, 70, 0.8); border-color: rgba(4, 120, 87, 0.6); color: #d1fae5;',
+                        'Tree': 'background: rgba(101, 163, 13, 0.8); border-color: rgba(132, 204, 22, 0.6); color: #ecfccb;',
+                        'Trie': 'background: rgba(77, 124, 15, 0.8); border-color: rgba(101, 163, 13, 0.6); color: #ecfccb;',
 
                         // Advanced Topics - Orange/Red shades
-                        'Concurrency': 'bg-orange-600/80 border-orange-500/60 text-orange-100',
-                        'Async': 'bg-orange-500/80 border-orange-400/60 text-orange-100',
-                        'Streams': 'bg-amber-600/80 border-amber-500/60 text-amber-100',
-                        'Algorithms': 'bg-red-600/80 border-red-500/60 text-red-100',
-                        'Design Patterns': 'bg-rose-600/80 border-rose-500/60 text-rose-100',
-                        'Performance': 'bg-amber-700/80 border-amber-600/60 text-amber-100',
+                        'Concurrency': 'background: rgba(234, 88, 12, 0.8); border-color: rgba(249, 115, 22, 0.6); color: #fed7aa;',
+                        'Async': 'background: rgba(249, 115, 22, 0.8); border-color: rgba(251, 146, 60, 0.6); color: #fed7aa;',
+                        'Streams': 'background: rgba(217, 119, 6, 0.8); border-color: rgba(245, 158, 11, 0.6); color: #fde68a;',
+                        'Algorithms': 'background: rgba(220, 38, 38, 0.8); border-color: rgba(239, 68, 68, 0.6); color: #fecaca;',
+                        'Design Patterns': 'background: rgba(225, 29, 72, 0.8); border-color: rgba(244, 63, 94, 0.6); color: #fecdd3;',
+                        'Performance': 'background: rgba(180, 83, 9, 0.8); border-color: rgba(217, 119, 6, 0.6); color: #fde68a;',
 
                         // System/Infrastructure - Indigo/Violet shades
-                        'System Design': 'bg-indigo-600/80 border-indigo-500/60 text-indigo-100',
-                        'System Design Interview': 'bg-indigo-700/80 border-indigo-600/60 text-indigo-100',
-                        'Web': 'bg-violet-600/80 border-violet-500/60 text-violet-100',
-                        'Security': 'bg-red-700/80 border-red-600/60 text-red-100',
-                        'I/O': 'bg-slate-600/80 border-slate-500/60 text-slate-100',
-                        'Database': 'bg-blue-700/80 border-blue-600/60 text-blue-100',
-                        'Caching': 'bg-cyan-700/80 border-cyan-600/60 text-cyan-100',
-                        'AWS': 'bg-amber-800/80 border-amber-700/60 text-amber-100',
-                        'Networking': 'bg-sky-700/80 border-sky-600/60 text-sky-100',
+                        'System Design': 'background: rgba(79, 70, 229, 0.8); border-color: rgba(99, 102, 241, 0.6); color: #e0e7ff;',
+                        'System Design Interview': 'background: rgba(67, 56, 202, 0.8); border-color: rgba(79, 70, 229, 0.6); color: #e0e7ff;',
+                        'Web': 'background: rgba(124, 58, 237, 0.8); border-color: rgba(139, 92, 246, 0.6); color: #ede9fe;',
+                        'Security': 'background: rgba(185, 28, 28, 0.8); border-color: rgba(220, 38, 38, 0.6); color: #fecaca;',
+                        'I/O': 'background: rgba(71, 85, 105, 0.8); border-color: rgba(100, 116, 139, 0.6); color: #e2e8f0;',
+                        'Database': 'background: rgba(29, 78, 216, 0.8); border-color: rgba(37, 99, 235, 0.6); color: #dbeafe;',
+                        'Caching': 'background: rgba(14, 116, 144, 0.8); border-color: rgba(8, 145, 178, 0.6); color: #cffafe;',
+                        'AWS': 'background: rgba(146, 64, 14, 0.8); border-color: rgba(180, 83, 9, 0.6); color: #fde68a;',
+                        'Networking': 'background: rgba(3, 105, 161, 0.8); border-color: rgba(7, 89, 133, 0.6); color: #e0f2fe;',
 
                         // Testing & Quality - Purple/Pink shades
-                        'Testing': 'bg-purple-500/80 border-purple-400/60 text-purple-100',
-                        'Best Practices': 'bg-violet-500/80 border-violet-400/60 text-violet-100',
+                        'Testing': 'background: rgba(168, 85, 247, 0.8); border-color: rgba(192, 132, 252, 0.6); color: #e9d5ff;',
+                        'Best Practices': 'background: rgba(139, 92, 246, 0.8); border-color: rgba(167, 139, 250, 0.6); color: #ede9fe;',
 
                         // Special Topics - Pink/Fuchsia shades
-                        'Regex': 'bg-pink-600/80 border-pink-500/60 text-pink-100',
-                        'Date/Time': 'bg-fuchsia-600/80 border-fuchsia-500/60 text-fuchsia-100',
-                        'Optional': 'bg-purple-400/80 border-purple-300/60 text-purple-100',
-                        'Recursion': 'bg-orange-700/80 border-orange-600/60 text-orange-100',
-                        'Functions': 'bg-cyan-500/80 border-cyan-400/60 text-cyan-100',
-                        'Math and Stats': 'bg-indigo-500/80 border-indigo-400/60 text-indigo-100',
+                        'Regex': 'background: rgba(219, 39, 119, 0.8); border-color: rgba(236, 72, 153, 0.6); color: #fce7f3;',
+                        'Date/Time': 'background: rgba(192, 38, 211, 0.8); border-color: rgba(217, 70, 239, 0.6); color: #fae8ff;',
+                        'Optional': 'background: rgba(192, 132, 252, 0.8); border-color: rgba(216, 180, 254, 0.6); color: #e9d5ff;',
+                        'Recursion': 'background: rgba(180, 83, 9, 0.8); border-color: rgba(217, 119, 6, 0.6); color: #fed7aa;',
+                        'Functions': 'background: rgba(6, 182, 212, 0.8); border-color: rgba(34, 211, 238, 0.6); color: #cffafe;',
+                        'Math and Stats': 'background: rgba(99, 102, 241, 0.8); border-color: rgba(129, 140, 248, 0.6); color: #e0e7ff;',
 
                         // Patterns - Rose/Pink shades
-                        'Command': 'bg-rose-500/80 border-rose-400/60 text-rose-100',
-                        'Builder': 'bg-rose-400/80 border-rose-300/60 text-rose-100',
+                        'Command': 'background: rgba(244, 63, 94, 0.8); border-color: rgba(251, 113, 133, 0.6); color: #fecdd3;',
+                        'Builder': 'background: rgba(251, 113, 133, 0.8); border-color: rgba(253, 164, 175, 0.6); color: #fecdd3;',
 
                         // Professional Skills - Teal/Slate shades
-                        'Soft Skills': 'bg-teal-500/80 border-teal-400/60 text-teal-100',
-                        'Workflow': 'bg-slate-500/80 border-slate-400/60 text-slate-100',
-                        'Tooling': 'bg-slate-700/80 border-slate-600/60 text-slate-100',
+                        'Soft Skills': 'background: rgba(20, 184, 166, 0.8); border-color: rgba(45, 212, 191, 0.6); color: #ccfbf1;',
+                        'Workflow': 'background: rgba(100, 116, 139, 0.8); border-color: rgba(148, 163, 184, 0.6); color: #e2e8f0;',
+                        'Tooling': 'background: rgba(51, 65, 85, 0.8); border-color: rgba(71, 85, 105, 0.6); color: #e2e8f0;',
                     };
 
-                    return colors[tag] || 'bg-gray-600/80 border-gray-500/60 text-gray-100';
+                    return colors[tag] || 'background: rgba(75, 85, 99, 0.8); border-color: rgba(107, 114, 128, 0.6); color: #f3f4f6;';
                 }
 
                 getTagTooltip(tag) {

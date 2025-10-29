@@ -551,6 +551,7 @@
                                     </div>
                                     <div class="flex items-center space-x-4">
                                         <button id="explain-code-btn" class="btn btn-info" title="Select code in the editor to explain it with AI" disabled><i class="fa-solid fa-comments"></i><span>Explain Selection</span></button>
+                                        <button id="eli5-code-btn" class="btn btn-info" title="Select code in the editor to explain it in simple terms (ELI5)" disabled><i class="fa-solid fa-child"></i><span>ELI5 Selection</span></button>
                                         <button id="solve-btn" class="btn btn-warning" title="Show the solution for this lesson"><i class="fa-solid fa-lightbulb"></i><span>Solve Lesson</span></button>
                                         <button id="reset-btn" class="btn btn-secondary" title="Reset the code to its original state"><i class="fa-solid fa-arrow-rotate-left"></i><span>Reset Code</span></button>
                                         <button id="run-btn" class="btn btn-success text-lg py-2.5 px-8" title="Check your code (Ctrl+Enter)"><i class="fa-solid fa-play"></i><span>Check Code</span></button>
@@ -607,6 +608,9 @@
                                         </button>
                                         <button class="quick-action-btn" id="best-practices-btn" title="Learn professional coding patterns and industry best practices for this topic">
                                             <i class="fa-solid fa-star"></i>Best Practices
+                                        </button>
+                                        <button class="quick-action-btn" id="eli5-btn" title="Explain this lesson concept in simple, beginner-friendly terms (Explain Like I'm 5)">
+                                            <i class="fa-solid fa-child"></i>ELI5
                                         </button>
                                     </div>
                                     <div class="flex items-start bg-gemini-bg-tertiary rounded-lg border gemini-border focus-within:border-violet-500 transition-colors">
@@ -780,7 +784,7 @@
                         'confirm-modal-cancel-btn', 'confirm-modal-confirm-btn', 'toast-container',
                         'clear-console-btn', 'db-status-light', 'db-status-text', 'reset-progress-btn',
                         'left-panel', 'right-panel', 'resizer', 'lesson-sidebar', 'sidebar-toggle-btn',
-                        'lesson-list', 'confetti-canvas', 'solve-btn', 'ai-clear-btn', 'course-select', 'course-title', 'lesson-filter', 'tag-filter', 'lesson-search', 'lesson-tags', 'explain-code-btn'
+                        'lesson-list', 'confetti-canvas', 'solve-btn', 'ai-clear-btn', 'course-select', 'course-title', 'lesson-filter', 'tag-filter', 'lesson-search', 'lesson-tags', 'explain-code-btn', 'eli5-code-btn', 'eli5-btn'
                     ];
                     ids.forEach(id => {
                         const camelCaseId = id.replace(/-(\w)/g, (_, c) => c.toUpperCase());
@@ -871,15 +875,23 @@
                             this.saveState(false);
                         });
 
-                        // Listen for selection changes to enable/disable the Explain Code button
+                        // Listen for selection changes to enable/disable the Explain Code and ELI5 buttons
                         this.editor.onDidChangeCursorSelection(() => {
                             const selection = this.editor.getSelection();
                             const hasSelection = !selection.isEmpty();
+
                             if (this.elements.explainCodeBtn) {
                                 this.elements.explainCodeBtn.disabled = !hasSelection;
                                 this.elements.explainCodeBtn.title = hasSelection
                                     ? 'Explain the highlighted code using AI'
                                     : 'Select code in the editor to explain it with AI';
+                            }
+
+                            if (this.elements.eli5CodeBtn) {
+                                this.elements.eli5CodeBtn.disabled = !hasSelection;
+                                this.elements.eli5CodeBtn.title = hasSelection
+                                    ? 'Explain the highlighted code in simple terms (ELI5)'
+                                    : 'Select code in the editor to explain it in simple terms (ELI5)';
                             }
                         });
 
@@ -954,6 +966,8 @@
                     if (explainBtn) explainBtn.addEventListener('click', () => this.askQuickQuestion('Explain the concept in this lesson'));
                     if (debugBtn) debugBtn.addEventListener('click', () => this.askQuickQuestion('Help me debug my code'));
                     if (bestPracticesBtn) bestPracticesBtn.addEventListener('click', () => this.askQuickQuestion('Show me best practices for this'));
+                    if (this.elements.eli5Btn) this.elements.eli5Btn.addEventListener('click', () => this.askELI5());
+                    if (this.elements.eli5CodeBtn) this.elements.eli5CodeBtn.addEventListener('click', () => this.eli5SelectedCode());
                     this.elements.viewTutorialBtn.addEventListener('click', () => this.openTutorial());
                     this.elements.closeTutorialBtn.addEventListener('click', () => this.closeModal('tutorial'));
                     this.elements.tutorialModalBg.addEventListener('click', () => this.closeModal('tutorial'));
@@ -1294,6 +1308,67 @@
                     }
 
                     this.showToast('Asking AI to explain selected code...', 'info');
+                }
+
+                eli5SelectedCode() {
+                    if (!this.editor) return;
+
+                    const selection = this.editor.getSelection();
+                    if (!selection || selection.isEmpty()) {
+                        this.showToast('Please select some code to explain in simple terms', 'warning');
+                        return;
+                    }
+
+                    const selectedText = this.editor.getModel().getValueInRange(selection);
+                    if (!selectedText || selectedText.trim().length === 0) {
+                        this.showToast('Please select some code to explain in simple terms', 'warning');
+                        return;
+                    }
+
+                    // Get current lesson context
+                    const lesson = this.lessons[this.currentLessonIndex];
+                    const lessonContext = lesson ? `Current lesson: ${lesson.id}. ${lesson.title}` : '';
+
+                    // Open AI panel if not already open
+                    if (this.elements.rightPanel && this.elements.rightPanel.style.display === 'none') {
+                        this.elements.rightPanel.style.display = 'flex';
+                    }
+
+                    // Prepare the ELI5 prompt
+                    const prompt = `Please explain the following code like I'm 5 years old (ELI5). Use simple, everyday language and analogies that a beginner can understand. Avoid technical jargon when possible, or explain it in simple terms if you must use it.\n\n\`\`\`\n${selectedText}\n\`\`\`\n\n${lessonContext ? lessonContext + '\n\n' : ''}Please:\n1. Explain what this code does using simple words and analogies\n2. Break it down step-by-step like you're teaching a complete beginner\n3. Use real-world comparisons (like comparing variables to boxes, functions to recipes, etc.)\n4. Keep it fun and easy to understand!`;
+
+                    // Set the prompt in the AI input and trigger sending
+                    if (this.elements.aiInput) {
+                        this.elements.aiInput.value = prompt;
+                        if (this.elements.aiAskBtn) {
+                            this.elements.aiAskBtn.click();
+                        }
+                    }
+
+                    this.showToast('Asking AI to explain in simple terms...', 'info');
+                }
+
+                askELI5() {
+                    const lesson = this.lessons[this.currentLessonIndex];
+                    if (!lesson) return;
+
+                    // Open AI panel if not already open
+                    if (this.elements.rightPanel && this.elements.rightPanel.style.display === 'none') {
+                        this.elements.rightPanel.style.display = 'flex';
+                    }
+
+                    // Prepare the ELI5 prompt for the whole lesson
+                    const prompt = `Please explain the concept in this lesson like I'm 5 years old (ELI5).\n\nLesson: ${lesson.title}\nDescription: ${lesson.description}\n\nUse simple, everyday language and analogies. Avoid technical jargon, or explain it in simple terms. Use real-world comparisons to make it easy to understand. Keep it fun and beginner-friendly!`;
+
+                    // Set the prompt and send
+                    if (this.elements.aiInput) {
+                        this.elements.aiInput.value = prompt;
+                        if (this.elements.aiAskBtn) {
+                            this.elements.aiAskBtn.click();
+                        }
+                    }
+
+                    this.showToast('Asking AI to explain lesson in simple terms...', 'info');
                 }
 
                 generateCommentedPythonSolution(code, lesson) {

@@ -70,10 +70,21 @@ ehthumbs.db
 
 # Test artifacts
 test_results*.txt
+java_test_results.txt
 a.txt
 b.txt
 c.txt
+c.log
+*.csv
+*.zip
+msg.txt
+note.txt
+notes.txt
+data.txt
 *.pyc
 __pycache__/
 analyze_*.py
+fix_*.py
 tutorial_issues_report.json
+d/
+src/

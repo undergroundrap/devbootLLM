@@ -25,7 +25,13 @@
       "Bash(node scripts/validate-lessons.mjs:*)",
       "Bash(node scripts/verify_database.js:*)",
       "Bash(node check_db.js:*)",
-      "Bash(node check_missing.js:*)"
+      "Bash(node check_missing.js:*)",
+      "Bash(more:*)",
+      "Bash(timeout 5 bash:*)",
+      "Bash(timeout 10 bash:*)",
+      "Bash(timeout 30 bash:*)",
+      "Bash(timeout 60 bash:*)",
+      "Bash(timeout 180 bash -c:*)"
     ],
     "deny": [],
     "ask": []

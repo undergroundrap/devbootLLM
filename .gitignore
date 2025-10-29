@@ -67,3 +67,13 @@ ehthumbs.db
 
 # SQLite data
 /data/
+
+# Test artifacts
+test_results*.txt
+a.txt
+b.txt
+c.txt
+*.pyc
+__pycache__/
+analyze_*.py
+tutorial_issues_report.json

@@ -550,7 +550,7 @@
                                          <button id="format-btn" class="btn btn-secondary !p-2.5" title="Format code (Shift+Alt+F)" aria-label="Format code"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
                                     </div>
                                     <div class="flex items-center space-x-4">
-                                        <button id="explain-code-btn" class="btn btn-info" title="Explain the highlighted code using AI" style="display: none;"><i class="fa-solid fa-comments"></i><span>Explain Selection</span></button>
+                                        <button id="explain-code-btn" class="btn btn-info" title="Select code in the editor to explain it with AI" disabled><i class="fa-solid fa-comments"></i><span>Explain Selection</span></button>
                                         <button id="solve-btn" class="btn btn-warning" title="Show the solution for this lesson"><i class="fa-solid fa-lightbulb"></i><span>Solve Lesson</span></button>
                                         <button id="reset-btn" class="btn btn-secondary" title="Reset the code to its original state"><i class="fa-solid fa-arrow-rotate-left"></i><span>Reset Code</span></button>
                                         <button id="run-btn" class="btn btn-success text-lg py-2.5 px-8" title="Check your code (Ctrl+Enter)"><i class="fa-solid fa-play"></i><span>Check Code</span></button>
@@ -871,12 +871,15 @@
                             this.saveState(false);
                         });
 
-                        // Listen for selection changes to show/hide the Explain Code button
+                        // Listen for selection changes to enable/disable the Explain Code button
                         this.editor.onDidChangeCursorSelection(() => {
                             const selection = this.editor.getSelection();
                             const hasSelection = !selection.isEmpty();
                             if (this.elements.explainCodeBtn) {
-                                this.elements.explainCodeBtn.style.display = hasSelection ? 'inline-flex' : 'none';
+                                this.elements.explainCodeBtn.disabled = !hasSelection;
+                                this.elements.explainCodeBtn.title = hasSelection
+                                    ? 'Explain the highlighted code using AI'
+                                    : 'Select code in the editor to explain it with AI';
                             }
                         });
 

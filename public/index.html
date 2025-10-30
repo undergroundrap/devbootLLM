@@ -536,10 +536,10 @@
                                 <div id="lesson-tags" class="mb-4 flex flex-wrap gap-2"></div>
 
                                 <!-- Navigation Buttons with Tutorial Button -->
-                                <div class="flex items-center justify-between">
-                                    <button id="prev-lesson-btn" class="btn btn-secondary" title="Go to the previous lesson"><i class="fa-solid fa-arrow-left"></i><span>Previous</span></button>
-                                    <button id="view-tutorial-btn" class="btn btn-info mx-auto -ml-32" title="View the tutorial for this lesson"><i class="fa-solid fa-book-open"></i><span>View Tutorial</span></button>
-                                    <button id="next-lesson-btn" class="btn btn-primary" title="Go to the next lesson"><span>Next</span><i class="fa-solid fa-arrow-right"></i></button>
+                                <div style="position: relative; display: flex; align-items: center; justify-content: space-between;">
+                                    <button id="prev-lesson-btn" class="btn btn-secondary" style="position: relative; z-index: 10;" title="Go to the previous lesson"><i class="fa-solid fa-arrow-left"></i><span>Previous</span></button>
+                                    <button id="view-tutorial-btn" class="btn btn-info" style="position: absolute; left: 50%; transform: translateX(-50%);" title="View the tutorial for this lesson"><i class="fa-solid fa-book-open"></i><span>View Tutorial</span></button>
+                                    <button id="next-lesson-btn" class="btn btn-primary" style="position: relative; z-index: 10;" title="Go to the next lesson"><span>Next</span><i class="fa-solid fa-arrow-right"></i></button>
                                 </div>
                             </div>
                             <div class="flex-grow flex flex-col relative editor-bg">

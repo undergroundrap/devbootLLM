@@ -541,16 +541,10 @@
                                 </div>
 
                                 <!-- Navigation Buttons with Tutorial Button -->
-                                <div class="grid grid-cols-3 items-center gap-4">
-                                    <div class="flex justify-start">
-                                        <button id="prev-lesson-btn" class="btn btn-secondary" title="Go to the previous lesson"><i class="fa-solid fa-arrow-left"></i><span>Previous</span></button>
-                                    </div>
-                                    <div class="flex justify-center">
-                                        <button id="view-tutorial-btn" class="btn btn-info" title="View the tutorial for this lesson"><i class="fa-solid fa-book-open"></i><span>View Tutorial</span></button>
-                                    </div>
-                                    <div class="flex justify-end">
-                                        <button id="next-lesson-btn" class="btn btn-primary" title="Go to the next lesson"><span>Next</span><i class="fa-solid fa-arrow-right"></i></button>
-                                    </div>
+                                <div class="relative flex justify-between items-center">
+                                    <button id="prev-lesson-btn" class="btn btn-secondary" title="Go to the previous lesson"><i class="fa-solid fa-arrow-left"></i><span>Previous</span></button>
+                                    <button id="view-tutorial-btn" class="btn btn-info absolute left-1/2 -translate-x-1/2" title="View the tutorial for this lesson"><i class="fa-solid fa-book-open"></i><span>View Tutorial</span></button>
+                                    <button id="next-lesson-btn" class="btn btn-primary" title="Go to the next lesson"><span>Next</span><i class="fa-solid fa-arrow-right"></i></button>
                                 </div>
                             </div>
                             <div class="flex-grow flex flex-col relative editor-bg">

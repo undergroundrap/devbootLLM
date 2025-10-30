@@ -1,0 +1,63 @@
+#!/bin/bash
+# Pre-commit hook for lesson quality validation
+# Install: cp scripts/pre-commit-hook.example .git/hooks/pre-commit
+# Make executable: chmod +x .git/hooks/pre-commit
+
+echo "🔍 Running pre-commit validation..."
+echo ""
+
+# Check if lesson files were modified
+PYTHON_MODIFIED=$(git diff --cached --name-only | grep "public/lessons-python.json")
+JAVA_MODIFIED=$(git diff --cached --name-only | grep "public/lessons-java.json")
+
+if [ -z "$PYTHON_MODIFIED" ] && [ -z "$JAVA_MODIFIED" ]; then
+  echo "✅ No lesson files modified, skipping validation"
+  exit 0
+fi
+
+echo "📝 Lesson files modified, running validation..."
+echo ""
+
+# Run comprehensive validation
+node scripts/comprehensive-validation.mjs --quiet > /tmp/validation-result.txt 2>&1
+VALIDATION_EXIT_CODE=$?
+
+if [ $VALIDATION_EXIT_CODE -ne 0 ]; then
+  echo "❌ VALIDATION FAILED - Commit blocked"
+  echo ""
+  echo "Issues found:"
+  cat /tmp/validation-result.txt
+  echo ""
+  echo "Please fix the issues above before committing."
+  echo "Or run: git commit --no-verify (NOT RECOMMENDED)"
+  exit 1
+fi
+
+# Check for critical issues
+CRITICAL_ISSUES=$(grep "Critical issues:" /tmp/validation-result.txt | grep -oE '[0-9]+' | head -1)
+
+if [ "$CRITICAL_ISSUES" != "0" ]; then
+  echo "❌ CRITICAL ISSUES FOUND - Commit blocked"
+  echo ""
+  echo "Found $CRITICAL_ISSUES critical issue(s)"
+  echo "Run: node scripts/comprehensive-validation.mjs"
+  exit 1
+fi
+
+# Check for grade regression
+CURRENT_GRADE=$(grep "OVERALL GRADE:" /tmp/validation-result.txt | grep -oE '[A-F][+-]?' | head -1)
+
+if [ "$CURRENT_GRADE" != "A+" ] && [ "$CURRENT_GRADE" != "A" ]; then
+  echo "⚠️  WARNING: Grade is $CURRENT_GRADE (not A or A+)"
+  echo ""
+  read -p "Continue with commit? (y/n) " -n 1 -r
+  echo ""
+  if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    echo "Commit cancelled"
+    exit 1
+  fi
+fi
+
+echo "✅ Validation passed - proceeding with commit"
+echo ""
+exit 0

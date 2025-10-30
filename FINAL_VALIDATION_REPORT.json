@@ -1,0 +1,47 @@
+{
+  "timestamp": "2025-10-30T16:31:39.629Z",
+  "summary": {
+    "totalLessons": 1400,
+    "criticalIssues": 0,
+    "warnings": 23,
+    "grade": "A+"
+  },
+  "python": {
+    "stats": {
+      "total": 700,
+      "withIssues": 0,
+      "withWarnings": 23,
+      "byDifficulty": {
+        "Beginner": 163,
+        "Intermediate": 225,
+        "Advanced": 201,
+        "Expert": 111,
+        "None": 0
+      },
+      "avgCodeLength": 317,
+      "avgTutorialLength": 5096,
+      "avgTagCount": "5.2"
+    },
+    "issuesCount": 0,
+    "issues": []
+  },
+  "java": {
+    "stats": {
+      "total": 700,
+      "withIssues": 0,
+      "withWarnings": 0,
+      "byDifficulty": {
+        "Beginner": 86,
+        "Intermediate": 291,
+        "Advanced": 212,
+        "Expert": 111,
+        "None": 0
+      },
+      "avgCodeLength": 688,
+      "avgTutorialLength": 5953,
+      "avgTagCount": "5.2"
+    },
+    "issuesCount": 0,
+    "issues": []
+  }
+}

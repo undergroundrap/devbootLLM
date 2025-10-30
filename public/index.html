@@ -533,12 +533,7 @@
                                 <div class="bg-[#131314] rounded-lg p-4 mb-3">
                                     <p id="lesson-description" class="text-gray-300 mb-0"></p>
                                 </div>
-                                <div id="lesson-tags" class="mb-3 flex flex-wrap gap-2"></div>
-
-                                <!-- Completed Status (centered above buttons) -->
-                                <div class="flex justify-center mb-2">
-                                    <span id="lesson-status" class="text-sm font-semibold text-gray-500"></span>
-                                </div>
+                                <div id="lesson-tags" class="mb-4 flex flex-wrap gap-2"></div>
 
                                 <!-- Navigation Buttons with Tutorial Button -->
                                 <div class="flex items-center gap-2">
@@ -1583,11 +1578,8 @@
                 // =================================================================
                 
                 updateLessonStatus(lessonId) {
-                    if (this.lessonCompletion[lessonId]) {
-                        this.elements.lessonStatus.innerHTML = '<i class="fa-solid fa-check-circle text-emerald-400 mr-2"></i>Completed!';
-                    } else {
-                        this.elements.lessonStatus.innerHTML = '';
-                    }
+                    // Lesson status is now shown by checkmark in title, not separate element
+                    // This function kept for compatibility but does nothing
                 }
                 
                 updateProgress() {

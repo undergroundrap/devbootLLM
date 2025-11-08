@@ -1,16 +1,16 @@
 {
-  "timestamp": "2025-11-08T17:40:51.522Z",
+  "timestamp": "2025-11-08T18:12:24.380Z",
   "summary": {
     "totalLessons": 1400,
     "criticalIssues": 0,
-    "warnings": 23,
+    "warnings": 16,
     "grade": "A+"
   },
   "python": {
     "stats": {
       "total": 700,
       "withIssues": 0,
-      "withWarnings": 23,
+      "withWarnings": 16,
       "byDifficulty": {
         "Beginner": 163,
         "Intermediate": 225,
@@ -18,7 +18,7 @@
         "Expert": 111,
         "None": 0
       },
-      "avgCodeLength": 317,
+      "avgCodeLength": 370,
       "avgTutorialLength": 5101,
       "avgTagCount": "5.2"
     },
@@ -37,7 +37,7 @@
         "Expert": 111,
         "None": 0
       },
-      "avgCodeLength": 688,
+      "avgCodeLength": 763,
       "avgTutorialLength": 5959,
       "avgTagCount": "5.2"
     },

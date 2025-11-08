@@ -68,14 +68,15 @@ ehthumbs.db
 # SQLite data
 /data/
 
-# Test artifacts
+# Test artifacts and temporary files
 test_results*.txt
 java_test_results.txt
 a.txt
 b.txt
 c.txt
 c.log
-*.csv
+a.csv
+data.csv
 *.zip
 msg.txt
 note.txt
@@ -85,6 +86,18 @@ data.txt
 __pycache__/
 analyze_*.py
 fix_*.py
+enhance_*.py
+test-*.py
+/test_*.py
 tutorial_issues_report.json
+*_REPORT.json
+COMPILATION_TEST_REPORT.json
+
+# Temporary test directories
 d/
-src/
+testdir/
+test-temp/
+
+# Java compiled classes from tests
+*.class
+!**/src/**/*.class

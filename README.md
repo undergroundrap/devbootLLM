@@ -1,12 +1,12 @@
 # devbootLLM - Interactive Programming Learning Platform
 
-**Learn to code with 100% verified, production-ready lessons.** Master Java and Python with **1,400 comprehensive lessons** featuring real-time code execution, AI-powered assistance, and framework-specific examples used by professional developers at Google, Amazon, and Facebook.
+**Learn to code with 100% verified, production-ready lessons.** Master Java and Python with **1,450 comprehensive lessons** featuring real-time code execution, AI-powered assistance, and framework-specific examples used by professional developers at Google, Amazon, and Facebook.
 
-## 🎉 **ALL 1,400 LESSONS VERIFIED (100%)** 🎉
+## 🎉 **ALL 1,450 LESSONS VERIFIED (100%)** 🎉
 
-✅ **700/700 Java lessons** - Every solution compiles and executes correctly
-✅ **700/700 Python lessons** - Every solution compiles and executes correctly
-✅ **100% real code** - All lessons use actual production frameworks (Spring Boot, Flask, JPA, asyncio, pandas)
+✅ **725/725 Java lessons** - Every solution compiles and executes correctly
+✅ **725/725 Python lessons** - Every solution compiles and executes correctly
+✅ **100% real code** - All lessons use actual production frameworks (Django, Spring Security, Spring Cloud, pandas, NumPy)
 ✅ **Fully tested** - Validated with actual compilers (Python 3.12, Java 17)
 ✅ **Job-ready** - From "Hello World" to employed developer in one platform
 
@@ -23,11 +23,11 @@
 ## Features
 
 ### 📚 **Comprehensive Curriculum**
-- **1,400 Interactive Lessons**: 700 per language with complete Beginner → Expert progression
+- **1,450 Interactive Lessons**: 725 per language with complete Beginner → Expert progression
 - **100% Verified Solutions**: Every solution tested with actual compilers - no broken code
 - **Real Production Frameworks**:
-  - **Python**: Flask, FastAPI, pandas, asyncio, SQLAlchemy, boto3 (AWS), Redis, Kafka, pytest
-  - **Java**: Spring Boot, JPA/Hibernate, CompletableFuture, Stream API, JUnit 5, Mockito
+  - **Python**: Django, Flask, FastAPI, pandas, NumPy, asyncio, SQLAlchemy, boto3 (AWS), Redis, Kafka, pytest
+  - **Java**: Spring Boot, Spring Security, Spring Cloud, JPA/Hibernate, CompletableFuture, Stream API, JUnit 5, Mockito
 - **5000+ Character Tutorials**: In-depth explanations with real-world examples
 - **95%+ Well-Commented Code**: Learn professional coding standards from day one
 
@@ -119,7 +119,11 @@ http://localhost:3000
 
 ## Learning Path
 
-The course is organized into 7 progressive levels with 39 bridging lessons for smooth transitions:
+The course is organized into 7 progressive levels with 39 bridging lessons for smooth transitions. **New:** Integrated Django, Spring Security, Spring Cloud, and Data Science lessons throughout the curriculum.
+
+**Framework Integration:**
+- **Python:** Django basics (after Intermediate), Django advanced (in Advanced), Data Science/pandas/NumPy (in Expert)
+- **Java:** Spring Security basics (in Advanced), Spring Security advanced (in Expert), Spring Cloud microservices (in Enterprise)
 
 ### Level 1: Beginner (Lessons 1-100)
 Foundation programming skills - variables, loops, functions, basic OOP
@@ -174,15 +178,12 @@ FAANG-level topics - cloud platforms (AWS, Azure, GCP), Kubernetes, CI/CD, syste
 - **Soft Skills (10):** Code Review, Documentation, Debugging, Git Workflow, Profiling, Stack Traces, Estimation, Agile/Scrum, Stakeholder Communication, Portfolio
 **Career Target:** Pass FAANG interviews, $200K-$400K+ offers
 
-### Level 7: Job Readiness (Lessons 690-700)
-**11 portfolio and career development lessons:**
-- **Portfolio Projects (5):** Todo REST API, Blog with Auth, E-Commerce Cart, Weather API, URL Shortener
-- **Career Prep (1):** Resume, LinkedIn, GitHub optimization
-- **Interview Mastery (1):** STAR method, live coding, behavioral questions
-- **Debug Challenge (1):** Fix 5 production bugs
-- **Code Review (1):** Professional standards and feedback
-- **Final Capstone (1):** Complete task management system
-- **Git Mastery (1):** 20 essential daily commands
+### Level 7: Job Readiness & Advanced Topics (Lessons 690-725)
+**Portfolio, career development, and advanced framework lessons:**
+- **Portfolio Projects:** Todo REST API, Blog with Auth, E-Commerce Cart, Weather API, URL Shortener
+- **Career Skills:** Resume/LinkedIn optimization, Interview mastery (STAR method, live coding), Code review, Git workflow
+- **Advanced Integrations:** Final framework deep-dives and production patterns
+- **Final Capstone:** Complete task management system with deployment
 **Career Target:** Land your first developer job, $60K-$100K starting salary
 
 ## Architecture

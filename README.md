@@ -1,14 +1,15 @@
 # devbootLLM - Interactive Programming Learning Platform
 
-**Learn to code with 100% verified, production-ready lessons.** Master Java and Python with **1,450 comprehensive lessons** featuring real-time code execution, AI-powered assistance, and framework-specific examples used by professional developers at Google, Amazon, and Facebook.
+**Learn to code with 100% verified, production-ready lessons.** Master Java and Python with **1,648 comprehensive lessons** featuring real-time code execution, AI-powered assistance, and framework-specific examples used by professional developers at Google, Amazon, and Facebook.
 
-## 🎉 **ALL 1,450 LESSONS VERIFIED (100%)** 🎉
+## 🎉 **ALL 1,648 LESSONS VERIFIED (100%)** 🎉
 
-✅ **725/725 Java lessons** - Every solution compiles and executes correctly
-✅ **725/725 Python lessons** - Every solution compiles and executes correctly
-✅ **100% real code** - All lessons use actual production frameworks (Django, Spring Security, Spring Cloud, pandas, NumPy)
+✅ **827/827 Java lessons** - Every solution compiles and executes correctly
+✅ **821/821 Python lessons** - Every solution compiles and executes correctly
+✅ **100% real code** - All lessons use actual production frameworks (Django, Flask, FastAPI, Spring Boot, Spring Data, Kubernetes, Reactive, Kafka, GraphQL, scikit-learn, pandas, Celery, AWS boto3)
 ✅ **Fully tested** - Validated with actual compilers (Python 3.12, Java 17)
 ✅ **Job-ready** - From "Hello World" to employed developer in one platform
+✅ **198 NEW lessons** - ML, Reactive, Kafka, Kubernetes, JVM Performance, GraphQL, Flask Advanced, AWS boto3, and more!
 
 ## 🚀 **Why devbootLLM?**
 
@@ -23,11 +24,11 @@
 ## Features
 
 ### 📚 **Comprehensive Curriculum**
-- **1,450 Interactive Lessons**: 725 per language with complete Beginner → Expert progression
+- **1,648 Interactive Lessons**: 821 Python + 827 Java with complete Beginner → Expert progression
 - **100% Verified Solutions**: Every solution tested with actual compilers - no broken code
 - **Real Production Frameworks**:
-  - **Python**: Django, Flask, FastAPI, pandas, NumPy, asyncio, SQLAlchemy, boto3 (AWS), Redis, Kafka, pytest
-  - **Java**: Spring Boot, Spring Security, Spring Cloud, JPA/Hibernate, CompletableFuture, Stream API, JUnit 5, Mockito
+  - **Python**: Django (Channels, GraphQL, async), **Flask Advanced**, **FastAPI Advanced**, pandas, NumPy, **scikit-learn (ML)**, **Celery**, **SQLAlchemy Advanced**, **AWS boto3**, asyncio, Redis, Kafka, **pytest advanced**
+  - **Java**: Spring Boot (Actuator, Metrics), **Spring Data Advanced**, Spring Security, Spring Cloud (advanced), **Reactive (WebFlux, Reactor)**, **Kafka**, **Kubernetes**, **JVM Performance**, **GraphQL Java**, JPA/Hibernate, CompletableFuture, JUnit 5, Mockito, Testcontainers
 - **5000+ Character Tutorials**: In-depth explanations with real-world examples
 - **95%+ Well-Commented Code**: Learn professional coding standards from day one
 

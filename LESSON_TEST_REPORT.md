@@ -1,6 +1,6 @@
 # Comprehensive Lesson Test Report
 
-**Date:** Mon 11/10/2025 11:01 PM
+**Date:** Mon 11/10/2025 11:12 PM
 **Total Lessons Tested:** 1,761
 **Status:** WARNING
 
@@ -11,8 +11,8 @@
 | Metric | Count | Percentage |
 |--------|-------|------------|
 | **Total Lessons** | 1,761 | 100% |
-| **Passed** | 1,529 | 86.8% |
-| **Failed** | 232 | 13.2% |
+| **Passed** | 1,536 | 87.2% |
+| **Failed** | 225 | 12.8% |
 
 ---
 
@@ -22,22 +22,16 @@
 |----------|-------------|
 | QUALITY | 297 |
 | EXECUTION | 48 |
-| BASE_CODE | 36 |
+| BASE_CODE | 29 |
 | STRUCTURE | 12 |
 
 ---
 
 ## Detailed Results
 
-### Failed Lessons (232)
+### Failed Lessons (225)
 
-#### Python (108 failed)
-
-**ID 9: Functions that Return**
-- BASE_CODE: baseCode: Python syntax error: expected an indented block after function definition on line 1 (<string>, line 5)
-
-**ID 42: @staticmethod**
-- BASE_CODE: baseCode: Python syntax error: expected an indented block after class definition on line 1 (<string>, line 4)
+#### Python (103 failed)
 
 **ID 95: Logging**
 - EXECUTION: fullSolution missing print/return statements for expected output
@@ -45,14 +39,8 @@
 **ID 159: Logging to stdout**
 - EXECUTION: fullSolution missing print/return statements for expected output
 
-**ID 264: Network Diagnostics Checklist**
-- BASE_CODE: baseCode: Python syntax error: unterminated string literal (detected at line 15) (<string>, line 15)
-
 **ID 296: logging.dictConfig**
 - EXECUTION: fullSolution missing print/return statements for expected output
-
-**ID 320: contextlib.nullcontext optional lock**
-- BASE_CODE: baseCode: Python syntax error: expected an indented block after function definition on line 12 (<string>, line 16)
 
 **ID 410: Custom logging formatter**
 - EXECUTION: fullSolution missing print/return statements for expected output
@@ -93,12 +81,21 @@
 **ID 587: Notification System**
 - QUALITY: Tutorial missing code examples (no code blocks)
 
-*...and 88 more Python lessons with issues*
+**ID 588: Newsfeed Ranking**
+- QUALITY: Tutorial missing code examples (no code blocks)
 
-#### Java (124 failed)
+**ID 589: E-commerce Checkout**
+- QUALITY: Tutorial missing code examples (no code blocks)
 
-**ID 65: Capstone: Deployment Checklist**
-- BASE_CODE: baseCode: Missing class definition
+**ID 605: SQL Injection Prevention**
+- QUALITY: Tutorial missing code examples (no code blocks)
+
+**ID 606: XSS (Cross-Site Scripting) Defense**
+- QUALITY: Tutorial missing code examples (no code blocks)
+
+*...and 83 more Python lessons with issues*
+
+#### Java (122 failed)
 
 **ID 68: Streams: map**
 - EXECUTION: fullSolution missing System.out/return statements for expected output
@@ -163,12 +160,15 @@
 - QUALITY: Examples too short: 353 chars (minimum 1000)
 - BASE_CODE: baseCode: Missing class definition
 
-*...and 104 more Java lessons with issues*
+**ID 677: CORS Configuration**
+- BASE_CODE: baseCode: Missing class definition
+
+*...and 102 more Java lessons with issues*
 
 
-### Passed Lessons (1529)
+### Passed Lessons (1536)
 
-✅ 1,529 lessons passed all quality checks!
+✅ 1,536 lessons passed all quality checks!
 
 Sample of passed lessons:
 - ID 1: Hello, World!
@@ -179,42 +179,22 @@ Sample of passed lessons:
 - ID 6: For Loops
 - ID 7: Lists Basics
 - ID 8: Functions
+- ID 9: Functions that Return
 - ID 10: If / Else
-- ID 11: Compound Conditions
 
 ---
 
 ## Issue Breakdown
 
-### BASE_CODE Issues (36)
+### BASE_CODE Issues (29)
 
 **baseCode: Missing class definition**
-- Affects 27 lessons
-- Lesson IDs: 65, 674, 675, 676, 677... and 22 more
-
-**baseCode: Python syntax error: expected an indented block after function definition on line 1 (<string>, line 5)**
-- Affects 1 lessons
-- Lesson IDs: 9
-
-**baseCode: Python syntax error: expected an indented block after class definition on line 1 (<string>, line 4)**
-- Affects 1 lessons
-- Lesson IDs: 42
-
-**baseCode: Python syntax error: unterminated string literal (detected at line 15) (<string>, line 15)**
-- Affects 1 lessons
-- Lesson IDs: 264
-
-**baseCode: Python syntax error: expected an indented block after function definition on line 12 (<string>, line 16)**
-- Affects 1 lessons
-- Lesson IDs: 320
+- Affects 26 lessons
+- Lesson IDs: 674, 675, 676, 677, 678... and 21 more
 
 **baseCode: Python syntax error: invalid syntax. Perhaps you forgot a comma? (<string>, line 21)**
 - Affects 1 lessons
 - Lesson IDs: 688
-
-**baseCode: Python syntax error: expected an indented block after function definition on line 9 (<string>, line 13)**
-- Affects 1 lessons
-- Lesson IDs: 781
 
 **baseCode: Unmatched parentheses**
 - Affects 1 lessons
@@ -223,10 +203,6 @@ Sample of passed lessons:
 **baseCode: Unmatched brackets**
 - Affects 1 lessons
 - Lesson IDs: 311
-
-**baseCode: Unmatched braces**
-- Affects 1 lessons
-- Lesson IDs: 733
 
 ### EXECUTION Issues (48)
 
@@ -294,33 +270,33 @@ Sample of passed lessons:
 ### Python Lessons
 
 - Total: 876
-- Passed: 768 (87.7%)
-- Failed: 108 (12.3%)
+- Passed: 773 (88.2%)
+- Failed: 103 (11.8%)
 
 ### Java Lessons
 
 - Total: 885
-- Passed: 761 (86.0%)
-- Failed: 124 (14.0%)
+- Passed: 763 (86.2%)
+- Failed: 122 (13.8%)
 
 
 ---
 
 ## Recommendations
 
-⚠️ **WARNING:** Platform quality needs improvement. 86.8% pass rate.
+⚠️ **WARNING:** Platform quality needs improvement. 87.2% pass rate.
 
 Recommended actions:
 - Address QUALITY issues (297 lessons)
 - Address EXECUTION issues (48 lessons)
-- Address BASE_CODE issues (36 lessons)
+- Address BASE_CODE issues (29 lessons)
 - Address STRUCTURE issues (12 lessons)
 
 ---
 
 ## Conclusion
 
-The platform has 1,529 lessons that meet quality standards.
-232 lessons require attention to reach production quality.
+The platform has 1,536 lessons that meet quality standards.
+225 lessons require attention to reach production quality.
 
 **Test completed successfully. See detailed results above.**

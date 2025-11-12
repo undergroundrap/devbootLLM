@@ -42,6 +42,8 @@ function ensureSchema(db) {
       id INTEGER NOT NULL,
       title TEXT NOT NULL,
       description TEXT DEFAULT '',
+      difficulty TEXT DEFAULT '',
+      category TEXT DEFAULT '',
       initial_code TEXT DEFAULT '',
       full_solution TEXT DEFAULT '',
       full_solution_commented TEXT DEFAULT '',
@@ -54,7 +56,23 @@ function ensureSchema(db) {
     CREATE INDEX IF NOT EXISTS lessons_lang_id_idx ON lessons(language, id);
     CREATE INDEX IF NOT EXISTS lessons_lang_order_idx ON lessons(language, COALESCE(order_index, id));
     CREATE INDEX IF NOT EXISTS lessons_lang_title_idx ON lessons(language, title);
+    CREATE INDEX IF NOT EXISTS lessons_difficulty_idx ON lessons(difficulty);
   `);
+
+  // Migrate existing tables to add new columns
+  try {
+    const cols = db.pragma('table_info(lessons)');
+    const hasdifficulty = cols.some(c => c.name === 'difficulty');
+    const hascategory = cols.some(c => c.name === 'category');
+    if (!hasdifficulty) {
+      db.exec('ALTER TABLE lessons ADD COLUMN difficulty TEXT DEFAULT ""');
+    }
+    if (!hascategory) {
+      db.exec('ALTER TABLE lessons ADD COLUMN category TEXT DEFAULT ""');
+    }
+  } catch (_) {
+    // Ignore errors during migration
+  }
 }
 
 function clearLessons(db) {
@@ -74,6 +92,8 @@ function normalizeLesson(raw, defaultLang) {
     id: Number(raw.id),
     title: String(raw.title || ''),
     description: String(raw.description || ''),
+    difficulty: raw.difficulty != null ? String(raw.difficulty) : '',
+    category: raw.category != null ? String(raw.category) : '',
     // Support both initialCode (legacy) and baseCode (current)
     initial_code: raw.initialCode != null ? String(raw.initialCode) :
                   raw.baseCode != null ? String(raw.baseCode) : '',
@@ -97,13 +117,15 @@ function seedFromJsonFiles(db, opts = {}) {
   let total = 0;
   const insert = db.prepare(`
     INSERT INTO lessons (
-      language, id, title, description, initial_code, full_solution, full_solution_commented,
+      language, id, title, description, difficulty, category, initial_code, full_solution, full_solution_commented,
       expected_output, user_input_json, tutorial, order_index
-    ) VALUES (@language, @id, @title, @description, @initial_code, @full_solution, @full_solution_commented,
+    ) VALUES (@language, @id, @title, @description, @difficulty, @category, @initial_code, @full_solution, @full_solution_commented,
       @expected_output, @user_input_json, @tutorial, @order_index)
     ON CONFLICT(language, id) DO UPDATE SET
       title = excluded.title,
       description = excluded.description,
+      difficulty = excluded.difficulty,
+      category = excluded.category,
       initial_code = excluded.initial_code,
       full_solution = excluded.full_solution,
       full_solution_commented = excluded.full_solution_commented,

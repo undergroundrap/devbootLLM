@@ -1793,8 +1793,24 @@
                     const sel = this.elements.lessonFilter;
                     if (!sel) return;
                     const key = `lessonFilter-${this.currentTrack}`;
-                    const saved = localStorage.getItem(key) || this.lessonFilter || 'all';
-                    const validFilters = ['all', 'beginner', 'intermediate', 'advanced', 'expert', 'enterprise', 'faang', 'jobready'];
+                    let saved = localStorage.getItem(key) || this.lessonFilter || 'all';
+
+                    // Migrate old lowercase values to new capitalized values
+                    const migrationMap = {
+                        'beginner': 'Beginner',
+                        'intermediate': 'Intermediate',
+                        'advanced': 'Advanced',
+                        'expert': 'Expert',
+                        'enterprise': 'all',  // No longer exists
+                        'faang': 'all',       // No longer exists
+                        'jobready': 'all'     // No longer exists
+                    };
+                    if (migrationMap[saved]) {
+                        saved = migrationMap[saved];
+                        localStorage.setItem(key, saved);
+                    }
+
+                    const validFilters = ['all', 'Beginner', 'Intermediate', 'Advanced', 'Expert'];
                     sel.value = validFilters.includes(saved) ? saved : 'all';
                     this.lessonFilter = sel.value;
                 }

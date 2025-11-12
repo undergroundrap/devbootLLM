@@ -490,14 +490,14 @@
                             <h3 id="course-title" class="text-lg font-bold text-white">Java Fundamentals</h3>
                             <label for="lesson-filter" class="block mt-3 text-xs uppercase tracking-wide text-gray-400">Level Filter</label>
                             <select id="lesson-filter" class="mt-1 w-full bg-[#1e1f20] border gemini-border rounded-md text-sm p-2 focus:outline-none" title="Filter lessons by difficulty level - Start with Beginner and progress through each level">
-                                <option value="all">All Lessons (1-700)</option>
-                                <option value="beginner" title="Foundation: Variables, loops, functions, basic OOP">Beginner (1-104 + Bridges)</option>
-                                <option value="intermediate" title="Building skills: Collections, file I/O, error handling, testing">Intermediate (105-214 + Bridges)</option>
-                                <option value="advanced" title="Professional: Design patterns, concurrency, databases, APIs">Advanced (215-374 + Bridges)</option>
-                                <option value="expert" title="Mastery: Advanced algorithms, system design, performance tuning">Expert (375-532 + Bridges)</option>
-                                <option value="enterprise" title="Production: Cloud, microservices, DevOps, security">Enterprise (533-639 + Bridges)</option>
-                                <option value="faang" title="FAANG-level algorithms and system design questions">FAANG Interview Prep (640-689)</option>
-                                <option value="jobready" title="Portfolio projects and career preparation">Job Ready (690-700)</option>
+                                <option value="all">All Lessons</option>
+                                <option value="beginner" title="Foundation: Variables, loops, functions, basic OOP">Beginner</option>
+                                <option value="intermediate" title="Building skills: Collections, file I/O, error handling, testing">Intermediate</option>
+                                <option value="advanced" title="Professional: Design patterns, concurrency, databases, APIs">Advanced</option>
+                                <option value="expert" title="Mastery: Advanced algorithms, system design, performance tuning">Expert</option>
+                                <option value="enterprise" title="Production: Cloud, microservices, DevOps, security">Enterprise</option>
+                                <option value="faang" title="FAANG-level algorithms and system design questions">FAANG Interview Prep</option>
+                                <option value="jobready" title="Portfolio projects and career preparation">Job Ready</option>
                             </select>
                             <label for="tag-filter" class="block mt-3 text-xs uppercase tracking-wide text-gray-400">Tag</label>
                             <select id="tag-filter" class="mt-1 w-full bg-[#1e1f20] border gemini-border rounded-md text-sm p-2 focus:outline-none" title="Filter lessons by topic - Focus on specific programming concepts like OOP, Concurrency, I/O, etc.">
@@ -968,7 +968,7 @@
                     const bestPracticesBtn = document.getElementById('best-practices-btn');
 
                     if (hintBtn) hintBtn.addEventListener('click', () => this.askQuickQuestion('Give me a hint for this lesson'));
-                    if (explainBtn) explainBtn.addEventListener('click', () => this.askQuickQuestion('Explain the concept in this lesson'));
+                    if (explainBtn) explainBtn.addEventListener('click', () => this.explainSelectedCode());
                     if (debugBtn) debugBtn.addEventListener('click', () => this.askQuickQuestion('Help me debug my code'));
                     if (bestPracticesBtn) bestPracticesBtn.addEventListener('click', () => this.askQuickQuestion('Show me best practices for this'));
                     if (this.elements.eli5Btn) this.elements.eli5Btn.addEventListener('click', () => this.askELI5());
@@ -1741,21 +1741,25 @@
                     list.innerHTML = '';
                     let view = this.lessons || [];
 
-                    // Level filter - updated for 700 lessons with bridging lessons
-                    if (this.lessonFilter === 'beginner') {
-                        view = view.filter(l => (typeof l.id === 'number') ? (l.id >= 1 && l.id <= 104) : true);
-                    } else if (this.lessonFilter === 'intermediate') {
-                        view = view.filter(l => (typeof l.id === 'number') ? (l.id >= 105 && l.id <= 214) : false);
-                    } else if (this.lessonFilter === 'advanced') {
-                        view = view.filter(l => (typeof l.id === 'number') ? (l.id >= 215 && l.id <= 374) : false);
-                    } else if (this.lessonFilter === 'expert') {
-                        view = view.filter(l => (typeof l.id === 'number') ? (l.id >= 375 && l.id <= 532) : false);
-                    } else if (this.lessonFilter === 'enterprise') {
-                        view = view.filter(l => (typeof l.id === 'number') ? (l.id >= 533 && l.id <= 639) : false);
-                    } else if (this.lessonFilter === 'faang') {
-                        view = view.filter(l => (typeof l.id === 'number') ? (l.id >= 640 && l.id <= 689) : false);
-                    } else if (this.lessonFilter === 'jobready') {
-                        view = view.filter(l => (typeof l.id === 'number') ? (l.id >= 690 && l.id <= 700) : false);
+                    // Level filter - uses difficulty field for dynamic filtering across all lessons
+                    if (this.lessonFilter && this.lessonFilter !== 'all') {
+                        const filterMap = {
+                            'beginner': 'Beginner',
+                            'intermediate': 'Intermediate',
+                            'advanced': 'Advanced',
+                            'expert': 'Expert',
+                            'enterprise': 'Enterprise',
+                            'faang': 'FAANG',
+                            'jobready': 'Job Ready'
+                        };
+                        const targetDifficulty = filterMap[this.lessonFilter];
+                        if (targetDifficulty) {
+                            view = view.filter(l => {
+                                const diff = l.difficulty || l.category || '';
+                                return diff.toLowerCase().includes(targetDifficulty.toLowerCase()) ||
+                                       (targetDifficulty === 'Job Ready' && diff.toLowerCase().includes('job'));
+                            });
+                        }
                     }
 
                     // Tag filter

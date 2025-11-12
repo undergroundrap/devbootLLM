@@ -1904,10 +1904,10 @@
                         this.lessons = [];
                         console.log(`[loadLessonsForTrack] Loading ${track} lessons...`);
 
-                        // Try scalable API first (returns summary list); fall back to JSON files if unavailable
+                        // Try scalable API first (returns full list with difficulty); fall back to JSON files if unavailable
                         try {
                             const lang = (track === 'python') ? 'python' : 'java';
-                            const apiUrl = `/api/lessons?lang=${lang}&limit=5000&fields=summary`;
+                            const apiUrl = `/api/lessons?lang=${lang}&limit=5000&fields=full`;
                             const resp = await fetch(apiUrl, { cache: 'no-cache' });
                             if (resp.ok) {
                                 const data = await resp.json();

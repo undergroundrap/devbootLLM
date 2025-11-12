@@ -74,7 +74,9 @@ function normalizeLesson(raw, defaultLang) {
     id: Number(raw.id),
     title: String(raw.title || ''),
     description: String(raw.description || ''),
-    initial_code: raw.initialCode != null ? String(raw.initialCode) : '',
+    // Support both initialCode (legacy) and baseCode (current)
+    initial_code: raw.initialCode != null ? String(raw.initialCode) :
+                  raw.baseCode != null ? String(raw.baseCode) : '',
     full_solution: raw.fullSolution != null ? String(raw.fullSolution) : '',
     full_solution_commented: raw.fullSolutionCommented != null ? String(raw.fullSolutionCommented) : '',
     expected_output: raw.expectedOutput != null ? String(raw.expectedOutput) : '',

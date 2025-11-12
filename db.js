@@ -253,6 +253,8 @@ function rowToJsonLesson(r) {
     title: r.title,
     language: r.language,
     description: r.description || '',
+    difficulty: r.difficulty || '',
+    category: r.category || '',
     initialCode: r.initial_code || '',
     fullSolution: r.full_solution || '',
     expectedOutput: r.expected_output || '',

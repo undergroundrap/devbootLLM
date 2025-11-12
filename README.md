@@ -77,7 +77,6 @@ docker run --rm `
   -p 3000:3000 `
   -e OLLAMA_URL=http://host.docker.internal:11434 `
   -e LMSTUDIO_URL=http://host.docker.internal:1234 `
-  -e RUN_TMP_DIR=/tmp `
   -e LESSONS_REPLACE_ON_START=1 `
   -v devbootllm-data:/data `
   --user 0:0 `
@@ -91,6 +90,8 @@ docker run --rm `
   devbootllm-app
 ```
 
+> **Note for Windows users:** Do NOT set `RUN_TMP_DIR=/tmp` - PowerShell automatically converts `/tmp` to your Windows temp directory (e.g., `C:/Users/username/AppData/Local/Temp`), which breaks code execution inside the Linux container. The application uses Node.js `os.tmpdir()` which correctly returns `/tmp` in the container.
+
 **Linux/macOS (Bash):**
 
 ```bash
@@ -98,7 +99,6 @@ docker run --rm \
   -p 3000:3000 \
   -e OLLAMA_URL=http://host.docker.internal:11434 \
   -e LMSTUDIO_URL=http://host.docker.internal:1234 \
-  -e RUN_TMP_DIR=/tmp \
   -e LESSONS_REPLACE_ON_START=1 \
   -v devbootllm-data:/data \
   --user 0:0 \
@@ -308,7 +308,7 @@ npm run seed
 | `PORT` | `3000` | Server port |
 | `OLLAMA_URL` | `http://localhost:11434` | Ollama API endpoint |
 | `LMSTUDIO_URL` | `http://localhost:1234` | LM Studio API endpoint |
-| `RUN_TMP_DIR` | OS temp | Directory for code execution temp files |
+| `RUN_TMP_DIR` | `os.tmpdir()` | Directory for code execution temp files (not recommended to set - let Node.js auto-detect) |
 | `DATA_DIR` | `/data` (Docker) or `./data` (local) | Database directory |
 | `DB_FILE` | `${DATA_DIR}/app.db` | SQLite database path |
 | `LESSONS_MODE` | `replace` | JSON response mode (`replace` or `append`) |
@@ -346,6 +346,15 @@ The Docker configuration includes multiple security hardening measures:
 5. Choose your model from the dropdown
 
 ## Troubleshooting
+
+### Code execution fails with "ENOENT" or path errors
+
+**Symptom:** Java/Python code execution fails with errors like:
+```
+Error: ENOENT: no such file or directory, mkdtemp 'C:/Users/username/AppData/Local/Temp/java-run-XXXXXX'
+```
+
+**Solution:** Remove the `-e RUN_TMP_DIR=/tmp` flag from your Docker run command. On Windows, PowerShell automatically converts `/tmp` to your Windows temp directory path, which doesn't exist inside the Linux container. The application correctly uses Node.js `os.tmpdir()` to find `/tmp` without needing this variable set.
 
 ### Port 3000 already in use
 

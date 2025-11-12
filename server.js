@@ -82,12 +82,19 @@ try {
         seedFromJsonIfEmpty(lessonsDb, { publicDir: path.join(process.cwd(), 'public') });
         // Optional: reflect JSON on boot either by replace (wipe+seed) or upsert
         if (LESSONS_REPLACE_ON_START) {
-            try { replaceFromJsonFiles(lessonsDb, { publicDir: path.join(process.cwd(), 'public') }); } catch (_) {}
+            try {
+                console.log('[lessons] Replacing lessons from JSON files...');
+                const result = replaceFromJsonFiles(lessonsDb, { publicDir: path.join(process.cwd(), 'public') });
+                console.log('[lessons] Replaced', result.count, 'lessons');
+            } catch (e) {
+                console.error('[lessons] Failed to replace from JSON:', e.message);
+            }
         } else if (LESSONS_UPSERT_ON_START) {
             try { seedFromJsonFiles(lessonsDb, { publicDir: path.join(process.cwd(), 'public') }); } catch (_) {}
         }
     }
-} catch (_) {
+} catch (e) {
+    console.error('[lessons] Database initialization failed:', e.message);
     lessonsDb = null;
 }
 

@@ -488,16 +488,13 @@
                     <aside id="lesson-sidebar" class="gemini-bg-secondary border-r gemini-border flex flex-col overflow-y-auto">
                         <div class="p-4 border-b gemini-border">
                             <h3 id="course-title" class="text-lg font-bold text-white">Java Fundamentals</h3>
-                            <label for="lesson-filter" class="block mt-3 text-xs uppercase tracking-wide text-gray-400">Level Filter</label>
+                            <label for="lesson-filter" class="block mt-3 text-xs uppercase tracking-wide text-gray-400">Difficulty Filter</label>
                             <select id="lesson-filter" class="mt-1 w-full bg-[#1e1f20] border gemini-border rounded-md text-sm p-2 focus:outline-none" title="Filter lessons by difficulty level - Start with Beginner and progress through each level">
-                                <option value="all">All Lessons (1-917)</option>
-                                <option value="beginner" title="Foundation: Variables, loops, functions, basic OOP">Beginner (1-130)</option>
-                                <option value="intermediate" title="Building skills: Collections, file I/O, error handling, testing">Intermediate (131-280)</option>
-                                <option value="advanced" title="Professional: Design patterns, concurrency, databases, APIs">Advanced (281-490)</option>
-                                <option value="expert" title="Mastery: Advanced algorithms, system design, performance tuning">Expert (491-700)</option>
-                                <option value="enterprise" title="Production: Cloud, microservices, DevOps, security">Enterprise (701-820)</option>
-                                <option value="faang" title="FAANG-level algorithms and system design questions">FAANG Interview Prep (821-900)</option>
-                                <option value="jobready" title="Portfolio projects and career preparation">Job Ready (901-917)</option>
+                                <option value="all">All Lessons</option>
+                                <option value="Beginner" title="Foundation: Variables, loops, functions, basic syntax">Beginner</option>
+                                <option value="Intermediate" title="Building skills: Collections, file I/O, error handling">Intermediate</option>
+                                <option value="Advanced" title="Professional: Design patterns, concurrency, databases">Advanced</option>
+                                <option value="Expert" title="Mastery: Advanced algorithms, system design, optimization">Expert</option>
                             </select>
                             <label for="tag-filter" class="block mt-3 text-xs uppercase tracking-wide text-gray-400">Tag</label>
                             <select id="tag-filter" class="mt-1 w-full bg-[#1e1f20] border gemini-border rounded-md text-sm p-2 focus:outline-none" title="Filter lessons by topic - Focus on specific programming concepts like OOP, Concurrency, I/O, etc.">
@@ -1741,21 +1738,12 @@
                     list.innerHTML = '';
                     let view = this.lessons || [];
 
-                    // Level filter - hardcoded ID ranges extended to cover all lessons
-                    if (this.lessonFilter === 'beginner') {
-                        view = view.filter(l => (typeof l.id === 'number') ? (l.id >= 1 && l.id <= 130) : true);
-                    } else if (this.lessonFilter === 'intermediate') {
-                        view = view.filter(l => (typeof l.id === 'number') ? (l.id >= 131 && l.id <= 280) : false);
-                    } else if (this.lessonFilter === 'advanced') {
-                        view = view.filter(l => (typeof l.id === 'number') ? (l.id >= 281 && l.id <= 490) : false);
-                    } else if (this.lessonFilter === 'expert') {
-                        view = view.filter(l => (typeof l.id === 'number') ? (l.id >= 491 && l.id <= 700) : false);
-                    } else if (this.lessonFilter === 'enterprise') {
-                        view = view.filter(l => (typeof l.id === 'number') ? (l.id >= 701 && l.id <= 820) : false);
-                    } else if (this.lessonFilter === 'faang') {
-                        view = view.filter(l => (typeof l.id === 'number') ? (l.id >= 821 && l.id <= 900) : false);
-                    } else if (this.lessonFilter === 'jobready') {
-                        view = view.filter(l => (typeof l.id === 'number') ? (l.id >= 901 && l.id <= 920) : false);
+                    // Difficulty filter - matches actual difficulty field in lessons
+                    if (this.lessonFilter && this.lessonFilter !== 'all') {
+                        view = view.filter(l => {
+                            const lessonDiff = (l.difficulty || '').toString();
+                            return lessonDiff === this.lessonFilter;
+                        });
                     }
 
                     // Tag filter

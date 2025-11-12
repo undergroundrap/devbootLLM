@@ -21,15 +21,20 @@ function ensureDirSync(dirPath) {
 }
 
 function openDb(dbFilePath) {
-  if (!BetterSqlite3) return null;
+  if (!BetterSqlite3) {
+    console.error('[db] BetterSqlite3 module not available');
+    return null;
+  }
   try {
     const dir = path.dirname(dbFilePath);
     ensureDirSync(dir);
     const db = new BetterSqlite3(dbFilePath);
     db.pragma('journal_mode = WAL');
+    console.log(`[db] Successfully opened database at ${dbFilePath}`);
     return db;
   } catch (e) {
     // If opening fails (e.g., read-only FS), run without DB
+    console.error(`[db] Failed to open database at ${dbFilePath}:`, e.message);
     return null;
   }
 }

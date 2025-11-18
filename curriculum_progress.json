@@ -492,6 +492,88 @@
           }
         }
       }
+    },
+    {
+      "timestamp": "2025-11-17T23:18:49.097761",
+      "java": {
+        "total": 917,
+        "difficulty": {
+          "Beginner": {
+            "count": 116,
+            "percentage": 12.649945474372956
+          },
+          "Intermediate": {
+            "count": 205,
+            "percentage": 22.355507088331517
+          },
+          "Advanced": {
+            "count": 194,
+            "percentage": 21.155943293347875
+          },
+          "Expert": {
+            "count": 402,
+            "percentage": 43.838604143947656
+          }
+        },
+        "professional_skills": {
+          "Git/Version Control": 13,
+          "Agile/Scrum": 4,
+          "Documentation": 1,
+          "Code Review/Testing": 5
+        },
+        "fullstack_projects": 0,
+        "capstone_projects": 13
+      },
+      "python": {
+        "total": 904,
+        "difficulty": {
+          "Beginner": {
+            "count": 150,
+            "percentage": 16.5929203539823
+          },
+          "Intermediate": {
+            "count": 185,
+            "percentage": 20.464601769911507
+          },
+          "Advanced": {
+            "count": 148,
+            "percentage": 16.371681415929203
+          },
+          "Expert": {
+            "count": 421,
+            "percentage": 46.570796460176986
+          }
+        },
+        "professional_skills": {
+          "Git/Version Control": 13,
+          "Agile/Scrum": 4,
+          "Documentation": 2,
+          "Code Review/Testing": 5
+        },
+        "fullstack_projects": 0,
+        "capstone_projects": 12
+      },
+      "overall": {
+        "total_lessons": 1821,
+        "difficulty": {
+          "Beginner": {
+            "count": 266,
+            "percentage": 14.607358594179024
+          },
+          "Intermediate": {
+            "count": 390,
+            "percentage": 21.4168039538715
+          },
+          "Advanced": {
+            "count": 342,
+            "percentage": 18.780889621087315
+          },
+          "Expert": {
+            "count": 823,
+            "percentage": 45.19494783086216
+          }
+        }
+      }
     }
   ],
   "milestones": {

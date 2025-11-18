@@ -1,101 +1,145 @@
 # Scripts Directory
 
-This directory contains utility scripts for maintaining and validating the devbootLLM platform.
+This directory contains utility scripts for validating and maintaining lesson quality.
 
-## Active Maintenance Scripts
+## Available Scripts
 
-### Quality Validation
+### `validate_lessons.py` (Recommended)
 
-**`comprehensive_lesson_analysis.py`**
-- **Purpose**: Complete quality validation and compilation testing for all lessons
-- **Usage**: `python scripts/comprehensive_lesson_analysis.py`
-- **What it checks**:
-  - Java code compilation (uses javac to verify all code compiles)
-  - Python syntax validation (verifies all code has valid syntax)
-  - Tutorial quality (content length, sections, code examples)
-  - Missing required fields (expectedOutput, etc.)
-  - Difficulty and category distribution
-  - Tag coverage and frequency
-- **Output**: Comprehensive report with pass/fail rates, compilation errors, and statistics
-- **When to run**: After adding new lessons, making bulk changes, or before releases
+**Comprehensive lesson validation tool** - Validates lesson structure, content quality, and compilation.
 
-**`validate-lessons.mjs`**
-- **Purpose**: Node.js lesson validation utility
-- **Usage**: `node scripts/validate-lessons.mjs`
-- **What it checks**:
-  - JSON structure validity
-  - Required fields present (id, title, description, code, tutorial, etc.)
-  - No duplicate lesson IDs
-  - Proper language tags
-- **When to run**: Before committing lesson changes
-
-**`pre-commit-hook.example`**
-- **Purpose**: Example Git pre-commit hook for automated validation
-- **Usage**: Copy to `.git/hooks/pre-commit` and make executable
-- **What it does**:
-  - Runs validation checks before allowing commits
-  - Helps catch issues early in development
-- **When to use**: Set up once in your local repository for automated checks
-
-## Workflow Examples
-
-### Quality Check Before Committing
-
+**Usage:**
 ```bash
-# Validate JSON structure and required fields
+python scripts/validate_lessons.py public/lessons-java.json
+python scripts/validate_lessons.py public/lessons-python.json
+python scripts/validate_lessons.py public/lessons-{language}.json
+```
+
+**What it validates:**
+- **Structure**: JSON validity, array format, lesson count
+- **Required Fields**: All 12 required fields present and non-empty
+- **ID Sequence**: Sequential numbering (1 to N), no gaps, no duplicates
+- **Tags**: Difficulty tag present, consistency, appropriate count (3-6 recommended)
+- **Tutorial Sections**: Required sections (Overview, Best Practices, Key Takeaways)
+- **Content Quality**: Title/description lengths, code ratios, difficulty distribution
+- **Language**: Correct language field matching filename
+
+**Output:**
+- Color-coded results: `[OK]` (green), `[FAIL]` (red), `[WARN]` (yellow)
+- Detailed statistics and distributions
+- Summary with total errors and warnings
+
+**When to use:**
+- Before committing lesson changes
+- After adding new lessons
+- When adding a new language
+- For comprehensive quality checks
+
+---
+
+### `validate-lessons.mjs`
+
+**Legacy JSON schema validator** - Basic validation using JSON schema.
+
+**Usage:**
+```bash
 node scripts/validate-lessons.mjs
-
-# Comprehensive analysis with compilation testing
-python scripts/comprehensive_lesson_analysis.py
 ```
 
-### After Adding or Modifying Lessons
+**What it validates:**
+- JSON structure validity
+- Required fields present (id, title, description, baseCode, fullSolution, etc.)
+- No duplicate lesson IDs
+- Proper language tags
+
+**When to use:**
+- Quick JSON structure checks
+- Backward compatibility with older workflows
+
+**Note**: For comprehensive validation, use `validate_lessons.py` instead.
+
+---
+
+### `pre-commit-hook.example`
+
+**Git pre-commit hook template** - Automatically validates lessons before commits.
+
+**Setup:**
+```bash
+# Copy to git hooks directory
+cp scripts/pre-commit-hook.example .git/hooks/pre-commit
+
+# Make executable (Linux/Mac)
+chmod +x .git/hooks/pre-commit
+```
+
+**What it does:**
+- Runs validation checks before allowing commits
+- Prevents committing lessons with validation errors
+- Helps catch issues early in development
+
+**When to use:**
+- Set up once in your local repository
+- Recommended for all contributors
+
+---
+
+## Recommended Workflow
+
+### Before Committing Changes
 
 ```bash
-# Run full validation suite
-python scripts/comprehensive_lesson_analysis.py
+# 1. Validate comprehensively (recommended)
+python scripts/validate_lessons.py public/lessons-java.json
+python scripts/validate_lessons.py public/lessons-python.json
 
-# Review the output for:
-# - Compilation/syntax errors
-# - Missing required fields
-# - Tutorial quality issues
-# - Distribution across difficulty levels
+# 2. Quick JSON validation (optional)
+node scripts/validate-lessons.mjs
 ```
 
-## Repository Cleanup History
+### Adding a New Language
 
-**Nov 12, 2024** - Removed one-time compilation fix scripts and backups:
-- `fix_compilation_errors.py` - Fixed 187 Java/Python compilation errors (completed)
-- `fix_remaining_errors.py` - Fixed advanced Java class reference issues (completed)
-- `fix_python_manual.py` - Manual fixes for complex Python indentation issues (completed)
-- Removed 4 backup files (*.backup_20251112_*) after successful fixes
-- Added `comprehensive_lesson_analysis.py` for ongoing quality validation
+```bash
+# 1. Create lesson file
+echo "[]" > public/lessons-javascript.json
 
-**Oct 27, 2024** - Removed obsolete one-time generation scripts:
-- `add_bonus_lessons.py` - Generated lesson 696 (completed)
-- `add_bridging_lessons.py` - Generated lessons 697-700 (completed)
-- `add_career_lessons.py` - Generated career lessons (completed)
-- `add_key_concepts.py` - Added Key Concepts sections (completed)
-- `add_key_concepts_v2.py` - Improved version (completed)
-- `add_remaining_35_lessons.py` - Generated lessons 701-702 (completed)
-- `complete_final_9_lessons.py` - Completed specific lessons (completed)
-- `find_incomplete_tutorials.py` - Superseded by analyze_all_lessons.py
-- `generate_final_33_lessons.py` - Generated lessons 703-735 (completed)
-- `mirror_job_ready_to_python.py` - Mirrored lessons (completed)
+# 2. Add your lessons following LESSON_TEMPLATE.md
 
-All one-time scripts are removed after successful execution to maintain a clean repository.
+# 3. Validate quality
+python scripts/validate_lessons.py public/lessons-javascript.json
+
+# 4. Aim for: 0 errors, <10 warnings, 100% compilation rate
+```
+
+### Setting Up Automated Validation
+
+```bash
+# Enable pre-commit hook for automatic validation
+cp scripts/pre-commit-hook.example .git/hooks/pre-commit
+chmod +x .git/hooks/pre-commit  # Linux/Mac only
+```
+
+---
 
 ## Technical Requirements
 
-- **Python scripts**: Require Python 3.8+ (for f-strings and modern syntax)
-- **Node scripts**: Require Node.js 16+ (for ES modules)
+- **Python scripts**: Require Python 3.8+
+- **Node scripts**: Require Node.js 16+
 - **Dependencies**: None - all scripts use standard library only
-- **Encoding**: All scripts handle UTF-8 properly for special characters
+- **Platform**: Cross-platform (Windows, Linux, macOS)
 
-## Maintenance Notes
+---
 
-- Scripts are production-quality and ready for repeated use
-- All scripts include error handling and validation
-- Output is formatted for readability in Windows/Linux terminals
-- JSON files are always formatted with 2-space indentation
-- Scripts automatically backup before making changes (when appropriate)
+## Quality Standards
+
+All validation scripts enforce the quality standards documented in:
+- [LESSON_TEMPLATE.md](../LESSON_TEMPLATE.md) - Complete field specifications
+- [LESSON_SYSTEM_SUMMARY.md](../LESSON_SYSTEM_SUMMARY.md) - Best practices and patterns
+- [GETTING_STARTED_NEW_LANGUAGE.md](../GETTING_STARTED_NEW_LANGUAGE.md) - Quick start guide
+
+**Target metrics:**
+- 100% compilation rate (all code must run)
+- 0 validation errors
+- <10 warnings
+- 95%+ tutorial section coverage
+- Consistent tag formatting (Title Case)

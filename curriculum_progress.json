@@ -2214,10 +2214,338 @@
           }
         }
       }
+    },
+    {
+      "timestamp": "2025-11-18T19:11:13.970882",
+      "java": {
+        "total": 917,
+        "difficulty": {
+          "Beginner": {
+            "count": 116,
+            "percentage": 12.649945474372956
+          },
+          "Intermediate": {
+            "count": 236,
+            "percentage": 25.7360959651036
+          },
+          "Advanced": {
+            "count": 428,
+            "percentage": 46.673936750272624
+          },
+          "Expert": {
+            "count": 137,
+            "percentage": 14.940021810250817
+          }
+        },
+        "professional_skills": {
+          "Git/Version Control": 13,
+          "Agile/Scrum": 4,
+          "Documentation": 1,
+          "Code Review/Testing": 5
+        },
+        "fullstack_projects": 0,
+        "capstone_projects": 13
+      },
+      "python": {
+        "total": 904,
+        "difficulty": {
+          "Beginner": {
+            "count": 150,
+            "percentage": 16.5929203539823
+          },
+          "Intermediate": {
+            "count": 247,
+            "percentage": 27.323008849557525
+          },
+          "Advanced": {
+            "count": 372,
+            "percentage": 41.150442477876105
+          },
+          "Expert": {
+            "count": 135,
+            "percentage": 14.933628318584072
+          }
+        },
+        "professional_skills": {
+          "Git/Version Control": 13,
+          "Agile/Scrum": 4,
+          "Documentation": 2,
+          "Code Review/Testing": 5
+        },
+        "fullstack_projects": 0,
+        "capstone_projects": 12
+      },
+      "overall": {
+        "total_lessons": 1821,
+        "difficulty": {
+          "Beginner": {
+            "count": 266,
+            "percentage": 14.607358594179024
+          },
+          "Intermediate": {
+            "count": 483,
+            "percentage": 26.523887973640857
+          },
+          "Advanced": {
+            "count": 800,
+            "percentage": 43.93190554640308
+          },
+          "Expert": {
+            "count": 272,
+            "percentage": 14.936847885777047
+          }
+        }
+      }
+    },
+    {
+      "timestamp": "2025-11-18T19:11:14.197624",
+      "java": {
+        "total": 917,
+        "difficulty": {
+          "Beginner": {
+            "count": 116,
+            "percentage": 12.649945474372956
+          },
+          "Intermediate": {
+            "count": 236,
+            "percentage": 25.7360959651036
+          },
+          "Advanced": {
+            "count": 428,
+            "percentage": 46.673936750272624
+          },
+          "Expert": {
+            "count": 137,
+            "percentage": 14.940021810250817
+          }
+        },
+        "professional_skills": {
+          "Git/Version Control": 13,
+          "Agile/Scrum": 4,
+          "Documentation": 1,
+          "Code Review/Testing": 5
+        },
+        "fullstack_projects": 0,
+        "capstone_projects": 13
+      },
+      "python": {
+        "total": 904,
+        "difficulty": {
+          "Beginner": {
+            "count": 150,
+            "percentage": 16.5929203539823
+          },
+          "Intermediate": {
+            "count": 247,
+            "percentage": 27.323008849557525
+          },
+          "Advanced": {
+            "count": 372,
+            "percentage": 41.150442477876105
+          },
+          "Expert": {
+            "count": 135,
+            "percentage": 14.933628318584072
+          }
+        },
+        "professional_skills": {
+          "Git/Version Control": 13,
+          "Agile/Scrum": 4,
+          "Documentation": 2,
+          "Code Review/Testing": 5
+        },
+        "fullstack_projects": 0,
+        "capstone_projects": 12
+      },
+      "overall": {
+        "total_lessons": 1821,
+        "difficulty": {
+          "Beginner": {
+            "count": 266,
+            "percentage": 14.607358594179024
+          },
+          "Intermediate": {
+            "count": 483,
+            "percentage": 26.523887973640857
+          },
+          "Advanced": {
+            "count": 800,
+            "percentage": 43.93190554640308
+          },
+          "Expert": {
+            "count": 272,
+            "percentage": 14.936847885777047
+          }
+        }
+      }
+    },
+    {
+      "timestamp": "2025-11-18T19:11:14.422799",
+      "java": {
+        "total": 917,
+        "difficulty": {
+          "Beginner": {
+            "count": 116,
+            "percentage": 12.649945474372956
+          },
+          "Intermediate": {
+            "count": 236,
+            "percentage": 25.7360959651036
+          },
+          "Advanced": {
+            "count": 428,
+            "percentage": 46.673936750272624
+          },
+          "Expert": {
+            "count": 137,
+            "percentage": 14.940021810250817
+          }
+        },
+        "professional_skills": {
+          "Git/Version Control": 13,
+          "Agile/Scrum": 4,
+          "Documentation": 1,
+          "Code Review/Testing": 5
+        },
+        "fullstack_projects": 0,
+        "capstone_projects": 13
+      },
+      "python": {
+        "total": 904,
+        "difficulty": {
+          "Beginner": {
+            "count": 150,
+            "percentage": 16.5929203539823
+          },
+          "Intermediate": {
+            "count": 247,
+            "percentage": 27.323008849557525
+          },
+          "Advanced": {
+            "count": 372,
+            "percentage": 41.150442477876105
+          },
+          "Expert": {
+            "count": 135,
+            "percentage": 14.933628318584072
+          }
+        },
+        "professional_skills": {
+          "Git/Version Control": 13,
+          "Agile/Scrum": 4,
+          "Documentation": 2,
+          "Code Review/Testing": 5
+        },
+        "fullstack_projects": 0,
+        "capstone_projects": 12
+      },
+      "overall": {
+        "total_lessons": 1821,
+        "difficulty": {
+          "Beginner": {
+            "count": 266,
+            "percentage": 14.607358594179024
+          },
+          "Intermediate": {
+            "count": 483,
+            "percentage": 26.523887973640857
+          },
+          "Advanced": {
+            "count": 800,
+            "percentage": 43.93190554640308
+          },
+          "Expert": {
+            "count": 272,
+            "percentage": 14.936847885777047
+          }
+        }
+      }
+    },
+    {
+      "timestamp": "2025-11-18T19:11:14.648388",
+      "java": {
+        "total": 917,
+        "difficulty": {
+          "Beginner": {
+            "count": 116,
+            "percentage": 12.649945474372956
+          },
+          "Intermediate": {
+            "count": 236,
+            "percentage": 25.7360959651036
+          },
+          "Advanced": {
+            "count": 428,
+            "percentage": 46.673936750272624
+          },
+          "Expert": {
+            "count": 137,
+            "percentage": 14.940021810250817
+          }
+        },
+        "professional_skills": {
+          "Git/Version Control": 13,
+          "Agile/Scrum": 4,
+          "Documentation": 1,
+          "Code Review/Testing": 5
+        },
+        "fullstack_projects": 0,
+        "capstone_projects": 13
+      },
+      "python": {
+        "total": 904,
+        "difficulty": {
+          "Beginner": {
+            "count": 150,
+            "percentage": 16.5929203539823
+          },
+          "Intermediate": {
+            "count": 247,
+            "percentage": 27.323008849557525
+          },
+          "Advanced": {
+            "count": 372,
+            "percentage": 41.150442477876105
+          },
+          "Expert": {
+            "count": 135,
+            "percentage": 14.933628318584072
+          }
+        },
+        "professional_skills": {
+          "Git/Version Control": 13,
+          "Agile/Scrum": 4,
+          "Documentation": 2,
+          "Code Review/Testing": 5
+        },
+        "fullstack_projects": 0,
+        "capstone_projects": 12
+      },
+      "overall": {
+        "total_lessons": 1821,
+        "difficulty": {
+          "Beginner": {
+            "count": 266,
+            "percentage": 14.607358594179024
+          },
+          "Intermediate": {
+            "count": 483,
+            "percentage": 26.523887973640857
+          },
+          "Advanced": {
+            "count": 800,
+            "percentage": 43.93190554640308
+          },
+          "Expert": {
+            "count": 272,
+            "percentage": 14.936847885777047
+          }
+        }
+      }
     }
   ],
   "milestones": {
-    "phase1_complete": false,
+    "phase1_complete": true,
     "phase2_complete": false,
     "phase3_complete": false,
     "phase4_complete": false

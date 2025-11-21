@@ -1508,8 +1508,8 @@
                         let expectedOutput = currentLesson.expectedOutput;
                         let isCorrect = false;
 
-                        // Special check for Lesson 9 (dynamic output)
-                        if ((currentLesson.id === 9) && (lang !== 'python')) { 
+                        // Special check for Lesson 134 (Creating Methods - dynamic output)
+                        if ((currentLesson.id === 134) && (lang !== 'python')) {
                             const methodCallMatch = userCode.match(/greetUser\s*\(\s*"([^"]+)"\s*\)/);
                             if (methodCallMatch && methodCallMatch[1]) {
                                 expectedOutput = `Hello, ${methodCallMatch[1]}!`;
@@ -1519,13 +1519,6 @@
                             } else {
                                 this.logToConsole(`❌ Not quite right. Could not find a valid call to the greetUser method with a name in double quotes, like greetUser("Alex");`, 'error');
                                 return;
-                            }
-                        // Special check for Lesson 44 (HashMap order is not guaranteed)
-                        } else if ((currentLesson.id === 44) && (lang !== 'python')) { 
-                            const expectedLines = normalize(expectedOutput).split('\n').sort();
-                            const actualLines = normalize(actualOutput).split('\n').sort();
-                            if (JSON.stringify(expectedLines) === JSON.stringify(actualLines)) {
-                                isCorrect = true;
                             }
                         } else {
                             // Standard check for all other lessons

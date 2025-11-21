@@ -2114,15 +2114,21 @@
                         ].filter(Boolean).join('\n');
 
                         // User message: their question + current code
-                        const userMsg = [
-                            `Question: ${userPrompt}`,
-                            "",
-                            "Student's current code:",
-                            "",
-                            `\`\`\`${fenceLang}`,
-                            this.editor.getValue(),
-                            "```"
-                        ].join('\n');
+                        // Check if this is an "explain selection" request (prompt already has code)
+                        const isExplainRequest = userPrompt.includes('Please explain the following code:') ||
+                                                userPrompt.includes('explain the following code like I\'m 5');
+
+                        const userMsg = isExplainRequest
+                            ? userPrompt  // Just use the prompt as-is (already has selected code)
+                            : [
+                                `Question: ${userPrompt}`,
+                                "",
+                                "Student's current code:",
+                                "",
+                                `\`\`\`${fenceLang}`,
+                                this.editor.getValue(),
+                                "```"
+                            ].join('\n');
 
                         // Keep short conversational memory
                         if (this.chatHistory.length > 8) {

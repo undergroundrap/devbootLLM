@@ -9,7 +9,14 @@
     "test": "npm run smoke",
     "seed": "node scripts/seed-db.js",
     "validate:lessons": "node scripts/validate-lessons.mjs",
-    "build:css": "tailwindcss -i ./tailwind.input.css -o ./public/css/tailwind.css --minify"
+    "build:css": "tailwindcss -i ./tailwind.input.css -o ./public/css/tailwind.css --minify",
+    "check:validate": "node scripts/validate-lessons.mjs",
+    "check:solutions": "python scripts/validate_all_lessons.py",
+    "check:quick": "python scripts/quick_validation_test.py",
+    "check:quality": "python scripts/check_lesson_quality.py",
+    "check:tutorials": "python scripts/check_tutorial_quality.py",
+    "check:duplicates": "python scripts/find_duplicate_solutions.py",
+    "check:all": "python scripts/run_all_checks.py"
   },
   "dependencies": {
     "better-sqlite3": "^9.4.0",

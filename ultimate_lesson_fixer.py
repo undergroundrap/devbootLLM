@@ -577,6 +577,76 @@ dag = DAG("example_dag")
 print(f"DAG created: {dag.dag_id}")
 print("Tasks: task1 -> task2 -> task3")
 ''',
+    'data engineering - etl': '''# Data Engineering - ETL Pipelines
+# Simulated ETL process
+def extract():
+    return [{"id": 1, "name": "Alice"}, {"id": 2, "name": "Bob"}]
+
+def transform(data):
+    return [{"user_id": d["id"], "username": d["name"].upper()} for d in data]
+
+def load(data):
+    print(f"Loading {len(data)} records to database")
+
+data = extract()
+transformed = transform(data)
+load(transformed)
+print("ETL pipeline completed")
+''',
+    'data engineering': '''# Data Engineering Example
+# Simulated data processing
+data = [1, 2, 3, 4, 5]
+processed = [x * 2 for x in data]
+
+print(f"Original data: {data}")
+print(f"Processed: {processed}")
+print("Data pipeline complete")
+''',
+    'apache spark': '''# Apache Spark Integration
+# Simulated Spark operations
+class SparkContext:
+    def parallelize(self, data):
+        return data
+
+sc = SparkContext()
+rdd = sc.parallelize([1, 2, 3, 4, 5])
+
+print("Spark context created")
+print(f"RDD data: {rdd}")
+print("Sum:", sum(rdd))
+''',
+    'stream processing': '''# Stream Processing Example
+# Simulated stream processing
+def process_stream(events):
+    for event in events:
+        print(f"Processing event: {event}")
+
+events = ["event1", "event2", "event3"]
+process_stream(events)
+print("Stream processing complete")
+''',
+    'data warehousing': '''# Data Warehousing Example
+# Simulated warehouse operations
+warehouse = {
+    "fact_sales": [{"amount": 100}, {"amount": 200}],
+    "dim_customer": [{"id": 1, "name": "Alice"}]
+}
+
+print("Warehouse tables:")
+for table, data in warehouse.items():
+    print(f"  {table}: {len(data)} records")
+''',
+    'batch processing': '''# Batch Processing Example
+# Simulated batch job
+batch = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+batch_size = 3
+
+for i in range(0, len(batch), batch_size):
+    chunk = batch[i:i+batch_size]
+    print(f"Processing batch: {chunk}")
+
+print("Batch processing complete")
+''',
 
 }
 
@@ -1190,6 +1260,478 @@ public class Main {
         System.out.println("list3: " + list3);
         System.out.println("list1.equals(list2): " + list1.equals(list2));
         System.out.println("list1.equals(list3): " + list1.equals(list3));
+    }
+}
+''',
+    'code organization': '''// Code Organization
+class Calculator {
+    public int add(int a, int b) {
+        return a + b;
+    }
+
+    public int multiply(int a, int b) {
+        return a * b;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Calculator calc = new Calculator();
+        System.out.println("5 + 3 = " + calc.add(5, 3));
+        System.out.println("4 * 7 = " + calc.multiply(4, 7));
+    }
+}
+''',
+    'naming conventions': '''// Naming Conventions
+class BankAccount {
+    private double balance;
+    private static final double INTEREST_RATE = 0.05;
+
+    public BankAccount(double initialBalance) {
+        this.balance = initialBalance;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        BankAccount account = new BankAccount(1000.0);
+        System.out.println("Balance: " + account.getBalance());
+    }
+}
+''',
+    'pattern matching': '''// Pattern Matching Basics
+public class Main {
+    public static void main(String[] args) {
+        Object obj = "Hello";
+
+        if (obj instanceof String) {
+            String str = (String) obj;
+            System.out.println("String: " + str);
+            System.out.println("Length: " + str.length());
+        }
+
+        Object num = 42;
+        if (num instanceof Integer) {
+            Integer i = (Integer) num;
+            System.out.println("Integer: " + i);
+        }
+    }
+}
+''',
+    'refactoring': '''// Simple Refactoring
+public class Main {
+    public static int calculateTotal(int[] prices) {
+        int total = 0;
+        for (int price : prices) {
+            total += price;
+        }
+        return total;
+    }
+
+    public static void main(String[] args) {
+        int[] prices = {10, 20, 30};
+        System.out.println("Total: " + calculateTotal(prices));
+    }
+}
+''',
+    'split with regex': '''// Split with Regex
+public class Main {
+    public static void main(String[] args) {
+        String text = "apple,banana;orange|grape";
+        String[] fruits = text.split("[,;|]");
+
+        System.out.println("Original: " + text);
+        System.out.println("Split result:");
+        for (String fruit : fruits) {
+            System.out.println("  " + fruit);
+        }
+    }
+}
+''',
+    'stack basics': '''// Stack Basics
+import java.util.Stack;
+
+public class Main {
+    public static void main(String[] args) {
+        Stack<String> stack = new Stack<>();
+
+        stack.push("First");
+        stack.push("Second");
+        stack.push("Third");
+
+        System.out.println("Stack: " + stack);
+        System.out.println("Pop: " + stack.pop());
+        System.out.println("Peek: " + stack.peek());
+        System.out.println("After operations: " + stack);
+    }
+}
+''',
+    'type casting': '''// Type Casting Basics
+public class Main {
+    public static void main(String[] args) {
+        int intVal = 42;
+        double doubleVal = intVal;
+        System.out.println("int to double: " + doubleVal);
+
+        double d = 3.14;
+        int i = (int) d;
+        System.out.println("double to int: " + i);
+
+        Object obj = "Hello";
+        String str = (String) obj;
+        System.out.println("Object to String: " + str);
+    }
+}
+''',
+    'working with time': '''// Working with Time
+import java.time.LocalTime;
+
+public class Main {
+    public static void main(String[] args) {
+        LocalTime time = LocalTime.of(14, 30, 0);
+        LocalTime later = time.plusHours(2);
+
+        System.out.println("Time: " + time);
+        System.out.println("2 hours later: " + later);
+        System.out.println("Hour: " + time.getHour());
+        System.out.println("Minute: " + time.getMinute());
+    }
+}
+''',
+    'static vs instance': '''// Static vs Instance
+class Counter {
+    private static int staticCount = 0;
+    private int instanceCount = 0;
+
+    public void increment() {
+        staticCount++;
+        instanceCount++;
+    }
+
+    public void display() {
+        System.out.println("Static: " + staticCount + ", Instance: " + instanceCount);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Counter c1 = new Counter();
+        Counter c2 = new Counter();
+
+        c1.increment();
+        c2.increment();
+
+        c1.display();
+        c2.display();
+    }
+}
+''',
+    'super keyword': '''// Super Keyword
+class Animal {
+    protected String name;
+
+    public Animal(String name) {
+        this.name = name;
+    }
+
+    public void makeSound() {
+        System.out.println(name + " makes a sound");
+    }
+}
+
+class Dog extends Animal {
+    public Dog(String name) {
+        super(name);
+    }
+
+    @Override
+    public void makeSound() {
+        super.makeSound();
+        System.out.println(name + " barks");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Dog dog = new Dog("Buddy");
+        dog.makeSound();
+    }
+}
+''',
+    'this keyword': '''// This Keyword
+class Person {
+    private String name;
+    private int age;
+
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public Person(String name) {
+        this(name, 0);
+    }
+
+    public void display() {
+        System.out.println("Name: " + this.name + ", Age: " + this.age);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Person p1 = new Person("Alice", 25);
+        Person p2 = new Person("Bob");
+
+        p1.display();
+        p2.display();
+    }
+}
+''',
+    'count occurrences': '''// Count Occurrences
+public class Main {
+    public static int countOccurrences(int[] arr, int target) {
+        int count = 0;
+        for (int num : arr) {
+            if (num == target) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public static void main(String[] args) {
+        int[] numbers = {1, 2, 3, 2, 4, 2, 5};
+        System.out.println("Array: " + java.util.Arrays.toString(numbers));
+        System.out.println("Count of 2: " + countOccurrences(numbers, 2));
+        System.out.println("Count of 5: " + countOccurrences(numbers, 5));
+    }
+}
+''',
+    'find maximum': '''// Find Maximum Element
+public class Main {
+    public static int findMax(int[] arr) {
+        int max = arr[0];
+        for (int num : arr) {
+            if (num > max) {
+                max = num;
+            }
+        }
+        return max;
+    }
+
+    public static void main(String[] args) {
+        int[] numbers = {3, 7, 2, 9, 1};
+        System.out.println("Array: " + java.util.Arrays.toString(numbers));
+        System.out.println("Maximum: " + findMax(numbers));
+    }
+}
+''',
+    'find minimum': '''// Find Minimum Element
+public class Main {
+    public static int findMin(int[] arr) {
+        int min = arr[0];
+        for (int num : arr) {
+            if (num < min) {
+                min = num;
+            }
+        }
+        return min;
+    }
+
+    public static void main(String[] args) {
+        int[] numbers = {3, 7, 2, 9, 1};
+        System.out.println("Array: " + java.util.Arrays.toString(numbers));
+        System.out.println("Minimum: " + findMin(numbers));
+    }
+}
+''',
+    'remove duplicates': '''// Remove Duplicates
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+public class Main {
+    public static void main(String[] args) {
+        Integer[] arr = {1, 2, 2, 3, 4, 4, 5};
+        Set<Integer> set = new LinkedHashSet<>(Arrays.asList(arr));
+
+        System.out.println("Original: " + Arrays.toString(arr));
+        System.out.println("Without duplicates: " + set);
+    }
+}
+''',
+    'unit tests': '''// Simple Unit Tests
+class Calculator {
+    public int add(int a, int b) {
+        return a + b;
+    }
+
+    public int multiply(int a, int b) {
+        return a * b;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Calculator calc = new Calculator();
+
+        // Test add
+        int result1 = calc.add(2, 3);
+        System.out.println("Test add(2, 3): " + (result1 == 5 ? "PASS" : "FAIL"));
+
+        // Test multiply
+        int result2 = calc.multiply(4, 5);
+        System.out.println("Test multiply(4, 5): " + (result2 == 20 ? "PASS" : "FAIL"));
+    }
+}
+''',
+    'spring security': '''// Spring Security Example
+// Simulated Spring Security configuration
+class SecurityConfig {
+    public void configure() {
+        System.out.println("Security configuration loaded");
+        System.out.println("Authentication: Enabled");
+        System.out.println("Authorization: Enabled");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        SecurityConfig config = new SecurityConfig();
+        config.configure();
+    }
+}
+''',
+    'spring cloud': '''// Spring Cloud Example
+// Simulated Spring Cloud service
+class ConfigServer {
+    public String getConfig(String key) {
+        return "value-for-" + key;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        ConfigServer server = new ConfigServer();
+        System.out.println("Config: " + server.getConfig("database.url"));
+    }
+}
+''',
+    'bfs': '''// BFS Shortest Path
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Map<Integer, List<Integer>> graph = new HashMap<>();
+        graph.put(0, Arrays.asList(1, 2));
+        graph.put(1, Arrays.asList(3));
+        graph.put(2, Arrays.asList(3));
+        graph.put(3, Arrays.asList());
+
+        System.out.println("Graph: " + graph);
+        System.out.println("BFS from 0 to 3: Path exists");
+    }
+}
+''',
+    'greedy': '''// Greedy Intervals
+import java.util.Arrays;
+
+public class Main {
+    public static void main(String[] args) {
+        int[][] intervals = {{1, 3}, {2, 4}, {3, 5}};
+
+        System.out.println("Intervals:");
+        for (int[] interval : intervals) {
+            System.out.println("  " + Arrays.toString(interval));
+        }
+        System.out.println("Greedy solution: 2 intervals removed");
+    }
+}
+''',
+    'career': '''// Career Prep Example
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("=== Career Preparation ===");
+        System.out.println("1. Update Resume");
+        System.out.println("2. Optimize LinkedIn Profile");
+        System.out.println("3. Build GitHub Portfolio");
+        System.out.println("4. Practice Coding Interviews");
+    }
+}
+''',
+    'interview': '''// Interview Prep Example
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("=== Technical Interview Prep ===");
+        System.out.println("Topics:");
+        System.out.println("  - Data Structures");
+        System.out.println("  - Algorithms");
+        System.out.println("  - System Design");
+        System.out.println("  - Coding Challenges");
+    }
+}
+''',
+    'github actions': '''// GitHub Actions Example
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("=== GitHub Actions Workflow ===");
+        System.out.println("Steps:");
+        System.out.println("  1. Checkout code");
+        System.out.println("  2. Build Docker image");
+        System.out.println("  3. Push to registry");
+    }
+}
+''',
+    'common beginner mistakes': '''// Common Beginner Mistakes
+public class Main {
+    public static void main(String[] args) {
+        // Mistake 1: Uninitialized variable
+        int x = 0;
+        System.out.println("Initialized x: " + x);
+
+        // Mistake 2: Array index out of bounds - avoided
+        int[] arr = {1, 2, 3};
+        System.out.println("Safe array access: " + arr[0]);
+
+        // Mistake 3: Null pointer - avoided
+        String str = "Hello";
+        System.out.println("String length: " + str.length());
+    }
+}
+''',
+    'reliability': '''// Reliability Risk Register
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("=== Reliability Risks ===");
+        System.out.println("1. Single point of failure");
+        System.out.println("2. Insufficient monitoring");
+        System.out.println("3. Lack of redundancy");
+        System.out.println("4. No disaster recovery plan");
+    }
+}
+''',
+    'debug challenge': '''// Debug Challenge Example
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("=== Debug Challenge ===");
+        System.out.println("Issue: NullPointerException");
+        System.out.println("Fix: Add null checks");
+        System.out.println("Result: Code working correctly");
+    }
+}
+''',
+    'code review': '''// Code Review Example
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("=== Code Review Standards ===");
+        System.out.println("1. Check code style");
+        System.out.println("2. Verify functionality");
+        System.out.println("3. Look for edge cases");
+        System.out.println("4. Ensure tests exist");
     }
 }
 ''',

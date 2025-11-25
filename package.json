@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "Server to execute code for the devbootLLM app.",
   "main": "server.js",
+  "license": "Apache-2.0",
+  "author": "Ocean Bennett",
   "scripts": {
     "start": "node server.js",
     "smoke": "node scripts/smoke-test.mjs",

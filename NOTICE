@@ -1,0 +1,52 @@
+DevBoot LLM - Interactive Programming Learning Platform
+Copyright 2025 Ocean Bennett
+https://github.com/OceanBennett/devbootLLM-app
+
+This product contains software developed by Ocean Bennett.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+================================================================================
+
+ATTRIBUTION NOTICE
+
+This software was created by Ocean Bennett and includes 2,107 verified
+programming lessons (1,030 Python + 1,077 Java) with 100% compilation
+and validation rates.
+
+If you distribute this software or derivative works based on it, you must:
+1. Include this NOTICE file
+2. Include the LICENSE file
+3. Retain all copyright notices
+4. State that you modified the code (if applicable)
+
+================================================================================
+
+THIRD-PARTY COMPONENTS
+
+This software includes the following third-party components:
+
+- Express.js (MIT License)
+  Copyright (c) 2009-2014 TJ Holowaychuk
+  https://github.com/expressjs/express
+
+- better-sqlite3 (MIT License)
+  Copyright (c) 2016 Joshua Wise
+  https://github.com/WiseLibs/better-sqlite3
+
+- Tailwind CSS (MIT License)
+  Copyright (c) Tailwind Labs, Inc.
+  https://github.com/tailwindlabs/tailwindcss
+
+For complete license information of third-party components, see their
+respective license files.

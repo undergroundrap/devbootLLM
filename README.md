@@ -572,7 +572,16 @@ Results: Generates detailed quality report with issues, warnings, and quality sc
 
 ## License
 
-MIT License - See [LICENSE](LICENSE) file for details
+Apache License 2.0 - See [LICENSE](LICENSE) file for details
+
+This project is licensed under the Apache License 2.0, which includes:
+- **Patent protection**: Contributors grant patent rights for their contributions
+- **Commercial use**: Free to use in commercial projects
+- **Modification**: Free to modify and distribute
+- **Distribution**: Free to share and redistribute
+- **Attribution required**: Must include license notice and attribution
+
+For full terms and conditions, see the [LICENSE](LICENSE) file.
 
 ## Development Notes
 

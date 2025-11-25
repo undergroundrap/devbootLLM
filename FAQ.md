@@ -62,7 +62,7 @@ No subscriptions, no hidden costs, no account required.
 
 **Option 1: Docker (Recommended)**
 ```bash
-git clone https://github.com/anthropics/devbootLLM-app.git
+git clone https://github.com/undergroundrap/devbootLLM-app.git
 cd devbootLLM-app
 docker build -t devboot-llm .
 docker run -p 3000:3000 devboot-llm
@@ -72,7 +72,7 @@ Visit `http://localhost:3000`
 
 **Option 2: Manual Setup**
 ```bash
-git clone https://github.com/anthropics/devbootLLM-app.git
+git clone https://github.com/undergroundrap/devbootLLM-app.git
 cd devbootLLM-app
 npm install
 npm start
@@ -410,7 +410,7 @@ See the [Adding New Lessons](CONTRIBUTING.md#adding-new-lessons) section in CONT
 
 **Please report it!**
 
-1. Open a [GitHub Issue](https://github.com/anthropics/devbootLLM-app/issues)
+1. Open a [GitHub Issue](https://github.com/undergroundrap/devbootLLM-app/issues)
 2. Include:
    - Lesson ID and title
    - What's wrong
@@ -589,8 +589,8 @@ Pull requests welcome! See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Still Have Questions?
 
-- **General questions**: [GitHub Discussions](https://github.com/anthropics/devbootLLM-app/discussions)
-- **Bug reports**: [GitHub Issues](https://github.com/anthropics/devbootLLM-app/issues)
+- **General questions**: [GitHub Discussions](https://github.com/undergroundrap/devbootLLM-app/discussions)
+- **Bug reports**: [GitHub Issues](https://github.com/undergroundrap/devbootLLM-app/issues)
 - **Documentation**: [README.md](README.md)
 - **Contributing**: [CONTRIBUTING.md](CONTRIBUTING.md)
 

@@ -349,8 +349,8 @@ Before requesting review, ensure:
 
 ## Questions?
 
-- **General questions:** Open a [GitHub Discussion](https://github.com/anthropics/devbootLLM-app/discussions)
-- **Bug reports:** Open a [GitHub Issue](https://github.com/anthropics/devbootLLM-app/issues)
+- **General questions:** Open a [GitHub Discussion](https://github.com/undergroundrap/devbootLLM-app/discussions)
+- **Bug reports:** Open a [GitHub Issue](https://github.com/undergroundrap/devbootLLM-app/issues)
 - **Quick questions:** Ask in PR comments
 
 ## Code of Conduct

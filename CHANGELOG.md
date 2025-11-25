@@ -202,11 +202,11 @@ Want to contribute? See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Support
 
-- **Issues**: [GitHub Issues](https://github.com/anthropics/devbootLLM-app/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/anthropics/devbootLLM-app/discussions)
+- **Issues**: [GitHub Issues](https://github.com/undergroundrap/devbootLLM-app/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/undergroundrap/devbootLLM-app/discussions)
 - **Documentation**: [README.md](README.md)
 
 ---
 
-[1.0.0]: https://github.com/anthropics/devbootLLM-app/releases/tag/v1.0.0
-[Unreleased]: https://github.com/anthropics/devbootLLM-app/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/undergroundrap/devbootLLM-app/releases/tag/v1.0.0
+[Unreleased]: https://github.com/undergroundrap/devbootLLM-app/compare/v1.0.0...HEAD

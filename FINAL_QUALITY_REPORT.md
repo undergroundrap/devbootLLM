@@ -268,5 +268,5 @@ They can:
 
 **Generated:** 2025-01-25
 **Maintainer:** Ocean Bennett
-**Project:** [DevBoot LLM](https://github.com/OceanBennett/devbootLLM-app)
+**Project:** [DevBoot LLM](https://github.com/undergroundrap/devbootLLM-app)
 **License:** Apache 2.0

@@ -2,7 +2,19 @@
 
 ## Overview
 
-Framework lessons (Flask, Django, Spring Boot, etc.) cannot be executed in the platform without installing heavy dependencies. Instead, we provide **syntax-only validation** with clear user messaging.
+Framework lessons (Flask, Django, Spring Boot, Kafka, pandas, etc.) cannot be executed in the platform without installing heavy dependencies. Instead, we provide **syntax-only validation** with clear user messaging.
+
+### 303 Framework Lessons Breakdown:
+
+- **16 Realistic Simulations** (5.3%): Full implementations that simulate framework behavior and teach concepts
+  - Django: 6 lessons
+  - Kafka: 4 lessons
+  - Spring: 4 lessons
+  - Redis: 1 lesson
+  - JPA: 1 lesson
+
+- **287 Syntax-Validated Stubs** (94.7%): Minimal code that introduces framework concepts and validates syntax
+  - All other framework lessons (Flask, FastAPI, pandas, boto3, Celery, GraphQL, gRPC, Kubernetes, etc.)
 
 ## How It Works
 

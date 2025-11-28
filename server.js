@@ -3,6 +3,7 @@ const { spawn } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const { validatePythonSyntax, validateJavaSyntax } = require('./framework-validation');
 
 const app = express();
 const port = Number(process.env.PORT || 3000);
@@ -616,8 +617,8 @@ app.post('/ollama/chat', async (req, res) => {
 // Endpoint to execute Java code
 app.post('/run/java', (req, res) => {
     console.log('Received Java execution request');
-    const { code, input } = req.body;
-    
+    const { code, input, isFramework, frameworkName } = req.body;
+
     if (typeof code !== 'string' || code.length === 0) {
         console.error('No code provided in request');
         return res.status(400).json({ error: 'No code provided.' });
@@ -625,6 +626,18 @@ app.post('/run/java', (req, res) => {
     if (Buffer.byteLength(code, 'utf8') > MAX_CODE_SIZE_BYTES) {
         console.error('Code size exceeds limit');
         return res.status(413).json({ error: 'Code too large (max 100KB).' });
+    }
+
+    // If this is a framework lesson, use syntax-only validation
+    if (isFramework) {
+        console.log(`Framework lesson detected: ${frameworkName || 'Unknown framework'}`);
+        return validateJavaSyntax(code, frameworkName, (err, result) => {
+            if (err) {
+                console.error('Framework validation error:', err);
+                return res.status(500).json({ error: err.message });
+            }
+            return res.json(result);
+        });
     }
 
     console.log('Creating temporary directory...');
@@ -752,12 +765,24 @@ app.post('/run/java', (req, res) => {
 
 // Endpoint to execute Python code
 app.post('/run/python', (req, res) => {
-    const { code } = req.body;
+    const { code, isFramework, frameworkName } = req.body;
     if (typeof code !== 'string' || code.length === 0) {
         return res.status(400).json({ error: 'No code provided.' });
     }
     if (Buffer.byteLength(code, 'utf8') > MAX_CODE_SIZE_BYTES) {
         return res.status(413).json({ error: 'Code too large (max 100KB).' });
+    }
+
+    // If this is a framework lesson, use syntax-only validation
+    if (isFramework) {
+        console.log(`Framework lesson detected: ${frameworkName || 'Unknown framework'}`);
+        return validatePythonSyntax(code, frameworkName, (err, result) => {
+            if (err) {
+                console.error('Framework validation error:', err);
+                return res.status(500).json({ error: err.message });
+            }
+            return res.json(result);
+        });
     }
 
     const tempDir = fs.mkdtempSync(path.join(BASE_TMP_DIR, 'python-run-'));

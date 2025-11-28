@@ -1170,11 +1170,20 @@
                     setTimeout(() => {
                         // Remove number prefix from title if it exists (e.g., "431. Parsing XML" -> "Parsing XML")
                         const cleanTitle = lesson.title.replace(/^\d+\.\s*/, '');
+                        const frameworkBadge = lesson.isFramework
+                            ? `<div class="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-500/20 border border-blue-400/40 rounded-full">
+                                <i class="fa-solid fa-cube text-blue-400 text-xs"></i>
+                                <span class="text-blue-300 text-xs font-semibold">${lesson.frameworkName || 'Framework'}</span>
+                               </div>`
+                            : '';
                         this.elements.lessonTitle.innerHTML = `
                             <div class="flex flex-col items-center gap-2">
-                                <div class="inline-flex items-center gap-2 px-4 py-1.5 gemini-bg-tertiary border border-gray-600/40 rounded-full">
-                                    <i class="fa-solid fa-graduation-cap text-violet-400 text-sm"></i>
-                                    <span class="text-gray-200 text-sm font-semibold tracking-wide">Lesson ${lesson.id}</span>
+                                <div class="flex items-center gap-2">
+                                    <div class="inline-flex items-center gap-2 px-4 py-1.5 gemini-bg-tertiary border border-gray-600/40 rounded-full">
+                                        <i class="fa-solid fa-graduation-cap text-violet-400 text-sm"></i>
+                                        <span class="text-gray-200 text-sm font-semibold tracking-wide">Lesson ${lesson.id}</span>
+                                    </div>
+                                    ${frameworkBadge}
                                 </div>
                                 <div class="flex items-center gap-2">
                                     <h2 class="text-2xl font-bold text-white">${cleanTitle}</h2>
@@ -1471,6 +1480,11 @@
                         // Use the currentLesson reference to include simulated input
                         if (currentLesson && currentLesson.userInput && currentLesson.userInput.length > 0) {
                             payload.input = currentLesson.userInput.join('\n');
+                        }
+                        // Add framework information if this is a framework lesson
+                        if (currentLesson && currentLesson.isFramework) {
+                            payload.isFramework = true;
+                            payload.frameworkName = currentLesson.frameworkName || 'Framework';
                         }
                         
                         // Pick backend endpoint by language (fallback to current course track)

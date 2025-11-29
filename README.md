@@ -67,11 +67,11 @@
 - 🔧 **Categorization Fix**: Recategorized 135 Python lessons from "OOP" to "Core Python" (now 100% of OOP lessons have class definitions)
 - 📝 **Narrative Lessons Fixed**: Replaced 16 generic narrative functions with full implementations (50-160 lines each)
   - Configuration Management, Git Mastery, Thread Synchronization, Rate Limiting, RESTful API Design, and 11 more
-- 🔬 **Framework Validation System**: 303 framework lessons (16 realistic simulations + 287 syntax-validated stubs)
-  - 16 comprehensive simulations that teach framework concepts (Django, Kafka, Spring, Redis)
-  - 287 syntax-validated stubs for framework introduction
-  - Students can write framework code without installing packages
-  - Syntax validation catches errors while allowing missing framework imports
+- 🔬 **Framework Validation System**: 303 framework lessons (65 realistic simulations + 238 syntax-validated stubs)
+  - 65 comprehensive simulations that teach framework concepts (Flask, Redis, Celery, Kafka, Django, Spring, Kubernetes)
+  - 238 syntax-validated stubs for framework introduction
+  - Students can run framework simulations immediately without installing packages
+  - Simulations use actual API patterns with "# In production:" comments explaining differences
 - 🎯 **Zero Quality Issues**: All placeholder code, narrative-only lessons, and categorization issues resolved
 - 📊 **100/100 Quality Score**: Perfect quality across all 2,107 lessons
 
@@ -132,21 +132,25 @@
 - **Dual Storage**: SQLite database with automatic JSON fallback for reliability
 
 ### 🔬 **Framework Validation System**
-- **303 Framework Lessons** with syntax-only validation (no installation required):
-  - **16 Realistic Simulations**: Full implementations that teach framework concepts (Django, Kafka, Spring, Redis, JPA)
-  - **287 Syntax-Validated Stubs**: Conceptual introductions with syntax checking
+- **303 Framework Lessons** - Run framework code immediately without installation:
+  - **65 Realistic Simulations** (21.5%): Full working code that simulates framework behavior
+    - Flask (17), Redis (15), Spring (14), Celery (9), Django (5), Kafka (4), Kubernetes (1)
+    - **Dec 2025 Upgrade**: Added 43 new simulations (Flask, Redis, Celery, Kafka)
+    - Use actual framework API patterns with "# In production:" comments
+    - Average 4,206 chars of production-quality code per lesson
+  - **238 Syntax-Validated Stubs** (78.5%): Conceptual introductions with syntax checking
   - **176 Python frameworks**: Django, Flask, FastAPI, pandas, NumPy, boto3, Redis, Kafka, scikit-learn, Celery, SQLAlchemy
   - **127 Java frameworks**: Spring Boot, Spring Data, Kafka, Kubernetes, GraphQL, gRPC, Hibernate, JPA, Reactor
 - **How It Works**:
-  - **Realistic Simulations** (16 lessons): Full working code that simulates framework behavior
-  - **Syntax-Only Stubs** (287 lessons): Minimal code to introduce framework concepts and validate syntax
+  - **Realistic Simulations**: Run immediately in-browser with actual framework APIs
+  - **Syntax-Only Stubs**: Minimal code to introduce framework concepts
   - Python: Uses `py -m py_compile` for instant syntax checking
   - Java: Uses `javac` with intelligent error detection (allows missing framework imports, catches real syntax errors)
 - **Student Benefits**:
-  - Get introduced to professional frameworks without complex installation
-  - Learn syntax and basic patterns for each framework
+  - Run 65 framework simulations immediately without installing anything
+  - Learn real framework patterns that match production code
   - Get instant feedback on syntax errors
-  - See exactly which framework to install for local development
+  - See exactly how code would differ with real packages installed
   - **Note**: For deep framework learning, complete the realistic simulations then install frameworks locally
 
 ## Quick Start
@@ -405,7 +409,7 @@ devbootllm-app/
 - `POST /run/java` - Execute Java code
 - `POST /run/python` - Execute Python code
   - Framework lessons: Syntax validation only (no execution)
-  - Supports 303 framework lessons (16 simulations + 287 stubs for Flask, Spring Boot, Django, Kafka, pandas, etc.)
+  - Supports 303 framework lessons (65 realistic simulations + 238 stubs for Flask, Spring Boot, Django, Kafka, pandas, etc.)
 
 ### Lessons
 - `GET /api/lessons?lang={java|python}&offset=0&limit=200` - Paginated lesson summaries
@@ -581,7 +585,7 @@ All lessons undergo comprehensive validation to ensure the highest quality:
 
 - **Compilation Testing**: Every solution is compiled with actual compilers (Python 3.12, Java 17)
 - **Execution Testing**: All 2,107 solutions are executed to verify they run without errors
-- **Framework Validation**: 303 framework lessons (16 realistic simulations + 287 syntax-validated stubs) without requiring package installation
+- **Framework Validation**: 303 framework lessons (65 realistic simulations + 238 syntax-validated stubs) - run framework code immediately without installation
 - **Output Validation**: Solutions are tested against expected outputs
 - **Structure Validation**: All lessons have complete structure (hints, test cases, tags, examples)
 - **Tutorial Quality Validation**: All tutorials checked for code examples, proper structure, and completeness

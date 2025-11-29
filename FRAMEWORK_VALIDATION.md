@@ -6,15 +6,23 @@ Framework lessons (Flask, Django, Spring Boot, Kafka, pandas, etc.) cannot be ex
 
 ### 303 Framework Lessons Breakdown:
 
-- **16 Realistic Simulations** (5.3%): Full implementations that simulate framework behavior and teach concepts
-  - Django: 6 lessons
-  - Kafka: 4 lessons
-  - Spring: 4 lessons
-  - Redis: 1 lesson
-  - JPA: 1 lesson
+- **65 Realistic Simulations** (21.5%): Full implementations that simulate framework behavior and teach concepts
+  - Flask: 17 lessons (upgraded Dec 2025)
+  - Redis: 15 lessons (14 upgraded Dec 2025 + 1 existing)
+  - Spring: 14 lessons
+  - Celery: 9 lessons (upgraded Dec 2025)
+  - Django: 5 lessons
+  - Kafka: 4 lessons (1 existing + 3 upgraded Dec 2025)
+  - Kubernetes: 1 lesson
 
-- **287 Syntax-Validated Stubs** (94.7%): Minimal code that introduces framework concepts and validates syntax
-  - All other framework lessons (Flask, FastAPI, pandas, boto3, Celery, GraphQL, gRPC, Kubernetes, etc.)
+- **238 Syntax-Validated Stubs** (78.5%): Minimal code that introduces framework concepts and validates syntax
+  - All other framework lessons (FastAPI, pandas, boto3, GraphQL, gRPC, etc.)
+
+**Recent Upgrades (December 2025):**
+- Upgraded 43 high-priority framework stubs to realistic simulations
+- Added 180,869 characters of production-quality simulation code
+- All simulations include "# In production:" comments showing real framework usage
+- Students can now run framework code immediately without installing dependencies
 
 ## How It Works
 

@@ -1,0 +1,4709 @@
+{
+  "stubs": [
+    {
+      "id": 20,
+      "title": "AWS SNS - Notification Service",
+      "framework": "Boto3",
+      "language": "python",
+      "length": 431,
+      "is_print_stub": false
+    },
+    {
+      "id": 223,
+      "title": "Parse requirements.txt",
+      "framework": "Flask",
+      "language": "python",
+      "length": 405,
+      "is_print_stub": false
+    },
+    {
+      "id": 255,
+      "title": "AWS API Gateway - REST API Management",
+      "framework": "Boto3",
+      "language": "python",
+      "length": 454,
+      "is_print_stub": false
+    },
+    {
+      "id": 256,
+      "title": "AWS DynamoDB - NoSQL Database",
+      "framework": "Boto3",
+      "language": "python",
+      "length": 440,
+      "is_print_stub": false
+    },
+    {
+      "id": 311,
+      "title": "Optional.orElse (Default Value)",
+      "framework": "Flask",
+      "language": "python",
+      "length": 576,
+      "is_print_stub": true
+    },
+    {
+      "id": 312,
+      "title": "StringJoiner (Custom Delimiter)",
+      "framework": "Flask",
+      "language": "python",
+      "length": 175,
+      "is_print_stub": true
+    },
+    {
+      "id": 313,
+      "title": "Capstone: Release Checklist",
+      "framework": "Flask",
+      "language": "python",
+      "length": 257,
+      "is_print_stub": true
+    },
+    {
+      "id": 314,
+      "title": "Capstone: Smoke Tests",
+      "framework": "Flask",
+      "language": "python",
+      "length": 211,
+      "is_print_stub": true
+    },
+    {
+      "id": 410,
+      "title": "Resume Bullet Transformer",
+      "framework": "Fastapi",
+      "language": "python",
+      "length": 335,
+      "is_print_stub": true
+    },
+    {
+      "id": 414,
+      "title": "Pyproject Dependency Summary",
+      "framework": "Fastapi",
+      "language": "python",
+      "length": 673,
+      "is_print_stub": false
+    },
+    {
+      "id": 511,
+      "title": "Career Prep: Resume, LinkedIn & GitHub Portfolio",
+      "framework": "Django",
+      "language": "python",
+      "length": 1191,
+      "is_print_stub": false
+    },
+    {
+      "id": 513,
+      "title": "Flask Mini Project Plan",
+      "framework": "Flask",
+      "language": "python",
+      "length": 558,
+      "is_print_stub": false
+    },
+    {
+      "id": 514,
+      "title": "Deploy Flask with Gunicorn",
+      "framework": "Flask",
+      "language": "python",
+      "length": 558,
+      "is_print_stub": false
+    },
+    {
+      "id": 515,
+      "title": "Django Model Definition",
+      "framework": "Django",
+      "language": "python",
+      "length": 584,
+      "is_print_stub": false
+    },
+    {
+      "id": 516,
+      "title": "Django QuerySet Filtering",
+      "framework": "Django",
+      "language": "python",
+      "length": 637,
+      "is_print_stub": false
+    },
+    {
+      "id": 517,
+      "title": "Django ForeignKey Relationships",
+      "framework": "Django",
+      "language": "python",
+      "length": 769,
+      "is_print_stub": false
+    },
+    {
+      "id": 518,
+      "title": "Django Function-Based Views",
+      "framework": "Django",
+      "language": "python",
+      "length": 874,
+      "is_print_stub": false
+    },
+    {
+      "id": 520,
+      "title": "Pandas DataFrame Basics",
+      "framework": "Pandas",
+      "language": "python",
+      "length": 436,
+      "is_print_stub": false
+    },
+    {
+      "id": 521,
+      "title": "Pandas Data Filtering",
+      "framework": "Pandas",
+      "language": "python",
+      "length": 704,
+      "is_print_stub": false
+    },
+    {
+      "id": 522,
+      "title": "Pandas Data Visualization",
+      "framework": "Pandas",
+      "language": "python",
+      "length": 681,
+      "is_print_stub": false
+    },
+    {
+      "id": 523,
+      "title": "NumPy Array Operations",
+      "framework": "Numpy",
+      "language": "python",
+      "length": 497,
+      "is_print_stub": false
+    },
+    {
+      "id": 561,
+      "title": "System Design: Read-Heavy Scale Plan",
+      "framework": "Kafka",
+      "language": "python",
+      "length": 734,
+      "is_print_stub": false
+    },
+    {
+      "id": 564,
+      "title": "Event Pipeline Case Study",
+      "framework": "Kafka",
+      "language": "python",
+      "length": 864,
+      "is_print_stub": false
+    },
+    {
+      "id": 688,
+      "title": "Azure Blob Storage - Cloud File Storage",
+      "framework": "Boto3",
+      "language": "python",
+      "length": 950,
+      "is_print_stub": false
+    },
+    {
+      "id": 689,
+      "title": "Google Cloud Storage - GCS Operations",
+      "framework": "Boto3",
+      "language": "python",
+      "length": 948,
+      "is_print_stub": false
+    },
+    {
+      "id": 742,
+      "title": "Flask - Flask-SQLAlchemy Integration",
+      "framework": "Flask",
+      "language": "python",
+      "length": 946,
+      "is_print_stub": false
+    },
+    {
+      "id": 743,
+      "title": "Flask - Custom Error Handlers",
+      "framework": "Flask",
+      "language": "python",
+      "length": 519,
+      "is_print_stub": true
+    },
+    {
+      "id": 744,
+      "title": "Flask - Request Hooks",
+      "framework": "Flask",
+      "language": "python",
+      "length": 947,
+      "is_print_stub": false
+    },
+    {
+      "id": 745,
+      "title": "Flask - Flask-Migrate Database Migrations",
+      "framework": "Flask",
+      "language": "python",
+      "length": 555,
+      "is_print_stub": true
+    },
+    {
+      "id": 746,
+      "title": "Flask - Flask-Caching",
+      "framework": "Flask",
+      "language": "python",
+      "length": 947,
+      "is_print_stub": false
+    },
+    {
+      "id": 747,
+      "title": "Flask - Flask-CORS",
+      "framework": "Flask",
+      "language": "python",
+      "length": 932,
+      "is_print_stub": false
+    },
+    {
+      "id": 748,
+      "title": "Flask - Blueprints for Large Apps",
+      "framework": "Flask",
+      "language": "python",
+      "length": 531,
+      "is_print_stub": true
+    },
+    {
+      "id": 749,
+      "title": "Flask - Application Factory Pattern",
+      "framework": "Flask",
+      "language": "python",
+      "length": 537,
+      "is_print_stub": true
+    },
+    {
+      "id": 750,
+      "title": "Flask - Flask-Login Authentication",
+      "framework": "Flask",
+      "language": "python",
+      "length": 534,
+      "is_print_stub": true
+    },
+    {
+      "id": 751,
+      "title": "Flask - Production Deployment",
+      "framework": "Flask",
+      "language": "python",
+      "length": 519,
+      "is_print_stub": true
+    },
+    {
+      "id": 752,
+      "title": "Django ManyToMany Relationships",
+      "framework": "Django",
+      "language": "python",
+      "length": 984,
+      "is_print_stub": false
+    },
+    {
+      "id": 753,
+      "title": "Django Model Aggregation",
+      "framework": "Django",
+      "language": "python",
+      "length": 797,
+      "is_print_stub": false
+    },
+    {
+      "id": 754,
+      "title": "Django Class-Based Views",
+      "framework": "Django",
+      "language": "python",
+      "length": 1138,
+      "is_print_stub": false
+    },
+    {
+      "id": 755,
+      "title": "Django REST Framework Serializer",
+      "framework": "Django",
+      "language": "python",
+      "length": 1097,
+      "is_print_stub": false
+    },
+    {
+      "id": 757,
+      "title": "Django REST API Authentication",
+      "framework": "Django",
+      "language": "python",
+      "length": 837,
+      "is_print_stub": false
+    },
+    {
+      "id": 758,
+      "title": "Django Password Reset Flow",
+      "framework": "Django",
+      "language": "python",
+      "length": 837,
+      "is_print_stub": false
+    },
+    {
+      "id": 762,
+      "title": "Django - Django Channels - WebSockets",
+      "framework": "Django",
+      "language": "python",
+      "length": 520,
+      "is_print_stub": true
+    },
+    {
+      "id": 763,
+      "title": "Django - Async Views",
+      "framework": "Django",
+      "language": "python",
+      "length": 902,
+      "is_print_stub": false
+    },
+    {
+      "id": 764,
+      "title": "Django - GraphQL with Graphene",
+      "framework": "Django",
+      "language": "python",
+      "length": 962,
+      "is_print_stub": false
+    },
+    {
+      "id": 765,
+      "title": "Django - Custom Middleware",
+      "framework": "Django",
+      "language": "python",
+      "length": 938,
+      "is_print_stub": false
+    },
+    {
+      "id": 766,
+      "title": "Django - Django Signals",
+      "framework": "Django",
+      "language": "python",
+      "length": 920,
+      "is_print_stub": false
+    },
+    {
+      "id": 767,
+      "title": "Django - Custom Management Commands",
+      "framework": "Django",
+      "language": "python",
+      "length": 512,
+      "is_print_stub": true
+    },
+    {
+      "id": 768,
+      "title": "Django - Celery Integration",
+      "framework": "Django",
+      "language": "python",
+      "length": 837,
+      "is_print_stub": false
+    },
+    {
+      "id": 769,
+      "title": "Django - DRF Custom Permissions",
+      "framework": "Django",
+      "language": "python",
+      "length": 968,
+      "is_print_stub": false
+    },
+    {
+      "id": 770,
+      "title": "Django - DRF Pagination",
+      "framework": "Django",
+      "language": "python",
+      "length": 920,
+      "is_print_stub": false
+    },
+    {
+      "id": 771,
+      "title": "Django - API Throttling",
+      "framework": "Django",
+      "language": "python",
+      "length": 920,
+      "is_print_stub": false
+    },
+    {
+      "id": 772,
+      "title": "Django - API Versioning",
+      "framework": "Django",
+      "language": "python",
+      "length": 920,
+      "is_print_stub": false
+    },
+    {
+      "id": 773,
+      "title": "Django - CORS Configuration",
+      "framework": "Django",
+      "language": "python",
+      "length": 944,
+      "is_print_stub": false
+    },
+    {
+      "id": 774,
+      "title": "Django - Testing Strategies",
+      "framework": "Django",
+      "language": "python",
+      "length": 944,
+      "is_print_stub": false
+    },
+    {
+      "id": 775,
+      "title": "FastAPI Security Dependency Plan",
+      "framework": "Fastapi",
+      "language": "python",
+      "length": 723,
+      "is_print_stub": true
+    },
+    {
+      "id": 776,
+      "title": "FastAPI - API Versioning",
+      "framework": "Fastapi",
+      "language": "python",
+      "length": 693,
+      "is_print_stub": false
+    },
+    {
+      "id": 777,
+      "title": "FastAPI - Testing FastAPI",
+      "framework": "Fastapi",
+      "language": "python",
+      "length": 544,
+      "is_print_stub": true
+    },
+    {
+      "id": 778,
+      "title": "FastAPI - OpenAPI Customization",
+      "framework": "Fastapi",
+      "language": "python",
+      "length": 562,
+      "is_print_stub": true
+    },
+    {
+      "id": 779,
+      "title": "FastAPI - Dependency Injection",
+      "framework": "Fastapi",
+      "language": "python",
+      "length": 559,
+      "is_print_stub": true
+    },
+    {
+      "id": 780,
+      "title": "FastAPI - Background Tasks",
+      "framework": "Fastapi",
+      "language": "python",
+      "length": 547,
+      "is_print_stub": true
+    },
+    {
+      "id": 781,
+      "title": "FastAPI - WebSocket Support",
+      "framework": "Fastapi",
+      "language": "python",
+      "length": 550,
+      "is_print_stub": true
+    },
+    {
+      "id": 782,
+      "title": "SQLAlchemy - Relationship Patterns",
+      "framework": "Sqlalchemy",
+      "language": "python",
+      "length": 616,
+      "is_print_stub": true
+    },
+    {
+      "id": 783,
+      "title": "SQLAlchemy - Custom Types",
+      "framework": "Sqlalchemy",
+      "language": "python",
+      "length": 598,
+      "is_print_stub": true
+    },
+    {
+      "id": 784,
+      "title": "SQLAlchemy - Events and Listeners",
+      "framework": "Sqlalchemy",
+      "language": "python",
+      "length": 614,
+      "is_print_stub": true
+    },
+    {
+      "id": 785,
+      "title": "SQLAlchemy - Hybrid Properties",
+      "framework": "Sqlalchemy",
+      "language": "python",
+      "length": 608,
+      "is_print_stub": true
+    },
+    {
+      "id": 786,
+      "title": "SQLAlchemy - Association Tables",
+      "framework": "Sqlalchemy",
+      "language": "python",
+      "length": 610,
+      "is_print_stub": true
+    },
+    {
+      "id": 787,
+      "title": "SQLAlchemy - Migration Strategies",
+      "framework": "Sqlalchemy",
+      "language": "python",
+      "length": 614,
+      "is_print_stub": true
+    },
+    {
+      "id": 788,
+      "title": "Pandas GroupBy Aggregation",
+      "framework": "Pandas",
+      "language": "python",
+      "length": 670,
+      "is_print_stub": false
+    },
+    {
+      "id": 789,
+      "title": "Pandas Merge and Join",
+      "framework": "Pandas",
+      "language": "python",
+      "length": 886,
+      "is_print_stub": false
+    },
+    {
+      "id": 790,
+      "title": "Pandas Time Series Analysis",
+      "framework": "Pandas",
+      "language": "python",
+      "length": 653,
+      "is_print_stub": false
+    },
+    {
+      "id": 791,
+      "title": "Pandas Data Cleaning",
+      "framework": "Pandas",
+      "language": "python",
+      "length": 1070,
+      "is_print_stub": false
+    },
+    {
+      "id": 792,
+      "title": "NumPy - NumPy and pandas Integration",
+      "framework": "Pandas",
+      "language": "python",
+      "length": 940,
+      "is_print_stub": false
+    },
+    {
+      "id": 793,
+      "title": "NumPy Matrix Operations",
+      "framework": "Numpy",
+      "language": "python",
+      "length": 933,
+      "is_print_stub": false
+    },
+    {
+      "id": 794,
+      "title": "NumPy Broadcasting",
+      "framework": "Numpy",
+      "language": "python",
+      "length": 737,
+      "is_print_stub": false
+    },
+    {
+      "id": 795,
+      "title": "NumPy - Advanced Array Operations",
+      "framework": "Numpy",
+      "language": "python",
+      "length": 934,
+      "is_print_stub": false
+    },
+    {
+      "id": 796,
+      "title": "NumPy - Linear Algebra",
+      "framework": "Numpy",
+      "language": "python",
+      "length": 901,
+      "is_print_stub": false
+    },
+    {
+      "id": 797,
+      "title": "NumPy - FFT and Signal Processing",
+      "framework": "Numpy",
+      "language": "python",
+      "length": 946,
+      "is_print_stub": false
+    },
+    {
+      "id": 798,
+      "title": "NumPy - Random Number Generation",
+      "framework": "Numpy",
+      "language": "python",
+      "length": 937,
+      "is_print_stub": false
+    },
+    {
+      "id": 799,
+      "title": "NumPy - Memory Optimization",
+      "framework": "Numpy",
+      "language": "python",
+      "length": 941,
+      "is_print_stub": false
+    },
+    {
+      "id": 800,
+      "title": "NumPy - Universal Functions",
+      "framework": "Numpy",
+      "language": "python",
+      "length": 908,
+      "is_print_stub": false
+    },
+    {
+      "id": 801,
+      "title": "NumPy - Structured Arrays",
+      "framework": "Numpy",
+      "language": "python",
+      "length": 904,
+      "is_print_stub": false
+    },
+    {
+      "id": 802,
+      "title": "NumPy - Advanced Indexing",
+      "framework": "Numpy",
+      "language": "python",
+      "length": 884,
+      "is_print_stub": false
+    },
+    {
+      "id": 803,
+      "title": "NumPy - Performance Optimization",
+      "framework": "Numpy",
+      "language": "python",
+      "length": 962,
+      "is_print_stub": false
+    },
+    {
+      "id": 804,
+      "title": "NumPy - Masked Arrays",
+      "framework": "Numpy",
+      "language": "python",
+      "length": 900,
+      "is_print_stub": false
+    },
+    {
+      "id": 805,
+      "title": "NumPy - NumPy File I/O",
+      "framework": "Numpy",
+      "language": "python",
+      "length": 877,
+      "is_print_stub": false
+    },
+    {
+      "id": 806,
+      "title": "NumPy - Broadcasting Rules",
+      "framework": "Numpy",
+      "language": "python",
+      "length": 917,
+      "is_print_stub": false
+    },
+    {
+      "id": 807,
+      "title": "NumPy - Advanced Sorting",
+      "framework": "Numpy",
+      "language": "python",
+      "length": 893,
+      "is_print_stub": false
+    },
+    {
+      "id": 815,
+      "title": "Celery - Celery Basics",
+      "framework": "Celery",
+      "language": "python",
+      "length": 951,
+      "is_print_stub": false
+    },
+    {
+      "id": 816,
+      "title": "Celery - Task Scheduling",
+      "framework": "Celery",
+      "language": "python",
+      "length": 501,
+      "is_print_stub": true
+    },
+    {
+      "id": 817,
+      "title": "Celery - Periodic Tasks",
+      "framework": "Celery",
+      "language": "python",
+      "length": 955,
+      "is_print_stub": false
+    },
+    {
+      "id": 818,
+      "title": "Celery - Task Chains",
+      "framework": "Celery",
+      "language": "python",
+      "length": 943,
+      "is_print_stub": false
+    },
+    {
+      "id": 819,
+      "title": "Celery - Task Groups",
+      "framework": "Celery",
+      "language": "python",
+      "length": 943,
+      "is_print_stub": false
+    },
+    {
+      "id": 820,
+      "title": "Celery - Error Handling",
+      "framework": "Celery",
+      "language": "python",
+      "length": 955,
+      "is_print_stub": false
+    },
+    {
+      "id": 821,
+      "title": "Celery - Task Monitoring",
+      "framework": "Celery",
+      "language": "python",
+      "length": 501,
+      "is_print_stub": true
+    },
+    {
+      "id": 822,
+      "title": "Celery - Redis Backend",
+      "framework": "Redis",
+      "language": "python",
+      "length": 951,
+      "is_print_stub": false
+    },
+    {
+      "id": 823,
+      "title": "Celery - RabbitMQ Backend",
+      "framework": "Celery",
+      "language": "python",
+      "length": 503,
+      "is_print_stub": true
+    },
+    {
+      "id": 824,
+      "title": "Celery - Production Deployment",
+      "framework": "Celery",
+      "language": "python",
+      "length": 513,
+      "is_print_stub": true
+    },
+    {
+      "id": 850,
+      "title": "Redis - Redis Basics",
+      "framework": "Redis",
+      "language": "python",
+      "length": 851,
+      "is_print_stub": false
+    },
+    {
+      "id": 851,
+      "title": "Redis - Data Structures",
+      "framework": "Redis",
+      "language": "python",
+      "length": 863,
+      "is_print_stub": false
+    },
+    {
+      "id": 852,
+      "title": "Redis - Pub/Sub Messaging",
+      "framework": "Redis",
+      "language": "python",
+      "length": 871,
+      "is_print_stub": false
+    },
+    {
+      "id": 853,
+      "title": "Redis - Caching Strategies",
+      "framework": "Redis",
+      "language": "python",
+      "length": 875,
+      "is_print_stub": false
+    },
+    {
+      "id": 854,
+      "title": "Redis - Redis Transactions",
+      "framework": "Redis",
+      "language": "python",
+      "length": 875,
+      "is_print_stub": false
+    },
+    {
+      "id": 855,
+      "title": "Redis - Persistence",
+      "framework": "Redis",
+      "language": "python",
+      "length": 725,
+      "is_print_stub": false
+    },
+    {
+      "id": 856,
+      "title": "Redis - Redis Cluster",
+      "framework": "Redis",
+      "language": "python",
+      "length": 855,
+      "is_print_stub": false
+    },
+    {
+      "id": 857,
+      "title": "Redis - Pipelining",
+      "framework": "Redis",
+      "language": "python",
+      "length": 721,
+      "is_print_stub": false
+    },
+    {
+      "id": 858,
+      "title": "Redis - Lua Scripting",
+      "framework": "Redis",
+      "language": "python",
+      "length": 855,
+      "is_print_stub": false
+    },
+    {
+      "id": 859,
+      "title": "AWS boto3 - SQS Queue Management",
+      "framework": "Boto3",
+      "language": "python",
+      "length": 639,
+      "is_print_stub": true
+    },
+    {
+      "id": 860,
+      "title": "AWS boto3 - SNS Notifications",
+      "framework": "Boto3",
+      "language": "python",
+      "length": 580,
+      "is_print_stub": true
+    },
+    {
+      "id": 861,
+      "title": "AWS boto3 - CloudWatch Monitoring",
+      "framework": "Boto3",
+      "language": "python",
+      "length": 643,
+      "is_print_stub": true
+    },
+    {
+      "id": 862,
+      "title": "AWS boto3 - IAM Security",
+      "framework": "Boto3",
+      "language": "python",
+      "length": 607,
+      "is_print_stub": true
+    },
+    {
+      "id": 863,
+      "title": "AWS boto3 - RDS Database Operations",
+      "framework": "Boto3",
+      "language": "python",
+      "length": 651,
+      "is_print_stub": true
+    },
+    {
+      "id": 864,
+      "title": "AWS boto3 - CloudFormation",
+      "framework": "Boto3",
+      "language": "python",
+      "length": 615,
+      "is_print_stub": true
+    },
+    {
+      "id": 867,
+      "title": "AWS S3 - Signed URLs and Presigned URLs",
+      "framework": "Boto3",
+      "language": "python",
+      "length": 926,
+      "is_print_stub": false
+    },
+    {
+      "id": 868,
+      "title": "AWS Lambda - Serverless Functions Basics",
+      "framework": "Boto3",
+      "language": "python",
+      "length": 937,
+      "is_print_stub": false
+    },
+    {
+      "id": 869,
+      "title": "AWS Lambda - Event-Driven Architecture",
+      "framework": "Boto3",
+      "language": "python",
+      "length": 931,
+      "is_print_stub": false
+    },
+    {
+      "id": 870,
+      "title": "AWS EC2 - Virtual Machine Deployment",
+      "framework": "Boto3",
+      "language": "python",
+      "length": 919,
+      "is_print_stub": false
+    },
+    {
+      "id": 871,
+      "title": "AWS RDS - Managed Database Service",
+      "framework": "Boto3",
+      "language": "python",
+      "length": 913,
+      "is_print_stub": false
+    },
+    {
+      "id": 872,
+      "title": "AWS SQS - Message Queue Service",
+      "framework": "Boto3",
+      "language": "python",
+      "length": 904,
+      "is_print_stub": false
+    },
+    {
+      "id": 873,
+      "title": "AWS CloudWatch - Monitoring and Logs",
+      "framework": "Boto3",
+      "language": "python",
+      "length": 933,
+      "is_print_stub": false
+    },
+    {
+      "id": 874,
+      "title": "AWS Secrets Manager - Secure Credentials",
+      "framework": "Boto3",
+      "language": "python",
+      "length": 955,
+      "is_print_stub": false
+    },
+    {
+      "id": 875,
+      "title": "AWS IAM - Identity and Access Management",
+      "framework": "Boto3",
+      "language": "python",
+      "length": 931,
+      "is_print_stub": false
+    },
+    {
+      "id": 876,
+      "title": "Terraform - AWS Resources",
+      "framework": "Boto3",
+      "language": "python",
+      "length": 890,
+      "is_print_stub": false
+    },
+    {
+      "id": 877,
+      "title": "CloudFormation - AWS Infrastructure",
+      "framework": "Boto3",
+      "language": "python",
+      "length": 930,
+      "is_print_stub": false
+    },
+    {
+      "id": 881,
+      "title": "Docker - Docker Compose Multi-Container",
+      "framework": "Redis",
+      "language": "python",
+      "length": 793,
+      "is_print_stub": false
+    },
+    {
+      "id": 908,
+      "title": "Kafka - Topics and Partitions",
+      "framework": "Kafka",
+      "language": "python",
+      "length": 523,
+      "is_print_stub": false
+    },
+    {
+      "id": 909,
+      "title": "Kafka - Consumer Groups",
+      "framework": "Kafka",
+      "language": "python",
+      "length": 507,
+      "is_print_stub": false
+    },
+    {
+      "id": 910,
+      "title": "Kafka - Exactly-Once Semantics",
+      "framework": "Kafka",
+      "language": "python",
+      "length": 526,
+      "is_print_stub": false
+    },
+    {
+      "id": 961,
+      "title": "FastAPI - OAuth2 Authentication",
+      "framework": "Fastapi",
+      "language": "python",
+      "length": 560,
+      "is_print_stub": true
+    },
+    {
+      "id": 962,
+      "title": "FastAPI - Database Integration",
+      "framework": "Fastapi",
+      "language": "python",
+      "length": 557,
+      "is_print_stub": true
+    },
+    {
+      "id": 963,
+      "title": "FastAPI - Production Deployment",
+      "framework": "Fastapi",
+      "language": "python",
+      "length": 560,
+      "is_print_stub": true
+    },
+    {
+      "id": 964,
+      "title": "SQLAlchemy Model Outline: Order",
+      "framework": "Sqlalchemy",
+      "language": "python",
+      "length": 648,
+      "is_print_stub": true
+    },
+    {
+      "id": 965,
+      "title": "SQLAlchemy Repository Sketch",
+      "framework": "Sqlalchemy",
+      "language": "python",
+      "length": 795,
+      "is_print_stub": false
+    },
+    {
+      "id": 966,
+      "title": "SQLAlchemy - Query Optimization",
+      "framework": "Sqlalchemy",
+      "language": "python",
+      "length": 608,
+      "is_print_stub": true
+    },
+    {
+      "id": 967,
+      "title": "SQLAlchemy - Eager vs Lazy Loading",
+      "framework": "Sqlalchemy",
+      "language": "python",
+      "length": 614,
+      "is_print_stub": true
+    },
+    {
+      "id": 968,
+      "title": "SQLAlchemy - Polymorphic Queries",
+      "framework": "Sqlalchemy",
+      "language": "python",
+      "length": 610,
+      "is_print_stub": true
+    },
+    {
+      "id": 969,
+      "title": "SQLAlchemy - Connection Pooling",
+      "framework": "Sqlalchemy",
+      "language": "python",
+      "length": 608,
+      "is_print_stub": true
+    },
+    {
+      "id": 970,
+      "title": "Pandas - MultiIndex DataFrames",
+      "framework": "Pandas",
+      "language": "python",
+      "length": 897,
+      "is_print_stub": false
+    },
+    {
+      "id": 971,
+      "title": "Pandas - Performance Optimization",
+      "framework": "Pandas",
+      "language": "python",
+      "length": 912,
+      "is_print_stub": false
+    },
+    {
+      "id": 972,
+      "title": "Pandas - Memory Reduction",
+      "framework": "Pandas",
+      "language": "python",
+      "length": 872,
+      "is_print_stub": false
+    },
+    {
+      "id": 973,
+      "title": "Pandas - Chunking Large Datasets",
+      "framework": "Pandas",
+      "language": "python",
+      "length": 907,
+      "is_print_stub": false
+    },
+    {
+      "id": 974,
+      "title": "Pandas - SQL Integration",
+      "framework": "Pandas",
+      "language": "python",
+      "length": 867,
+      "is_print_stub": false
+    },
+    {
+      "id": 975,
+      "title": "Pandas - Advanced Time Series",
+      "framework": "Pandas",
+      "language": "python",
+      "length": 892,
+      "is_print_stub": false
+    },
+    {
+      "id": 976,
+      "title": "Pandas - Rolling Windows",
+      "framework": "Pandas",
+      "language": "python",
+      "length": 867,
+      "is_print_stub": false
+    },
+    {
+      "id": 977,
+      "title": "Pandas - Custom Aggregations",
+      "framework": "Pandas",
+      "language": "python",
+      "length": 887,
+      "is_print_stub": false
+    },
+    {
+      "id": 978,
+      "title": "Pandas - Data Cleaning Project",
+      "framework": "Pandas",
+      "language": "python",
+      "length": 897,
+      "is_print_stub": false
+    },
+    {
+      "id": 979,
+      "title": "NumPy - NumPy Best Practices",
+      "framework": "Numpy",
+      "language": "python",
+      "length": 930,
+      "is_print_stub": false
+    },
+    {
+      "id": 980,
+      "title": "Train-Test Split in scikit-learn",
+      "framework": "Sklearn",
+      "language": "python",
+      "length": 682,
+      "is_print_stub": true
+    },
+    {
+      "id": 981,
+      "title": "Linear Regression with scikit-learn",
+      "framework": "Sklearn",
+      "language": "python",
+      "length": 687,
+      "is_print_stub": true
+    },
+    {
+      "id": 982,
+      "title": "Pytest Fixture & Parametrization",
+      "framework": "pytest",
+      "language": "python",
+      "length": 515,
+      "is_print_stub": false
+    },
+    {
+      "id": 1004,
+      "title": "Redis - Caching Strategies (Cache-Aside, Write-Through)",
+      "framework": "Redis",
+      "language": "python",
+      "length": 579,
+      "is_print_stub": false
+    },
+    {
+      "id": 1005,
+      "title": "Redis - Cache Invalidation Patterns",
+      "framework": "Redis",
+      "language": "python",
+      "length": 541,
+      "is_print_stub": false
+    },
+    {
+      "id": 1006,
+      "title": "Redis - Redis Production",
+      "framework": "Redis",
+      "language": "python",
+      "length": 865,
+      "is_print_stub": false
+    },
+    {
+      "id": 1007,
+      "title": "AWS boto3 - S3 Advanced Operations",
+      "framework": "Boto3",
+      "language": "python",
+      "length": 645,
+      "is_print_stub": true
+    },
+    {
+      "id": 1008,
+      "title": "AWS boto3 - EC2 Instance Management",
+      "framework": "Boto3",
+      "language": "python",
+      "length": 649,
+      "is_print_stub": true
+    },
+    {
+      "id": 1009,
+      "title": "AWS boto3 - Lambda Functions",
+      "framework": "Boto3",
+      "language": "python",
+      "length": 664,
+      "is_print_stub": true
+    },
+    {
+      "id": 1010,
+      "title": "AWS boto3 - DynamoDB Operations",
+      "framework": "Boto3",
+      "language": "python",
+      "length": 633,
+      "is_print_stub": true
+    },
+    {
+      "id": 1018,
+      "title": "Logistic Regression for Classification",
+      "framework": "Sklearn",
+      "language": "python",
+      "length": 884,
+      "is_print_stub": false
+    },
+    {
+      "id": 1019,
+      "title": "Decision Tree Classifier",
+      "framework": "Sklearn",
+      "language": "python",
+      "length": 703,
+      "is_print_stub": true
+    },
+    {
+      "id": 1020,
+      "title": "Random Forest Classifier",
+      "framework": "Sklearn",
+      "language": "python",
+      "length": 857,
+      "is_print_stub": false
+    },
+    {
+      "id": 1021,
+      "title": "K-Means Clustering",
+      "framework": "Sklearn",
+      "language": "python",
+      "length": 586,
+      "is_print_stub": true
+    },
+    {
+      "id": 1022,
+      "title": "Classification Metrics",
+      "framework": "Sklearn",
+      "language": "python",
+      "length": 950,
+      "is_print_stub": false
+    },
+    {
+      "id": 1023,
+      "title": "Cross-Validation",
+      "framework": "Sklearn",
+      "language": "python",
+      "length": 687,
+      "is_print_stub": false
+    },
+    {
+      "id": 1024,
+      "title": "Feature Scaling",
+      "framework": "Sklearn",
+      "language": "python",
+      "length": 692,
+      "is_print_stub": false
+    },
+    {
+      "id": 1025,
+      "title": "PCA (Principal Component Analysis)",
+      "framework": "Sklearn",
+      "language": "python",
+      "length": 687,
+      "is_print_stub": true
+    },
+    {
+      "id": 1026,
+      "title": "Model Persistence (Saving/Loading Models)",
+      "framework": "Sklearn",
+      "language": "python",
+      "length": 917,
+      "is_print_stub": false
+    },
+    {
+      "id": 1027,
+      "title": "GridSearchCV for Hyperparameter Tuning",
+      "framework": "Sklearn",
+      "language": "python",
+      "length": 971,
+      "is_print_stub": false
+    },
+    {
+      "id": 1028,
+      "title": "Pipeline for ML Workflows",
+      "framework": "Sklearn",
+      "language": "python",
+      "length": 947,
+      "is_print_stub": false
+    },
+    {
+      "id": 1029,
+      "title": "Ensemble Methods (Voting Classifier)",
+      "framework": "Sklearn",
+      "language": "python",
+      "length": 566,
+      "is_print_stub": false
+    },
+    {
+      "id": 1030,
+      "title": "Real-World ML Project: Customer Churn Prediction",
+      "framework": "Sklearn",
+      "language": "python",
+      "length": 968,
+      "is_print_stub": false
+    },
+    {
+      "id": 148,
+      "title": "Spring-Style Controller Method",
+      "framework": "Spring",
+      "language": "java",
+      "length": 634,
+      "is_print_stub": false
+    },
+    {
+      "id": 173,
+      "title": "Spring Boot Skeleton Files",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 218,
+      "title": "Spring Boot Mini Project Plan",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 273,
+      "title": "SpringApplication Runner Stub",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 299,
+      "title": "Maven Coordinate Formatter",
+      "framework": "Spring",
+      "language": "java",
+      "length": 318,
+      "is_print_stub": true
+    },
+    {
+      "id": 401,
+      "title": "JPA Entity Outline: Order",
+      "framework": "Jpa",
+      "language": "java",
+      "length": 1237,
+      "is_print_stub": false
+    },
+    {
+      "id": 402,
+      "title": "Resume Bullet Transformer",
+      "framework": "Spring",
+      "language": "java",
+      "length": 557,
+      "is_print_stub": true
+    },
+    {
+      "id": 498,
+      "title": "WebSockets - Bi-directional Communication",
+      "framework": "Spring",
+      "language": "java",
+      "length": 1001,
+      "is_print_stub": false
+    },
+    {
+      "id": 511,
+      "title": "Spring Boot - Build Info",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 512,
+      "title": "Spring Data Repository Sketch",
+      "framework": "Spring",
+      "language": "java",
+      "length": 1613,
+      "is_print_stub": false
+    },
+    {
+      "id": 565,
+      "title": "System Design: Read-Heavy Scale Plan",
+      "framework": "Kafka",
+      "language": "java",
+      "length": 1317,
+      "is_print_stub": false
+    },
+    {
+      "id": 569,
+      "title": "Event Pipeline Case Study",
+      "framework": "Kafka",
+      "language": "java",
+      "length": 1568,
+      "is_print_stub": false
+    },
+    {
+      "id": 785,
+      "title": "SQL Injection Prevention",
+      "framework": "Hibernate",
+      "language": "java",
+      "length": 1480,
+      "is_print_stub": false
+    },
+    {
+      "id": 842,
+      "title": "Testcontainers - Testcontainers with Spring Boot",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 843,
+      "title": "Spring Boot - Properties Externalization",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 844,
+      "title": "Spring Boot - Profiles Advanced",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 845,
+      "title": "Spring Boot - Logging Configuration",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 846,
+      "title": "Spring Boot - Graceful Shutdown",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 847,
+      "title": "Spring Boot - Admin Server",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 848,
+      "title": "Spring Boot - Production Best Practices",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 852,
+      "title": "Spring Data - Stored Procedures",
+      "framework": "Spring",
+      "language": "java",
+      "length": 1196,
+      "is_print_stub": false
+    },
+    {
+      "id": 861,
+      "title": "Spring Security Filter Chain Plan",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 862,
+      "title": "Spring Security Basic Configuration",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 863,
+      "title": "Spring Security User Authentication",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 864,
+      "title": "Spring Security - Spring Security Architecture",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 865,
+      "title": "Spring Security - Custom Authentication",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 866,
+      "title": "Spring Security - OAuth2 Resource Server",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 867,
+      "title": "Spring Security - JWT Token Validation",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 868,
+      "title": "Spring Security - Method Security",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 869,
+      "title": "Spring Security - Custom Security Filters",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 870,
+      "title": "Spring Security - CORS Configuration",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 871,
+      "title": "Spring Security - CSRF Protection",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 872,
+      "title": "Spring Security - Session Management",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 873,
+      "title": "Spring Cloud Config Server",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 874,
+      "title": "API Gateway with Spring Cloud Gateway",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 875,
+      "title": "Load Balancing with Spring Cloud LoadBalancer",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 876,
+      "title": "Reactive - Reactor Basics - Mono",
+      "framework": "Reactor",
+      "language": "java",
+      "length": 668,
+      "is_print_stub": false
+    },
+    {
+      "id": 877,
+      "title": "Reactive - Reactor Basics - Flux",
+      "framework": "Reactor",
+      "language": "java",
+      "length": 671,
+      "is_print_stub": false
+    },
+    {
+      "id": 879,
+      "title": "Apache Kafka - Producer and Consumer",
+      "framework": "Kafka",
+      "language": "java",
+      "length": 1354,
+      "is_print_stub": false
+    },
+    {
+      "id": 880,
+      "title": "Kafka - Topics and Partitions",
+      "framework": "Kafka",
+      "language": "java",
+      "length": 824,
+      "is_print_stub": false
+    },
+    {
+      "id": 881,
+      "title": "Kafka - Consumer Groups",
+      "framework": "Kafka",
+      "language": "java",
+      "length": 800,
+      "is_print_stub": false
+    },
+    {
+      "id": 882,
+      "title": "Testcontainers - Kafka Testing",
+      "framework": "Kafka",
+      "language": "java",
+      "length": 691,
+      "is_print_stub": false
+    },
+    {
+      "id": 883,
+      "title": "Kafka - Kafka Basics",
+      "framework": "Kafka",
+      "language": "java",
+      "length": 649,
+      "is_print_stub": false
+    },
+    {
+      "id": 884,
+      "title": "Kafka - Producers",
+      "framework": "Kafka",
+      "language": "java",
+      "length": 631,
+      "is_print_stub": false
+    },
+    {
+      "id": 885,
+      "title": "Kafka - Consumers",
+      "framework": "Kafka",
+      "language": "java",
+      "length": 634,
+      "is_print_stub": false
+    },
+    {
+      "id": 886,
+      "title": "Kafka - Consumer Groups",
+      "framework": "Kafka",
+      "language": "java",
+      "length": 648,
+      "is_print_stub": false
+    },
+    {
+      "id": 887,
+      "title": "Kafka - Topics and Partitions",
+      "framework": "Kafka",
+      "language": "java",
+      "length": 647,
+      "is_print_stub": false
+    },
+    {
+      "id": 888,
+      "title": "Kafka - Kafka Streams",
+      "framework": "Kafka",
+      "language": "java",
+      "length": 655,
+      "is_print_stub": false
+    },
+    {
+      "id": 890,
+      "title": "Kafka - Serialization with Avro",
+      "framework": "Kafka",
+      "language": "java",
+      "length": 673,
+      "is_print_stub": false
+    },
+    {
+      "id": 891,
+      "title": "Kafka - Error Handling",
+      "framework": "Kafka",
+      "language": "java",
+      "length": 655,
+      "is_print_stub": false
+    },
+    {
+      "id": 892,
+      "title": "Kafka - Monitoring and Production",
+      "framework": "Kafka",
+      "language": "java",
+      "length": 663,
+      "is_print_stub": false
+    },
+    {
+      "id": 893,
+      "title": "Testing - Kafka Testing",
+      "framework": "Kafka",
+      "language": "java",
+      "length": 656,
+      "is_print_stub": false
+    },
+    {
+      "id": 905,
+      "title": "GraphQL Basics",
+      "framework": "Graphql",
+      "language": "java",
+      "length": 588,
+      "is_print_stub": false
+    },
+    {
+      "id": 906,
+      "title": "GraphQL Java - GraphQL Basics",
+      "framework": "Graphql",
+      "language": "java",
+      "length": 985,
+      "is_print_stub": false
+    },
+    {
+      "id": 907,
+      "title": "GraphQL Java - GraphQL Java Setup",
+      "framework": "Graphql",
+      "language": "java",
+      "length": 849,
+      "is_print_stub": false
+    },
+    {
+      "id": 908,
+      "title": "GraphQL Java - Schema Definition",
+      "framework": "Graphql",
+      "language": "java",
+      "length": 738,
+      "is_print_stub": false
+    },
+    {
+      "id": 909,
+      "title": "GraphQL Java - Resolvers",
+      "framework": "Graphql",
+      "language": "java",
+      "length": 850,
+      "is_print_stub": false
+    },
+    {
+      "id": 910,
+      "title": "GraphQL Java - Mutations",
+      "framework": "Graphql",
+      "language": "java",
+      "length": 911,
+      "is_print_stub": false
+    },
+    {
+      "id": 911,
+      "title": "GraphQL Java - Error Handling",
+      "framework": "Graphql",
+      "language": "java",
+      "length": 857,
+      "is_print_stub": false
+    },
+    {
+      "id": 912,
+      "title": "GraphQL Java - Subscriptions",
+      "framework": "Graphql",
+      "language": "java",
+      "length": 906,
+      "is_print_stub": false
+    },
+    {
+      "id": 923,
+      "title": "gRPC - gRPC Basics",
+      "framework": "Grpc",
+      "language": "java",
+      "length": 594,
+      "is_print_stub": false
+    },
+    {
+      "id": 924,
+      "title": "gRPC - Service Definition",
+      "framework": "Grpc",
+      "language": "java",
+      "length": 615,
+      "is_print_stub": false
+    },
+    {
+      "id": 925,
+      "title": "gRPC - Unary RPC",
+      "framework": "Grpc",
+      "language": "java",
+      "length": 588,
+      "is_print_stub": false
+    },
+    {
+      "id": 926,
+      "title": "gRPC - Server Streaming",
+      "framework": "Grpc",
+      "language": "java",
+      "length": 609,
+      "is_print_stub": false
+    },
+    {
+      "id": 927,
+      "title": "gRPC - Client Streaming",
+      "framework": "Grpc",
+      "language": "java",
+      "length": 609,
+      "is_print_stub": false
+    },
+    {
+      "id": 928,
+      "title": "gRPC - Bidirectional Streaming",
+      "framework": "Grpc",
+      "language": "java",
+      "length": 630,
+      "is_print_stub": false
+    },
+    {
+      "id": 929,
+      "title": "gRPC - Error Handling",
+      "framework": "Grpc",
+      "language": "java",
+      "length": 603,
+      "is_print_stub": false
+    },
+    {
+      "id": 930,
+      "title": "gRPC - Interceptors",
+      "framework": "Grpc",
+      "language": "java",
+      "length": 597,
+      "is_print_stub": false
+    },
+    {
+      "id": 931,
+      "title": "gRPC - Authentication",
+      "framework": "Grpc",
+      "language": "java",
+      "length": 603,
+      "is_print_stub": false
+    },
+    {
+      "id": 932,
+      "title": "Kubernetes - Kubernetes Basics",
+      "framework": "Kubernetes",
+      "language": "java",
+      "length": 624,
+      "is_print_stub": false
+    },
+    {
+      "id": 933,
+      "title": "Kubernetes - Services and Networking",
+      "framework": "Kubernetes",
+      "language": "java",
+      "length": 642,
+      "is_print_stub": false
+    },
+    {
+      "id": 934,
+      "title": "Kubernetes - ConfigMaps and Secrets",
+      "framework": "Kubernetes",
+      "language": "java",
+      "length": 639,
+      "is_print_stub": false
+    },
+    {
+      "id": 935,
+      "title": "Kubernetes - Persistent Volumes",
+      "framework": "Kubernetes",
+      "language": "java",
+      "length": 627,
+      "is_print_stub": false
+    },
+    {
+      "id": 936,
+      "title": "Kubernetes - Deployments",
+      "framework": "Kubernetes",
+      "language": "java",
+      "length": 606,
+      "is_print_stub": false
+    },
+    {
+      "id": 937,
+      "title": "Kubernetes - Ingress",
+      "framework": "Kubernetes",
+      "language": "java",
+      "length": 594,
+      "is_print_stub": false
+    },
+    {
+      "id": 938,
+      "title": "Kubernetes - Health Checks",
+      "framework": "Kubernetes",
+      "language": "java",
+      "length": 612,
+      "is_print_stub": false
+    },
+    {
+      "id": 939,
+      "title": "Kubernetes - Resource Management",
+      "framework": "Kubernetes",
+      "language": "java",
+      "length": 630,
+      "is_print_stub": false
+    },
+    {
+      "id": 1010,
+      "title": "Spring Boot Run Checklist",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 1011,
+      "title": "Deploy Spring Boot JAR",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 1012,
+      "title": "Spring Boot - Actuator Endpoints",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 1013,
+      "title": "Spring Boot - Custom Metrics with Micrometer",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 1014,
+      "title": "Spring Boot - Health Indicators",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 1015,
+      "title": "Spring Boot - Prometheus Integration",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 1016,
+      "title": "Spring Boot - Custom Starters",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 1018,
+      "title": "Spring Security - Password Encoding",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 1019,
+      "title": "Spring Security - Remember Me",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 1020,
+      "title": "Spring Security - Security Testing",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 1021,
+      "title": "Spring Cloud - Config Encryption",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 1022,
+      "title": "Spring Cloud - Refresh Strategies",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 1023,
+      "title": "Spring Cloud - Service Mesh Integration",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 1024,
+      "title": "Spring Cloud - Distributed Configuration",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 1025,
+      "title": "Spring Cloud - Resilience Patterns",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 1026,
+      "title": "Spring Cloud - Retry Policies",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 1027,
+      "title": "Spring Cloud - Bulkhead Pattern",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 1028,
+      "title": "Spring Cloud - Rate Limiting",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 1029,
+      "title": "Spring Cloud - Observability",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 1030,
+      "title": "Spring Cloud - Multi-Region Deployment",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 1034,
+      "title": "Reactive - WebFlux Controllers",
+      "framework": "Webflux",
+      "language": "java",
+      "length": 676,
+      "is_print_stub": false
+    },
+    {
+      "id": 1042,
+      "title": "Reactive - Spring Integration",
+      "framework": "Spring",
+      "language": "java",
+      "length": 978,
+      "is_print_stub": false
+    },
+    {
+      "id": 1043,
+      "title": "Kafka - Exactly-Once Semantics",
+      "framework": "Kafka",
+      "language": "java",
+      "length": 826,
+      "is_print_stub": false
+    },
+    {
+      "id": 1044,
+      "title": "GraphQL Java - DataLoader",
+      "framework": "Graphql",
+      "language": "java",
+      "length": 827,
+      "is_print_stub": false
+    },
+    {
+      "id": 1045,
+      "title": "GraphQL Java - Authentication",
+      "framework": "Graphql",
+      "language": "java",
+      "length": 902,
+      "is_print_stub": false
+    },
+    {
+      "id": 1046,
+      "title": "GraphQL Java - Production Deployment",
+      "framework": "Graphql",
+      "language": "java",
+      "length": 837,
+      "is_print_stub": false
+    },
+    {
+      "id": 1047,
+      "title": "Docker Compose Outline: Order Service",
+      "framework": "Spring",
+      "language": "java",
+      "length": 910,
+      "is_print_stub": false
+    },
+    {
+      "id": 1054,
+      "title": "gRPC - gRPC Production",
+      "framework": "Grpc",
+      "language": "java",
+      "length": 604,
+      "is_print_stub": false
+    },
+    {
+      "id": 1055,
+      "title": "Kubernetes Deployment Snippet",
+      "framework": "Spring",
+      "language": "java",
+      "length": 775,
+      "is_print_stub": false
+    },
+    {
+      "id": 1056,
+      "title": "Kubernetes - Pods and Deployments",
+      "framework": "Kubernetes",
+      "language": "java",
+      "length": 659,
+      "is_print_stub": false
+    },
+    {
+      "id": 1057,
+      "title": "Kubernetes - Services and Load Balancing",
+      "framework": "Kubernetes",
+      "language": "java",
+      "length": 909,
+      "is_print_stub": false
+    },
+    {
+      "id": 1058,
+      "title": "Kubernetes - ConfigMaps and Secrets",
+      "framework": "Kubernetes",
+      "language": "java",
+      "length": 969,
+      "is_print_stub": false
+    },
+    {
+      "id": 1060,
+      "title": "Kubernetes - Horizontal Pod Autoscaling",
+      "framework": "Kubernetes",
+      "language": "java",
+      "length": 694,
+      "is_print_stub": false
+    },
+    {
+      "id": 1061,
+      "title": "Kubernetes - StatefulSets",
+      "framework": "Kubernetes",
+      "language": "java",
+      "length": 607,
+      "is_print_stub": false
+    },
+    {
+      "id": 1062,
+      "title": "Kubernetes - Production Deployment",
+      "framework": "Kubernetes",
+      "language": "java",
+      "length": 634,
+      "is_print_stub": false
+    }
+  ],
+  "simulations": [
+    {
+      "id": 519,
+      "title": "Django User Authentication",
+      "framework": "Django",
+      "language": "python",
+      "length": 1842
+    },
+    {
+      "id": 756,
+      "title": "Django REST Framework ViewSet",
+      "framework": "Django",
+      "language": "python",
+      "length": 1383
+    },
+    {
+      "id": 759,
+      "title": "Django Middleware",
+      "framework": "Django",
+      "language": "python",
+      "length": 1868
+    },
+    {
+      "id": 760,
+      "title": "Django Deployment Configuration",
+      "framework": "Django",
+      "language": "python",
+      "length": 2184
+    },
+    {
+      "id": 761,
+      "title": "Django Caching Strategies",
+      "framework": "Django",
+      "language": "python",
+      "length": 2103
+    },
+    {
+      "id": 907,
+      "title": "Apache Kafka - Producer and Consumer",
+      "framework": "Kafka",
+      "language": "python",
+      "length": 3055
+    },
+    {
+      "id": 1003,
+      "title": "Redis Pub/Sub - Real-time Messaging",
+      "framework": "Redis",
+      "language": "python",
+      "length": 2238
+    },
+    {
+      "id": 802,
+      "title": "Portfolio: Todo List REST API",
+      "framework": "Spring",
+      "language": "java",
+      "length": 6086
+    },
+    {
+      "id": 849,
+      "title": "Spring Data - Query by Example",
+      "framework": "Spring",
+      "language": "java",
+      "length": 1275
+    },
+    {
+      "id": 850,
+      "title": "Spring Data - Projections",
+      "framework": "Spring",
+      "language": "java",
+      "length": 1275
+    },
+    {
+      "id": 851,
+      "title": "Spring Data - Auditing",
+      "framework": "Spring",
+      "language": "java",
+      "length": 1296
+    },
+    {
+      "id": 853,
+      "title": "Spring Data - Caching Strategies",
+      "framework": "Spring",
+      "language": "java",
+      "length": 1567
+    },
+    {
+      "id": 854,
+      "title": "Spring Data - Custom Repository Methods",
+      "framework": "Spring",
+      "language": "java",
+      "length": 1275
+    },
+    {
+      "id": 855,
+      "title": "Spring Data - Specifications API",
+      "framework": "Spring",
+      "language": "java",
+      "length": 1275
+    },
+    {
+      "id": 856,
+      "title": "Spring Data - Multi-tenancy",
+      "framework": "Spring",
+      "language": "java",
+      "length": 1275
+    },
+    {
+      "id": 857,
+      "title": "Spring Data - Custom Implementations",
+      "framework": "Spring",
+      "language": "java",
+      "length": 1275
+    },
+    {
+      "id": 858,
+      "title": "Spring Data - Batch Operations",
+      "framework": "Spring",
+      "language": "java",
+      "length": 1275
+    },
+    {
+      "id": 859,
+      "title": "Spring Data - Transactions Advanced",
+      "framework": "Spring",
+      "language": "java",
+      "length": 1937
+    },
+    {
+      "id": 860,
+      "title": "Spring Data - Performance Tuning",
+      "framework": "Spring",
+      "language": "java",
+      "length": 1275
+    },
+    {
+      "id": 889,
+      "title": "Kafka - Spring Kafka",
+      "framework": "Spring",
+      "language": "java",
+      "length": 1371
+    },
+    {
+      "id": 1017,
+      "title": "Spring Boot - Auto-configuration",
+      "framework": "Spring",
+      "language": "java",
+      "length": 1564
+    },
+    {
+      "id": 1059,
+      "title": "Kubernetes - Persistent Volumes",
+      "framework": "Kubernetes",
+      "language": "java",
+      "length": 1312
+    }
+  ],
+  "by_framework": {
+    "Boto3": [
+      {
+        "id": 20,
+        "title": "AWS SNS - Notification Service",
+        "framework": "Boto3",
+        "language": "python",
+        "length": 431,
+        "is_print_stub": false
+      },
+      {
+        "id": 255,
+        "title": "AWS API Gateway - REST API Management",
+        "framework": "Boto3",
+        "language": "python",
+        "length": 454,
+        "is_print_stub": false
+      },
+      {
+        "id": 256,
+        "title": "AWS DynamoDB - NoSQL Database",
+        "framework": "Boto3",
+        "language": "python",
+        "length": 440,
+        "is_print_stub": false
+      },
+      {
+        "id": 688,
+        "title": "Azure Blob Storage - Cloud File Storage",
+        "framework": "Boto3",
+        "language": "python",
+        "length": 950,
+        "is_print_stub": false
+      },
+      {
+        "id": 689,
+        "title": "Google Cloud Storage - GCS Operations",
+        "framework": "Boto3",
+        "language": "python",
+        "length": 948,
+        "is_print_stub": false
+      },
+      {
+        "id": 859,
+        "title": "AWS boto3 - SQS Queue Management",
+        "framework": "Boto3",
+        "language": "python",
+        "length": 639,
+        "is_print_stub": true
+      },
+      {
+        "id": 860,
+        "title": "AWS boto3 - SNS Notifications",
+        "framework": "Boto3",
+        "language": "python",
+        "length": 580,
+        "is_print_stub": true
+      },
+      {
+        "id": 861,
+        "title": "AWS boto3 - CloudWatch Monitoring",
+        "framework": "Boto3",
+        "language": "python",
+        "length": 643,
+        "is_print_stub": true
+      },
+      {
+        "id": 862,
+        "title": "AWS boto3 - IAM Security",
+        "framework": "Boto3",
+        "language": "python",
+        "length": 607,
+        "is_print_stub": true
+      },
+      {
+        "id": 863,
+        "title": "AWS boto3 - RDS Database Operations",
+        "framework": "Boto3",
+        "language": "python",
+        "length": 651,
+        "is_print_stub": true
+      },
+      {
+        "id": 864,
+        "title": "AWS boto3 - CloudFormation",
+        "framework": "Boto3",
+        "language": "python",
+        "length": 615,
+        "is_print_stub": true
+      },
+      {
+        "id": 867,
+        "title": "AWS S3 - Signed URLs and Presigned URLs",
+        "framework": "Boto3",
+        "language": "python",
+        "length": 926,
+        "is_print_stub": false
+      },
+      {
+        "id": 868,
+        "title": "AWS Lambda - Serverless Functions Basics",
+        "framework": "Boto3",
+        "language": "python",
+        "length": 937,
+        "is_print_stub": false
+      },
+      {
+        "id": 869,
+        "title": "AWS Lambda - Event-Driven Architecture",
+        "framework": "Boto3",
+        "language": "python",
+        "length": 931,
+        "is_print_stub": false
+      },
+      {
+        "id": 870,
+        "title": "AWS EC2 - Virtual Machine Deployment",
+        "framework": "Boto3",
+        "language": "python",
+        "length": 919,
+        "is_print_stub": false
+      },
+      {
+        "id": 871,
+        "title": "AWS RDS - Managed Database Service",
+        "framework": "Boto3",
+        "language": "python",
+        "length": 913,
+        "is_print_stub": false
+      },
+      {
+        "id": 872,
+        "title": "AWS SQS - Message Queue Service",
+        "framework": "Boto3",
+        "language": "python",
+        "length": 904,
+        "is_print_stub": false
+      },
+      {
+        "id": 873,
+        "title": "AWS CloudWatch - Monitoring and Logs",
+        "framework": "Boto3",
+        "language": "python",
+        "length": 933,
+        "is_print_stub": false
+      },
+      {
+        "id": 874,
+        "title": "AWS Secrets Manager - Secure Credentials",
+        "framework": "Boto3",
+        "language": "python",
+        "length": 955,
+        "is_print_stub": false
+      },
+      {
+        "id": 875,
+        "title": "AWS IAM - Identity and Access Management",
+        "framework": "Boto3",
+        "language": "python",
+        "length": 931,
+        "is_print_stub": false
+      },
+      {
+        "id": 876,
+        "title": "Terraform - AWS Resources",
+        "framework": "Boto3",
+        "language": "python",
+        "length": 890,
+        "is_print_stub": false
+      },
+      {
+        "id": 877,
+        "title": "CloudFormation - AWS Infrastructure",
+        "framework": "Boto3",
+        "language": "python",
+        "length": 930,
+        "is_print_stub": false
+      },
+      {
+        "id": 1007,
+        "title": "AWS boto3 - S3 Advanced Operations",
+        "framework": "Boto3",
+        "language": "python",
+        "length": 645,
+        "is_print_stub": true
+      },
+      {
+        "id": 1008,
+        "title": "AWS boto3 - EC2 Instance Management",
+        "framework": "Boto3",
+        "language": "python",
+        "length": 649,
+        "is_print_stub": true
+      },
+      {
+        "id": 1009,
+        "title": "AWS boto3 - Lambda Functions",
+        "framework": "Boto3",
+        "language": "python",
+        "length": 664,
+        "is_print_stub": true
+      },
+      {
+        "id": 1010,
+        "title": "AWS boto3 - DynamoDB Operations",
+        "framework": "Boto3",
+        "language": "python",
+        "length": 633,
+        "is_print_stub": true
+      }
+    ],
+    "Flask": [
+      {
+        "id": 223,
+        "title": "Parse requirements.txt",
+        "framework": "Flask",
+        "language": "python",
+        "length": 405,
+        "is_print_stub": false
+      },
+      {
+        "id": 311,
+        "title": "Optional.orElse (Default Value)",
+        "framework": "Flask",
+        "language": "python",
+        "length": 576,
+        "is_print_stub": true
+      },
+      {
+        "id": 312,
+        "title": "StringJoiner (Custom Delimiter)",
+        "framework": "Flask",
+        "language": "python",
+        "length": 175,
+        "is_print_stub": true
+      },
+      {
+        "id": 313,
+        "title": "Capstone: Release Checklist",
+        "framework": "Flask",
+        "language": "python",
+        "length": 257,
+        "is_print_stub": true
+      },
+      {
+        "id": 314,
+        "title": "Capstone: Smoke Tests",
+        "framework": "Flask",
+        "language": "python",
+        "length": 211,
+        "is_print_stub": true
+      },
+      {
+        "id": 513,
+        "title": "Flask Mini Project Plan",
+        "framework": "Flask",
+        "language": "python",
+        "length": 558,
+        "is_print_stub": false
+      },
+      {
+        "id": 514,
+        "title": "Deploy Flask with Gunicorn",
+        "framework": "Flask",
+        "language": "python",
+        "length": 558,
+        "is_print_stub": false
+      },
+      {
+        "id": 742,
+        "title": "Flask - Flask-SQLAlchemy Integration",
+        "framework": "Flask",
+        "language": "python",
+        "length": 946,
+        "is_print_stub": false
+      },
+      {
+        "id": 743,
+        "title": "Flask - Custom Error Handlers",
+        "framework": "Flask",
+        "language": "python",
+        "length": 519,
+        "is_print_stub": true
+      },
+      {
+        "id": 744,
+        "title": "Flask - Request Hooks",
+        "framework": "Flask",
+        "language": "python",
+        "length": 947,
+        "is_print_stub": false
+      },
+      {
+        "id": 745,
+        "title": "Flask - Flask-Migrate Database Migrations",
+        "framework": "Flask",
+        "language": "python",
+        "length": 555,
+        "is_print_stub": true
+      },
+      {
+        "id": 746,
+        "title": "Flask - Flask-Caching",
+        "framework": "Flask",
+        "language": "python",
+        "length": 947,
+        "is_print_stub": false
+      },
+      {
+        "id": 747,
+        "title": "Flask - Flask-CORS",
+        "framework": "Flask",
+        "language": "python",
+        "length": 932,
+        "is_print_stub": false
+      },
+      {
+        "id": 748,
+        "title": "Flask - Blueprints for Large Apps",
+        "framework": "Flask",
+        "language": "python",
+        "length": 531,
+        "is_print_stub": true
+      },
+      {
+        "id": 749,
+        "title": "Flask - Application Factory Pattern",
+        "framework": "Flask",
+        "language": "python",
+        "length": 537,
+        "is_print_stub": true
+      },
+      {
+        "id": 750,
+        "title": "Flask - Flask-Login Authentication",
+        "framework": "Flask",
+        "language": "python",
+        "length": 534,
+        "is_print_stub": true
+      },
+      {
+        "id": 751,
+        "title": "Flask - Production Deployment",
+        "framework": "Flask",
+        "language": "python",
+        "length": 519,
+        "is_print_stub": true
+      }
+    ],
+    "Fastapi": [
+      {
+        "id": 410,
+        "title": "Resume Bullet Transformer",
+        "framework": "Fastapi",
+        "language": "python",
+        "length": 335,
+        "is_print_stub": true
+      },
+      {
+        "id": 414,
+        "title": "Pyproject Dependency Summary",
+        "framework": "Fastapi",
+        "language": "python",
+        "length": 673,
+        "is_print_stub": false
+      },
+      {
+        "id": 775,
+        "title": "FastAPI Security Dependency Plan",
+        "framework": "Fastapi",
+        "language": "python",
+        "length": 723,
+        "is_print_stub": true
+      },
+      {
+        "id": 776,
+        "title": "FastAPI - API Versioning",
+        "framework": "Fastapi",
+        "language": "python",
+        "length": 693,
+        "is_print_stub": false
+      },
+      {
+        "id": 777,
+        "title": "FastAPI - Testing FastAPI",
+        "framework": "Fastapi",
+        "language": "python",
+        "length": 544,
+        "is_print_stub": true
+      },
+      {
+        "id": 778,
+        "title": "FastAPI - OpenAPI Customization",
+        "framework": "Fastapi",
+        "language": "python",
+        "length": 562,
+        "is_print_stub": true
+      },
+      {
+        "id": 779,
+        "title": "FastAPI - Dependency Injection",
+        "framework": "Fastapi",
+        "language": "python",
+        "length": 559,
+        "is_print_stub": true
+      },
+      {
+        "id": 780,
+        "title": "FastAPI - Background Tasks",
+        "framework": "Fastapi",
+        "language": "python",
+        "length": 547,
+        "is_print_stub": true
+      },
+      {
+        "id": 781,
+        "title": "FastAPI - WebSocket Support",
+        "framework": "Fastapi",
+        "language": "python",
+        "length": 550,
+        "is_print_stub": true
+      },
+      {
+        "id": 961,
+        "title": "FastAPI - OAuth2 Authentication",
+        "framework": "Fastapi",
+        "language": "python",
+        "length": 560,
+        "is_print_stub": true
+      },
+      {
+        "id": 962,
+        "title": "FastAPI - Database Integration",
+        "framework": "Fastapi",
+        "language": "python",
+        "length": 557,
+        "is_print_stub": true
+      },
+      {
+        "id": 963,
+        "title": "FastAPI - Production Deployment",
+        "framework": "Fastapi",
+        "language": "python",
+        "length": 560,
+        "is_print_stub": true
+      }
+    ],
+    "Django": [
+      {
+        "id": 511,
+        "title": "Career Prep: Resume, LinkedIn & GitHub Portfolio",
+        "framework": "Django",
+        "language": "python",
+        "length": 1191,
+        "is_print_stub": false
+      },
+      {
+        "id": 515,
+        "title": "Django Model Definition",
+        "framework": "Django",
+        "language": "python",
+        "length": 584,
+        "is_print_stub": false
+      },
+      {
+        "id": 516,
+        "title": "Django QuerySet Filtering",
+        "framework": "Django",
+        "language": "python",
+        "length": 637,
+        "is_print_stub": false
+      },
+      {
+        "id": 517,
+        "title": "Django ForeignKey Relationships",
+        "framework": "Django",
+        "language": "python",
+        "length": 769,
+        "is_print_stub": false
+      },
+      {
+        "id": 518,
+        "title": "Django Function-Based Views",
+        "framework": "Django",
+        "language": "python",
+        "length": 874,
+        "is_print_stub": false
+      },
+      {
+        "id": 752,
+        "title": "Django ManyToMany Relationships",
+        "framework": "Django",
+        "language": "python",
+        "length": 984,
+        "is_print_stub": false
+      },
+      {
+        "id": 753,
+        "title": "Django Model Aggregation",
+        "framework": "Django",
+        "language": "python",
+        "length": 797,
+        "is_print_stub": false
+      },
+      {
+        "id": 754,
+        "title": "Django Class-Based Views",
+        "framework": "Django",
+        "language": "python",
+        "length": 1138,
+        "is_print_stub": false
+      },
+      {
+        "id": 755,
+        "title": "Django REST Framework Serializer",
+        "framework": "Django",
+        "language": "python",
+        "length": 1097,
+        "is_print_stub": false
+      },
+      {
+        "id": 757,
+        "title": "Django REST API Authentication",
+        "framework": "Django",
+        "language": "python",
+        "length": 837,
+        "is_print_stub": false
+      },
+      {
+        "id": 758,
+        "title": "Django Password Reset Flow",
+        "framework": "Django",
+        "language": "python",
+        "length": 837,
+        "is_print_stub": false
+      },
+      {
+        "id": 762,
+        "title": "Django - Django Channels - WebSockets",
+        "framework": "Django",
+        "language": "python",
+        "length": 520,
+        "is_print_stub": true
+      },
+      {
+        "id": 763,
+        "title": "Django - Async Views",
+        "framework": "Django",
+        "language": "python",
+        "length": 902,
+        "is_print_stub": false
+      },
+      {
+        "id": 764,
+        "title": "Django - GraphQL with Graphene",
+        "framework": "Django",
+        "language": "python",
+        "length": 962,
+        "is_print_stub": false
+      },
+      {
+        "id": 765,
+        "title": "Django - Custom Middleware",
+        "framework": "Django",
+        "language": "python",
+        "length": 938,
+        "is_print_stub": false
+      },
+      {
+        "id": 766,
+        "title": "Django - Django Signals",
+        "framework": "Django",
+        "language": "python",
+        "length": 920,
+        "is_print_stub": false
+      },
+      {
+        "id": 767,
+        "title": "Django - Custom Management Commands",
+        "framework": "Django",
+        "language": "python",
+        "length": 512,
+        "is_print_stub": true
+      },
+      {
+        "id": 768,
+        "title": "Django - Celery Integration",
+        "framework": "Django",
+        "language": "python",
+        "length": 837,
+        "is_print_stub": false
+      },
+      {
+        "id": 769,
+        "title": "Django - DRF Custom Permissions",
+        "framework": "Django",
+        "language": "python",
+        "length": 968,
+        "is_print_stub": false
+      },
+      {
+        "id": 770,
+        "title": "Django - DRF Pagination",
+        "framework": "Django",
+        "language": "python",
+        "length": 920,
+        "is_print_stub": false
+      },
+      {
+        "id": 771,
+        "title": "Django - API Throttling",
+        "framework": "Django",
+        "language": "python",
+        "length": 920,
+        "is_print_stub": false
+      },
+      {
+        "id": 772,
+        "title": "Django - API Versioning",
+        "framework": "Django",
+        "language": "python",
+        "length": 920,
+        "is_print_stub": false
+      },
+      {
+        "id": 773,
+        "title": "Django - CORS Configuration",
+        "framework": "Django",
+        "language": "python",
+        "length": 944,
+        "is_print_stub": false
+      },
+      {
+        "id": 774,
+        "title": "Django - Testing Strategies",
+        "framework": "Django",
+        "language": "python",
+        "length": 944,
+        "is_print_stub": false
+      }
+    ],
+    "Pandas": [
+      {
+        "id": 520,
+        "title": "Pandas DataFrame Basics",
+        "framework": "Pandas",
+        "language": "python",
+        "length": 436,
+        "is_print_stub": false
+      },
+      {
+        "id": 521,
+        "title": "Pandas Data Filtering",
+        "framework": "Pandas",
+        "language": "python",
+        "length": 704,
+        "is_print_stub": false
+      },
+      {
+        "id": 522,
+        "title": "Pandas Data Visualization",
+        "framework": "Pandas",
+        "language": "python",
+        "length": 681,
+        "is_print_stub": false
+      },
+      {
+        "id": 788,
+        "title": "Pandas GroupBy Aggregation",
+        "framework": "Pandas",
+        "language": "python",
+        "length": 670,
+        "is_print_stub": false
+      },
+      {
+        "id": 789,
+        "title": "Pandas Merge and Join",
+        "framework": "Pandas",
+        "language": "python",
+        "length": 886,
+        "is_print_stub": false
+      },
+      {
+        "id": 790,
+        "title": "Pandas Time Series Analysis",
+        "framework": "Pandas",
+        "language": "python",
+        "length": 653,
+        "is_print_stub": false
+      },
+      {
+        "id": 791,
+        "title": "Pandas Data Cleaning",
+        "framework": "Pandas",
+        "language": "python",
+        "length": 1070,
+        "is_print_stub": false
+      },
+      {
+        "id": 792,
+        "title": "NumPy - NumPy and pandas Integration",
+        "framework": "Pandas",
+        "language": "python",
+        "length": 940,
+        "is_print_stub": false
+      },
+      {
+        "id": 970,
+        "title": "Pandas - MultiIndex DataFrames",
+        "framework": "Pandas",
+        "language": "python",
+        "length": 897,
+        "is_print_stub": false
+      },
+      {
+        "id": 971,
+        "title": "Pandas - Performance Optimization",
+        "framework": "Pandas",
+        "language": "python",
+        "length": 912,
+        "is_print_stub": false
+      },
+      {
+        "id": 972,
+        "title": "Pandas - Memory Reduction",
+        "framework": "Pandas",
+        "language": "python",
+        "length": 872,
+        "is_print_stub": false
+      },
+      {
+        "id": 973,
+        "title": "Pandas - Chunking Large Datasets",
+        "framework": "Pandas",
+        "language": "python",
+        "length": 907,
+        "is_print_stub": false
+      },
+      {
+        "id": 974,
+        "title": "Pandas - SQL Integration",
+        "framework": "Pandas",
+        "language": "python",
+        "length": 867,
+        "is_print_stub": false
+      },
+      {
+        "id": 975,
+        "title": "Pandas - Advanced Time Series",
+        "framework": "Pandas",
+        "language": "python",
+        "length": 892,
+        "is_print_stub": false
+      },
+      {
+        "id": 976,
+        "title": "Pandas - Rolling Windows",
+        "framework": "Pandas",
+        "language": "python",
+        "length": 867,
+        "is_print_stub": false
+      },
+      {
+        "id": 977,
+        "title": "Pandas - Custom Aggregations",
+        "framework": "Pandas",
+        "language": "python",
+        "length": 887,
+        "is_print_stub": false
+      },
+      {
+        "id": 978,
+        "title": "Pandas - Data Cleaning Project",
+        "framework": "Pandas",
+        "language": "python",
+        "length": 897,
+        "is_print_stub": false
+      }
+    ],
+    "Numpy": [
+      {
+        "id": 523,
+        "title": "NumPy Array Operations",
+        "framework": "Numpy",
+        "language": "python",
+        "length": 497,
+        "is_print_stub": false
+      },
+      {
+        "id": 793,
+        "title": "NumPy Matrix Operations",
+        "framework": "Numpy",
+        "language": "python",
+        "length": 933,
+        "is_print_stub": false
+      },
+      {
+        "id": 794,
+        "title": "NumPy Broadcasting",
+        "framework": "Numpy",
+        "language": "python",
+        "length": 737,
+        "is_print_stub": false
+      },
+      {
+        "id": 795,
+        "title": "NumPy - Advanced Array Operations",
+        "framework": "Numpy",
+        "language": "python",
+        "length": 934,
+        "is_print_stub": false
+      },
+      {
+        "id": 796,
+        "title": "NumPy - Linear Algebra",
+        "framework": "Numpy",
+        "language": "python",
+        "length": 901,
+        "is_print_stub": false
+      },
+      {
+        "id": 797,
+        "title": "NumPy - FFT and Signal Processing",
+        "framework": "Numpy",
+        "language": "python",
+        "length": 946,
+        "is_print_stub": false
+      },
+      {
+        "id": 798,
+        "title": "NumPy - Random Number Generation",
+        "framework": "Numpy",
+        "language": "python",
+        "length": 937,
+        "is_print_stub": false
+      },
+      {
+        "id": 799,
+        "title": "NumPy - Memory Optimization",
+        "framework": "Numpy",
+        "language": "python",
+        "length": 941,
+        "is_print_stub": false
+      },
+      {
+        "id": 800,
+        "title": "NumPy - Universal Functions",
+        "framework": "Numpy",
+        "language": "python",
+        "length": 908,
+        "is_print_stub": false
+      },
+      {
+        "id": 801,
+        "title": "NumPy - Structured Arrays",
+        "framework": "Numpy",
+        "language": "python",
+        "length": 904,
+        "is_print_stub": false
+      },
+      {
+        "id": 802,
+        "title": "NumPy - Advanced Indexing",
+        "framework": "Numpy",
+        "language": "python",
+        "length": 884,
+        "is_print_stub": false
+      },
+      {
+        "id": 803,
+        "title": "NumPy - Performance Optimization",
+        "framework": "Numpy",
+        "language": "python",
+        "length": 962,
+        "is_print_stub": false
+      },
+      {
+        "id": 804,
+        "title": "NumPy - Masked Arrays",
+        "framework": "Numpy",
+        "language": "python",
+        "length": 900,
+        "is_print_stub": false
+      },
+      {
+        "id": 805,
+        "title": "NumPy - NumPy File I/O",
+        "framework": "Numpy",
+        "language": "python",
+        "length": 877,
+        "is_print_stub": false
+      },
+      {
+        "id": 806,
+        "title": "NumPy - Broadcasting Rules",
+        "framework": "Numpy",
+        "language": "python",
+        "length": 917,
+        "is_print_stub": false
+      },
+      {
+        "id": 807,
+        "title": "NumPy - Advanced Sorting",
+        "framework": "Numpy",
+        "language": "python",
+        "length": 893,
+        "is_print_stub": false
+      },
+      {
+        "id": 979,
+        "title": "NumPy - NumPy Best Practices",
+        "framework": "Numpy",
+        "language": "python",
+        "length": 930,
+        "is_print_stub": false
+      }
+    ],
+    "Kafka": [
+      {
+        "id": 561,
+        "title": "System Design: Read-Heavy Scale Plan",
+        "framework": "Kafka",
+        "language": "python",
+        "length": 734,
+        "is_print_stub": false
+      },
+      {
+        "id": 564,
+        "title": "Event Pipeline Case Study",
+        "framework": "Kafka",
+        "language": "python",
+        "length": 864,
+        "is_print_stub": false
+      },
+      {
+        "id": 908,
+        "title": "Kafka - Topics and Partitions",
+        "framework": "Kafka",
+        "language": "python",
+        "length": 523,
+        "is_print_stub": false
+      },
+      {
+        "id": 909,
+        "title": "Kafka - Consumer Groups",
+        "framework": "Kafka",
+        "language": "python",
+        "length": 507,
+        "is_print_stub": false
+      },
+      {
+        "id": 910,
+        "title": "Kafka - Exactly-Once Semantics",
+        "framework": "Kafka",
+        "language": "python",
+        "length": 526,
+        "is_print_stub": false
+      },
+      {
+        "id": 565,
+        "title": "System Design: Read-Heavy Scale Plan",
+        "framework": "Kafka",
+        "language": "java",
+        "length": 1317,
+        "is_print_stub": false
+      },
+      {
+        "id": 569,
+        "title": "Event Pipeline Case Study",
+        "framework": "Kafka",
+        "language": "java",
+        "length": 1568,
+        "is_print_stub": false
+      },
+      {
+        "id": 879,
+        "title": "Apache Kafka - Producer and Consumer",
+        "framework": "Kafka",
+        "language": "java",
+        "length": 1354,
+        "is_print_stub": false
+      },
+      {
+        "id": 880,
+        "title": "Kafka - Topics and Partitions",
+        "framework": "Kafka",
+        "language": "java",
+        "length": 824,
+        "is_print_stub": false
+      },
+      {
+        "id": 881,
+        "title": "Kafka - Consumer Groups",
+        "framework": "Kafka",
+        "language": "java",
+        "length": 800,
+        "is_print_stub": false
+      },
+      {
+        "id": 882,
+        "title": "Testcontainers - Kafka Testing",
+        "framework": "Kafka",
+        "language": "java",
+        "length": 691,
+        "is_print_stub": false
+      },
+      {
+        "id": 883,
+        "title": "Kafka - Kafka Basics",
+        "framework": "Kafka",
+        "language": "java",
+        "length": 649,
+        "is_print_stub": false
+      },
+      {
+        "id": 884,
+        "title": "Kafka - Producers",
+        "framework": "Kafka",
+        "language": "java",
+        "length": 631,
+        "is_print_stub": false
+      },
+      {
+        "id": 885,
+        "title": "Kafka - Consumers",
+        "framework": "Kafka",
+        "language": "java",
+        "length": 634,
+        "is_print_stub": false
+      },
+      {
+        "id": 886,
+        "title": "Kafka - Consumer Groups",
+        "framework": "Kafka",
+        "language": "java",
+        "length": 648,
+        "is_print_stub": false
+      },
+      {
+        "id": 887,
+        "title": "Kafka - Topics and Partitions",
+        "framework": "Kafka",
+        "language": "java",
+        "length": 647,
+        "is_print_stub": false
+      },
+      {
+        "id": 888,
+        "title": "Kafka - Kafka Streams",
+        "framework": "Kafka",
+        "language": "java",
+        "length": 655,
+        "is_print_stub": false
+      },
+      {
+        "id": 890,
+        "title": "Kafka - Serialization with Avro",
+        "framework": "Kafka",
+        "language": "java",
+        "length": 673,
+        "is_print_stub": false
+      },
+      {
+        "id": 891,
+        "title": "Kafka - Error Handling",
+        "framework": "Kafka",
+        "language": "java",
+        "length": 655,
+        "is_print_stub": false
+      },
+      {
+        "id": 892,
+        "title": "Kafka - Monitoring and Production",
+        "framework": "Kafka",
+        "language": "java",
+        "length": 663,
+        "is_print_stub": false
+      },
+      {
+        "id": 893,
+        "title": "Testing - Kafka Testing",
+        "framework": "Kafka",
+        "language": "java",
+        "length": 656,
+        "is_print_stub": false
+      },
+      {
+        "id": 1043,
+        "title": "Kafka - Exactly-Once Semantics",
+        "framework": "Kafka",
+        "language": "java",
+        "length": 826,
+        "is_print_stub": false
+      }
+    ],
+    "Sqlalchemy": [
+      {
+        "id": 782,
+        "title": "SQLAlchemy - Relationship Patterns",
+        "framework": "Sqlalchemy",
+        "language": "python",
+        "length": 616,
+        "is_print_stub": true
+      },
+      {
+        "id": 783,
+        "title": "SQLAlchemy - Custom Types",
+        "framework": "Sqlalchemy",
+        "language": "python",
+        "length": 598,
+        "is_print_stub": true
+      },
+      {
+        "id": 784,
+        "title": "SQLAlchemy - Events and Listeners",
+        "framework": "Sqlalchemy",
+        "language": "python",
+        "length": 614,
+        "is_print_stub": true
+      },
+      {
+        "id": 785,
+        "title": "SQLAlchemy - Hybrid Properties",
+        "framework": "Sqlalchemy",
+        "language": "python",
+        "length": 608,
+        "is_print_stub": true
+      },
+      {
+        "id": 786,
+        "title": "SQLAlchemy - Association Tables",
+        "framework": "Sqlalchemy",
+        "language": "python",
+        "length": 610,
+        "is_print_stub": true
+      },
+      {
+        "id": 787,
+        "title": "SQLAlchemy - Migration Strategies",
+        "framework": "Sqlalchemy",
+        "language": "python",
+        "length": 614,
+        "is_print_stub": true
+      },
+      {
+        "id": 964,
+        "title": "SQLAlchemy Model Outline: Order",
+        "framework": "Sqlalchemy",
+        "language": "python",
+        "length": 648,
+        "is_print_stub": true
+      },
+      {
+        "id": 965,
+        "title": "SQLAlchemy Repository Sketch",
+        "framework": "Sqlalchemy",
+        "language": "python",
+        "length": 795,
+        "is_print_stub": false
+      },
+      {
+        "id": 966,
+        "title": "SQLAlchemy - Query Optimization",
+        "framework": "Sqlalchemy",
+        "language": "python",
+        "length": 608,
+        "is_print_stub": true
+      },
+      {
+        "id": 967,
+        "title": "SQLAlchemy - Eager vs Lazy Loading",
+        "framework": "Sqlalchemy",
+        "language": "python",
+        "length": 614,
+        "is_print_stub": true
+      },
+      {
+        "id": 968,
+        "title": "SQLAlchemy - Polymorphic Queries",
+        "framework": "Sqlalchemy",
+        "language": "python",
+        "length": 610,
+        "is_print_stub": true
+      },
+      {
+        "id": 969,
+        "title": "SQLAlchemy - Connection Pooling",
+        "framework": "Sqlalchemy",
+        "language": "python",
+        "length": 608,
+        "is_print_stub": true
+      }
+    ],
+    "Celery": [
+      {
+        "id": 815,
+        "title": "Celery - Celery Basics",
+        "framework": "Celery",
+        "language": "python",
+        "length": 951,
+        "is_print_stub": false
+      },
+      {
+        "id": 816,
+        "title": "Celery - Task Scheduling",
+        "framework": "Celery",
+        "language": "python",
+        "length": 501,
+        "is_print_stub": true
+      },
+      {
+        "id": 817,
+        "title": "Celery - Periodic Tasks",
+        "framework": "Celery",
+        "language": "python",
+        "length": 955,
+        "is_print_stub": false
+      },
+      {
+        "id": 818,
+        "title": "Celery - Task Chains",
+        "framework": "Celery",
+        "language": "python",
+        "length": 943,
+        "is_print_stub": false
+      },
+      {
+        "id": 819,
+        "title": "Celery - Task Groups",
+        "framework": "Celery",
+        "language": "python",
+        "length": 943,
+        "is_print_stub": false
+      },
+      {
+        "id": 820,
+        "title": "Celery - Error Handling",
+        "framework": "Celery",
+        "language": "python",
+        "length": 955,
+        "is_print_stub": false
+      },
+      {
+        "id": 821,
+        "title": "Celery - Task Monitoring",
+        "framework": "Celery",
+        "language": "python",
+        "length": 501,
+        "is_print_stub": true
+      },
+      {
+        "id": 823,
+        "title": "Celery - RabbitMQ Backend",
+        "framework": "Celery",
+        "language": "python",
+        "length": 503,
+        "is_print_stub": true
+      },
+      {
+        "id": 824,
+        "title": "Celery - Production Deployment",
+        "framework": "Celery",
+        "language": "python",
+        "length": 513,
+        "is_print_stub": true
+      }
+    ],
+    "Redis": [
+      {
+        "id": 822,
+        "title": "Celery - Redis Backend",
+        "framework": "Redis",
+        "language": "python",
+        "length": 951,
+        "is_print_stub": false
+      },
+      {
+        "id": 850,
+        "title": "Redis - Redis Basics",
+        "framework": "Redis",
+        "language": "python",
+        "length": 851,
+        "is_print_stub": false
+      },
+      {
+        "id": 851,
+        "title": "Redis - Data Structures",
+        "framework": "Redis",
+        "language": "python",
+        "length": 863,
+        "is_print_stub": false
+      },
+      {
+        "id": 852,
+        "title": "Redis - Pub/Sub Messaging",
+        "framework": "Redis",
+        "language": "python",
+        "length": 871,
+        "is_print_stub": false
+      },
+      {
+        "id": 853,
+        "title": "Redis - Caching Strategies",
+        "framework": "Redis",
+        "language": "python",
+        "length": 875,
+        "is_print_stub": false
+      },
+      {
+        "id": 854,
+        "title": "Redis - Redis Transactions",
+        "framework": "Redis",
+        "language": "python",
+        "length": 875,
+        "is_print_stub": false
+      },
+      {
+        "id": 855,
+        "title": "Redis - Persistence",
+        "framework": "Redis",
+        "language": "python",
+        "length": 725,
+        "is_print_stub": false
+      },
+      {
+        "id": 856,
+        "title": "Redis - Redis Cluster",
+        "framework": "Redis",
+        "language": "python",
+        "length": 855,
+        "is_print_stub": false
+      },
+      {
+        "id": 857,
+        "title": "Redis - Pipelining",
+        "framework": "Redis",
+        "language": "python",
+        "length": 721,
+        "is_print_stub": false
+      },
+      {
+        "id": 858,
+        "title": "Redis - Lua Scripting",
+        "framework": "Redis",
+        "language": "python",
+        "length": 855,
+        "is_print_stub": false
+      },
+      {
+        "id": 881,
+        "title": "Docker - Docker Compose Multi-Container",
+        "framework": "Redis",
+        "language": "python",
+        "length": 793,
+        "is_print_stub": false
+      },
+      {
+        "id": 1004,
+        "title": "Redis - Caching Strategies (Cache-Aside, Write-Through)",
+        "framework": "Redis",
+        "language": "python",
+        "length": 579,
+        "is_print_stub": false
+      },
+      {
+        "id": 1005,
+        "title": "Redis - Cache Invalidation Patterns",
+        "framework": "Redis",
+        "language": "python",
+        "length": 541,
+        "is_print_stub": false
+      },
+      {
+        "id": 1006,
+        "title": "Redis - Redis Production",
+        "framework": "Redis",
+        "language": "python",
+        "length": 865,
+        "is_print_stub": false
+      }
+    ],
+    "Sklearn": [
+      {
+        "id": 980,
+        "title": "Train-Test Split in scikit-learn",
+        "framework": "Sklearn",
+        "language": "python",
+        "length": 682,
+        "is_print_stub": true
+      },
+      {
+        "id": 981,
+        "title": "Linear Regression with scikit-learn",
+        "framework": "Sklearn",
+        "language": "python",
+        "length": 687,
+        "is_print_stub": true
+      },
+      {
+        "id": 1018,
+        "title": "Logistic Regression for Classification",
+        "framework": "Sklearn",
+        "language": "python",
+        "length": 884,
+        "is_print_stub": false
+      },
+      {
+        "id": 1019,
+        "title": "Decision Tree Classifier",
+        "framework": "Sklearn",
+        "language": "python",
+        "length": 703,
+        "is_print_stub": true
+      },
+      {
+        "id": 1020,
+        "title": "Random Forest Classifier",
+        "framework": "Sklearn",
+        "language": "python",
+        "length": 857,
+        "is_print_stub": false
+      },
+      {
+        "id": 1021,
+        "title": "K-Means Clustering",
+        "framework": "Sklearn",
+        "language": "python",
+        "length": 586,
+        "is_print_stub": true
+      },
+      {
+        "id": 1022,
+        "title": "Classification Metrics",
+        "framework": "Sklearn",
+        "language": "python",
+        "length": 950,
+        "is_print_stub": false
+      },
+      {
+        "id": 1023,
+        "title": "Cross-Validation",
+        "framework": "Sklearn",
+        "language": "python",
+        "length": 687,
+        "is_print_stub": false
+      },
+      {
+        "id": 1024,
+        "title": "Feature Scaling",
+        "framework": "Sklearn",
+        "language": "python",
+        "length": 692,
+        "is_print_stub": false
+      },
+      {
+        "id": 1025,
+        "title": "PCA (Principal Component Analysis)",
+        "framework": "Sklearn",
+        "language": "python",
+        "length": 687,
+        "is_print_stub": true
+      },
+      {
+        "id": 1026,
+        "title": "Model Persistence (Saving/Loading Models)",
+        "framework": "Sklearn",
+        "language": "python",
+        "length": 917,
+        "is_print_stub": false
+      },
+      {
+        "id": 1027,
+        "title": "GridSearchCV for Hyperparameter Tuning",
+        "framework": "Sklearn",
+        "language": "python",
+        "length": 971,
+        "is_print_stub": false
+      },
+      {
+        "id": 1028,
+        "title": "Pipeline for ML Workflows",
+        "framework": "Sklearn",
+        "language": "python",
+        "length": 947,
+        "is_print_stub": false
+      },
+      {
+        "id": 1029,
+        "title": "Ensemble Methods (Voting Classifier)",
+        "framework": "Sklearn",
+        "language": "python",
+        "length": 566,
+        "is_print_stub": false
+      },
+      {
+        "id": 1030,
+        "title": "Real-World ML Project: Customer Churn Prediction",
+        "framework": "Sklearn",
+        "language": "python",
+        "length": 968,
+        "is_print_stub": false
+      }
+    ],
+    "pytest": [
+      {
+        "id": 982,
+        "title": "Pytest Fixture & Parametrization",
+        "framework": "pytest",
+        "language": "python",
+        "length": 515,
+        "is_print_stub": false
+      }
+    ],
+    "Spring": [
+      {
+        "id": 148,
+        "title": "Spring-Style Controller Method",
+        "framework": "Spring",
+        "language": "java",
+        "length": 634,
+        "is_print_stub": false
+      },
+      {
+        "id": 173,
+        "title": "Spring Boot Skeleton Files",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 218,
+        "title": "Spring Boot Mini Project Plan",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 273,
+        "title": "SpringApplication Runner Stub",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 299,
+        "title": "Maven Coordinate Formatter",
+        "framework": "Spring",
+        "language": "java",
+        "length": 318,
+        "is_print_stub": true
+      },
+      {
+        "id": 402,
+        "title": "Resume Bullet Transformer",
+        "framework": "Spring",
+        "language": "java",
+        "length": 557,
+        "is_print_stub": true
+      },
+      {
+        "id": 498,
+        "title": "WebSockets - Bi-directional Communication",
+        "framework": "Spring",
+        "language": "java",
+        "length": 1001,
+        "is_print_stub": false
+      },
+      {
+        "id": 511,
+        "title": "Spring Boot - Build Info",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 512,
+        "title": "Spring Data Repository Sketch",
+        "framework": "Spring",
+        "language": "java",
+        "length": 1613,
+        "is_print_stub": false
+      },
+      {
+        "id": 842,
+        "title": "Testcontainers - Testcontainers with Spring Boot",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 843,
+        "title": "Spring Boot - Properties Externalization",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 844,
+        "title": "Spring Boot - Profiles Advanced",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 845,
+        "title": "Spring Boot - Logging Configuration",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 846,
+        "title": "Spring Boot - Graceful Shutdown",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 847,
+        "title": "Spring Boot - Admin Server",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 848,
+        "title": "Spring Boot - Production Best Practices",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 852,
+        "title": "Spring Data - Stored Procedures",
+        "framework": "Spring",
+        "language": "java",
+        "length": 1196,
+        "is_print_stub": false
+      },
+      {
+        "id": 861,
+        "title": "Spring Security Filter Chain Plan",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 862,
+        "title": "Spring Security Basic Configuration",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 863,
+        "title": "Spring Security User Authentication",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 864,
+        "title": "Spring Security - Spring Security Architecture",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 865,
+        "title": "Spring Security - Custom Authentication",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 866,
+        "title": "Spring Security - OAuth2 Resource Server",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 867,
+        "title": "Spring Security - JWT Token Validation",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 868,
+        "title": "Spring Security - Method Security",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 869,
+        "title": "Spring Security - Custom Security Filters",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 870,
+        "title": "Spring Security - CORS Configuration",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 871,
+        "title": "Spring Security - CSRF Protection",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 872,
+        "title": "Spring Security - Session Management",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 873,
+        "title": "Spring Cloud Config Server",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 874,
+        "title": "API Gateway with Spring Cloud Gateway",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 875,
+        "title": "Load Balancing with Spring Cloud LoadBalancer",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 1010,
+        "title": "Spring Boot Run Checklist",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 1011,
+        "title": "Deploy Spring Boot JAR",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 1012,
+        "title": "Spring Boot - Actuator Endpoints",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 1013,
+        "title": "Spring Boot - Custom Metrics with Micrometer",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 1014,
+        "title": "Spring Boot - Health Indicators",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 1015,
+        "title": "Spring Boot - Prometheus Integration",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 1016,
+        "title": "Spring Boot - Custom Starters",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 1018,
+        "title": "Spring Security - Password Encoding",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 1019,
+        "title": "Spring Security - Remember Me",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 1020,
+        "title": "Spring Security - Security Testing",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 1021,
+        "title": "Spring Cloud - Config Encryption",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 1022,
+        "title": "Spring Cloud - Refresh Strategies",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 1023,
+        "title": "Spring Cloud - Service Mesh Integration",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 1024,
+        "title": "Spring Cloud - Distributed Configuration",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 1025,
+        "title": "Spring Cloud - Resilience Patterns",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 1026,
+        "title": "Spring Cloud - Retry Policies",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 1027,
+        "title": "Spring Cloud - Bulkhead Pattern",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 1028,
+        "title": "Spring Cloud - Rate Limiting",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 1029,
+        "title": "Spring Cloud - Observability",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 1030,
+        "title": "Spring Cloud - Multi-Region Deployment",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 1042,
+        "title": "Reactive - Spring Integration",
+        "framework": "Spring",
+        "language": "java",
+        "length": 978,
+        "is_print_stub": false
+      },
+      {
+        "id": 1047,
+        "title": "Docker Compose Outline: Order Service",
+        "framework": "Spring",
+        "language": "java",
+        "length": 910,
+        "is_print_stub": false
+      },
+      {
+        "id": 1055,
+        "title": "Kubernetes Deployment Snippet",
+        "framework": "Spring",
+        "language": "java",
+        "length": 775,
+        "is_print_stub": false
+      }
+    ],
+    "Jpa": [
+      {
+        "id": 401,
+        "title": "JPA Entity Outline: Order",
+        "framework": "Jpa",
+        "language": "java",
+        "length": 1237,
+        "is_print_stub": false
+      }
+    ],
+    "Hibernate": [
+      {
+        "id": 785,
+        "title": "SQL Injection Prevention",
+        "framework": "Hibernate",
+        "language": "java",
+        "length": 1480,
+        "is_print_stub": false
+      }
+    ],
+    "Reactor": [
+      {
+        "id": 876,
+        "title": "Reactive - Reactor Basics - Mono",
+        "framework": "Reactor",
+        "language": "java",
+        "length": 668,
+        "is_print_stub": false
+      },
+      {
+        "id": 877,
+        "title": "Reactive - Reactor Basics - Flux",
+        "framework": "Reactor",
+        "language": "java",
+        "length": 671,
+        "is_print_stub": false
+      }
+    ],
+    "Graphql": [
+      {
+        "id": 905,
+        "title": "GraphQL Basics",
+        "framework": "Graphql",
+        "language": "java",
+        "length": 588,
+        "is_print_stub": false
+      },
+      {
+        "id": 906,
+        "title": "GraphQL Java - GraphQL Basics",
+        "framework": "Graphql",
+        "language": "java",
+        "length": 985,
+        "is_print_stub": false
+      },
+      {
+        "id": 907,
+        "title": "GraphQL Java - GraphQL Java Setup",
+        "framework": "Graphql",
+        "language": "java",
+        "length": 849,
+        "is_print_stub": false
+      },
+      {
+        "id": 908,
+        "title": "GraphQL Java - Schema Definition",
+        "framework": "Graphql",
+        "language": "java",
+        "length": 738,
+        "is_print_stub": false
+      },
+      {
+        "id": 909,
+        "title": "GraphQL Java - Resolvers",
+        "framework": "Graphql",
+        "language": "java",
+        "length": 850,
+        "is_print_stub": false
+      },
+      {
+        "id": 910,
+        "title": "GraphQL Java - Mutations",
+        "framework": "Graphql",
+        "language": "java",
+        "length": 911,
+        "is_print_stub": false
+      },
+      {
+        "id": 911,
+        "title": "GraphQL Java - Error Handling",
+        "framework": "Graphql",
+        "language": "java",
+        "length": 857,
+        "is_print_stub": false
+      },
+      {
+        "id": 912,
+        "title": "GraphQL Java - Subscriptions",
+        "framework": "Graphql",
+        "language": "java",
+        "length": 906,
+        "is_print_stub": false
+      },
+      {
+        "id": 1044,
+        "title": "GraphQL Java - DataLoader",
+        "framework": "Graphql",
+        "language": "java",
+        "length": 827,
+        "is_print_stub": false
+      },
+      {
+        "id": 1045,
+        "title": "GraphQL Java - Authentication",
+        "framework": "Graphql",
+        "language": "java",
+        "length": 902,
+        "is_print_stub": false
+      },
+      {
+        "id": 1046,
+        "title": "GraphQL Java - Production Deployment",
+        "framework": "Graphql",
+        "language": "java",
+        "length": 837,
+        "is_print_stub": false
+      }
+    ],
+    "Grpc": [
+      {
+        "id": 923,
+        "title": "gRPC - gRPC Basics",
+        "framework": "Grpc",
+        "language": "java",
+        "length": 594,
+        "is_print_stub": false
+      },
+      {
+        "id": 924,
+        "title": "gRPC - Service Definition",
+        "framework": "Grpc",
+        "language": "java",
+        "length": 615,
+        "is_print_stub": false
+      },
+      {
+        "id": 925,
+        "title": "gRPC - Unary RPC",
+        "framework": "Grpc",
+        "language": "java",
+        "length": 588,
+        "is_print_stub": false
+      },
+      {
+        "id": 926,
+        "title": "gRPC - Server Streaming",
+        "framework": "Grpc",
+        "language": "java",
+        "length": 609,
+        "is_print_stub": false
+      },
+      {
+        "id": 927,
+        "title": "gRPC - Client Streaming",
+        "framework": "Grpc",
+        "language": "java",
+        "length": 609,
+        "is_print_stub": false
+      },
+      {
+        "id": 928,
+        "title": "gRPC - Bidirectional Streaming",
+        "framework": "Grpc",
+        "language": "java",
+        "length": 630,
+        "is_print_stub": false
+      },
+      {
+        "id": 929,
+        "title": "gRPC - Error Handling",
+        "framework": "Grpc",
+        "language": "java",
+        "length": 603,
+        "is_print_stub": false
+      },
+      {
+        "id": 930,
+        "title": "gRPC - Interceptors",
+        "framework": "Grpc",
+        "language": "java",
+        "length": 597,
+        "is_print_stub": false
+      },
+      {
+        "id": 931,
+        "title": "gRPC - Authentication",
+        "framework": "Grpc",
+        "language": "java",
+        "length": 603,
+        "is_print_stub": false
+      },
+      {
+        "id": 1054,
+        "title": "gRPC - gRPC Production",
+        "framework": "Grpc",
+        "language": "java",
+        "length": 604,
+        "is_print_stub": false
+      }
+    ],
+    "Kubernetes": [
+      {
+        "id": 932,
+        "title": "Kubernetes - Kubernetes Basics",
+        "framework": "Kubernetes",
+        "language": "java",
+        "length": 624,
+        "is_print_stub": false
+      },
+      {
+        "id": 933,
+        "title": "Kubernetes - Services and Networking",
+        "framework": "Kubernetes",
+        "language": "java",
+        "length": 642,
+        "is_print_stub": false
+      },
+      {
+        "id": 934,
+        "title": "Kubernetes - ConfigMaps and Secrets",
+        "framework": "Kubernetes",
+        "language": "java",
+        "length": 639,
+        "is_print_stub": false
+      },
+      {
+        "id": 935,
+        "title": "Kubernetes - Persistent Volumes",
+        "framework": "Kubernetes",
+        "language": "java",
+        "length": 627,
+        "is_print_stub": false
+      },
+      {
+        "id": 936,
+        "title": "Kubernetes - Deployments",
+        "framework": "Kubernetes",
+        "language": "java",
+        "length": 606,
+        "is_print_stub": false
+      },
+      {
+        "id": 937,
+        "title": "Kubernetes - Ingress",
+        "framework": "Kubernetes",
+        "language": "java",
+        "length": 594,
+        "is_print_stub": false
+      },
+      {
+        "id": 938,
+        "title": "Kubernetes - Health Checks",
+        "framework": "Kubernetes",
+        "language": "java",
+        "length": 612,
+        "is_print_stub": false
+      },
+      {
+        "id": 939,
+        "title": "Kubernetes - Resource Management",
+        "framework": "Kubernetes",
+        "language": "java",
+        "length": 630,
+        "is_print_stub": false
+      },
+      {
+        "id": 1056,
+        "title": "Kubernetes - Pods and Deployments",
+        "framework": "Kubernetes",
+        "language": "java",
+        "length": 659,
+        "is_print_stub": false
+      },
+      {
+        "id": 1057,
+        "title": "Kubernetes - Services and Load Balancing",
+        "framework": "Kubernetes",
+        "language": "java",
+        "length": 909,
+        "is_print_stub": false
+      },
+      {
+        "id": 1058,
+        "title": "Kubernetes - ConfigMaps and Secrets",
+        "framework": "Kubernetes",
+        "language": "java",
+        "length": 969,
+        "is_print_stub": false
+      },
+      {
+        "id": 1060,
+        "title": "Kubernetes - Horizontal Pod Autoscaling",
+        "framework": "Kubernetes",
+        "language": "java",
+        "length": 694,
+        "is_print_stub": false
+      },
+      {
+        "id": 1061,
+        "title": "Kubernetes - StatefulSets",
+        "framework": "Kubernetes",
+        "language": "java",
+        "length": 607,
+        "is_print_stub": false
+      },
+      {
+        "id": 1062,
+        "title": "Kubernetes - Production Deployment",
+        "framework": "Kubernetes",
+        "language": "java",
+        "length": 634,
+        "is_print_stub": false
+      }
+    ],
+    "Webflux": [
+      {
+        "id": 1034,
+        "title": "Reactive - WebFlux Controllers",
+        "framework": "Webflux",
+        "language": "java",
+        "length": 676,
+        "is_print_stub": false
+      }
+    ]
+  },
+  "priority_frameworks": [
+    "Kafka",
+    "Redis",
+    "Flask",
+    "FastAPI",
+    "pandas",
+    "boto3",
+    "Celery",
+    "gRPC",
+    "GraphQL"
+  ]
+}

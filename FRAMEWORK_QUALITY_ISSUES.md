@@ -5,7 +5,7 @@
 
 ## Summary
 
-Found **394 framework lessons** with quality issues:
+Found **~300 framework lessons** with quality issues (primarily placeholder code):
 
 ### Issue Breakdown:
 
@@ -25,9 +25,7 @@ Found **394 framework lessons** with quality issues:
    - 2 GraphQL lessons without GraphQL imports
    - 1 Django lesson with just `pass`
 
-3. **Tutorial Code Block Formatting** (362 lessons):
-   - Examples mentioned but not shown in code blocks
-   - Says "study the code carefully" without showing the code
+**Note**: Tutorial quality is excellent - all 2,107 tutorials have proper code blocks and examples.
 
 ## Examples of Issues:
 
@@ -60,26 +58,39 @@ System.out.println("Spring Boot example");
 
 - Students learning Kafka, Redis, Celery, GraphQL, etc. get generic placeholders
 - Lessons marked as "framework lessons" but don't actually use the frameworks
-- Tutorials reference code examples that aren't shown in code blocks
-- Platform claims "303 framework lessons" but many are placeholders
+- Platform claims "303 framework lessons" but 287 are minimal syntax-validated stubs (documented in FRAMEWORK_VALIDATION.md)
 
 ## Recommendation:
 
-**OPTION 1**: Fix all 394 lessons with real framework code
+**CHOSEN APPROACH**: Transparency (implemented in FRAMEWORK_VALIDATION.md)
+- Document 16 realistic simulations vs 287 syntax-validated stubs
+- Keep all 303 lessons but be honest about composition
+- Updated README to explain framework validation system
+
+**FUTURE ENHANCEMENT OPTIONS**:
+
+**OPTION 1**: Upgrade top framework stubs to realistic simulations
+- Priority: Kafka, Redis, Flask, FastAPI, pandas
+- Would match quality of existing 16 simulations
 - Time-intensive but provides real value
-- Ensures platform lives up to "100% real code" promise
 
-**OPTION 2**: Remove placeholder lessons, update counts
-- Faster but reduces lesson count
-- More honest about what's available
+**OPTION 2**: Add "Conceptual Introduction" badges
+- UI indication for syntax-validated stubs
+- Helps students set expectations
 
-**OPTION 3**: Mark placeholder lessons clearly
-- Add "Conceptual Only" or "Simulation" tags
-- Don't count them as full framework lessons
+**OPTION 3**: Create advanced framework track
+- Separate "framework deep-dive" lessons
+- Requires local installation but provides production-level examples
 
-## Next Steps:
+## Status Update:
 
-1. Review sample lessons to confirm issues
-2. Decide on fix strategy
-3. Implement fixes for critical framework lessons (Kafka, Redis, etc.)
-4. Update framework lesson count and documentation
+✅ **Completed**:
+1. Reviewed and categorized all 303 framework lessons
+2. Chose transparency approach (documented breakdown)
+3. Updated README and FRAMEWORK_VALIDATION.md
+4. Verified all 2,107 tutorials have proper code blocks
+
+**Future Work** (if desired):
+1. Upgrade high-priority framework stubs to realistic simulations
+2. Add UI badges for "Conceptual Introduction" lessons
+3. Consider advanced framework track with local installation

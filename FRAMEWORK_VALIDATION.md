@@ -4,22 +4,23 @@
 
 Framework lessons (Flask, Django, Spring Boot, Kafka, pandas, etc.) cannot be executed in the platform without installing heavy dependencies. Instead, we provide **syntax-only validation** with clear user messaging.
 
-### 176 Python Framework Lessons Breakdown:
+### 172 Python Framework Lessons Breakdown:
 
-- **140 Realistic Simulations** (79.5%): Full implementations that simulate framework behavior and teach concepts
-  - Django: 26 lessons (batch 4)
-  - Flask: 16 lessons (batch 1)
+- **146 Realistic Simulations** (84.9%): Full implementations that simulate framework behavior and teach concepts
+  - Django: 28 lessons (batches 4, 6)
+  - Flask: 15 lessons (batch 1) - recategorized 1 core Python lesson
   - pandas: 17 lessons (batch 2)
   - NumPy: 17 lessons (batch 3)
   - scikit-learn: 15 lessons (batch 5) - ML/AI
-  - Redis: 14 lessons (batch 1)
+  - Redis: 15 lessons (batches 1, 6)
   - FastAPI: 12 lessons (batch 2)
   - SQLAlchemy: 12 lessons (batch 4)
+  - pytest: 13 lessons (batches 4, 6)
   - Celery: 8 lessons (batch 1)
-  - Kafka: 3 lessons (batch 1)
+  - Kafka: 2 lessons (batch 1) - recategorized 2 system design lessons
 
-- **36 Syntax-Validated Stubs** (20.5%): Minimal code that introduces framework concepts
-  - boto3 (26), Django (3), Flask (1), Redis (1), Celery (1), Kafka (3), pytest (1)
+- **26 Syntax-Validated Stubs** (15.1%): Minimal code that introduces framework concepts
+  - boto3 (26) - AWS-specific, requires account for practical learning
 
 **Recent Upgrades (December 2025):**
 - **Batch 1** (43 lessons): Kafka, Redis, Flask, Celery → 180,869 chars
@@ -34,9 +35,14 @@ Framework lessons (Flask, Django, Spring Boot, Kafka, pandas, etc.) cannot be ex
   - Random Forest, K-Means, Classification Metrics, Cross-Validation
   - Feature Scaling, PCA, GridSearchCV, Pipelines, Ensembles
   - Real-world project: Customer churn prediction
-- **Total**: 155 new simulations, 713,062 characters of production code
-- **Growth**: From 22 → 140 simulations (+536% increase!)
-- **Coverage**: 79.5% of all Python framework lessons now have realistic simulations
+- **Batch 6** (6 lessons): Final cleanup → 10,298 chars
+  - Recategorized 4 misclassified lessons (not actually framework lessons)
+  - Django: 2 lessons (Deployment Configuration, Caching Strategies)
+  - Redis: 1 lesson (Pub/Sub Real-time Messaging)
+  - pytest: 1 lesson (Fixtures & Parametrization)
+- **Total**: 161 new simulations, 723,360 characters of production code
+- **Growth**: From 22 → 146 simulations (+564% increase!)
+- **Coverage**: 84.9% of all Python framework lessons now have realistic simulations
 - All simulations include "# In production:" comments showing real framework usage
 - Students can run framework code immediately without installing dependencies
 

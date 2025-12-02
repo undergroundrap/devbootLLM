@@ -67,9 +67,9 @@
 - 🔧 **Categorization Fix**: Recategorized 135 Python lessons from "OOP" to "Core Python" (now 100% of OOP lessons have class definitions)
 - 📝 **Narrative Lessons Fixed**: Replaced 16 generic narrative functions with full implementations (50-160 lines each)
   - Configuration Management, Git Mastery, Thread Synchronization, Rate Limiting, RESTful API Design, and 11 more
-- 🔬 **Framework Validation System**: 176 Python framework lessons (140 realistic simulations + 36 syntax-validated stubs)
-  - 140 comprehensive simulations (79.5%) that teach framework concepts (Django, Flask, pandas, NumPy, scikit-learn, Redis, FastAPI, SQLAlchemy, Celery, Kafka)
-  - 36 syntax-validated stubs for introduction (boto3, miscellaneous)
+- 🔬 **Framework Validation System**: 172 Python framework lessons (146 realistic simulations + 26 syntax-validated stubs)
+  - 146 comprehensive simulations (84.9%) that teach framework concepts (Django, Flask, pandas, NumPy, scikit-learn, Redis, FastAPI, SQLAlchemy, Celery, Kafka, pytest)
+  - 26 syntax-validated stubs (boto3 - AWS-specific)
   - Students can run framework simulations immediately without installing packages
   - Simulations use actual API patterns with "# In production:" comments explaining differences
 - 🎯 **Zero Quality Issues**: All placeholder code, narrative-only lessons, and categorization issues resolved
@@ -412,7 +412,7 @@ devbootllm-app/
 - `POST /run/java` - Execute Java code
 - `POST /run/python` - Execute Python code
   - Framework lessons: Syntax validation only (no execution)
-  - Supports 176 Python framework lessons (140 realistic simulations + 36 stubs for Django, Flask, pandas, NumPy, scikit-learn, FastAPI, SQLAlchemy, Redis, Kafka, etc.)
+  - Supports 172 Python framework lessons (146 realistic simulations + 26 stubs for Django, Flask, pandas, NumPy, scikit-learn, FastAPI, SQLAlchemy, Redis, Kafka, pytest, etc.)
 
 ### Lessons
 - `GET /api/lessons?lang={java|python}&offset=0&limit=200` - Paginated lesson summaries
@@ -588,7 +588,7 @@ All lessons undergo comprehensive validation to ensure the highest quality:
 
 - **Compilation Testing**: Every solution is compiled with actual compilers (Python 3.12, Java 17)
 - **Execution Testing**: All 2,107 solutions are executed to verify they run without errors
-- **Framework Validation**: 176 Python framework lessons (140 realistic simulations + 36 syntax-validated stubs) - run framework code immediately without installation
+- **Framework Validation**: 172 Python framework lessons (146 realistic simulations + 26 syntax-validated stubs) - run framework code immediately without installation
 - **Output Validation**: Solutions are tested against expected outputs
 - **Structure Validation**: All lessons have complete structure (hints, test cases, tags, examples)
 - **Tutorial Quality Validation**: All tutorials checked for code examples, proper structure, and completeness

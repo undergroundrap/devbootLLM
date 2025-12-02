@@ -6,23 +6,29 @@ Framework lessons (Flask, Django, Spring Boot, Kafka, pandas, etc.) cannot be ex
 
 ### 303 Framework Lessons Breakdown:
 
-- **65 Realistic Simulations** (21.5%): Full implementations that simulate framework behavior and teach concepts
-  - Flask: 17 lessons (upgraded Dec 2025)
-  - Redis: 15 lessons (14 upgraded Dec 2025 + 1 existing)
-  - Spring: 14 lessons
-  - Celery: 9 lessons (upgraded Dec 2025)
-  - Django: 5 lessons
-  - Kafka: 4 lessons (1 existing + 3 upgraded Dec 2025)
-  - Kubernetes: 1 lesson
+- **111 Realistic Simulations** (36.6%): Full implementations that simulate framework behavior and teach concepts
+  - Flask: 17 lessons (batch 1)
+  - pandas: 17 lessons (batch 2)
+  - NumPy: 17 lessons (batch 3)
+  - Redis: 15 lessons (batch 1: 14 + existing: 1)
+  - Spring: 14 lessons (existing)
+  - FastAPI: 12 lessons (batch 2)
+  - Celery: 9 lessons (batch 1)
+  - Django: 5 lessons (existing)
+  - Kafka: 4 lessons (batch 1: 3 + existing: 1)
+  - Kubernetes: 1 lesson (existing)
 
-- **238 Syntax-Validated Stubs** (78.5%): Minimal code that introduces framework concepts and validates syntax
-  - All other framework lessons (FastAPI, pandas, boto3, GraphQL, gRPC, etc.)
+- **192 Syntax-Validated Stubs** (63.4%): Minimal code that introduces framework concepts and validates syntax
+  - boto3, GraphQL, gRPC, and other frameworks
 
 **Recent Upgrades (December 2025):**
-- Upgraded 43 high-priority framework stubs to realistic simulations
-- Added 180,869 characters of production-quality simulation code
+- **Batch 1** (43 lessons): Kafka, Redis, Flask, Celery → 180,869 chars
+- **Batch 2** (29 lessons): pandas, FastAPI → 140,734 chars
+- **Batch 3** (17 lessons): NumPy → 67,541 chars
+- **Total**: 89 new simulations, 389,144 characters of production code
+- **Growth**: From 22 → 111 simulations (+405% increase!)
 - All simulations include "# In production:" comments showing real framework usage
-- Students can now run framework code immediately without installing dependencies
+- Students can run framework code immediately without installing dependencies
 
 ## How It Works
 

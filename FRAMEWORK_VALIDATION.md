@@ -6,27 +6,33 @@ Framework lessons (Flask, Django, Spring Boot, Kafka, pandas, etc.) cannot be ex
 
 ### 303 Framework Lessons Breakdown:
 
-- **111 Realistic Simulations** (36.6%): Full implementations that simulate framework behavior and teach concepts
+- **149 Realistic Simulations** (49.2%): Full implementations that simulate framework behavior and teach concepts
+  - Django: 31 lessons (batch 4: 26 + existing: 5)
   - Flask: 17 lessons (batch 1)
   - pandas: 17 lessons (batch 2)
   - NumPy: 17 lessons (batch 3)
   - Redis: 15 lessons (batch 1: 14 + existing: 1)
   - Spring: 14 lessons (existing)
+  - pytest: 13 lessons (batch 4)
   - FastAPI: 12 lessons (batch 2)
+  - SQLAlchemy: 12 lessons (batch 4)
   - Celery: 9 lessons (batch 1)
-  - Django: 5 lessons (existing)
   - Kafka: 4 lessons (batch 1: 3 + existing: 1)
   - Kubernetes: 1 lesson (existing)
 
-- **192 Syntax-Validated Stubs** (63.4%): Minimal code that introduces framework concepts and validates syntax
+- **154 Syntax-Validated Stubs** (50.8%): Minimal code that introduces framework concepts and validates syntax
   - boto3, GraphQL, gRPC, and other frameworks
 
 **Recent Upgrades (December 2025):**
 - **Batch 1** (43 lessons): Kafka, Redis, Flask, Celery → 180,869 chars
 - **Batch 2** (29 lessons): pandas, FastAPI → 140,734 chars
 - **Batch 3** (17 lessons): NumPy → 67,541 chars
-- **Total**: 89 new simulations, 389,144 characters of production code
-- **Growth**: From 22 → 111 simulations (+405% increase!)
+- **Batch 4** (51 lessons): Django, SQLAlchemy, pytest → 249,293 chars
+  - Django: 26 lessons (ORM, Views, DRF, async, signals, testing)
+  - SQLAlchemy: 12 lessons (relationships, optimization, pooling)
+  - pytest: 13 lessons (fixtures, parametrization, mocking, CI/CD)
+- **Total**: 140 new simulations, 638,437 characters of production code
+- **Growth**: From 22 → 149 simulations (+577% increase!)
 - All simulations include "# In production:" comments showing real framework usage
 - Students can run framework code immediately without installing dependencies
 

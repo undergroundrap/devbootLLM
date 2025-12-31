@@ -1,0 +1,8 @@
+Lessons 61-70 Summary - More List Operations & Strings
+
+Batch focus:
+- 61-67: Advanced list operations (methods, slicing, removing, reversing, sorting)
+- 68-69: List aggregations (sum, merging, intersection)
+- 70: String concatenation
+
+All will be upgraded to 3,000-4,000+ chars with 7-10 examples each.
